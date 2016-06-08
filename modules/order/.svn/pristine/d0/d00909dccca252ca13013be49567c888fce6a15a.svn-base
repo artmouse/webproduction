@@ -1,0 +1,13 @@
+{|if $filterArray|}
+    <div style="padding-left: 10px;">
+        {|foreach from=$filterArray key="key" item="f"|}
+            <div style="float: left; padding-right: 10px;">
+                {|$f.name|}
+                <br>
+                <input type="text" value="" class="js-filter-value-{|$key+1|} js-filter" data-id="{|$f.id|}">
+            </div>
+        {|/foreach|}
+    </div>
+    <div class="clear"></div>
+    <br>
+{|/if|}

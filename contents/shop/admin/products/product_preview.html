@@ -1,0 +1,72 @@
+{|if $image|}
+    <div class="image">
+        <a href="{|$url|}"><img src="{|$image|}" alt="{|$name|}" /></a>
+    </div>
+{|/if|}
+<div class="name">
+    <a href="{|$url|}"><strong>{|$name|}</strong></a>
+    ({|if $source|}{|$translate_product_service|}{|else|}{|$translate_product|}{|/if|})
+    <br />
+</div>
+
+{|if $description || $categoryPath|}
+    <div class="description">
+        {|$categoryPath|}
+        {|$description|}
+    </div>
+{|/if|}
+
+<table class="list">
+    {|if $price|}
+        <tr>
+            <td>{|$translate_price|}:</td>
+            <td>
+                {|$price|} {|$currency|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $pricebase|}
+        <tr>
+            <td>{|$translate_sebestoimost|}:</td>
+            <td>
+                {|$pricebase|} {|$currency|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $id|}
+        <tr>
+            <td>ID:</td>
+            <td>
+                {|$id|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $code1c|}
+        <tr>
+            <td>{|$translate_code|}:</td>
+            <td>
+                {|$code1c|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $articul|}
+        <tr>
+            <td>{|$translate_articul|}:</td>
+            <td>
+                {|$articul|}
+            </td>
+        </tr>
+    {|/if|}
+    <tr>
+        <td></td>
+        <td>
+            {|*|}
+                <a id="outBasket" href="javascript:void(0);" onclick="shop_basket_load_product({|$id|}, 1, 1);" {|if !$inBasket|}style="display: none;"{|/if|}>{|$translate_ubrat_iz_korzini|}</a>
+                <a id="inBasket" href="javascript:void(0);" onclick="shop_basket_load_product({|$id|}, 1);" {|if $inBasket|}style="display: none;"{|/if|}>{|$translate_dobavit_v_korzinu|}</a>
+            {|*|}
+            <a href="{|$urlBarcode|}" onclick="shop_product_barcode('{|$urlBarcode|}'); return false;">{|$translate_item_barcode|}</a>
+            <a href="{|$urlPricecode|}" onclick="shop_product_barcode('{|$urlPricecode|}'); return false;">{|$translate_tsennik|}</a>
+            <a href="/admin/shop/storage/pricecode/print/?code={|$id|}" target="_blank">{|$translate_drugoy_tsennik|}</a>
+        </td>
+    </tr>
+</table>

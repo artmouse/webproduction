@@ -1,0 +1,27 @@
+[2016-05-29 22:32:01]
+host: shop.local
+url: /
+contentID: index
+point: /shop.starter.php
+data: 0=500
+1=No query result to fetch
+
+
+[2016-05-29 22:32:03]
+host: shop.local
+url: /
+contentID: index
+point: /shop.starter.php
+data: 0=500
+1=No query result to fetch
+
+
+[2016-05-29 22:32:04]
+host: shop.local
+url: /
+contentID: index
+point: /shop.starter.php
+data: 0=500
+1=No query result to fetch
+
+

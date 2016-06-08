@@ -1,0 +1,389 @@
+<input type="hidden" id="productPage" value="{|$productID|}">
+
+{|if $message == "commentok"|}
+    <div class="os-message-success">
+        {|$translate_testimonials_success|}.
+    </div>
+{|/if|}
+
+{|if $message == "commenterror"|}
+    <div class="os-message-error">
+        {|$translate_testimonials_error|}.
+    </div>
+{|/if|}
+
+<div class="rtm-crumbs">
+    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url">
+            <span itemprop="title">Каталог изделий</span>
+        </a>
+    </div>
+    &rarr;
+
+    {|foreach from=$pathArray item="e" name="foo"|}
+        {|if !$smarty.foreach.foo.last && $e.url != ''|}
+            <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="{|$e.url|}" itemprop="url" data-rel=".tab-ordered">
+                    <span itemprop="title">{|$e.name|}</span>
+                </a>
+            </div>
+            &rarr;
+        {|else|}
+            <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="" itemprop="url">
+                    <span itemprop="title">{|$e.name|}</span>
+                </a>
+            </div>
+        {|/if|}
+    {|/foreach|}
+</div>
+
+<div class="rtm-product-view" itemscope itemtype="http://schema.org/Product">
+    <div class="left-col">
+
+        {|if $imagesArray|}
+            <div class="main-image">
+                {|foreach from=$imagesArray key="key" item="i"|}
+                    <a href="{|$i.originalUrl|}" class="js-zoomer img-{|$key|}">
+                        <img alt="{|$i.alt|}" title="{|$i.title|}" class="js-zoomer-small" itemprop="image" src="{|$i.cropUrl|}" />
+                    </a>
+                {|/foreach|}
+                {|if $jewelerImage|}
+                    <div class="master-view js-master-view" style="display: none;">
+                        <div class="holder">
+                            <img src="{|$jewelerImage|}" alt="{|$jewelerName|}"/>
+                            <div class="caption">
+                                <div class="name">{|$jewelerName|}</div>
+                            </div>
+                        </div>
+                    </div>
+                {|/if|}
+                {|if $tradeHall|}
+                    <div class="master-view js-trade-view" style="display: none;">
+                        <div class="holder">
+                            <img src="{|$tradeHall.photo|}" alt="Торговый зал"/>
+                            <div class="caption">
+                                <div class="name">{|$tradeHall.text|}</div>
+                            </div>
+                        </div>
+                    </div>
+                {|/if|}
+
+                <div class="rtm-block-productvideo js-productvideo-view" style="display: none;">
+                    <iframe width="602" height="526" src="//www.youtube.com/embed/6urU9-XfG8A" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/if|}
+
+        {|if $imagesArray|}
+            <div class="adds-images js-zoomer-thumbs">
+                {|foreach from=$imagesArray key="key" item="i"|}
+                    <a href="javascript:void(0);" data-image="{|$i.originalUrl|}" data-image-small="img-{|$key|}">
+                        <img src="{|$i.cropUrl|}" class="js-zoom-small" alt="{|$i.alt|}" title="{|$i.title|}"/>
+                    </a>
+                {|/foreach|}
+                    {|if $jewelerImageSmall|}
+
+                        <div class="rtm-jeweler-master" style="z-index: 201;">
+                            <a class="jeweler-master js-master-block" href="javascript:void(0);" data-image="{|$jewelerImage|}" data-image-small="img-{|$key|}">
+                                <img src="{|$jewelerImageSmall|}" class="js-master-info" alt="{|$jewelerName|}"/>
+                                <span>
+                                    {|if $jewelerDescription|}
+                                        {|$jewelerDescription|}
+                                    {|/if|}
+                                </span>
+                            </a>
+                        </div>
+                    {|/if|}
+                    {|if $tradeHall|}
+                        <div class="rtm-jeweler-master" style="z-index: 200;">
+                            <a class="jeweler-master js-master-block" href="javascript:void(0);"  data-image="{|$tradeHall.photo|}" data-image-small="img-{|$key|}">
+                                <img src="{|$tradeHall.photo|}" class="js-trade-info" alt="Торговый зал" title="Торговый зал"/>
+                                <span>
+                                    {|$tradeHall.description|}
+                                </span>
+                            </a>
+                        </div>
+                    {|/if|}
+                    <a class="js-productvideo-thumb" href="javascript:void(0);">
+                        <img src="/templates/rtm/_images/icon-play.png"  alt="Видео-презентация ювелирного завода РТМ" title="Видео-презентация ювелирного завода РТМ"/>
+                    </a>
+                <div class="clear"></div>
+            </div>
+        {|/if|}
+
+        <br />
+
+        {|if $listsArray|}
+            <div class="adds-images no-320">
+                <div class="head">Другие изделия из набора</div>
+                {|foreach from=$listsArray item="e"|}
+                    <a href="{|$e.url|}">
+                        <img src="{|$e.image|}" alt="{|$e.name|}"/>
+                    </a>
+                {|/foreach|}
+                <div class="clear"></div>
+            </div>
+            <br />
+        {|/if|}
+
+        {|if $productsViewsArrayCount|}
+            <div class="adds-images no-320">
+                <div class="head">Вы смотрели <span class="seen-count">({|$productsViewsArrayCount|})</span></div>
+                {|foreach from=$productsViewsArray item="e"|}
+                <a href="{|$e.url|}">
+                    <img src="{|$e.image|}" alt="{|$e.alt|}" title="{|$e.title|}"/>
+                </a>
+                {|/foreach|}
+                <div class="clear"></div>
+            </div>
+            <br />
+        {|/if|}
+
+        {|if $video|}
+            <iframe width="604" height="350" src="//www.youtube.com/embed/{|$video|}" frameborder="0" allowfullscreen></iframe>
+        {|/if|}
+    </div>
+
+    <div class="right-col">
+        <div class="p-name">
+            <h1 itemprop="name" class="js-name" {|if $adminRed|}style="color: red"{|/if|}>{|$name|}</h1>
+        </div>
+        <div class="p-code">
+            Артикул: <span itemprop="mpn"><strong>{|$code|}</strong></span>
+        </div>
+        <div class="p-code js_inventar_number" style="margin-bottom: 10px;">
+            Код: <span><strong>{|$inventarNumber|}</strong></span>
+        </div>
+
+        <div itemprop="description">
+            {|if $characteristicsArray|}
+                {|foreach from=$characteristicsArray item="e" key="index"|}
+                    {|if $e.characteristicName == "Вес изделия"|}
+                        <div class="js-weight pale-gold">
+                            {|$e.characteristicName|}: <span>{|$e.characteristicValue|}г</span>
+                        </div>
+                    {|elseif $e.characteristicName == "Вес золота для обмена"|}
+                        <div class="js-weight-exchange pale-gold">
+                            {|$e.characteristicName|}: <span>{|$e.characteristicValue|}г</span>
+                        </div>
+                    {|else|}
+                        <div class="pale-gold">
+                            {|$e.characteristicName|}: <span>{|$e.characteristicValue|}</span>
+                        </div>
+                    {|/if|}
+
+                {|/foreach|}
+                {|$characteristics_message|}
+            {|else|}
+                {|$characteristics|}
+            {|/if|}
+            {|if $baseWeight|}
+                <div class="pale-gold">
+                    Средний вес плетения: <span>{|$baseWeight|}г</span>
+                </div>
+            {|/if|}
+        </div>
+
+        {|if $optionArray|}
+            <div class="p-size">
+                {|foreach from=$optionArray item="e"|}
+                    {|$e.name|} <br />
+                    <select name="option-{|$e.id|}" class="js-shop-buy-option" style="min-width: 200px;color:{|if !$urledit|}#824940;{|else|}{|if $adminRed|} red;{|else|}black;{|/if|}{|/if|} data-optionid="{|$e.id|}">
+                        {|foreach from=$e.valueArray item="v" key="k"|}
+                            <option data-optionkey="{|$k|}" data-avail="{|$e.productArray[$k].avail|}" style="color: {|if !$urledit|}#824940{|else|}{|if !$e.productArray[$k].avail|}red{|else|}black{|/if|}{|/if|}" value="{|$v|} ">{|$v|}</option>
+                        {|/foreach|}
+                    </select><br />
+                    {|foreach from=$e.productArray item="p" key="k"|}
+                        <input type="hidden"
+                               data-activekey="{|$k|}"
+                               data-id="{|$p.id|}"
+                               data-name="{|$p.name|}"
+                               data-url="{|$p.url|}"
+                               data-weight="{|$p.weight|}"
+                               data-exchange-weight="{|$p.exchangeWeight|}"
+                               data-exchange-weight-char="{|$p.exchangeWeightChar|}"
+                               data-price="{|$p.price|}"
+                               data-price-old="{|$p.priceOld|}"
+                               data-price-product="{|$p.priceProduct|}"
+                               data-price-product-old="{|$p.priceProductOld|}"
+                               data-currency="{|$p.currency|}"
+                        />
+                    {|/foreach|}
+                {|/foreach|}
+            </div>
+
+        {|/if|}
+        {|if $urledit|}
+            <script>
+                $j('.js-shop-buy-option').change(function(){
+                    if ($(this).find(":selected").data('avail')) {
+                        $j('.js-name').css('color','#824940'); 
+                        $j('.js-shop-buy-option').css('color','black');
+                    } else {
+                        $j('.js-shop-buy-option').css('color','red');
+                        $j('.js-name').css('color','red');
+                    }
+                });
+            </script>
+        {|/if|}
+        {|if $weightExchange|}
+           <input type="hidden" class="js-rtm-buy-exchange-option" data-optionid="{|$weightExchange.id|}" value="{|$weightExchange.value|}" />
+        {|/if|}
+        <br />
+        <div class="spk-good-rating" shop-id="686a5ab572e4c382915349" good-id="{|$id|}"></div>
+
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <div class="price-block">
+                За работу при обмене:<br />
+                {|if $price == 0|}
+                    <span class="specify" itemprop="priceSpecification">{|$translate_specify_a_price|}</span>
+                {|else|}
+                    <a class="rtm-submit js-shop-buy js-shop-buy-action" href="#" data-productid="{|$id|}" data-action="exchange">Обмен</a>
+                    <span class="price js-price" itemprop="price" content="{|$price|}" >{|$price|} </span>&nbsp;<span class="price" itemprop="priceCurrency" content="{|$currencyName|}">{|$currency|}</span>
+                    <link itemprop="availability" href="http://schema.org/InStock" content="В наличии"/>
+                    {|if $priceold AND $priceold != 0|}
+                        <br />
+                        <s class="old-price js-price-old">{|$priceold|} {|$currency|}</s>
+                    {|/if|}
+                {|/if|}
+            </div>
+        </div>
+
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <div class="price-block">
+
+                За изделие при продаже:<br />
+                {|if $price == 0|}
+                    <span class="specify" itemprop="priceSpecification">{|$translate_specify_a_price|}</span>
+                {|else|}
+                    <a class="rtm-submit js-shop-buy js-shop-buy-action" href="#" data-productid="{|$id|}" data-action="buy">Купить</a>
+                    <span class="price js-price-product" itemprop="price" content="{|$price_product|}">{|$price_product|} </span>&nbsp;<span class="price" itemprop="priceCurrency" content="{|$currencyName|}">{|$currency|}</span>
+                    <link itemprop="availability" href="http://schema.org/InStock" content="В наличии"/>
+                    {|if $priceproductold AND $priceproductold != 0|}
+                        <br />
+                        <s class="old-price js-price-product-old">{|$priceproductold|} {|$currency|}</s>
+                    {|/if|}
+                {|/if|}
+            </div>
+        </div>
+
+        <div class="rtm-like-btns">
+            {|if $abouturl|}
+                <a href="{|$abouturl|}" target="_blank">{|$translate_abouturl_name|}</a>
+            {|/if|}
+
+            <div class="fb" onclick="Share.facebook(
+            '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+            '{|$name|}',//название
+            '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+            ''//описание
+            )">
+                Поделиться изделием <span></span>
+            </div>
+            <div class="vk" onclick="Share.vkontakte(
+            '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+            '{|$name|}',//название
+            '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+            ''//описание
+            )">
+                Поделиться изделием <span></span>
+            </div>
+        </div>
+
+        {|*|}
+        <div id="spk-widget-reviews" style="display:none; width: 100%;"
+             shop-id="686a5ab572e4c382915349"
+             good-id="{|$id|}"
+             good-title="{|$name|}"
+             good-url="{|$url|}">
+        </div>
+        <script async="async" type="text/javascript"
+                src="//static.sprosikupi.ru/js/widget/sprosikupi.bootstrap.js">
+        </script>
+        {|*|}
+
+        {|if $urledit|}
+            <br/>
+            <a href="{|$urledit|}" target="_blank">Редактировать</a>
+        {|/if|}
+    </div>
+    <div class="clear"></div>
+
+    {|$productsSimilar|}
+
+    <script type="text/javascript">
+
+        $j(document).ready(function () {
+            //zoomer options
+            var options = {
+                lens:false,
+                preloadImages: true,
+                zoomWidth: 346,
+                zoomHeight: 519,
+                title: false
+            };
+            //zoomer init
+            $j('.js-zoomer').jqzoom(options);
+            //hiding else main img
+            $j('.main-image a').hide();
+            //shoing first
+            $j('.main-image a.img-0').show();
+            //shoing current by clicking thumb
+            $j('.js-zoomer-thumbs a').click(function(){
+                var current = $j(this).attr('data-image-small');
+                //hiding else
+                $j('.main-image a'). hide();
+                //shoing current
+                $j('.'+current).show();
+            });
+        });
+
+        Share = {
+            vkontakte: function(purl, ptitle, pimg, text) {
+                url  = 'http://vkontakte.ru/share.php?';
+                url += 'url='          + encodeURIComponent(purl);
+                url += '&title='       + encodeURIComponent(ptitle);
+                url += '&description=' + encodeURIComponent(text);
+                url += '&image='       + encodeURIComponent(pimg);
+                url += '&noparse=true';
+                Share.popup(url);
+            },
+            odnoklassniki: function(purl, text) {
+                url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+                url += '&st.comments=' + encodeURIComponent(text);
+                url += '&st._surl='    + encodeURIComponent(purl);
+                Share.popup(url);
+            },
+            facebook: function(purl, ptitle, pimg, text) {
+                url  = 'http://www.facebook.com/sharer.php?s=100';
+                url += '&p[title]='     + encodeURIComponent(ptitle);
+                url += '&p[summary]='   + encodeURIComponent(text);
+                url += '&p[url]='       + encodeURIComponent(purl);
+                url += '&p[images][0]=' + encodeURIComponent(pimg);
+                Share.popup(url);
+            },
+            twitter: function(purl, ptitle) {
+                url  = 'http://twitter.com/share?';
+                url += 'text='      + encodeURIComponent(ptitle);
+                url += '&url='      + encodeURIComponent(purl);
+                url += '&counturl=' + encodeURIComponent(purl);
+                Share.popup(url);
+            },
+            mailru: function(purl, ptitle, pimg, text) {
+                url  = 'http://connect.mail.ru/share?';
+                url += 'url='          + encodeURIComponent(purl);
+                url += '&title='       + encodeURIComponent(ptitle);
+                url += '&description=' + encodeURIComponent(text);
+                url += '&imageurl='    + encodeURIComponent(pimg);
+                Share.popup(url)
+            },
+
+            popup: function(url) {
+                window.open(url,'','toolbar=0,status=0,width=626,height=436');
+            }
+        };
+    </script>
+
+</div>

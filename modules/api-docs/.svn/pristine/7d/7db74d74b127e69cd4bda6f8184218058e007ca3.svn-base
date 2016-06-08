@@ -1,0 +1,45 @@
+<h1>Как правильно обновлять систему?</h1>
+
+Перед тем как вы делаете svn up проекта, посмотрите на номер ревизии через svn info, на которой находится проект.<br />
+<br />
+
+Например:<br />
+
+<code><pre>
+bash-4.2$ svn info
+Path: .
+Working Copy Root Path: /var/www/clients/client15/web20/web
+URL: https://svn.webproduction.ua/wpshop/wpshop/trunk
+Relative URL: ^/wpshop/trunk
+Repository Root: https://svn.webproduction.ua/wpshop
+Repository UUID: be7e8ddd-10ab-4bf2-81b7-dd55e47c74ba
+Revision: 25210
+</pre></code>
+
+<br />
+Это означает что проект находится на ревизии 25210.<br />
+<br />
+
+После этого делайте svn up.<br />
+После этого запускайте updater.sh.<br />
+Он спросит у вас "с какой ревизии вы обновляетесь" - вам нужно ввести это число 25210.<br />
+<br />
+Можно ввести вторым способом, сразу при запуске updater.sh:<br />
+./updater.sh 25210<br />
+<br />
+
+<h2>Зачем это надо?</h2>
+Чтобы updater.sh запустил конвертационные скрипты, которые находятся в директории /updater/ <br />
+<br />
+<h2>force</h2>
+Вместо числа можно ввести "force" (updater.sh force) - это чтобы не запускать конвертационные скрипты.<br />
+<br />
+<h2>Инструкция на bash для ленивых</h2>
+Данный конвеер обновляет рабочую копию не сохраняя логина и пароля на сервере, записывает предыдущую ревизию в файл 'last'. Далее передает текущую ревизию на stdin скрипта updater.sh.<br />
+<br />
+
+<code><pre>
+svn up --username=XXX --password=XXX --no-auth-cache && svn info | tee last | grep -E 'Revision:|Редакция:' | awk '{print $2}' | ./updater.sh
+</pre></code>
+
+<br />

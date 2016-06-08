@@ -1,0 +1,10 @@
+{|if $page|}
+    {|$page|}
+{|else|}
+    <form action="" method="get">
+        <input type="text" name="url" style="width: 400px;">
+        <input class="ob-button" type="submit" value="{|$translate_upload|}" name="ok">
+        <br/>
+        <p style="color: #666;">{|$translate_translate_at_example_big|}: <strong>http://comfy.ua/</strong></p>
+    </form>
+{|/if|}

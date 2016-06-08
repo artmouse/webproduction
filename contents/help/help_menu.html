@@ -1,0 +1,83 @@
+<div class="search-helper">
+    <input class="js-search-helper" type="text" name="" value="" placeholder="Быстрый поиск"/>
+</div>
+
+<div class="menu-wrap js-menu-wrap">
+    {|if $newMenuArray[1]|}
+        <ul>
+            {|foreach from=$newMenuArray[1] item="m" key="key"|}
+                <li>
+                    <a href="{|$m.url|}" {|if $m.selected|}class="selected"{|/if|}>{|$m.name|}</a>
+                    {|if $m.selected && $m.legArray|}
+                        <ul class="navi">
+                            {|foreach from=$m.legArray item="link" key="val"|}
+                                <li><a href="#" data-id="block{|$link.id|}">{|$link.name|}</a></li>
+                            {|/foreach|}
+                        </ul>
+                    {|/if|}
+                    {|if $newMenuArray[$m.key]|}
+                        <div class="expand"></div>
+                        <ul style="display: none;">
+                            {|foreach from=$newMenuArray[$m.key] item="m2" key="key2"|}
+                                <li>
+                                    <a href="{|$m2.url|}" {|if $m2.selected|}class="selected"{|/if|}>{|$m2.name|}</a>
+                                    {|if $m2.selected && $m2.legArray|}
+                                        <ul class="navi">
+                                            {|foreach from=$m2.legArray item="link" key="val"|}
+                                                <li><a href="#" data-id="block{|$link.id|}">{|$link.name|}</a></li>
+                                            {|/foreach|}
+                                        </ul>
+                                    {|/if|}
+                                    {|if $newMenuArray[$m2.key]|}
+                                        <div class="expand"></div>
+                                        <ul style="display: none;">
+                                            {|foreach from=$newMenuArray[$m2.key] item="m3" key="key3"|}
+                                                <li>
+                                                    <a href="{|$m3.url|}" {|if $m3.selected|}class="selected"{|/if|}>{|$m3.name|}</a>
+                                                    {|if $m3.selected && $m3.legArray|}
+                                                        <ul class="navi">
+                                                            {|foreach from=$m3.legArray item="link" key="val"|}
+                                                                <li><a href="#" data-id="block{|$link.id|}">{|$link.name|}</a></li>
+                                                            {|/foreach|}
+                                                        </ul>
+                                                    {|/if|}
+                                                    {|if $newMenuArray[$m3.key]|}
+                                                        <div class="expand"></div>
+                                                        <ul style="display: none;">
+                                                            {|foreach from=$newMenuArray[$m3.key] item="m4" key="key4"|}
+                                                                <li>
+                                                                    <a href="{|$m4.url|}" {|if $m4.selected|}class="selected"{|/if|}>{|$m4.name|}</a>
+                                                                    {|if $m4.selected && $m4.legArray|}
+                                                                        <ul class="navi">
+                                                                            {|foreach from=$m4.legArray item="link" key="val"|}
+                                                                                <li><a href="#" data-id="block{|$link.id|}">{|$link.name|}</a></li>
+                                                                            {|/foreach|}
+                                                                        </ul>
+                                                                    {|/if|}
+                                                                    {|if $newMenuArray[$m4.key]|}
+                                                                        <div class="expand"></div>
+                                                                        <ul style="display: none;">
+                                                                            {|foreach from=$newMenuArray[$m4.key] item="m5" key="key5"|}
+                                                                                <li>
+                                                                                    <a href="{|$m5.url|}" {|if $m5.selected|}class="selected"{|/if|}>{|$m5.name|}</a>
+                                                                                </li>
+                                                                            {|/foreach|}
+                                                                        </ul>
+                                                                    {|/if|}
+                                                                </li>
+                                                            {|/foreach|}
+                                                        </ul>
+                                                    {|/if|}
+                                                </li>
+                                            {|/foreach|}
+                                        </ul>
+                                    {|/if|}
+                                </li>
+                            {|/foreach|}
+                        </ul>
+                    {|/if|}
+                </li>
+            {|/foreach|}
+        </ul>
+    {|/if|}
+</div>

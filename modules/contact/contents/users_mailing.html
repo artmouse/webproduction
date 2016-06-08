@@ -1,0 +1,186 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/users/mailing/" class="selected">{|$translate_users_mailing|} Email</a></div>
+        <div class="tab-element"><a href="/admin/shop/users/smsmailing/">{|$translate_users_mailing|} SMS</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h1>{|$translate_users_mailing|} Email</h1>
+<br />
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_mailing_error|}.<br />
+        ({|$translate_mailing_error_why|})
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_mailing_success|} ({|$cnt|}).
+    </div>
+    {|if $sendsArray|}
+        <table class="shop-table">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Email</td>
+                <td>Отправлено</td>
+            </tr>
+            </thead>
+            {|foreach from=$sendsArray item="user"|}
+            <tr>
+                <td><a href="{|$user.url|}">{|$user.id|}</a></td>
+                <td>{|$user.email|}</td>
+                <td>
+                    {|if $user.send|}
+                        Да
+                    {|else|}
+                        Нет
+                    {|/if|}
+                </td>
+            </tr>
+            {|/foreach|}
+        </table>
+        <br />
+    {|/if|}
+{|/if|}
+
+<form name="form" id="myform" method="post" enctype="multipart/form-data" >
+    {|if $arrUserId|}
+        <input type="hidden" name="arrUserId" value="{|$arrUserId|}">
+    {|/if|}
+
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_subject|}</div>
+                    <input name="subject" type="text" value="{|$control_subject|}" />
+                </div>
+
+                <div class="double">
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_return_address|}</div>
+                        <input name="mail" type="email" value="{|$control_mail|}"/>
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">Шаблон письма</div>
+                        <select name="design" class="chzn-select">
+                            <option value="0">---</option>
+                            {|foreach from=$designArray item="e"|}
+                                <option value="{|$e.val|}" {|if $control_design == $e.val|}selected{|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-element">
+                    <div class="nb-block-tabs js-slide-tabs js-mail-type">
+                        <div class="tab-element"><a class="selected js-text-editor" href="#" data-type="text">Текстовое письмо</a></div>
+                        <div class="tab-element"><a class="js-html-editor" href="#" data-type="html">HTML-письмо</a></div>
+                        <span class="hover"></span>
+                        <div class="clear"></div>
+                        <input class="js-type-value" name="textType" type="hidden" value="{|$control_textType|}"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="double">
+                        <div class="form-element">
+                            <div class="element-caption">Дата отправки</div>
+                            <input type="text" class="js-datetime" name="startdate"/>
+                        </div>
+                        <div class="form-element">
+                            <div class="element-caption">Подпись отправителя</div>
+                            <input type="text" name="userSignature" value="{|$control_userSignature|}"/>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>                
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_text_of_letter|}</div>
+                    <textarea class="js-editor-custom" name="text" style="height: 500px;">{|$control_text|}</textarea>
+                </div>
+            </div>
+            <div class="right-column">
+                {|if $emailCount|}
+                    Пользователей с Email: <strong>{|$emailCount|}</strong><br />
+                    Пользователей подписанных на рассылку: <strong>{|$disCount|}</strong><br />
+                    <br />
+                {|/if|}
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_can_use|}</div>
+                    [name_smart] - имя или название компании (для рассылки)<br />
+                    [name] - полное ФИО <br />
+                    [name_first] - Имя <br />
+                    [name_last] - Фамилия <br />
+                    [name_middle] - Отчество <br />
+                    [name_first_last] - склеенные Имя и Фамилия <br />
+                    [company] - Название компании <br />
+                    [email] <br />
+                    [phone] <br />
+                    [url_unsubscribe] - ссылка "отписаться" <br />
+                    [perfix] - если мужчина - то "Уважаемый", если женщина - "Уважаемая".<br />
+                    [news] - Новость.<br />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">Последнее новости</div>
+                    {|foreach from=$newsArray item="news"|}
+                        <label>
+                            <input type="checkbox" name="news{|$news.id|}" value="1">
+                            {|$news.name|}
+                            ({|$news.date|})
+                        </label>
+                        <br />
+                    {|/foreach|}
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_file|} 1</div>
+                    <input type="file" name="file1" /><br />
+                    <a class="ob-link-dashed" href="#" id="js-toggle-files" >{|$translate_attach_more_files|}</a>
+                </div>
+
+                <div class="js-files-block" style="display: none">
+                    <div class="double">
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_file|} 2</div>
+                            <input type="file" name="file2"/>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_file|} 3</div>
+                            <input type="file" name="file3"/>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="double">
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_file|} 4</div>
+                            <input type="file" name="file4"/>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_file|} 5</div>
+                            <input type="file" name="file5"/>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_send|}" onclick="return confirm('{|$translate_send_confirm|}? ({|$translate_send_confirm_warning|})');" class="ob-button button-green" />
+        <input type="submit" name="test" value="Тестовая отправка"  class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

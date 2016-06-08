@@ -1,0 +1,135 @@
+{|if $reportArray.order|}
+    <h2>{|$translate_ords|}</h2>
+    <div class="shop-overflow-table">
+        <div class="shop-block-graph">
+            <div id="js-chart-order" class="graph-block" style="display: block;"></div>
+            <div id="js-chart-order-count" class="graph-block" style="display: block;"></div>
+            <div id="js-chart-order-created-count" class="graph-block" style="display: block;"></div>
+        </div>
+    </div>
+    <br />
+{|/if|}
+
+{|if $reportArray.finance|}
+    <h2>{|$translate_dengi|}</h2>
+    <div class="shop-overflow-table">
+        <div class="shop-block-graph">
+            <div id="js-chart-finance" class="graph-block" style="display: block;"></div>
+        </div>
+    </div>
+    <br />
+{|/if|}
+
+{|if $reportArray.event|}
+    <h2>{|$translate_sobitiya|}</h2>
+    <div class="shop-overflow-table">
+        <div class="shop-block-graph">
+            <div id="js-chart-event" class="graph-block" style="display: block;"></div>
+        </div>
+    </div>
+    <br />
+{|/if|}
+
+{|if $eventJSON|}
+    <h2>{|$translate_poslednie_sobitiya|}</h2>
+    <div id="js-event" style="width: 100%; height: 200px;"></div>
+
+    <script type="text/javascript">
+    $j(function () {
+        drawTree('js-event', {|$eventJSON|});
+    });
+    </script>
+{|/if|}
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+var options = {
+    height: 300,
+    animation: {duration: 1, easing: 'out'},
+    fontSize: 11,
+    chartArea: {
+        left: 50,
+        right: 50,
+        top: 50,
+        bottom: 50
+    }
+};<a href = ""> dfdfdfdfdfdf</a>
+
+{|if $reportArray.order|}
+    google.setOnLoadCallback(function () {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '{|$translate_date|}');
+        data.addColumn('number', '{|$translate_orders|} ({|$currency|})');
+        data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].orderCreatedSum+0|}],
+    {|/foreach|}
+    ]);
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('js-chart-order'));
+    chart.draw(data, options);
+    });
+
+    google.setOnLoadCallback(function () {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '{|$translate_date|}');
+        data.addColumn('number', '{|$translate_zakazov_kolichestvo_|}');
+        data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].orderCreated+0|}],
+    {|/foreach|}
+    ]);
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('js-chart-order-count'));
+    chart.draw(data, options);
+
+    });
+
+    google.setOnLoadCallback(function () {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '{|$translate_date|}');
+        data.addColumn('number', '{|$translate_zakazov_kolichestvo_|}');
+        data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].created+0|}],
+    {|/foreach|}
+    ]);
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('js-chart-order-created-count'));
+    chart.draw(data, options);
+
+    });
+{|/if|}
+
+{|if $reportArray.finance|}
+    google.setOnLoadCallback(function () {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{|$translate_date|}');
+            data.addColumn('number', '{|$translate_vhodyashchie_platezhi|}');
+            data.addColumn('number', '{|$translate_ishodyashchie_platezhi|}');
+            data.addRows([
+                {|foreach from=$dateArray item=date|}
+                ['{|$date|}', {|$reportArray[$date].paymentInSum+0|}, {|$reportArray[$date].paymentOutSum+0|}],
+    {|/foreach|}
+    ]);
+    var chart = new google.visualization.LineChart(document.getElementById('js-chart-finance'));
+    chart.draw(data, options);
+    });
+{|/if|}
+
+{|if $reportArray.event|}
+    google.setOnLoadCallback(function () {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '{|$translate_date|}');
+        data.addColumn('number', 'Email');
+        data.addColumn('number', '{|$translate_zvonki|}');
+        data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].event_email+0|}, {|$reportArray[$date].event_call+0|}],
+            {|/foreach|}
+            ]);
+        var chart = new google.visualization.LineChart(document.getElementById('js-chart-event'));
+        chart.draw(data, options);
+        });
+{|/if|}
+</script>

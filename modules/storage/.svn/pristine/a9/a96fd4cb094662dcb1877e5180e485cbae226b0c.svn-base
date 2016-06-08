@@ -1,0 +1,125 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|$translate_storage_sale_check_out|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $messageprocess == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_order_shipped|}.
+    </div>
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_error_not_found|}
+    </div>
+{|/if|}
+
+{|if $messageinfo == 'nosale'|}
+    <div class="shop-message-error">
+        {|$translate_sale_message_no_products|}.
+    </div>
+{|/if|}
+
+{|if $messageprocess == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_sale_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e.product|}
+                <strong>{|$translate_product|} {|$e.product|}</strong>:
+            {|/if|}
+            {|if $e.error == 'lack'|}
+                {|$translate_storage_error_lack|}.
+            {|elseif $e.error == 'shipped'|}
+                {|$translate_sale_error_shipped|}.
+            {|elseif $e.error == 'order'|}
+                {|$translate_order_error_not_found|}.
+            {|elseif $e.error == 'storage'|}
+                {|$translate_storage_error_warehouse|}.
+            {|elseif $e.error == 'user'|}
+                {|$translate_storage_error_permission|}
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $productsArray|}
+    <div class="shop-block shop-storage-info">
+        <strong>{|$translate_order_shipment|} #{|$orderid|}</strong><br />
+        <span class="caption">{|$translate_client_small|}:</span> {|$orderClientName|}<br />
+        <span class="caption">{|$translate_sum|}:</span> {|$orderSum|number_format:2|} {|$orderCurrency|}<br />
+        
+        <br />
+        <strong>{|$translate_storage_from|}: </strong> {|$storagefromname|}<br />
+    </div>
+
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+        <thead>
+            <tr>
+                <td>{|$translate_code|}</td>
+                <td>{|$translate_product|}</td>
+                <td>{|$translate_number|}</td>
+                <td>{|$translate_link_products_amount|}</td>
+                <td>&nbsp;</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {|foreach from=$productsArray item="e"|}
+                <tr>
+                    <td>{|$e.productid|}</td>
+                    <td>{|$e.name|}</td>
+                    <td align="right">{|$e.count|}</td>
+                    <td align="right">
+                        <span id="id-linked-amount-{|$e.id|}">{|$e.linkedAmount|}</span>
+                    </td>
+                    <td>
+                        <a href="#" id="{|$e.id|}" class="id-link">{|$translate_link_products_to_warehouse|}</a>
+                    </td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+    </table>
+    <br />
+    <br />
+
+    <div class="shop-block">
+        <form action="" method="post" id="form2">            
+            <strong>{|$translate_sale_date|}</strong><br />
+            <input type="text" name="date" value="{|$control_date|}" />
+
+            <input type="hidden" name="orderid" value="{|$orderid|}" />
+            <input type="hidden" name="process" value="1" />
+            <input class="ob-button" type="button" value="{|$translate_storage_sale_check_out|}" onclick="if (confirm('{|$translate_sale_confirm|}?')) $j('#form2').submit(); else return false; " />
+        </form>
+        <br />
+        <br />
+        
+        <form action="" method="post" id="form3">
+            <input type="hidden" name="clear" value="1" />
+            <input class="ob-button" type="button" value="{|$translate_cancel|}" onclick="if (confirm('{|$translate_storage_ship_cancel|}?')) $j('#form3').submit(); else return false; " />
+        </form>
+    </div>
+
+{|else|}
+    <form action="" method="get" class="shop-block">
+        {|$translate_order_search_for_shipment|}:
+        <input type="input" name="orderid" value="{|$control_orderid|}" />
+        <input class="ob-button" type="submit" name="ok" value="Найти" />
+    </form>
+
+    <br />
+
+    {|$table|}
+
+{|/if|}

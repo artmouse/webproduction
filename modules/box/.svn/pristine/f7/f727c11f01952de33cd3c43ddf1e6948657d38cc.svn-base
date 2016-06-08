@@ -1,0 +1,19 @@
+{|$block_menu|}
+
+<h1>{|$name|}</h1>
+{|if $imageURL|}
+    <img src="{|$imageURL|}">
+    <br /><br />
+{|/if|}
+
+<a href="{|$downloadURL|}">{|$translate_skachat_fayl|}</a><br /><br />
+<form action="" method="POST" enctype="multipart/form-data">
+    <label>
+        <input type="checkbox" name="delete" value="1" />
+        {|$translate_delete_file|}
+    </label>
+    <br /><br />
+    {|$translate_zamenit_fayl|}: <input type="file" name="file"/>
+    <br /><br />
+    <input type="submit" name="ok" value="{|$translate_save|}" />
+</form>

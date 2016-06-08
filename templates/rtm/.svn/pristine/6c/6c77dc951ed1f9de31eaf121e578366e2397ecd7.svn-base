@@ -1,0 +1,6 @@
+<div class="search-block">
+    <form action="/search/" method="get">
+        <input type="text" name="query" value="{|$control_query|}"  placeholder="Поиск по магазину" id="id-search" />
+        <input type="submit" value=" " />
+    </form>
+</div>

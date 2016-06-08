@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <translate_forms_record_edit>Редактирование записи</translate_forms_record_edit>
+    <translate_forms_record_add>Создание новой записи</translate_forms_record_add>
+    <translate_forms_message_error>Ошибка! Невозможно получить данные по запрошенному ключу.</translate_forms_message_error>
+    <translate_forms_message_delete_ok>Запись успешно удалена.</translate_forms_message_delete_ok>
+    <translate_forms_message_delete_error>Ошибка удаления записи.</translate_forms_message_delete_error>
+    <translate_forms_message_update_ok>Запись успешно сохранена.</translate_forms_message_update_ok>
+    <translate_forms_message_update_error>Ошибка сохранения (обновления) записи.</translate_forms_message_update_error>
+    <translate_forms_message_insert_ok>Запись успешно добавлена.</translate_forms_message_insert_ok>
+    <translate_forms_message_insert_error>Ошибка добавления новой записи.</translate_forms_message_insert_error>
+    <translate_forms_record_insert>Вставить новую запись</translate_forms_record_insert>
+    <translate_forms_record_update>Сохранить запись</translate_forms_record_update>
+    <translate_forms_record_delete>Удалить запись</translate_forms_record_delete>
+    <translate_forms_confirm_delete>Подтверждаете удаление?</translate_forms_confirm_delete>
+    
+    <translate_download>Скачать</translate_download>
+    <translate_download_file>Скачать файл</translate_download_file>
+    <translate_delete_file>Удалить файл</translate_delete_file>
+    <translate_current_file>Текущий файл</translate_current_file>
+
+</form>

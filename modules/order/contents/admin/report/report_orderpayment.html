@@ -1,0 +1,203 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="order" {|if in_array('order', $typeArray)|}checked{|/if|}>
+                    {|$translate_ords|}
+                </label>
+            </div>
+            
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="project" {|if in_array('project', $typeArray)|}checked{|/if|}>
+                    {|$translate_proekti|}
+                </label>
+            </div>
+            
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="issue" {|if in_array('issue', $typeArray)|}checked{|/if|}>
+                    {|$acl_issue|}
+                </label>
+            </div>
+        
+            <div class="element ulist">
+                <label><input type="radio" name="direction" value="" {|if !$control_direction|}checked{|/if|}>{|$translate_all_orders|}</label>
+                <label><input type="radio" name="direction" value="in" {|if $control_direction == 'in'|}checked{|/if|}>{|$translate_ot_klientov_vhodyashchie_|}</label>
+                <label><input type="radio" name="direction" value="out" {|if $control_direction == 'out'|}checked{|/if|}>{|$translate_postavshchikam_ishodyashchie_|}</label>
+            </div>
+
+            <div class="element">
+                <input type="text" name="paymentfrom" value="{|$control_paymentfrom|}" class="js-date" placeholder="{|$translate_data_platezha_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="paymentto" value="{|$control_paymentto|}" class="js-date" placeholder="{|$translate_data_platezha_do|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_zakaza_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="nobalance" value="1" {|if $control_nobalance|} checked {|/if|} />
+                    {|$translate_uchitivat_virtualnie_platezhi|}
+                </label>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="groupcompany" value="1" {|if $control_groupcompany|} checked {|/if|} />
+                    {|$translate_gruppirovat_zakazi_po_kompaniyam|}
+                </label>
+            </div>
+
+            {|$block_workflow_filter|}
+
+            {|if $sourceArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kanal_zakaza|}</div>
+                    <select name="sourceid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$sourceArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_sourceid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $orderCategoryArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kategoriya_zakaza|}</div>
+                    <select name="ordercategoryid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$orderCategoryArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_ordercategoryid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_menedzher_zakaza|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_avtor_zakaza|}</div>
+                    <select name="authorid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_authorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $contractorArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="contractorid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$contractorArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+
+        {|if $reportArray|}
+            <h1>{|$translate_oplati_zakazov_klientov|}</h1>
+
+            <span style="color: green;">{|$translate_esli_balans_polozhitelniy_to_dolzhni_dengi_mi|}.</span><br />
+            <span style="color: red;">{|$translate_esli_balans_otritsatelniy_to_dolzhni_nam|}.</span><br />
+            <br />
+            <div class="shop-overflow-table">
+                <table class="shop-table">
+                    <thead>
+                    <tr>
+                        <td width="30">№</td>
+                        <td>{|$translate_client_small|}</td>
+                        <td>{|$translate_ord|}</td>
+                        <td align="right">{|$translate_vhodyashchih_zakazov|} ({|$currency|})</td>
+                        <td align="right">{|$translate_vhodyashchih_oplat|} ({|$currency|})</td>
+                        <td align="right">{|$translate_ishodyashchih_zakazov|} ({|$currency|})</td>
+                        <td align="right">{|$translate_ishodyashchih_oplat|} ({|$currency|})</td>
+                        <td align="right">{|$translate_balance|} ({|$currency|})</td>
+                    </tr>
+                    </thead>
+                    {|assign var="index" value=1|}
+                    {|foreach from=$reportArray item="e"|}
+                        <tr>
+                            <td>
+                                {|$index|}
+                                {|assign var="index" value=$index+1|}
+                            </td>
+                            <td>
+                                <a href="{|$e.clientURL|}" class="js-contact-preview"
+                                   data-id="{|$e.clientId|}">{|$e.clientName|}</a>
+                            </td>
+                            <td>
+                                <a href="{|$e.orderURL|}" class="js-issue-preview"
+                                   data-id="{|$e.orderId|}">{|$e.orderName|}</a>
+                            </td>
+                            <td align="right">{|$e.sumIn|round:2|}</td>
+                            <td align="right">{|$e.payedIn|round:2|}</td>
+                            <td align="right">{|$e.sumOut|round:2|}</td>
+                            <td align="right">{|$e.payedOut|round:2|}</td>
+                            <td align="right" style="{|if $e.balance < 0|} color: red; {|else|} color: green; {|/if|}">
+                                {|$e.balance|round:2|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                    <tfoot>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align="right">{|$orderInSum|round:2|}</td>
+                        <td align="right">{|$payedInSum|round:2|}</td>
+                        <td align="right">{|$orderOutSum|round:2|}</td>
+                        <td align="right">{|$payedOutSum|round:2|}</td>
+                        <td align="right" style="{|if $balanceSum < 0|} color: red; {|else|} color: green; {|/if|}">
+                            {|$balanceSum|round:2|}
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

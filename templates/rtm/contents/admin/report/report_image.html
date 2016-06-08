@@ -1,0 +1,61 @@
+<div class="shop-filter-panel">
+    <div class="filter-toggle {|if $filterpanelCookie|}close{|/if|}"></div>
+    <div class="inner-pannel" {|if $filterpanelCookie|}style="display: none;"{|/if|}>
+        <form action="" method="get">
+            {|if $categoryArray|}
+                <div class="element">
+                    Категория товара
+                    <select name="categoryid" class="chzn-select">
+                        <option value="-1">{|$translate_all|}</option>
+                        {|foreach from=$categoryArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_categoryid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}no-filter{|/if|}">
+        <h1>Таблица изделий на сайте на {|$datereport|}, категория: {|$namecurrentcategory|}</h1>
+
+        <table border="0" class="shop-table js-table-fixed">
+                <tr>
+                    <td rowspan="2">№</td>
+                    <td rowspan="2">Категория</td>
+                    <td rowspan="2">Название</td>
+                    <td rowspan="2">Артикул</td>
+                    <td colspan="2" align="center">Субартикул</td>
+                    <td colspan="2" align="center">Инвентарный №</td>
+                    <td rowspan="2">Наличие</td>
+                </tr>
+                <tr>
+                    <td>Субартикул</td>
+                    <td align="right">Фото(шт.)</td>
+                    <td>Инв.№</td>
+                    <td align="right">Фото(шт.)</td>
+                </tr>
+            {|foreach from=$productArray item="product" key="npp"|}
+                <tr>
+                    <td>{|$npp+1|}</td>
+                    <td>{|$product.categoryid|} {|$product.categoryname|}</td>
+                    <td>{|$product.productid|} {|$product.productname|}</td>
+                    <td>{|$product.articul|}</td>
+                    <td>{|$product.subarticul|}</td>
+                    <td align="center">{|$product.fotocnt|}</td>
+                    <td>{|$product.invnom|}</td>
+                    <td align="center">{|$product.fotocnt|}</td>
+                    <td align="right">{|$product.avail|}</td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+</div>
+<div class="clear"></div>

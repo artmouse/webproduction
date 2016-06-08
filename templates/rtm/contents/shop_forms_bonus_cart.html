@@ -1,0 +1,40 @@
+<div class="rm-form-admin">
+        <div class="head-block">Заказать карту</div>
+        {|if $message == 'error'|}
+            <div class="message-error">
+                ОШИБКА
+                {|foreach from=$errorsarray item=i|}
+                <br>{|$i|}
+                {|/foreach|}
+            </div>
+        {|/if|}
+        {|if $message == 'success'|}
+            <div class="message-success">
+                Ваша заявка передана администатору
+            </div>
+        {|/if|}
+        <form action="" method="post">
+            <table>
+                <tr>
+                    <td>Ваше имя:</td>
+                    <td><input type="text" name="name" value="{|$control_name|}"></td>
+                </tr>
+                <tr>
+                    <td>*Ваш телефон:</td>
+                    <td><input class="js-phone-formatter rtm-check-fill01" type="text" name="phone" value="{|$control_phone|}"></td>
+                </tr>
+                <tr>
+                    <td>Ваш email:</td>
+                    <td><input type="text" name="email" value="{|$control_email|}"></td>
+                </tr>
+                <tr>
+                    <td>Введите проверочный код:<br>
+                        <img src="/captcha/" width="120" height="20" alt="" />
+                    </td>
+                    <td><input class="rtm-check-fill01" type="text" name="code" value="{|$code|}"></td>
+                </tr>
+            </table>
+            <input type="hidden" value="1" name="ok">
+            <input class="rtm-submit rtm-submit-fill01" type="submit" value="Отправить" disabled="disabled">
+    </form>
+    </div>

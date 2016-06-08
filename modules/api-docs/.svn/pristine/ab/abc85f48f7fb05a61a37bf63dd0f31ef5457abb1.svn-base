@@ -1,0 +1,199 @@
+<h1>Основные элементы форм</h1>
+
+Ниже будут представлены элементы для построения форм. С их помощью можно создавать разные элементы интерфейса и обеспечить взаимодействие с пользователем.<br />
+<br />
+
+<h2>Поля ввода</h2>
+Самым распространенным элементом является поле ввода. Поля ввода отличаются по виду:
+<ul>
+    <li>input[type="text"] - текстовое поле</li>
+    <li>input[type="password"] - поле с паролем</li>
+    <li>input[type="mail"] - поле с email адресом</li>
+    <li>input[type="tel"] - поле с номером телефона</li>
+    <li>...</li>
+</ul>
+Крайне рекомендуется использовать поля ввода по их назначению.<br />
+<br />
+Для отображения текстовых полей с датой необходимо использовать добавочный класс <div class="ui-class inline">.js-date</div> или <div class="ui-class inline">.js-datetime</div> для вывода даты и времени. При нажатии на данное поле будет появляться окно jquery datepicker.<br />
+<br />
+<div class="ui-class">input</div>
+<code>
+    <pre>
+&lt;input type="text" name="" value="" placeholder="Text example"&gt;
+&lt;input class="js-date" type="text" name="" value="" placeholder="Text example"&gt;
+&lt;input class="js-datetime" type="text" name="" value="" placeholder="Text example"&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 50px;">
+    <input type="text" name="" value="" placeholder="Text example">
+    <input class="js-date" type="text" name="" value="" placeholder="Text example">
+    <input class="js-datetime" type="text" name="" value="" placeholder="Text example">
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Выпадающие списки</h2>
+В системе OneBox вместо стандартных выпадающих списков используется jquery библиотека <strong>Select2</strong>.<br>
+Она позволяет упростить работу с выпадающими списками.<br>
+<br>
+
+Для инициализации данных выпадающих списков необходимо использовать класс <div class="ui-class inline">.chzn-select</div><br>
+По умолчанию выпадающий список имеет вид блочного элемента.<br>
+Для отображения в виде строчного элемента необходимо использовать модификатор <div class="ui-class inline">.inline</div>, это позволит выравнивать элемент на одной строке с другими элементами форм.<br>
+<br>
+Так же поддерживается мультивыбор, так же как и в стандартных выпадающих списках, для этого необходимо использовать атрибут <strong>multiple</strong>.<br>
+<br>
+<div class="ui-class">select</div>
+<code>
+    <pre>
+&lt;select class="chzn-select" style="width: 300px;"&gt;
+    &lt;option value=""&gt;Value 1&lt;/option&gt;
+    &lt;option value=""&gt;Value 2&lt;/option&gt;
+    &lt;option value=""&gt;Value 3&lt;/option&gt;
+    &lt;option value=""&gt;Value 4&lt;/option&gt;
+    &lt;option value=""&gt;Value 5&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;select class="chzn-select inline" style="width: 300px;"&gt;
+    &lt;option value=""&gt;Value 1&lt;/option&gt;
+    &lt;option value=""&gt;Value 2&lt;/option&gt;
+    &lt;option value=""&gt;Value 3&lt;/option&gt;
+    &lt;option value=""&gt;Value 4&lt;/option&gt;
+    &lt;option value=""&gt;Value 5&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;select multiple class="chzn-select" style="width: 300px;"&gt;
+    &lt;option value=""&gt;Value 1&lt;/option&gt;
+    &lt;option value=""&gt;Value 2&lt;/option&gt;
+    &lt;option value=""&gt;Value 3&lt;/option&gt;
+    &lt;option value=""&gt;Value 4&lt;/option&gt;
+    &lt;option value=""&gt;Value 5&lt;/option&gt;
+&lt;/select&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 150px;">
+    <select class="chzn-select" style="width: 300px;">
+        <option value="">Value 1</option>
+        <option value="">Value 2</option>
+        <option value="">Value 3</option>
+        <option value="">Value 4</option>
+        <option value="">Value 5</option>
+    </select>
+    <br />
+
+    <select class="chzn-select inline" style="width: 300px;">
+        <option value="">Value 1</option>
+        <option value="">Value 2</option>
+        <option value="">Value 3</option>
+        <option value="">Value 4</option>
+        <option value="">Value 5</option>
+    </select>
+    <br />
+    <br />
+
+    <select multiple class="chzn-select inline" style="width: 300px;">
+        <option value="">Value 1</option>
+        <option value="">Value 2</option>
+        <option value="">Value 3</option>
+        <option value="">Value 4</option>
+        <option value="">Value 5</option>
+    </select>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Выпадающие списки c дочерними элементами</h2>
+Данный тип выпадающего списка отличается от стандартного тем, что имеет древовидную структуру.<br>
+Для использования данного типа выпадающего списка необходимо использовать класс <div class="ui-class line">.chzn-select-tree</div><br>
+Уровни вложенности указываются для элементов <strong>option</strong> как <strong>data-level</strong>.
+<br>
+<br>
+<div class="ui-class">select</div>
+<code>
+    <pre>
+&lt;select class="chzn-select-tree" style="width: 300px;"&gt;
+    &lt;option value="" data-level="0"&gt;Value 1&lt;/option&gt;
+    &lt;option value="" data-level="1"&gt;Value 2&lt;/option&gt;
+    &lt;option value="" data-level="1"&gt;Value 3&lt;/option&gt;
+    &lt;option value="" data-level="2"&gt;Value 4&lt;/option&gt;
+    &lt;option value="" data-level="0"&gt;Value 5&lt;/option&gt;
+&lt;/select&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="3" style="width: 100%; height: 200px;">
+    <select class="chzn-select-tree" style="width: 300px;">
+        <option value="" data-level="0">Value 1</option>
+        <option value="" data-level="1">Value 2</option>
+        <option value="" data-level="1">Value 3</option>
+        <option value="" data-level="2">Value 4</option>
+        <option value="" data-level="0">Value 5</option>
+    </select>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br />
+<br />
+
+<h2>Текстовая область</h2>
+Поле <strong>textarea</strong> представляет собой элемент формы для создания области, в которую можно вводить несколько строк текста. В отличие от тега <strong>input</strong> в текстовом поле допустимо делать переносы строк, они сохраняются при отправке данных на сервер.
+<br>
+Для динамической высоты textarea необходимо использовать класс <div class="ui-class line">.js-autosize</div> - высота текстового поля будет автоматически подстраиваться по мере заполнения контентом.<br />
+<br />
+<div class="ui-class">textarea</div>
+<code>
+    <pre>
+&lt;textarea name="" placeholder="Text example" cols="30" rows="10" style="width: 100%;"&gt;&lt;/textarea&gt;
+&lt;textarea class="js-autosize" name="" placeholder="Text example" cols="30" rows="10" style="width: 100%;"&gt;&lt;/textarea&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="4" style="width: 100%; height: 200px;">
+    <textarea name="" placeholder="Text example" cols="30" rows="10" style="width: 100%;"></textarea>
+    <br />
+    <br />
+    <textarea class="js-autosize" name="" placeholder="Text example" cols="30" rows="10" style="width: 100%;"></textarea>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br />
+<br />
+
+<h2>Теги</h2>
+Для отображения тегов необходимо использовать текстовое поле с классом <div class="ui-class inline">.js-tags</div><br />
+Теги будут разделяться по запятой или по пробелу и записываться в <strong>value</strong>.
+<br>
+<br>
+<div class="ui-class">tags</div>
+<code>
+    <pre>
+&lt;input class="js-tags" type="text" name="" value="value1, value2, value3, value4" placeholder="Text example"&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="5" style="width: 100%; height: 50px;">
+    <input class="js-tags" type="text" name="" value="value1, value2, value3, value4" placeholder="Text example">
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

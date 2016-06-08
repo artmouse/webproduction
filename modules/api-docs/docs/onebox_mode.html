@@ -1,0 +1,281 @@
+<h1>Режимы работы движка (engine) и OneBox</h1>
+
+<h2>Что такое режимы работы?</h2>
+
+Режимы работы - это условное обозначение, которое задает правила работы и вызовов в самом движке.<br />
+<br />
+
+Режимы еще называют "mode". Например, mode debug, mode build, ...<br /> 
+Любой режим можно включить для пользователя с оперделённым логином и ip адресом. Ниже будут примеры.
+<br />
+
+Например, в режиме build OneBox дополнительно занимается тем, что перестраивает и проверяет базу данных.<br />
+В режиме debug выводит кучу debug-информации и пишет логи и тд.<br />
+Режимы можно комбинировать: например, одновременно включить debug + build.<br />
+<strong>При обычный работе OneBox по умолчанию выключены все режимы.</strong>
+(на боевых серверах все спец-режимы выключены)<br />
+<br />
+<br />
+
+<h2>Зачем нужны режимы работы?</h2>
+Режимы нужны для того, чтобы продукт было удобнее разрабатывать, проверять, дебажить и отлаживать.<br />
+
+<br />
+<br />
+
+<h2>Какие режимы есть в OneBox?</h2>
+
+На текущий момент OneBox поддерживает несколько режимов:<br />
+
+<ul>
+    <li><strong>build</strong> (это бывший режим development)
+        - в этом режиме бокс сверяет базу данных с конфигурацией SQLObject,
+        поправляет если нужно индексы в базе, генерирует X-классы SQLObject.
+    </li>
+    <li><strong>build-scss</strong> (это бывший режим scss-comlipe)
+        - в этом режиме бокс находит все scss-файлы и генерирует на их основе css.
+    </li>
+    <li><strong>build-acl</strong> - в этом режиме перестраивается список доступа ACL, сбрасываются кеши ACL.</li>
+    <li>debug - в этом режиме все подсистемы OneBox могут выводить служебную информацию.<br />
+    Например, SQLObject начинает print-ить все SQL-запросы.</li>
+    <li><strong>xdebug</strong> - в этом режиме бокс пишет лог профайлинга (profile log xdebug), если xdebug устанвлен на сервер.</li>
+    <li><strong>verbose</strong> (частично это бывший режим force) - в этом режиме все подсистемы могут выводить информацию о ходе выполнения действий.<br />
+    <li><strong>force</strong> - ускоренный запуск без проверок. Доступен только для cron и tool скриптов. В этом режиме не проверяется PID или какие-либо другие обязательные условия для запуска.</li>
+    Например, если запустить cron-minute.php verbose то будет показана информация о том, что сейчас выполняется.</li>
+    <li><strong>no-cache</strong> - в этом режиме подсистема Engine_Cache не работает, ничего нигде не кешируется.
+    Равносильно вызову Engine::GetCache()->disableCache();
+    </li>
+    <li>
+    <strong>check</strong> - в этом режиме движок и его системы выполняет проверки на корректность каких-либо данных.<br />
+    Например, проверка прав доступа к файлам, проверка соеденений с AMI, FTP, IMAP, проверка соеденения к MySQL.
+    </li>
+    <li><strong>no-minify</strong> - в этом режиме отключается минификация+кеширование+сжатие CSS и JS. Режим особенно полезен для верстальщиков.</li>
+</ul>
+
+<br />
+<br />
+
+<h2>Где задаются (настраиваются) режимы?</h2>
+
+Режимы настраиваются в /engine.mode.php<br />
+Вы можете включить несколько режимов сразу.<br />
+<br />
+
+<code><pre>
+ModeService::Get()->setMode("build");
+ModeService::Get()->setMode("build-acl");
+ModeService::Get()->setMode("debug");
+ModeService::Get()->setMode("verbose");
+...
+
+// или старый стиль:
+
+PackageLoader::Get()->setMode('build');
+PackageLoader::Get()->setMode('build-acl');
+PackageLoader::Get()->setMode('debug');
+PackageLoader::Get()->setMode('verbose');
+...
+</pre></code>
+
+<br />
+
+<span style="color: red;">
+    <strong>Внимание!</strong><br />
+    Не рекомендуется включать/менять режимы работы где-то внутри системы.<br />
+    Только в engine.mode.php.<br />
+</span>
+
+<br />
+<br />
+
+<h2>Как влключить режим для определённого пользовтаеля?</h2>
+
+Вы можете включать режимы только для определённого пользователя (для себя например), <br>
+для этого вам нужно передать параметр с логином или ip адресом пользователя. Пример ниже.
+<br />
+
+<code><pre>
+ModeService::Get()->setMode("build" 'max');
+ModeService::Get()->setMode("build-acl" 'max');
+ModeService::Get()->setMode('debug', 'max');
+ModeService::Get()->setMode("verbose" 'max');
+...
+
+// или старый стиль:
+
+PackageLoader::Get()->setMode('build', true, 'max');
+PackageLoader::Get()->setMode('build-acl', true, 'max');
+PackageLoader::Get()->setMode('debug', true, 'max');
+PackageLoader::Get()->setMode('verbose', true, 'max');
+...
+</pre></code>
+
+<br />
+Все вышеперечисленые режимы будут включены для пользователя с логином max (вместо max вы можете написать свой логин или ip) 
+<br />
+<br />
+
+Пример с ip адресом:
+<br />
+<code><pre>
+PackageLoader::Get()->setMode('build', true, '172.17.0.23');
+</pre></code>
+<br />
+Что будет? 
+<br />
+Режим build будет включен только для пользователя с ip адресом 172.17.0.23.
+<br /><br />
+<span style="color: red; font-size: 16px;">
+    <strong>Внимание!!!</strong><br />
+    ВКЛЮЧЁННЫЙ РЕЖИМ Engine::Get()->enableErrorReporting() без заданого пользователя выкинет Exception и будет белый экран.<br />
+    Если вам нужен этот режим, задавайте ему конкретного пользователя или IP адресс. Например: 
+    <br /><br />
+    <code><pre>
+    Engine::Get()->enableErrorReporting('max');
+    </pre></code>
+    <br /><br />
+    Вместо max можете писать свой логин или ip адресс.
+    <br />
+    Что будет? 
+    
+    Все error'ы, warnning's и тд будет видить только пользователя с логином max.
+</span>
+
+<br />
+<br />
+
+<h2>Что разработчику делать с режимами?</h2>
+
+<ul style="color: red;">
+    <li>Если вы пишете какой-либо код, то в зависимости от режимов <strong>verbose</strong> и <strong>debug</strong>
+    работы выводите служебную информацию с разной детализацией.<br />
+    <strong>verbose</strong> - это ход событий,
+    <strong>debug</strong> - это результаты вывозов.
+    </li>
+    <li>Если включен режим <strong>build</strong> - то можете перестраивать конфиги и делать какие-либо сложные перестройки.<br /></li>
+    <li>В режиме <strong>check</strong> делайте проверки, без которых ваша подсистема не сможет может нормально работать.</li>
+    <li>В режиме <strong>xdebug</strong> ничего делать не нужно, движок все делает сам.</li>
+    <li>В режиме <strong>force</strong> игнорируйте все проверки на запуск, особенно если вы пишете cron-скрипт. С этим режимом он должен запускаться всегда.</li>
+</ul>
+<br />
+<br />
+
+<strong>Например: вы пишете класс для работы с FTP.</strong><br />
+В режиме debug делайте print_r всего что получаете от ftp.<br />
+В режиме verbose делайте print "Connection to ftp...", print "Disconnecting from ftp...".<br />
+В режиме check в данном случае скорее всего ничего делать не надо.<br />
+<br />
+
+<strong>Например: вы пишете обработчик, который по FTP получает звонки</strong><br />
+В режиме debug ничего делать не надо, так как класс FTP (см выше) уже выводит debug.<br />
+В режиме verbose делайте print хода событий.<br />
+В режиме check проверяйте, чтобы данные FTP были корректны. Если не корректны - вываливайте print ошибки и выходите.<br />
+<br />
+
+<strong>Например: вы пишете cron-обработчик.</strong><br />
+В режиме debug делайте print_r результатов подсчетов, если у вас есть математика.<br />
+В режиме verbose делайте print "Calculation xxx", print "yyy...", выводите номера объектов с которыми работаете.<br />
+
+<br />
+<br />
+
+<h2>Как проверить какой режим сейчас включен?</h2>
+
+<code><pre>
+if (ModeService::Get()->getMode('build')) {
+    // ...
+}
+if (ModeService::Get()->getMode('verbose')) {
+    // ...
+}
+
+// или старый стиль:
+
+if (PackageLoader::Get()->getMode('build')) {
+   // ...
+}
+if (PackageLoader::Get()->getMode('verbose')) {
+   // ...
+}
+</pre></code>
+<br />
+
+Но, писать конструкции которые пестрят if-ами не удобно и это сильно усложняет код, поэтому специально на этот случай
+у нас есть ModeService.<br />
+
+<code><pre>
+ModeService::Get()->verbose("...");
+ModeService::Get()->debug("...");
+ModeService::Get()->build("...");
+ModeService::Get()->check("...");
+ModeService::Get()->print("mode-name", "...");
+...
+</pre></code>
+<br />
+
+<span style="color: red;">
+    ModeService сам решает включен ли нужный режим и показывает информацию когда нужно.<br />
+</span>
+Например, сейчас <strong>выключен режим verbose</strong>, но вы вызвали <br />
+
+<code><pre>
+ModeService::Get()->verbose("aaa");
+</pre></code>
+
+<br />
+<strong>при этом ничего не будет выведено.</strong>
+<br />
+<br />
+
+ModeService умеет принимать параметры не только строку, а любые типы данных:<br />
+
+<code><pre>
+ModeService::Get()->verbose("aaa"); // строка
+ModeService::Get()->verbose(100); // покажет int(100)
+ModeService::Get()->verbose(false); // покажет bool(false)
+ModeService::Get()->verbose(null); // строка null
+ModeService::Get()->verbose(new User(10)); // объект SQLObject: покажет print_r($user->getValues()) и строку SQL-запроса
+ModeService::Get()->verbose(new MyClass()); // любой другой объект, print_r
+</pre></code>
+<br />
+<br />
+
+
+Кстати, ModeService можно <a href="/doc/services_override">подменивать</a>.<br />
+<br />
+<br />
+
+<h2>Специальный запуск режимов - updater.sh, build.sh, buil-acl.sh, build-scss.sh, verbose.sh, check.sh</h2>
+
+В корне проекта есть файлы updater.sh, build.sh, buil-acl.sh, build-scss.sh, verbose.sh, check.sh<br />
+Они нужны для того, чтобы быстрее запустить нужный режим без правки engine.mode.php туда-сюда.<br />
+<strong>Каждый файл соотвествует названиею режима и включает только один режим</strong> на один запуск.<br />
+<br />
+
+Верстальщикам - особенно удобен build-scss.sh.<br />
+Техподдержке - build-check.sh для проверки корректности данных, verbose.sh чтобы понять что тормозит.<br />
+<br />
+
+<strong>Исключение это updater.sh</strong> - он включает режимы: build, build-acl, build-scss, verbose, check и дополнительно запускает подсистему миграций updater.<br />
+
+<br />
+<br />
+
+<h2>Специальный запуск режимов - cron-xxx.php</h2>
+
+Все cron-скрипты умеют автоматически принимать параметры в качестве аргументов запуска.<br />
+Например:<br />
+
+<code>
+php -f cron-minute.php debug verbose check
+</code>
+<br />
+
+запустит скрипт и дополнительно включит режимы verbose, check и debug.<br />
+<br />
+<br />
+
+
+<h2>Как работает ModeService?</h2>
+
+Технически это обертка над PackageLoader. Режимами внутри упрвляет PackageLoader.<br />

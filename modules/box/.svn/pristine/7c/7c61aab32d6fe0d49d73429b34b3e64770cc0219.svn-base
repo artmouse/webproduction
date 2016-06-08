@@ -1,0 +1,59 @@
+<div class="nb-search-result-element">
+    <div class="elements-caption">{|$translate_many_products|}</div>
+    {|if !$storageArray AND !$productArray|}
+        <div class="no-result">
+            Ничего не нашлось.
+            <span>Попробуйте еще.</span>
+        </div>
+    {|/if|}
+
+    <div class="list">
+        {|foreach from=$storageArray item="storage"|}
+            <div class="element no-padding">
+                <div class="avatar product-image">
+                    <a href="{|$storage.url|}"><img src="{|$storage.image|}" alt=""/></a>
+                </div>
+
+                <div class="data">
+                    <div class="item main">
+                        <a class="name" href="{|$storage.url|}">{|$storage.name|}</a>
+                        <div class="post">
+                            <span style="color: green;">c/{|$translate_n|}: {|$storage.serial|}</span><br />
+                            {|$translate_storage|}: <a href="{|$storage.storageURL|}">{|$storage.storageName|}</a><br />
+                            {|if $storage.price > 0|}
+                                <span style="color: green;">{|$translate_base_price|}: {|$storage.price|} {|$currency|}</span><br />
+                            {|/if|}
+                            {|$translate_number|}: <a href="{|$storage.historyURL|}">{|$storage.amount|}</a><br />
+                            {|$translate_oprihodovan|}: {|$storage.date|}<br />
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+
+        {|foreach from=$productArray item="product"|}
+            <div class="element {|if $product.hidden|}closed{|/if|} no-padding">
+                <div class="avatar product-image">
+                    <a href="{|$product.url|}"><img src="{|$product.image|}" alt=""/></a>
+                </div>
+
+                <div class="data">
+                    <div class="item">
+                        <a class="name" href="{|$product.url|}">{|$product.name|}</a>
+
+                        <div class="post">
+                            {|if $product.price > 0|}
+                                <span {|if $product.avail|}class="good"{|/if|}>{|$translate_price|}: {|$product.price|} {|$product.currency|}</span>
+                            {|/if|}
+                            {|if $product.pricebase > 0|}
+                                <span {|if $product.avail|}class="good"{|/if|}>{|$translate_base_price|}: {|$product.pricebase|} {|$product.currency|}</span>
+                            {|/if|}
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+    </div>
+</div>

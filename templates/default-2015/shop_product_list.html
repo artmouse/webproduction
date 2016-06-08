@@ -1,0 +1,106 @@
+<input type="hidden" value="{|$show|}" id="js-product-list-show">
+{|if $categoryid|}
+    <div class="js-product-list-group-id" data-id="{|$categoryid|}" data-key="category" style="display:none"></div>
+{|elseif $brandid|}
+    <div class="js-product-list-group-id" data-id="{|$brandid|}" data-key="brand" style="display:none"></div>
+{|/if|}
+
+{|if $pathArray|}
+    <div class="def-block-crumbs">
+        <div class="item def-icon-home" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="/" itemprop="url">
+                <span itemprop="title">{|$storeTitle|}</span>
+            </a>
+        </div>
+        {|foreach from=$pathArray item="e" name="foo"|}
+            <div class="item def-icon-angle-right" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="{|$e.url|}" data-rel=".tab-ordered" itemprop="url">
+                    <span itemprop="title">{|$e.name|}</span>
+                </a>
+            </div>
+        {|/foreach|}
+        {|foreach from=$pathAdditionalArray item="e" name="foo"|}
+            <div class="item def-icon-angle-right" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="{|$e.url|}" data-rel=".tab-ordered" itemprop="url">
+                    <span itemprop="title">{|$e.name|}</span>
+                </a>
+            </div>
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|$block_subscribe_category|}
+
+{|if $showSort|}
+    <script>
+        function filterChange(e) {
+            if($j(e).val() != '{|$sort|}') {
+                $j('[data-id=id-sort-form]').submit();
+            }
+        }
+    </script>
+
+    <div class="def-block-toolbar">
+        <div class="def-block-sort">
+            <form action="{|$formUrl|}" method="post" data-id="id-sort-form" style="display: inline-block;">
+                <label class="sort-by">
+                    <span>{|$translate_sort|}</span>
+                    <select class="js-cute-select" name="sort" onchange="filterChange(this);">
+                        <option value="rating" {|if $sort == 'rating'|}selected="selected" {|/if|}>{|$translate_sort_rating|}</option>
+                        <option value="ordered" {|if $sort == 'ordered'|}selected="selected" {|/if|}>{|$translate_sort_ordered|}</option>
+                        <option value="name" {|if $sort == 'name'|} selected="selected" {|/if|}>{|$translate_sort_name|}</option>
+                        <option value="price-asc" {|if $sort == 'price-asc'|} selected="selected" {|/if|}>{|$translate_sort_price_asc|}</option>
+                        <option value="price-desc" {|if $sort == 'price-desc'|} selected="selected" {|/if|}>{|$translate_sort_price_desc|}</option>
+                        <option value="avail" {|if $sort == 'avail'|} selected="selected" {|/if|}>{|$translate_sort_avail|}</option>
+                        {|if $need_relevance_sort|}
+                            <option value="relevance" {|if $sort == 'relevance'|} selected="selected" {|/if|}>{|$translate_sort_relevance|}</option>
+                        {|/if|}
+                    </select>
+                </label>
+
+                <label class="show-onpage">
+                    <span>На странице</span>
+                    <select class="js-cute-select">
+                        <option value="">12</option>
+                        <option value="">16</option>
+                        <option value="">18</option>
+                    </select>
+                </label>
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+{|/if|}
+
+{|$container|}
+
+{|if $showPages AND count($pagesArray) > 1|}
+    <div class="def-block-stepper">
+        {|if $urlprev|}
+            <a href="{|$urlprev|}" data-rel="prev" id="back"><span class="def-icon-angle-double-left"></span>{|$translate_back|}</a>
+        {|/if|}
+
+        {|foreach from=$pagesArray item="e"|}
+            <a href="{|$e.url|}" {|if !$e.visible|}style="display:none"{|/if|} {|if $e.selected|}class="selected"{|/if|} data-type="page">{|$e.name|}</a>
+        {|/foreach|}
+        {|if $urlnext|}
+            <a href="{|$urlnext|}" data-rel="next" id="next">{|$translate_next|}<span class="def-icon-angle-double-right"></span></a>
+        {|/if|}
+    </div>
+{|/if|}
+
+{|if $contentID != 'index' AND $contentID != 'shop-basket'|}
+    {|foreach from=$carouselArray item="e"|}
+        <div class="def-section-caption">
+            <h3>
+                <strong>{|$e.name|}</strong>
+            </h3>
+        </div>
+
+        {|$e.html|}
+    {|/foreach|}
+{|/if|}
+
+{|if $showFilters|}
+    {|$block_productfilter|}
+{|/if|}

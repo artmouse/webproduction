@@ -1,0 +1,5 @@
+tool-build-frendlyurls.php - строим ЧПУ для всех категорий, брендов и товаров
+tool-update-brands-product-counts.php - подсчет количества товаров в брендах @todo
+tool-update-categories-product-counts.php - подсчет количества товаров в категориях
+tool-update-products-categories.php - построить  кеш category(1..10)id в товара
+tool-search-rus-words.php - ищет по всем html русские символы

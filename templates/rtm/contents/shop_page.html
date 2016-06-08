@@ -1,0 +1,131 @@
+{|if $contentID == 'shop-news'|}
+    <aside class="rtm-lastnews-layer">
+
+        <div class="caption">Новости и статьи</div>
+        <div class="news-block">
+            {|foreach from=$newsArray item=n|}
+                <div class="element">
+                    <span>{|$n.date|}</span>
+                    <a href="{|$n.url|}">{|$n.name|}</a>
+                </div>
+            {|/foreach|}
+        </div>
+    </aside>
+{|/if|}
+
+<section class="{|if $contentID == 'shop-news'|}rtm-blog-layer{|/if|}">
+    <div class="rtm-crumbs">
+        <a href="/">{|$translate_main|}</a>
+        {|foreach from=$pathArray item=p name=foo|}
+            &rarr;
+            {|if !$smarty.foreach.foo.last|}
+                <a href="{|$p.url|}">{|$p.name|}</a>
+            {|else|}
+                {|$p.name|}
+            {|/if|}
+        {|/foreach|}
+    </div>
+    {|if $seoh1|}
+        <h1>{|$seoh1|}</h1>
+    {|/if|}
+    {|if $content|}
+        <div class="rtm-wrap-tpage">
+            {|$content|}
+        </div>
+    {|/if|}
+
+    {|if $urledit|}
+        <a href="{|$urledit|}" class="os-link-edit">{|$translate_edit|}</a>
+    {|/if|}
+
+    {|if !$newsArray|}
+
+        <div class="rtm-share-block">
+            <div class="fb" onclick="Share.facebook(
+                '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+                '{|$name|}',//название
+                '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+                ''//описание
+                )">
+            </div>
+            <div class="vk" onclick="Share.vkontakte(
+                '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+                '{|$name|}',//название
+                '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+                ''//описание
+                )">
+            </div>
+        </div>
+
+        <script>
+            Share = {
+                vkontakte: function(purl, ptitle, pimg, text) {
+                    url  = 'http://vkontakte.ru/share.php?';
+                    url += 'url='          + encodeURIComponent(purl);
+                    url += '&title='       + encodeURIComponent(ptitle);
+                    url += '&description=' + encodeURIComponent(text);
+                    url += '&image='       + encodeURIComponent(pimg);
+                    url += '&noparse=true';
+                    Share.popup(url);
+                },
+                odnoklassniki: function(purl, text) {
+                    url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+                    url += '&st.comments=' + encodeURIComponent(text);
+                    url += '&st._surl='    + encodeURIComponent(purl);
+                    Share.popup(url);
+                },
+                facebook: function(purl, ptitle, pimg, text) {
+                    url  = 'http://www.facebook.com/sharer.php?s=100';
+                    url += '&p[title]='     + encodeURIComponent(ptitle);
+                    url += '&p[summary]='   + encodeURIComponent(text);
+                    url += '&p[url]='       + encodeURIComponent(purl);
+                    url += '&p[images][0]=' + encodeURIComponent(pimg);
+                    Share.popup(url);
+                },
+                twitter: function(purl, ptitle) {
+                    url  = 'http://twitter.com/share?';
+                    url += 'text='      + encodeURIComponent(ptitle);
+                    url += '&url='      + encodeURIComponent(purl);
+                    url += '&counturl=' + encodeURIComponent(purl);
+                    Share.popup(url);
+                },
+                mailru: function(purl, ptitle, pimg, text) {
+                    url  = 'http://connect.mail.ru/share?';
+                    url += 'url='          + encodeURIComponent(purl);
+                    url += '&title='       + encodeURIComponent(ptitle);
+                    url += '&description=' + encodeURIComponent(text);
+                    url += '&imageurl='    + encodeURIComponent(pimg);
+                    Share.popup(url)
+                },
+
+                popup: function(url) {
+                    window.open(url,'','toolbar=0,status=0,width=626,height=436');
+                }
+            };
+        </script>
+    {|/if|}
+
+
+    {|$logiccontent|}
+
+
+    {|$seocontent|}
+</section>
+
+<div class="clear"></div>
+
+<script>
+    //Equal layers height no matter what
+    $j(window).on('ready load', function(){
+        try{
+            var leftPart = $j('.rtm-lastnews-layer').height();
+            var rightPart = $j('.rtm-blog-layer').height();
+
+            if(leftPart>rightPart){
+                $j('.rtm-blog-layer').css({"height":leftPart + 20});
+            }
+        }catch(e){
+            console.log(e);
+        }
+    });
+</script>

@@ -1,0 +1,37 @@
+{|$block_menu|}
+
+<h2>{|$translate_svodnaya_istoriya|}</h2>
+<table class="shop-table">
+    <thead>
+        <tr>
+            <td>{|$translate_user_manager|}</td>
+            <td>{|$translate_perviy_prosmotr|}</td>
+            <td>{|$translate_posledniy_prosmotr|}</td>
+        </tr>
+    </thead>
+    {|foreach from=$logViewArray item="e"|}
+        <tr>
+            <td>{|$e.name|}</td>
+            <td>{|$e.start|}</td>
+            <td>{|$e.end|}</td>
+        </tr>
+    {|/foreach|}
+</table>
+<br />
+
+<h2>{|$translate_detalnaya_istoriya|}</h2>
+<table class="shop-table">
+    <thead>
+        <tr>
+            <td>{|$translate_user_manager|}</td>
+            <td>{|$translate_data_deystviya|}</td>
+        </tr>
+    </thead>
+    {|foreach from=$logArray item="e"|}
+        <tr>
+            <td>{|$e.name|}</td>
+            <td>{|$e.date|}</td>
+        </tr>
+    {|/foreach|}
+</table>
+<br />

@@ -1,0 +1,103 @@
+{|* сам блок корзины (preview) *|}
+<div class="rtm-basket-widget" id="id-shop-basket">
+    <span class="p-count" id="id-basket-count">{|$cnt|}</span>
+    <a class="name" rel="nofollow" href="{|$main|}/basket/">Моя корзина</a>
+    <br />
+    На сумму: <a class="total-price" href="/basket/" id="id-basket-sum">{|$allSum|} {|$currency|}</a>
+</div>
+
+{|* всплывающее окно с содержимым корзины (popup) *|}
+<div class="rtm-popup-block js-basket-popup" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-basket-popup');">&nbsp;</div>
+    <div class="popup-block basketp-block">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('.js-basket-popup');">&nbsp;</a>
+            {|if $basketArray|}
+                {|$translate_added_to_basket|}
+            {|else|}
+                {|$translate_basket_is_empty|}
+            {|/if|}
+        </div>
+
+        {|if $basketArray|}
+        <div class="product-list">
+            <table>
+                <thead>
+                <tr class="no-topborder">
+                    <td class="h-image">{|$translate_product|}</td>
+                    <td>&nbsp;</td>
+                    <td class="h-options ta-center no-320">{|$translate_options|}</td>
+                    <td class="h-options ta-center no-320">Код товара</td>
+                    <td class="h-count ta-center">{|$translate_number|}</td>
+                    <td class="h-summ ta-right no-320">{|$translate_total|}</td>
+                </tr>
+                </thead>
+                {|foreach from=$basketArray item="e"|}
+                <tr>
+                    <td class="ta-center">
+                        <a href="{|$e.url|}"><img src="{|$e.image|}" width="80" alt="" /></a>
+                    </td>
+                    <td>
+                        <div class="name">
+                            <a href="{|$e.url|}">
+                                {|$e.name|}
+                            </a>
+                        </div>
+                        <div class="price">{|$e.price|} {|$e.currency|}</div>
+                    </td>
+                    <td nowrap="nowrap" class="no-320">
+                        {|foreach from=$e.option item="o"|}
+                            {|$o.name|} {|$o.value|}<br>
+                        {|/foreach|}
+                    </td>
+                    <td nowrap="nowrap" class="no-320">
+                        <a href="{|$e.url|}">№ {|$e.articul|}</a>
+                        <br />
+                        {|if $e.buyOrEx == 'buy'|}
+                            <small><i>Покупка</i></small>
+                        {|else|}
+                            <small><i>Обмен</i></small>
+                        {|/if|}
+                    </td>
+                    <td  class="ta-center" nowrap="nowrap">
+                        <input type="text" value="{|$e.count|}" class="p-count" disabled/>
+                        <span style="display: inline-block; margin-top: 2px">{|$e.unit|}</span>
+                    </td>
+                    <td nowrap="nowrap" class="ta_right no-320">
+                        <div class="summ"><span>{|$e.sum|}</span> {|$e.currency|}</div>
+                    </td>
+                </tr>
+                {|/foreach|}
+                <tfoot>
+                {|if $discountSum|}
+                    <tr>
+                        <td></td>
+                        <td class="no-320"></td>
+                        <td class="no-320"></td>
+                        <td class="no-320"></td>
+                        <td><div class="total">{|if $discountName|} {|$discountName|}: {|else|} Скидка: {|/if|}</div></td>
+                        <td class="ta_right"><div class="summ-total"><span>{|$discountSum|number_format:0|}</span> {|$currency|}</div></td>
+                    </tr>
+                {|/if|}
+                <tr>
+                    <td colspan="3">
+                        <form action="/basket/" method="post">
+                            <input type="submit" value="Далее" class="rtm-submit" />
+                            <a class="continue" href="javascript: void(0);" onclick="popupClose('.js-basket-popup');"> {|$translate_continue|} {|$translate_buying|}</a>
+                        </form>
+                    </td>
+                    <td class="no-320"></td>
+                    <td class="no-320"><div class="total">{|$translate_in_total|}:</div></td>
+                    <td class="ta_right no-320"><div class="summ-total"><span>{|$allSum|}</span> {|$currency|}</div></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        {|else|}
+        <div class="message-error">
+            {|$translate_basket_is_empty|}<br />
+            <a href="/">{|$translate_empty_basket|}</a>.
+        </div>
+        {|/if|}
+    </div>
+</div>

@@ -1,0 +1,115 @@
+{|if $error|}
+    <div class="shop-message-error">
+        {|$translate_yandex_metrika|}
+    </div>
+{|else|}
+    <div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+    <div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+        <div class="inner-pannel">
+            <form action="" method="get">
+                <div class="element">
+                    <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date|}: {|$translate_with|}" />
+                </div>
+
+                <div class="element">
+                    <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_for|}" />
+                </div>
+
+                <input class="ob-button" type="submit" name="ok" value="{|$translate_filter|}" />
+            </form>
+        </div>
+    </div>
+
+    <div class="shop-result-list">
+        <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+            <div class="ob-funnel-container">
+                <div class="block-funnel">
+                    <span><span>{|$translate_visitors|}: {|$visitors|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_of_these_new|}: {|$visitors_new|}</span></span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_failures|}: {|$denials|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_decorated_baskets|}: {|$baskets|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_registrations_users|}: {|$users|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_calling_back|}: {|$calls|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_letters|}: {|$feedbacks|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_executed_orders|}: {|$orders|}</span></span>
+                </div>
+            </div>
+
+            <div class="ob-funnel-container">
+                <div class="block-funnel">
+                    <span><span>{|$translate_page_views|}: {|$pageviews|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_browsed_products|}: {|$productviews|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_failures|}: {|$denials|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_decorated_baskets|}: {|$baskets|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_registrations_users|}: {|$users|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_calling_back|}: {|$calls|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_letters|}: {|$feedbacks|}</span></span>
+                </div>
+                <div class="block-funnel">
+                    <span><span>{|$translate_executed_orders|}: {|$orders|}</span></span>
+                </div>
+            </div>
+
+            <div class="ob-funnel-statistics">
+                <table>
+                    <tr>
+                        <td>{|$translate_browsed_products|}:</td>
+                        <td><strong>{|$visitors2orders|}%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_percentage_of_failures|}:</td>
+                        <td><strong>{|$visitors2denials|}%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_the_ratio_of_visitors_and_their_activities|}:</td>
+                        <td><strong>{|$visitors2activity|}%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_the_ratio_of_visitors_and_baskets|}:</td>
+                        <td><strong>{|$visitors2baskets|}%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_the_ratio_of_visitors_to_registrations|}:</td>
+                        <td><strong>{|$visitors2users|}%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_the_ratio_of_baskets_to_orders|}:</td>
+                        <td><strong>{|$baskets2orders|}%</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{|/if|}
+
+<script>
+    filterOpen();
+</script>

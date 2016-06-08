@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine>
+    <content id="remindpassword" register="extend">
+        <filephp>/auth/auth_remindpassword.php</filephp>
+    </content>
+
+    <content id="shop-tpl" register="extend">
+        <filecssremove/>
+        <filejsremove/>
+        <filephp>shop_tpl.php</filephp>
+        <filehtml>shop_tpl.html</filehtml>
+        <filejs>../_js/slick.min.js</filejs>
+        <filejs>../_js/main.js</filejs>
+        <filejs>shop_tpl.js</filejs>
+        <filecss>shop_tpl.css</filecss>
+        <filecss>shop_basic.css</filecss>
+    </content>
+
+    <content id="shop-admin-tpl" register="extend">
+        <filehtml>admin/admin_shop_tpl.html</filehtml>
+    </content>
+
+    <content id="shop-admin-order-menu" register="extend">
+        <filehtml>admin/orders/order_menu.html</filehtml>
+    </content>
+
+    <content id="shop-admin-news-control" register="extend">
+        <filehtml>admin/news/news_control.html</filehtml>
+        <filephp>admin/news/news_control.php</filephp>
+    </content>
+
+    <content id="shop-admin-news-add" register="extend">
+        <filehtml>admin/news/news_add.html</filehtml>
+        <filephp>admin/news/news_add.php</filephp>
+    </content>
+
+    <content id="shop-news" register="extend">
+        <filehtml>shop_news.html</filehtml>
+        <filephp>shop_news.php</filephp>
+    </content>
+
+    <content id="shop-payment-liqpay" register="extend">
+        <filehtml>shop_payment_liqpay.html</filehtml>
+        <filephp>shop_payment_liqpay.php</filephp>
+    </content>
+
+    <content id="shop-payment-portmone" register="extend">
+        <url>/payment/portmone/</url>
+        <filehtml>shop_payment_portmone.html</filehtml>
+        <filephp>shop_payment_portmone.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="shop-tpl-column" register="extend">
+        <filehtml>shop_tpl_column.html</filehtml>
+        <filejs>shop_tpl_column.js</filejs>
+    </content>
+
+    <content id="block-search" register="extend">
+        <filehtml>block/block_search.html</filehtml>
+        <filephp>block/block_search.php</filephp>
+    </content>
+    
+    <content id="block-feedback" register="extend">
+        <filehtml>block/block_feedback.html</filehtml>
+        <filephp>block/block_feedback.php</filephp>
+        <filejs>block/block_feedback.js</filejs>
+    </content>
+    
+    <content id="shop-api-product-search" register="extend">
+        <filephpremove/>
+        <filephp>product_search.php</filephp>
+    </content>
+
+    <content id="block-menu-textpage" register="extend">
+        <filehtml>block/block_menu_textpage.html</filehtml>
+        <filephp>block/block_menu_textpage.php</filephp>
+    </content>
+
+    <content id="block-basket" register="extend">
+        <filehtml>block/block_basket.html</filehtml>
+        <filephp>block/block_basket.php</filephp>
+    </content>
+
+    <content id="shop-basket" register="extend">
+        <filehtml>shop_basket.html</filehtml>
+        <filephp>shop_basket.php</filephp>
+    </content>
+
+    <content id="shop-thankyou-page" register="override">
+        <url>/thankyou/</url>
+        <filehtml>shop_thankyou.html</filehtml>
+        <filephp>shop_thankyou.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="shop-category" register="extend">
+        <filephp>shop_category.php</filephp>
+    </content>
+
+    <content id="block-category-top" register="extend">
+        <filehtml>block/block_category_top.html</filehtml>
+        <filephp>block/block_category_top.php</filephp>
+    </content>
+
+    <content id="index" register="extend">
+        <filehtml>shop_index.html</filehtml>
+        <filephp>shop_index.php</filephp>
+        <moveto>shop-tpl</moveto>
+    </content>
+
+    <content id="shop-product-list" register="extend">
+        <url>/ajax/shop-product-list/{categoryid}/</url>
+        <filehtml>shop_product_list.html</filehtml>
+        <filephp>shop_product_list.php</filephp>
+    </content>
+
+    <content id="shop-product-list-filters" register="extend">
+        <filehtml>shop_product_list_filters.html</filehtml>
+        <filephp>shop_product_list_filters.php</filephp>
+    </content>
+
+    <content id="shop-product" register="extend">
+        <filejsremove/>
+        <filehtml>shop_product.html</filehtml>
+        <filephp>shop_product.php</filephp>
+        <filejs>shop_product.js</filejs>
+    </content>
+
+    <content id="shop-product-carousel" register="extend">
+        <filehtml>shop_product_carousel.html</filehtml>
+        <filephp>shop_product_carousel.php</filephp>
+    </content>
+
+    <content id="block-banner-top" register="extend">
+        <filehtml>block/block_banner_top.html</filehtml>
+    </content>
+
+    <content id="shop-page" register="extend">
+        <filehtml>shop_page.html</filehtml>
+        <filephp>shop_page.php</filephp>
+    </content>
+
+    <content id="shop-contacts">
+        <title>Test title</title>
+        <url>/kontakty/</url>
+        <filehtml>contacts/contacts.html</filehtml>
+        <filephp>contacts/contacts.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+
+    <!-- Редактирование товаров -->
+    <content id="shop-admin-products-edit" register="extend">
+        <filehtml>/admin/products/products_edit.html</filehtml>
+        <filephp>/admin/products/products_edit.php</filephp>
+        <filejs>/admin/products/products_add.js</filejs>
+        <filecss>/admin/products/products_add.css</filecss>
+    </content>
+
+    <content id="shop-admin-products-add" register="extend">
+        <filehtml>/admin/products/products_add.html</filehtml>
+        <filephp>/admin/products/products_add.php</filephp>
+        <filejs>/admin/products/products_add.js</filejs>
+        <filecss>/admin/products/products_add.css</filecss>
+    </content>
+
+    <content id="shop-admin-products-inlist" register="extend">
+        <filehtml>/admin/products/products_index_inlist.html</filehtml>
+        <filephp>/admin/products/products_index_inlist.php</filephp>
+    </content>
+
+    <content id="shop-admin-products" register="extend">
+        <filehtml>/admin/products/products_index.html</filehtml>
+    </content>
+
+    <content id="shop-admin-orders-control" register="extend">
+        <filehtml>/admin/orders/orders_control.html</filehtml>
+        <filephp>/admin/orders/orders_control.php</filephp>
+    </content>
+
+    <content id="shop-basket-ajax" register="extend">
+        <filephp>/shop_basket_ajax.php</filephp>
+    </content>
+
+    <content id="load-product-properties" register="extend">
+        <url>/load/product/properties/</url>
+        <filephp>/load_product_properties_ajax.php</filephp>
+    </content>
+
+    <content id="shop-search" register="extend">
+        <url>/search/{queryfixed}/{filters}/</url>
+        <url>/search/</url>
+        <url>/search/{queryfixed}/</url>
+        <filephp>/shop_search.php</filephp>
+    </content>
+
+    <content id="shop-search-autocomplete" register="extend">
+        <filephp>/shop_search_autocomplete.php</filephp>
+    </content>
+
+    <content id="shop-search-autocomplete-json" register="extend">
+        <filephp>/shop_search_json_autocomplete.php</filephp>
+    </content>
+
+    <content id="rtm-admin-loadprice-xml">
+        <title>Загрузка XML прайса</title>
+        <url>/admin/rtm/loadxml/</url>
+        <filehtml>admin/loadprice/rtm_loadxml.html</filehtml>
+        <filephp>admin/loadprice/rtm_loadxml.php</filephp>
+        <moveto>shop-admin-tpl</moveto>
+        <moveas>content</moveas>
+        <level>2</level>
+        <role>prices</role>
+    </content>
+
+    <content id="rtm-admin-jeweler" >
+        <title>Jewelers</title>
+        <url>/admin/shop/jeweler/</url>
+        <filehtml>/admin/jeweler/jeweler_index.html</filehtml>
+        <filephp>/admin/jeweler/jeweler_index.php</filephp>
+        <moveto>shop-admin-tpl</moveto>
+        <moveas>content</moveas>
+        <level>2</level>
+    </content>
+
+    <content id="rtm-admin-jeweler-control" >
+        <title>Jewelers control</title>
+        <url>/admin/shop/jeweler/{id}/edit/</url>
+        <url>/admin/shop/jeweler/add/</url>
+        <filehtml>/admin/jeweler/jeweler_control.html</filehtml>
+        <filephp>/admin/jeweler/jeweler_control.php</filephp>
+        <moveto>shop-admin-tpl</moveto>
+        <moveas>content</moveas>
+        <level>2</level>
+    </content>
+
+    <content id="404" register="extend">
+        <filehtml>/errors/error404.html</filehtml>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="401" register="extend">
+        <filehtml>/errors/error401.html</filehtml>
+    </content>
+    
+
+    <content id="rtm-site-map-page" >
+        <title>Карта сайта</title>
+        <url>/karta-sajta/</url>
+        <filehtml>site_map_view.html</filehtml>
+        <filephp>site_map_view.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+</engine>

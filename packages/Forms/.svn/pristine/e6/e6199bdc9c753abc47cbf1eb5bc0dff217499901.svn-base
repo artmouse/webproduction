@@ -1,0 +1,2 @@
+<input type="password" name="{|$key|}" value="" style="width: 80%;" {|if $disabled|} disabled {|/if|} />
+<input type="hidden" name="{|$key|}-original" value="{|$control_value|}" {|if $disabled|} disabled {|/if|} />

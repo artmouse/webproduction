@@ -1,0 +1,36 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/category/manage/">{|$translate_category_manage|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/category/" class="selected">{|$translate_category|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/category/add/">{|$translate_category_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="hidden" name="filter1_key" value="id" />
+                <input type="hidden" name="filter1_type" value="equals" />
+                <input type="text" name="filter1_value" value="{|$control_filter1_value|}" placeholder="{|$translate_code_small|}" />
+            </div>
+            <div class="element">
+                <input type="hidden" name="filter2_key" value="name" />
+                <input type="hidden" name="filter2_type" value="search" />
+                <input type="text" name="filter2_value" value="{|$control_filter2_value|}" placeholder="{|$translate_title_short|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|$table|}
+    </div>
+</div>
+<div class="clear"></div>

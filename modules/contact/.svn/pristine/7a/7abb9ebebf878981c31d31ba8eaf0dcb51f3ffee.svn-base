@@ -1,0 +1,24 @@
+<form action="" method="post">
+    {|if $arg_phone|}
+        <h1>{|$translate_dobavit_telefon|} {|$arg_phone|} {|$translate_v_kontakt|}</h1>
+    {|/if|}
+
+    {|if $arg_email|}
+        <h1>{|$translate_dobavit_email|} {|$arg_email|} {|$translate_v_kontakt|}</h1>
+    {|/if|}
+
+    <input type="text" name="parentname" id="id-recomended-name" value="{|$control_parentname|}"  style="width: 51%;" placeholder="{|$translate_viberite_kontakt|}" />
+    <input type="hidden" name="clientid" id="id-recomended-value" value="{|$control_clientid|}" />
+    <a href="#" id="id-recomended" class="ob-button">{|$translate_change_contact|}</a>
+
+    <br />
+    <br />
+
+    <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+</form>
+
+<script type="text/javascript">
+$j(function () {
+    recommend_init();
+});
+</script>

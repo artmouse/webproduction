@@ -1,0 +1,55 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input class="js-date" name="startdate" type="text" value="{|$control_startdate|}" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input class="js-date" name="enddate" type="text" value="{|$control_enddate|}" placeholder="{|$translate_date_to|}" />
+            </div>
+
+            <input type="submit" name="ok" value="{|$translate_show|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $text|}
+            <p>{|$translate_report_last_two_weeks|}</p>
+        {|/if|}
+
+        <table border="0" cellpadding="0" cellspacing="0" class="shop-table table-filter">
+            <thead>
+                <tr>
+                    <td>{|$translate_account|}</td>
+                    <td>{|$translate_money_incoming|}</td>
+                    <td>{|$translate_money_outcoming|}</td>
+                    <td>{|$translate_money_left|}</td>
+                </tr>
+            </thead>
+            <tbody>
+                {|foreach from=$table item="e" key="key"|}
+                    <tr>
+                        <td>{|$key|}</td>
+                        <td>{|if $e.it|}{|$e.it|} {|$e.currency|}{|/if|}</td>
+                        <td>{|if $e.gone|}{|$e.gone|} {|$e.currency|}{|/if|}</td>
+                        <td>{|if $e.balance|}{|$e.balance|} {|$e.currency|}{|/if|}</td>
+                    </tr>
+                {|/foreach|}
+                <tr>
+                    <td><strong>{|$translate_in_total|}: </strong></td>
+                    <td><strong>{|if $all.it|}{|$all.it|} {|$defaultCurrency|}{|/if|}</strong></td>
+                    <td><strong>{|if $all.gone|}{|$all.gone|} {|$defaultCurrency|}{|/if|}</strong></td>
+                    <td><strong>{|if $all.balance|}{|$all.balance|} {|$defaultCurrency|}{|/if|}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

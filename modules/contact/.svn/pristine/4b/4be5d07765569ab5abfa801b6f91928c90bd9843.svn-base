@@ -1,0 +1,110 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/usergroups/">&lsaquo; {|$translate_users_groups|}</a></div>
+        {|if $discountUrl|}
+            <div class="tab-element"><a href="{|$discountUrl|}">&lsaquo; {|$translate_personalnie_skidki_gruppi|}</a></div>
+        {|/if|}
+        <div class="tab-element"><a href="" class="selected">{|$translate_user_group_edit|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $form|}
+    {|$form|}
+{|else|}
+
+    {|if $message == 'error'|}
+        <div class="shop-message-error">
+            {|$translate_oshibka_sohraneniya_gruppi|}.
+        </div>
+    {|/if|}
+
+    {|if $message == 'ok'|}
+        <div class="shop-message-success">
+            {|$translate_gruppa_sohranena|}.
+        </div>
+    {|/if|}
+
+    <form action="" method="post">
+
+        <div class="ob-block-doubleform">
+            <div class="wrap">
+                <div class="left-column">
+
+                <strong>{|$translate_the_band_name|}</strong><br />
+                <input type="text" name="name" value="{|$control_name|}" style="width: 100%;" />
+                <br />
+                <br />
+
+                <strong>{|$translate_roditelskaya_gruppa|}</strong><br />
+                <select name="parentid" class="chzn-select-tree">
+                    <option value="0">---</option>
+                    {|foreach from=$parentArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_parentid|} selected {|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+                <br />
+
+                <strong>{|$translate_description|}</strong><br />
+                <input type="text" name="description" value="{|$control_description|}" style="width: 100%;" />
+                <br />
+                <br />
+
+                <strong>{|$translate_the_sort_order|}</strong><br />
+                <input type="text" name="sort" value="{|$control_sort|}" />
+                <br />
+                <br />
+
+                <strong>{|$translate_price_level|}</strong><br />
+                <select name="pricelevel">
+                    <option value="0">{|$translate_usual_prices|}</option>
+                    <option value="1" {|if $control_level == 1|} selected {|/if|}>{|$translate_uroven_1|}</option>
+                    <option value="2" {|if $control_level == 2|} selected {|/if|}>{|$translate_uroven_2|}</option>
+                    <option value="3" {|if $control_level == 3|} selected {|/if|}>{|$translate_uroven_3|}</option>
+                    <option value="4" {|if $control_level == 4|} selected {|/if|}>{|$translate_uroven_4|}</option>
+                    <option value="5" {|if $control_level == 5|} selected {|/if|}>{|$translate_uroven_5|}</option>
+                </select>
+                <br />
+                <br />
+
+                <strong>{|$translate_tsvet|}</strong><br />
+                <input type="text" name="color" value="{|$control_color|}" />
+                <br />
+                <br />
+
+                <strong>{|$translate_programmniy_obrabotchik|}</strong><br />
+                <input type="text" name="logicclass" value="{|$control_logicclass|}" style="width: 100%;" />
+                <br />
+                <br />
+
+            </div>
+
+            <div class="right-column">
+
+                <strong>{|$translate_polya_kartochki|}</strong><br />
+                {|foreach from=$fieldArray item="e"|}
+                    <label>
+                        <input type="checkbox" name="field{|$e.id|}" {|if not $e.hidden|} checked {|/if|} />
+                        {|$e.name|}
+                        ({|$e.type|})
+                    </label>
+                    <br />
+                {|/foreach|}
+                <br />
+
+                <a href="/admin/shop/contactfield/add/?groupid={|$arg_key|}">{|$translate_dobavit_pole|}</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-button-fixed">
+            <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+            <input type="submit" name="delete" value="{|$translate_delete|}" class="ob-button" onclick="return confirm('{|$translate_udalit_gruppu|}? {|$translate_kontakti_iz_gruppi_udaleni_ne_budut|}.');" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    </form>
+{|/if|}

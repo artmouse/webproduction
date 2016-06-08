@@ -1,0 +1,60 @@
+{|$menu|}
+
+
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_contractor|}</div>
+                <select name="contractorid" class="js-contractor chzn-select">
+                    <option value="0" {|if !$control_contractorid|}selected{|/if|} >{|$translate_contacts_all|}</option>
+                    {|foreach from=$contractorArray item="e"|}
+                    <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_account|}</div>
+                <select name="accountid" class="js-account chzn-select">
+                    <option value="0" {|if !$control_accountid|}selected{|/if|}>{|$translate_contacts_all|}</option>
+                    {|foreach from=$accountArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_accountid|}selected{|/if|} class="js-account-option js-contractor-{|$e.contractorid|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="datefrom" value="{|$control_datefrom|}" placeholder="{|$translate_date|} {|$translate_with|}"  />
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="dateto" value="{|$control_dateto|}" placeholder="{|$translate_date|} {|$translate_for|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_napravlenie_platezha|}</div>
+                <select name="direction" class="chzn-select">
+                    <option value="0">{|$translate_contacts_all|}</option>
+                    <option value="in" {|if $control_direction == 'in'|} selected {|/if|}>{|$translate_ot_klienta_vhodyashchie_|}</option>
+                    <option value="out" {|if $control_direction == 'out'|} selected {|/if|}>{|$translate_klientu_ishodyashchie_|}</option>
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div class="ob-block-caption">
+            <h2>{|$translate_payments|}</h2>
+        </div>
+        {|$block_payments|}
+    </div>
+</div>
+<div class="clear"></div>

@@ -1,0 +1,72 @@
+<script type="text/javascript">
+
+    $j(function () {
+        var query = '';
+        $j('#id-clientid-name').autocomplete({
+            delay: 500,
+            source: function( request, response ) {
+                query = request.term;
+                $j.ajax({
+                    url: "/admin/shop/users/ajax/autocomplete/select2/",
+                    dataType: "json",
+                    data:{
+                        name: request.term
+                    },
+                    success: function( data ) {
+                        if (data==null) response(null);
+                        response( $j.map( data, function( item ) {
+                            name = item.name;
+                            return {
+                                id: item.id,
+                                label: name,
+                                value: name,
+                                phone: item.phone,
+                                email: item.email,
+                                skype: item.skype,
+                                whatsapp: item.whatsapp
+                            }
+                        }));
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $j('#id-clientid-value').val(ui.item.id);
+                $j('#js-client-phone').val(ui.item.phone);
+                $j('[name=contact_email]').val(ui.item.email);
+                $j('[name=contact_skype]').val(ui.item.skype);
+                $j('[name=contact_whatsapp]').val(ui.item.whatsapp);
+            },
+            minLength:3
+        }).data('ui-autocomplete')._renderItem = function (ul, item) {
+            ul.removeClass().addClass("ob-autocomplete");
+            var inner_html = '<span>'+item.label+'</span>';
+            if (item.id === 0) {
+                inner_html = '<span class="ob-link-add ob-link-dashed">'+item.label+'</span>';
+                return $j( "<li onclick='addUserInSelectWindow2(\""+htmlspecialchars(query)+"\")'></li>" )
+                        .data( "item.autocomplete", item )
+                        .append(inner_html)
+                        .appendTo( ul );
+            } else {
+                return $j( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append(inner_html)
+                        .appendTo( ul );
+            }
+        };
+
+    });
+
+    function addUserInSelectWindow2 (name) {
+        selectwindow_init('w2', 'id-clientid-name', 'id-clientid-value', {
+            usersearch: true,
+            useradd: true,
+            selectedTab:1,
+            userAddDefault:name
+        });
+    }
+</script>
+
+
+<input type="text" id="id-clientid-name" value="{|$client_name|}" style="width: 80%;"  />
+<input type="hidden" name="{|$key|}" id="id-clientid-value" value="{|$control_value|}"/>
+

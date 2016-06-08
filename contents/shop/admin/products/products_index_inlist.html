@@ -1,0 +1,74 @@
+<div class="shop-productexplorer-list {|if $folderviewCookie|}line{|/if|}">
+    {|if $openCategory|}
+        <div class="element js-droppable" js-data-id="{|$openCategory.parentid|}">
+            <a href="{|$openCategory.url|}" class="image-folder back"></a>
+            <a href="{|$openCategory.url|}" class="name">
+                {|if $openCategory.name|}
+                    {|$translate_back_in|} {|$openCategory.name|}
+                {|else|}
+                    {|$translate_back|}
+                {|/if|}
+            </a>
+        </div>
+    {|/if|}
+
+    {|foreach from=$categoryArrayForFolders item="e"|}
+        <div class="element js-draggable js-droppable {|if $e.hidden|}hidden{|/if|}" js-data-id="{|$e.id|}">
+            <a href="{|$e.url|}" class="image-folder"></a>
+            <acronym title="{|$e.name|}"><a href="{|$e.url|}" class="name">{|$e.name|}</a></acronym>
+        </div>
+    {|/foreach|}
+
+    <div class="element">
+        <a href="#" class="image-folder new js-add-new-category" js-data-id="{|$openCategoryId|}"></a>
+        <a href="#" class="name js-add-new-category" js-data-id="{|$openCategoryId|}">{|$translate_category_add|}</a>
+    </div>
+
+    {|if $productsArray|@count > 0 |}
+        {|foreach from=$productsArray item="e"|}
+            <div class="element js-product-preview js-draggable {|if $e.hidden|}hidden{|/if|} js-draggable-product"  js-data-id="{|$e.id|}" data-id="{|$e.id|}">
+                <div class="inner-el">
+                    <a href="{|$e.url|}" class="image"><span><img src="{|$e.image|}" alt="" /></span></a>
+                    <acronym title="{|$e.name|}"><a href="{|$e.url|}" class="name">{|$e.name|}</a></acronym>
+                    <label><input type="checkbox" name="id[]" class="js-checkbox" value="{|$e.id|}" /></label>
+                </div>
+            </div>
+        {|/foreach|}
+    {|else|}
+        {|if !$categoryArrayForFolders|}
+            <div class="shop-message-error"> {|$translate_tovarov_net|}. </div>
+        {|/if|}
+    {|/if|}
+
+    <div class="element">
+        <a href="/admin/shop/products/add/?categoryid={|$openCategoryId|}" class="image-folder new-product"></a>
+        <a href="/admin/shop/products/add/?categoryid={|$openCategoryId|}" class="name">{|$translate_dobavit_tovar|}</a>
+    </div>
+
+    <!--do not remove-->
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <!--do not remove end-->
+</div>
+
+<script type="text/javascript">
+    $j('.shop-productexplorer-list .js-droppable').droppable({
+        activeClass: "droppable",
+        hoverClass: "droppable-hover"
+    });
+    $j('.js-block-tree .item').droppable({
+        activeClass: "droppable",
+        hoverClass: "droppable-hover"
+    });
+    $j('.shop-productexplorer-list .js-draggable').draggable({ revert: "invalid" });
+</script>

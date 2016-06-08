@@ -1,0 +1,49 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/textpages/" class="selected">{|$translate_textpages|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/textpages/add/">{|$translate_new_textpage_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <h1>{|$translate_textpages|}</h1>
+        {|if $pagesArray[0]|}
+            <div class="ob-block-tree js-block-tree">
+                <ul>
+                    {|foreach from=$pagesArray[0] item="e1"|}
+                        <li>
+                            <a href="{|$e1.url|}" {|if $e1.selected|}class="selected"{|/if|}>{|$e1.name|}</a>
+                            {|if $pagesArray[$e1.id]|}
+                                <span class="expand"></span>
+                                <ul style="display: none;">
+                                    {|foreach from=$pagesArray[$e1.id] item="e2"|}
+                                        <li>
+                                            <a href="{|$e2.url|}" {|if $e2.selected|}class="selected"{|/if|}>{|$e2.name|}</a>
+                                        </li>
+                                    {|/foreach|}
+                                </ul>
+                            {|/if|}
+                        </li>
+                    {|/foreach|}
+                </ul>
+            </div>
+        {|/if|}
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $form|}
+            {|$form|}
+        {|elseif $pagesArray|}
+            <div class="shop-message-info">{|$translate_textpages_select|}.</div>
+        {|else|}
+            <a href="/admin/shop/textpages/add/">{|$translate_new_textpage_add|}</a>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

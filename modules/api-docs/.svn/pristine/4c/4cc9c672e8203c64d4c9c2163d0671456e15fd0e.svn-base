@@ -1,0 +1,130 @@
+<h1>Что такое умные группы контактов контактов и как их разрабатывать (smart-обработчики)</h1>
+
+Понятие Smart-обработчик - очень широкое понятие. Не стоит воспринимать как “smart-обработчик” - это контакты в OneBox.<br />
+<br />
+
+По сути Smart-обработчик - это просто кусок кода, который пишется индивидуально под потребности проекта/клиента,
+помещается в какой-то отдельный модуль и подключается к проекту.<br />
+<br />
+
+Эта статья рассматривает только вопрос “как писать smart-обработчики для групп контактов и что это вообще такое”.<br />
+<br />
+
+Почти у всех клиентов есть группы контактов. Но, управлять руками контактами в группах не удобно.<br />
+Например: когда контакт что-то купил - то его руками нужно поместить в группу “клиенты”.<br />
+Это неудобно, а при сотнях клиентов это невозможно. Для этого в OneBox есть “умные группы контактов”.<br />
+<br />
+
+<h2>Как работат умные группы?</h2>
+Умные группы работают так:<br />
+<ul>
+<li>по cron hour анализируется каждая группа,</li>
+<li>группа запускает свой небольшой класс с логикой (logicclass),</li>
+<li>который говорит какие контакты в эту группу можно поместить.</li>
+<li>OneBox помещает контакты в эту группу, а все лишние контакты просто убирает из этой группы.</li>
+</ul>
+<br />
+Пример простого Smart-обработчика, который находит все контакты которые могут быть сейчас клиентам и возвращает их:<br />
+
+<code><pre>
+class BoxContactProcessor_Clients {
+
+    public function process() {
+        // контакты с заказами в статусах оплачен/продан
+        $statusIDArray = array(-1);
+        $status = Shop::Get()->getShopService()->getStatusAll();
+        $status->addWhereQuery("(saled=1 OR payed=1)");
+        while ($x = $status->getNext()) {
+            $statusIDArray[] = $x->getId();
+        }
+
+        $contacts = Shop::Get()->getUserService()->getUsersAll();
+        $contacts->addWhereQuery("id IN (SELECT userid FROM shoporder WHERE outcoming=0
+                    AND statusid IN (".implode(',', $statusIDArray)."))");
+        //$contacts->addWhere('level', 1, '<=');
+
+        return $contacts;
+    }
+
+}
+</pre></code>
+<br />
+
+
+<h2>Как пользователь настраивает Smart обработчики?</h2>
+<ul>
+    <li>заходим в <a href="/admin/shop/usergroups/">Группы контактов</a></li>
+    <li>в поле Smart-обработчик пишется имя класса, который будет отвечать за обработку</li>
+    <li>Все, если такой класс есть, то OneBox каждый час будет автоматически помещать/убирать контакты из этой группы.</li>
+</ul>
+<br />
+
+<h2>Как писать Smart-обработчики под клиентов?</h2>
+<ul>
+    <li>Пишете небольшой класс по примеру выше.</li>
+    <li>Помещаете этот класс в клиентский модуль (например module/lactusan/trunk/api/)</li>
+    <li>регистрируете этот класс в include.php модуля</li>
+    <li>прописываете название класса в группе контактов</li>
+    <li>тестово запускаете cron-hour.php и смотрите что произошло: в группу должны поместиться контакты.</li>
+</ul>
+<br />
+
+<strong>Важно: smart-обработчик всегда должен возвращать множественный объект User.</strong><br />
+Даже если вам нужно вернуть пустой объект - то возвращайте так:<br />
+
+<code><pre>
+$x = new User();
+$x->setId(-1);
+return $x;
+</pre></code>
+<br />
+
+<h2>Примеры</h2>
+Ниже несколько примеров smart-обработчиков и их подключения:<br />
+
+module/api/Lactusan_ContactProcessor_Farm_Lead.class.php
+<code><pre>
+/**
+ * Фарм. компании
+ * Потенциальный клиенты (не купили ничего в течении 2 месяцев)
+ *
+ * @author Maxim Miroshnichenko <max@webproduction.ua>
+ * @copyright WebProduction
+ * @package OneBox
+ */
+class Lactusan_ContactProcessor_Farm_Lead {
+
+    public function process() {
+        // получаем контакты родительской группы
+        $groupParent = Shop::Get()->getUserService()->getUserGroupByID(9);
+        $contacts = Shop::Get()->getUserService()->getUsersByGroup($groupParent);
+
+        // контакты с заказами в статусах оплачен/продан
+        $statusIDArray = array(-1);
+        $status = Shop::Get()->getShopService()->getStatusAll();
+        $status->addWhereQuery("(saled=1 OR payed=1)");
+        while ($x = $status->getNext()) {
+            $statusIDArray[] = $x->getId();
+        }
+
+        $contacts->addWhereQuery(
+            "users.id NOT IN (
+                SELECT userid
+                FROM shoporder
+                WHERE
+                    statusid IN (".implode(',', $statusIDArray).")
+                    AND shoporder.cdate >= NOW() - INTERVAL 2 MONTH
+            )"
+        );
+
+        return $contacts;
+    }
+
+}
+</pre></code>
+<br />
+
+module/include.php:<br />
+<code><pre>
+PackageLoader::Get()->registerPHPDirectory(dirname(__FILE__).'/api/');
+</pre></code>

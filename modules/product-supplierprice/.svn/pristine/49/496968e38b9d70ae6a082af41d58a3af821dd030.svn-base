@@ -1,0 +1,28 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <label>
+            <input type="radio" name="{|$index|}_orderSupplier" value="" {|if !$orderSupplier|} checked {|/if|} />
+            Не создавать заказ постащику автоматически
+        </label>
+        <br />
+        <label>
+            <input type="radio" name="{|$index|}_orderSupplier" value="create" {|if $orderSupplier == 'create'|} checked {|/if|} />
+            Автоматически создать заказ поставщику
+        </label>
+        <br />
+        <label>
+            <input type="radio" name="{|$index|}_orderSupplier" value="cancel" {|if $orderSupplier == 'cancel'|} checked {|/if|} />
+            Отменить заказ поставщику (если заказ еще в первом состоянии)
+        </label>
+    </div>
+</div>

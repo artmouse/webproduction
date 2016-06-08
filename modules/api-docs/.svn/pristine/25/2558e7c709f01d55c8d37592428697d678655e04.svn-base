@@ -1,0 +1,26 @@
+<h1>Аватар пользователя</h1>
+Данный блок используется для отображения аватара пользователя.<br />
+Фото для аватара должно быть либо квадратным, либо формироваться методом <strong>prop</strong> по минимальному значению высоты или ширины.<br />
+<br />
+Например: <br />
+Размер аватара - 40х40<br />
+Размер исходного изображения - 100х80<br />
+Размер изображения на выходе должно быть - 50х40(то есть, минимальное значения должно быть 40)<br />
+<br />
+
+<div class="ui-class">.nb-block-avatar</div>
+<code>
+    <pre>
+&lt;div class="nb-block-avatar" style="background-image: url('/media/shop/stub-man.jpg');"&gt;&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 60px;">
+    <div class="nb-block-avatar ava"></div>
+
+    <style>
+        .ava {background-image: url("/media/shop/stub-man.jpg");}
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

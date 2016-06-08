@@ -1,0 +1,15 @@
+{|if count($pagesArray) > 1|}
+    {|if $urlprev|}
+        <a href="{|$urlprev|}" class="prev">назад</a>
+        {|if $hellip|} ... {|/if|}
+    {|/if|}
+
+    {|foreach from=$pagesArray item="e"|}
+        <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+    {|/foreach|}
+
+    {|if $urlnext|}
+        {|if $hellip|} ... {|/if|}
+        <a href="{|$urlnext|}" class="next">вперед</a>
+    {|/if|}
+{|/if|}

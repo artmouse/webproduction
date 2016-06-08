@@ -1,0 +1,22 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+            <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <div class="label-list-calendar">
+            {|section name=foo start=1 loop=32 step=1|}
+                <label>
+                    <input type="checkbox" value="{|$smarty.section.foo.index|}" name="{|$index|}_day[]" {|if $dateArray[$smarty.section.foo.index]|}checked{|/if|}>
+                    {|$smarty.section.foo.index|}
+                </label>
+            {|/section|}
+        </div>
+    </div>
+</div>

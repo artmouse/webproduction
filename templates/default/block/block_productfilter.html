@@ -1,0 +1,304 @@
+{|* begin: блок фильтров *|}
+<div class="os-block-filter js-block-filter">
+    <div class="head">{|$translate_selection_of_parameters|}</div>
+    {|if $filterSelectedArray || $productCountWithOutFilters|}
+        <div class="element">
+            {|if $productCountWithOutFilters|}
+                <div class="name">
+                    {|if $productCountWithOutFilters > $productCountWithFilter |}
+                        {|$productCountWithFilter|} {|$translate_from|} {|$productCountWithOutFilters|} {|$translate_s_filtrami|}
+                    {|else|}
+                        {|$translate_only|} {|$productCountWithOutFilters|}
+                    {|/if|}
+                </div>
+            {|/if|}
+            {|foreach from=$filterSelectedArray key="key" item="e"|}
+                <div class="active-element">
+                    <div class="active-name">{|$key|}</div>
+                    {|foreach from=$e item="item"|}
+                        <a class="js-remove-filter" href="{|$item.deleteUrl|escape|}">{|$item.name|escape|}</a><br />
+                    {|/foreach|}
+                </div>
+            {|/foreach|}
+
+            {|if $filterSelectedArray|}
+                <div class="active-element clear-filter">
+                    <a class="js-remove-filter" href="{|$urlWithoutFilters|}{|if $control_query|}?query={|$control_query|}{|/if|}">{|$translate_reset_filter_small|}</a>
+                </div>
+            {|/if|}
+        </div>
+    {|/if|}
+
+    <form method="get" action="{|$currentURL|}">
+        {|if $categoryArray|}
+            <div class="element">
+                <strong class="name">{|$translate_category|}</strong>
+                <span class="group">
+                    {|foreach from=$categoryArray item="b"|}
+                        {|if $b.selected|}
+                            <label>
+                                <input type="checkbox" value="{|$b.id|}" name="category[]" {|if $b.selected|} checked {|/if|}/>
+                                {|$b.name|}
+                            </label>
+                            <br />
+                        {|else|}
+                            <label {|if !$b.count|}class="disabled"{|/if|}>
+                                <input type="checkbox" value="{|$b.id|}" name="category[]" {|if !$b.count|}disabled{|/if|}/>
+                                {|if $currentURL && $b.count|}
+                                    <a href="{|$currentURL|}category={|$b.id|}/" title="{|$b.name|} {|$titleH1|}">
+                                        {|$b.name|}
+                                        {|if $b.count|}<span class="count">({|$b.count|})</span>{|/if|}
+                                    </a>
+                                {|else|}
+                                    {|$b.name|}
+                                    {|if $b.count|}<span class="count">({|$b.count|})</span>{|/if|}
+                                {|/if|}
+                            </label>
+                            <br />
+                        {|/if|}
+                    {|/foreach|}
+                </span>
+            </div>
+        {|/if|}
+
+        {|if $brandArray|}
+            <div class="element">
+                <div class="name">{|$translate_brands|}</div>
+                <span class="group">
+                    {|foreach from=$brandArray item="b"|}
+                        {|if $b.selected|}
+                            <label>
+                                <input type="checkbox" value="{|$b.id|}" name="brand[]" {|if $b.selected|} checked {|/if|}/>
+                                {|$b.name|}
+                            </label>
+                            <br />
+                        {|else|}
+                            <label {|if !$b.count|}class="disabled"{|/if|}>
+                                <input type="checkbox" value="{|$b.id|}" name="brand[]" {|if !$b.count|}disabled{|/if|}/>
+                                {|if $currentURL && $b.count|}
+                                    <a href="{|$currentURL|}brand={|$b.id|}{|if $b.url|}-{|$b.url|}{|/if|}/" title="{|$b.name|} {|$titleH1|}">
+                                        {|$b.name|}
+                                        {|if $b.count|}<span class="count">({|$b.count|})</span>{|/if|}
+                                    </a>
+                                {|else|}
+                                    {|$b.name|}
+                                    {|if $b.count|}<span class="count">({|$b.count|})</span>{|/if|}
+                                {|/if|}
+                            </label>
+                            <br />
+                        {|/if|}
+                    {|/foreach|}
+                </span>
+            </div>
+        {|/if|}
+
+        {|if $maxPrice > 0|}
+            <div class="element">
+                <div class="name">{|$translate_price|}</div>
+                {|$translate_from|}
+                <input type="text"  id="minCost" name="filterpricefrom" value="{|$control_filterpricefrom|}" />
+                {|$translate_to|}
+                <input type="text" id="maxCost"  name="filterpriceto" value="{|$control_filterpriceto|}" />
+                <br /><br />
+
+                <div class="filter-slider">
+                    <div id="slider"></div>
+                    <script type="text/javascript">
+                    jQuery("#slider").slider({
+                        min: 0,
+                        max: {|$maxPrice|},
+                        values: [{|$filterpricefrom_value|},{|$filterpriceto_value|}],
+                        range: true,
+                        stop: function(event, ui) {
+                            minVal = ui.values[0];
+                            maxVal = ui.values[1];
+
+                            jQuery("input#minCost").val(minVal);
+                            jQuery("input#maxCost").val(maxVal);
+                        },
+                        slide: function(event, ui){
+                            minVal = ui.values[0];
+                            maxVal = ui.values[1];
+                            jQuery("input#minCost").val(minVal);
+                            jQuery("input#maxCost").val(maxVal);
+                        }
+                    });
+                    </script>
+                </div>
+            </div>
+        {|/if|}
+
+        {|foreach from=$filtersArray item="e" key="index"|}
+            <div class="element">
+                <div class="name">{|$e.name|}</div>
+
+                {|if $e.type == 'interval'|}
+                    {|$translate_from|}
+                    <input type="text" name="filter{|$e.id|}value[]" value="{|$e.selectedArray[0]|}" class="from-to" />
+                    {|$translate_to|}
+                    <input type="text" name="filter{|$e.id|}value[]" value="{|$e.selectedArray[1]|}" class="from-to" />
+                    <br />
+                {|elseif $e.type == 'intervalselect'|}
+                    {|$translate_from_small|}
+                    <select name="filter{|$e.id|}value[]" style="width: 60px;">
+                        <option value="">---</option>
+                        {|foreach from=$e.valuesArray item="v"|}
+                            <option value="{|$v.value|escape|}" {|if $v.value == $e.selectedArray[0]|}selected {|/if|} >{|$v.name|}</option>
+
+                            {|* Непонятно, нуж или нет *|}
+                            {|*|}
+                            {|if $v.value == $e.selectedArray[0]|}
+                                <option value="{|$v.value|escape|}" selected >{|$v.name|}</option>
+                            {|else|}
+                                <option value="{|$v.value|escape|}" {|if !$v.count|}({|$v.count|}){|/if|} >{|$v.name|} {|if $v.count|}({|$v.count|}){|/if|}</option>
+                            {|/if|}
+                            {|*|}
+                        {|/foreach|}
+                    </select>
+                    {|$translate_to|}
+                    <select name="filter{|$e.id|}value[]" style="width: 60px;">
+                        <option value="">---</option>
+                        {|foreach from=$e.valuesArray item="v"|}
+                            <option value="{|$v.value|escape|}" {|if $v.value == $e.selectedArray[1]|} selected {|/if|}>{|$v.name|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br />
+                {|elseif $e.type == 'intervalslider'|}
+                    {|if $e.valueMin AND $e.valueMax|}
+                        {|$translate_from|}
+                        <input type="text" id="js-slider-{|$e.id|}-min" name="filter{|$e.id|}value[]" value="{|$e.selectedArray[0]|}" />
+                        {|$translate_to|}
+                        <input type="text" id="js-slider-{|$e.id|}-max" name="filter{|$e.id|}value[]" value="{|$e.selectedArray[1]|}" />
+                        <br /><br />
+                        <div class="filter-slider">
+                            <div id="js-slider-{|$e.id|}"></div>
+                            <script type="text/javascript">
+                            jQuery("#js-slider-{|$e.id|}").slider({
+                                min: {|$e.valueMin|},
+                                max: {|$e.valueMax|},
+                                step: 0.1,
+                                {|if $e.selectedArray|}
+                                    values: ['{|$e.selectedArray[0]|}','{|$e.selectedArray[1]|}'],
+                                {|else|}
+                                    values: ['{|$e.valueMin|}','{|$e.valueMax|}'],
+                                {|/if|}
+                                range: true,
+                                stop: function(event, ui) {
+                                    minVal = ui.values[0];
+                                    maxVal = ui.values[1];
+
+                                    jQuery("input#js-slider-{|$e.id|}-min").val(minVal);
+                                    jQuery("input#js-slider-{|$e.id|}-max").val(maxVal);
+                                },
+                                slide: function(event, ui){
+                                    minVal = ui.values[0];
+                                    maxVal = ui.values[1];
+
+                                    jQuery("input#js-slider-{|$e.id|}-min").val(minVal);
+                                    jQuery("input#js-slider-{|$e.id|}-max").val(maxVal);
+                                }
+                            });
+                            </script>
+                        </div>
+                    {|/if|}
+                {|elseif $e.type == 'select'|}
+                    <select name="filter{|$e.id|}value">
+                        <option value="">---</option>
+                        {|foreach from=$e.valuesArray item="v"|}
+                            {|if $v.selected|}
+                                <option value="{|$v.value|escape|}" selected>{|$v.name|}</option>
+                            {|else|}
+                                <option value="{|$v.value|escape|}" {|if !$v.count|}disabled{|/if|} >{|$v.name|} {|if $v.count|}<span class="count">({|$v.count|})</span>{|/if|}</option>
+                            {|/if|}
+                        {|/foreach|}
+                    </select>
+                {|elseif $e.type == 'checkbox'|}
+                    <span class="group">
+                        {|foreach from=$e.valuesArray item="v"|}
+                            {|if $v.selected|}
+                                <label>
+                                    {|if $v.color|}
+                                        <input type="checkbox" name="filter{|$e.id|}value[]" value="{|$v.value|escape|}" checked >
+                                        <span class="color" style="background-color: {|$v.color|};">{|$v.name|}</span>
+                                    {|else|}
+                                        <input type="checkbox" name="filter{|$e.id|}value[]" value="{|$v.value|escape|}" checked>
+                                        {|$v.name|} {|$v.color|}
+                                    {|/if|}
+                                </label>
+                                <br />
+                            {|else|}
+                                <label {|if !$v.count|}class="disabled"{|/if|}>
+                                    {|if $v.color|}
+                                        <input type="checkbox" name="filter{|$e.id|}value[]" value="{|$v.value|escape|}" >
+                                        <span class="color" style="background-color: {|$v.color|};">
+                                            {|$v.name|}
+                                            <span class="count">({|$v.count|})</span>
+                                        </span>
+                                    {|else|}
+                                        <input type="checkbox" name="filter{|$e.id|}value[]" value="{|$v.value|escape|}" {|if !$v.count|}disabled{|/if|}>
+                                        {|if $currentURL && $v.count|}
+                                            <a href="{|$currentURL|}{|$v.url|}" {|if not $v.seo|} rel="nofollow" {|/if|} title="{|$v.name|} {|$titleH1|}">
+                                                {|$v.name|}
+                                                <span class="count">({|$v.count|})</span>
+                                            </a>
+                                        {|else|}
+                                            {|$v.name|}
+                                            {|if $v.count|}<span class="count">({|$v.count|})</span>{|/if|}
+                                        {|/if|}
+                                    {|/if|}
+                                </label>
+                                <br />
+                            {|/if|}
+                        {|/foreach|}
+                    </span>
+                {|elseif $e.type == 'radiobox'|}
+                    <span class="group">
+                        {|foreach from=$e.valuesArray item="v"|}
+                            <label>
+                                {|if $v.color|}
+                                    <input type="radio" name="filter{|$e.id|}value" value="{|$v.value|escape|}" {|if $v.selected|}checked{|/if|} >
+                                    <span class="color" style="background-color: {|$v.color|};">{|$v.name|} {|if $v.selected|}<span class="count">({|$v.count|})</span>{|/if|}</span>
+                                {|else|}
+                                    <input type="radio" name="filter{|$e.id|}value" value="{|$v.value|escape|}" {|if $v.selected|}checked{|/if|} >
+                                    {|if $currentURL|}
+                                        <a href="{|$currentURL|}{|$v.url|}" {|if not $v.seo|} rel="nofollow" {|/if|} title="{|$v.name|} {|$titleH1|}">
+                                            {|$v.name|} {|if !$v.selected|}<span class="count">({|$v.count|})</span>{|/if|}
+                                        </a>
+                                    {|else|}
+                                        {|$v.name|} {|if !$v.selected|}<span class="count">({|$v.count|})</span>{|/if|}
+                                    {|/if|}
+                                {|/if|}
+                            </label>
+                            <br />
+
+                        {|/foreach|}
+                    </span>
+                {|/if|}
+            </div>
+        {|/foreach|}
+
+        <div class="element">
+            <label>
+                <input type="radio" name="filterpresence" value="" {|if not $control_filterpresence|} checked {|/if|}>
+                {|$translate_all|}
+            </label>
+            <br />
+
+            <label>
+                <input type="radio" name="filterpresence" value="yes" {|if $control_filterpresence == 'yes'|} checked {|/if|}>
+                {|$translate_available|}
+            </label>
+            <br />
+
+            <label>
+                <input type="radio" name="filterpresence" value="no" {|if $control_filterpresence == 'no'|} checked {|/if|}>
+                {|$translate_not_available|}
+            </label>
+        </div>
+
+        <div class="button">
+            <input class="os-submit red js-submit-filter" type="submit" value="{|$translate_search_capital|}" />
+        </div>
+    </form>
+</div>
+{|* end: блок фильтров *|}

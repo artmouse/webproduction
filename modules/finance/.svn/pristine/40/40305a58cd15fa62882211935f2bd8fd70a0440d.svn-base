@@ -1,0 +1,61 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/finance/">&lsaquo; {|$translate_simple_back|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_invoice|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/invoice/add/">{|$translate_dobavit_schet|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+
+            <div class="element">
+                <input class="js-date" type="text" name="datefrom" value="{|$control_datefrom|}" placeholder="{|$translate_date|} {|$translate_with|}" />
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="dateto" value="{|$control_dateto|}" placeholder="{|$translate_date|} {|$translate_for|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <select name="clientid[]" multiple class="chzn-select">
+                    {|foreach from=$clientArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $clientSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_contractor|}</div>
+                <select name="contractorid" multiple class="chzn-select">
+                    <option value=""  >{|$translate_contacts_all|}</option>
+                    {|foreach from=$contractorArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $contractorSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_manager|}</div>
+                <select name="userid[]" multiple class="chzn-select">
+                    {|foreach from=$userArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $userSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input type="submit" name="ok" value="{|$translate_filter|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|$table|}
+    </div>
+</div>
+<div class="clear"></div>

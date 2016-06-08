@@ -1,0 +1,25 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    {|section name=foo start=0 loop=$count step=1|}
+        <div style="font-size: 28px;">
+            {|$price|} {|$currency|}
+        </div>
+        <div style="font-size: 11px; height: 50px; overflow: hidden; page-break-after: always;">
+            <strong>{|$name|}</strong>
+            {|* $info *|}
+        </div>
+    {|/section|}
+
+    <script type="text/javascript">
+    window.print();
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/delivery/">&lsaquo; {|$translate_delivery_methods|}</a></div>
+        <div class="tab-element"><a href="./add/" class="selected">{|$translate_delivery_new_method|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_delivery_success|}. {|$translate_redirection|}...
+    </div>
+
+    <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_delivery_error|}.
+        {|$translate_delivery_error_field|}.
+    </div>
+{|/if|}
+
+<form action="" method="post"  enctype="multipart/form-data">
+    <strong>{|$translate_delivery_name|}</strong><br />
+    <input type="text" name="name" value="{|$control_name|}" style="width: 80%;" />
+    <br />
+    <br />
+
+    <strong>{|$translate_price|}</strong><br />
+    <input type="text" name="price" value="{|$control_price|}" style="width: 100px;" />
+
+    <select name="currency">
+        {|foreach from=$currencyArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_currency|} selected {|/if|}>{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>{|$translate_sort|}</strong><br />
+    <input type="text" name="sort" value="{|$control_sort|}" style="width: 100px;" />
+    <br />
+    <br />
+
+    <label>
+        <input type="checkbox" name="needcity"  value="1" {|if $control_needcity|} checked {|/if|} />
+        {|$translate_need_city|}
+    </label>
+    <br />
+    <br />
+
+    <label>
+        <input type="checkbox" name="needaddress"  value="1" {|if $control_needaddress|} checked {|/if|} />
+        {|$translate_need_address|}
+    </label>
+    <br />
+    <br />
+
+    <label>
+        <input type="checkbox" name="needcountry"  value="1" {|if $control_needcountry|} checked {|/if|} />
+        {|$translate_you_must_specify_the_country|}
+    </label>
+    <br />
+    <br />
+
+    <label>
+        <input type="checkbox" name="paydelivery"  value="1" {|if $control_paydelivery|} checked {|/if|} />
+        {|$translate_dobavit_summu_dostavki_k_zakazu|}
+    </label>
+    <br />
+    <br />
+
+    <label>
+        <input type="checkbox" name="default"  value="1" {|if $control_default|} checked {|/if|} />
+        {|$translate_default|}
+    </label>
+    <br />
+    <br />
+
+    <strong class="caption">{|$translate_description|}</strong><br />
+    <textarea name="description" style="width: 100%; height: 100px;" class="js-editor">{|$control_description|}</textarea>
+    <br />
+    <br />
+
+    <strong>{|$translate_klass_obrabotchik|}</strong><br />
+    <input type="text" name="logic" value="{|$control_logic|}" style="width: 400px;" />
+    <br />
+    <br />
+
+    {|if $imagesrc|}
+    <div class="item">
+        <img src="{|$image|}" width="214" />
+        <label>
+            <input type="checkbox" name="deleteimage" value="1" />
+            {|$translate_delete_image|}
+        </label>
+    </div>
+    {|/if|}
+    <div class="item">
+        <div class="caption">{|$translate_main_image|}</div>
+        <input type="file" name="image" />
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_create_dilivery|}" class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

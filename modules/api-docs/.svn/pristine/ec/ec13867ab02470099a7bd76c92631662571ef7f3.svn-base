@@ -1,0 +1,49 @@
+<h1>Как добавлять кастомные баннера в OneBox</h1>
+
+<h2>Регистрация баннера в системе</h2>
+Для того, чтобы кастомные баннера появились на сайте их необходимо зарегистрировать в <strong>include.php</strong> в корне текущего проекта. <br />
+<br />
+<code>
+    <pre>
+$a = array();
+$a['banner_id'] = array(
+    'name' => 'Баннер на главной 490x240',
+    'width' => 490,
+    'height' => 240,
+    'method' => 'crop'
+);
+
+Engine::Get()->setConfigField(
+    'shop-banner-place', $a
+);</pre>
+</code>
+<br />
+Где: <br />
+<strong>banner_id</strong> - идентификатор баннера,<br />
+<strong>name</strong> - название баннера, <br />
+<strong>width</strong> - ширина баннера, <br />
+<strong>height</strong> - высота баннера, <br />
+<strong>method</strong> - метод обработки изображения (prop / crop / false).<br />
+<br />
+
+При использовании метода <strong>prop</strong>, ширина и высота баннера будут масштабироваться пропорционально в рамках заданной ширины и высоты.<br />
+При использовании метода <strong>crop</strong>, ширина и высота баннера будут масштабироваться и отсекаться.<br />
+При использовании метода <strong>false</strong>, ширину и высоту баннера указывать не нужно, так как изображение не будет обрабатываться и будет выводиться оригинал.<br />
+<br />
+<br />
+
+<h2>Визуальный вывод баннера</h2>
+Название массива будет иметь вид <strong>banner_идентификатор</strong>.<br />
+Содержимое массива <strong>name</strong>, <strong>url</strong>, <strong>image</strong> и <strong>comment</strong>.<br />
+<br />
+<code>
+    <pre>
+&#123;|foreach from=$banner_banner_id item="e"|&#125;
+    &lt;a href="&#123;|$e.url|&#125;"&gt;&#123;|$e.name|&#125;&lt;/a&gt;
+    &lt;img src="&#123;|$e.image|&#125;" alt=""&gt;
+    &#123;|$e.comment|&#125;
+&#123;|/foreach|&#125;</pre>
+</code>
+<br />
+
+<span class="important">После регистрации кастомного баннера, стандартный набор баннеров не будет доступен в системе.</span>

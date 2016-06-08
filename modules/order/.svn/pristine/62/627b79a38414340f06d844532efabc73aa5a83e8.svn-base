@@ -1,0 +1,83 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_date_to|}" />
+            </div>
+
+            {|if $supplierArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_vendor|}</div>
+                    <select name="supplierid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$supplierArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_supplierid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $storagenameArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_storage_warehouse_name|}</div>
+                    <select name="storagenameid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$storagenameArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_storagenameid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+            
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_zakazannie_tovari_za_period|}
+           {|if $reportCountArray|}
+                {|$translate_with|} {|$dfrom|} {|$translate_for|} {|$dto|}
+            {|/if|}
+        </h1>
+
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_code|}</td>
+                    <td>{|$translate_produkt|}</td>
+                    <td align="right">{|$translate_orders|}</td>
+                    <td align="right">{|$translate_kolichestvo_v_zakazah|}</td>
+                    <td align="right">{|$translate_ostatok_na_sklade|}</td>
+                    <td align="right">{|$translate_nalichie_u_postavshchika|}</td>
+                </tr>
+            </thead>
+            {|foreach from=$reportCountArray item="productcnt" key="productID"|}
+                <tr>
+                    <td>
+                        <a href="{|$productArray[$productID].url|}" data-id="{|$productID|}" class="js-product-preview">{|$productID|}</a>
+                    </td>
+                    <td>{|$productArray[$productID].name|}</td>
+                    <td align="right">{|$reportCountOrderArray[$productID]|}</td>
+                    <td align="right">{|$productcnt|}</td>
+                    <td align="right">{|$cntstorageArray[$productID]|}</td>
+                    <td align="right">{|$availArray[$productID]|}</td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

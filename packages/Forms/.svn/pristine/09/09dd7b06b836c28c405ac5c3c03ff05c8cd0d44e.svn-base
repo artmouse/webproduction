@@ -1,0 +1,1 @@
+<input type="text" name="{|$key|}" value="{|$value|}" style="width: 150px;" {|if $disabled|} disabled {|/if|} /><br />

@@ -1,0 +1,158 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_user_small|}</div>
+                <select name="managerid" class="chzn-select">
+                    <option value="">{|$translate_all_managers|}</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_sozdaniya_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_sozdaniya_do|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_status|}</div>
+                <select name="status" class="chzn-select">
+                    <option value="">{|$translate_all|}</option>
+                    <option value="done" {|if $control_status == 'done'|} selected {|/if|}>{|$translate_vipolnennie|}</option>
+                    <option value="undone" {|if $control_status == 'undone'|} selected {|/if|}>{|$translate_ne_vipolnennie|}</option>
+                </select>
+            </div>
+
+            <div class="element">
+                <input type="text" name="donefrom" value="{|$control_donefrom|}" class="js-date" placeholder="{|$translate_data_vipolneniya_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="doneto" value="{|$control_doneto|}" class="js-date" placeholder="{|$translate_data_vipolneniya_do|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $control_managerid|}
+            <h1>{|$translate_detalizatsiya_uvedomleniy|}</h1>
+            <div class="shop-overflow-table">
+                <table class="shop-table">
+                    <thead>
+                    <tr>
+                        <td>{|$translate_employee|}</td>
+                        <td>{|$translate_uvedomlenie|}</td>
+                        <td>{|$translate_priority|}</td>
+                        <td>{|$translate_created|}</td>
+                        <td>{|$translate_rekomenduemaya_data_vipolneniya|}</td>
+                        <td>{|$translate_data_vipolneniya|}</td>
+                        <td>{|$translate_srok_vipolneniya|}</td>
+                        <td>{|$translate_overtaym|}</td>
+                    </tr>
+                    </thead>
+                    {|foreach from=$reportArray item="e"|}
+                        <tr {|if $e.rdate|}style="background-color: #dbffd4;"
+                            {|elseif $e.priority > 0|}style="background-color: #ffd0d0;"{|/if|}>
+                            <td>
+                                <a href="{|$e.managerURL|}" class="js-contact-preview"
+                                   data-id="{|$e.managerId|}|}">{|$e.managerName|}</a>
+                            </td>
+                            <td>
+                                <a href="{|$e.url|}">{|$e.content|}</a>
+                            </td>
+                            <td>
+                                {|if $e.priority > 0|}
+                                    {|$translate_visokiy|}
+                                {|/if|}
+                            </td>
+                            <td>{|$e.cdate|}</td>
+                            <td>{|$e.edate|}</td>
+                            <td>{|$e.rdate|}</td>
+                            <td align="right">
+                                {|if not $e.overtime|}
+                                    <font color="green">{|$e.rdiff|}</font>
+                                {|else|}
+                                    <font color="red">{|$e.rdiff|}</font>
+                                {|/if|}
+                            </td>
+                            <td align="right">
+                                {|if $e.overtime|}
+                                    <font color="red">{|$e.overtime|}</font>
+                                {|/if|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                </table>
+            </div>
+        {|else|}
+
+            {|if $chartArray|}
+                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                google.load("visualization", "1", {packages:["corechart"]});
+                google.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                    ['{|$translate_user_small|}', '{|$translate_vipolneno|}', '{|$translate_ne_vipolneno|}'],
+                    {|foreach from=$chartArray item="e" key="managerName"|}
+                        ['{|$managerName|}', {|$e.done+0|}, {|$e.undone+0|}],
+                    {|/foreach|}
+                    ]);
+
+                    var options = {};
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_1'));
+                    chart.draw(data, options);
+                }
+                </script>
+
+                <div id="chart_div_1" style="width: 100%; height: 500px;"></div>
+                <br />
+                <br />
+            {|/if|}
+
+            <h1>{|$translate_statistika_po_uvedomleniyam|}</h1>
+            <div class="shop-overflow-table">
+                <table border="0" class="shop-table">
+                    <thead>
+                    <tr>
+                        <td>{|$translate_user_small|}</td>
+                        <td>{|$translate_otkritih_uvedomleniy|}</td>
+                        <td>{|$translate_sdelannih_uvedomleniy|}</td>
+                        <td>{|$translate_sredniy_srok_vipolneniya_dney_|}</td>
+                    </tr>
+                    </thead>
+                    {|foreach from=$managerArray item="e"|}
+                        <tr {|if $e.rdate|}style="background-color: #dbffd4;"
+                            {|elseif $e.priority > 0|}style="background-color: #ffd0d0;"{|/if|}>
+                            <td>
+                                <a href="{|$e.url|}">{|$e.name|}</a>
+                            </td>
+                            <td align="right">{|$summaryArray[$e.id].undone+0|}</td>
+                            <td align="right">{|$summaryArray[$e.id].done+0|}</td>
+                            <td align="right">{|$summaryArray[$e.id].avg+0|}</td>
+                        </tr>
+                    {|/foreach|}
+                </table>
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

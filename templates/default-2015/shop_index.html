@@ -1,0 +1,34 @@
+{|$block_banner_top_index|}
+
+{|if $seotextinindexpage|}
+    {|$seotextinindexpage|}
+    <br />
+{|/if|}
+
+{|foreach from=$carouselArray item="e"|}
+    <div class="def-section-caption">
+        <h3>
+            <strong>{|$e.name|}</strong>
+        </h3>
+    </div>
+    {|$e.html|}
+{|/foreach|}
+
+{|if $tabsArray|}
+    <div class="def-block-tabs index-plist">
+        <div class="tabs-controls" id="id-tabs">
+            {|foreach from=$tabsArray item="e"|}
+                <a class="tab-item selected js-tab" href="javascript:void(0);" data-rel=".tab-{|$e.id|}">{|$e.name|}</a>
+            {|/foreach|}
+            <div class="clear"></div>
+        </div>
+
+        {|foreach from=$tabsArray item="e"|}
+            <div class="tab-{|$e.id|} tabs-content" style="display: none;">{|$e.html|}</div>
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|$block_category_top|}
+
+{|$block_brand_top|}

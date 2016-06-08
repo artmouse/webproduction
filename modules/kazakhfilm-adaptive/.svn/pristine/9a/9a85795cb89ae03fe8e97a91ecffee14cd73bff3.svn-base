@@ -1,0 +1,1974 @@
+/* ------------------------------- Reset start */
+
+@font-face {
+    font-family: 'cd-normal';
+    src:    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams.eot');
+    src:    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams.eot?#iefix') format('embedded-opentype'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams.woff') format('woff'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams.ttf') format('truetype'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams.svg#FontName') format('svg');
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'cd-bold';
+    src:    url('/templates/kazakhfilm-adaptive/fonts/Caviar_Dreams_Bold.eot');
+    src:    url('/templates/kazakhfilm-adaptive/fonts/Caviar_Dreams_Bold.eot?#iefix') format('embedded-opentype'),
+    url('/templates/kazakhfilm-adaptive/fonts/Caviar_Dreams_Bold.woff') format('woff'),
+    url('/templates/kazakhfilm-adaptive/fonts/Caviar_Dreams_Bold.ttf') format('truetype'),
+    url('/templates/kazakhfilm-adaptive/fonts/Caviar_Dreams_Bold.svg#FontName') format('svg');
+    font-style: normal;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'cd-italic';
+    src:    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_Italic.eot');
+    src:    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_Italic.eot?#iefix') format('embedded-opentype'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_Italic.woff') format('woff'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_Italic.ttf') format('truetype'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_Italic.svg#FontName') format('svg');
+    font-style: italic;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'cd-bold-italic';
+    src:    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_BoldItalic.eot');
+    src:    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_BoldItalic.woff') format('woff'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_BoldItalic.ttf') format('truetype'),
+    url('/templates/kazakhfilm-adaptive/fonts/CaviarDreams_BoldItalic.svg#FontName') format('svg');
+    font-style: italic;
+    font-weight: bold;
+}
+
+html,body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: url("/templates/kazakhfilm-adaptive/_images/body-bg-tille.png") -135px 0 repeat;
+    text-decoration: none;
+    min-width: 960px;
+}
+
+body.index-body {
+    background: url("/templates/kazakhfilm-adaptive/_images/new-design/index-bg-tile.jpg") repeat left top;
+}
+
+body.index-body .page-wrapper {
+    background: none;
+}
+
+body, form, div, p, a, img, h1, h2, h3, h4, h5, h6, table, table tr, table td {
+    border: none;
+    color: #000000;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+input, select, textarea {
+    outline: none;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: underline;
+    padding: 0;
+    margin: 0;
+    color: #000000;
+    outline: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a img {
+    border: 0;
+}
+
+h1, h2 {
+    font-size: 20px;
+    padding: 0 0 5px 0;
+    margin: 0;
+    font-family: 'cd-normal', Georgia, 'Open Sans', Arial, serif;
+    color: #61260a;
+}
+
+
+.clear{
+    clear: both;
+    font-size: 0;
+    line-height: 0;
+    height: 0;
+}
+/* ------------------------------- Reset end */
+
+.page-wrapper {
+    min-height: 100%;
+    /*margin-bottom: -40px;*/
+    background: url("/templates/kazakhfilm-adaptive/_images/page-wrap-bg.png") center repeat-y;
+}
+
+* html .page-wrapper {
+    height: 100%;
+}
+
+.page-footer{
+    /*height: 42px;*/
+    /*background: url("/templates/kazakhfilm-adaptive/_images/brown-tille-bg.png");*/
+}
+
+.page-buffer {
+    /*height:  40px;*/
+}
+
+.inner{
+    min-width: 960px;
+    max-width: 990px;
+    margin: 0 auto;
+}
+
+.insider {
+    margin: 0 5px;
+}
+
+.kz-mainer-1280 {
+    max-width: 1260px;
+    min-width: 300px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+header.kz-bg-header {
+    height: auto;
+    background: url("/templates/kazakhfilm-adaptive/_images/new-design/header-bg.jpg") no-repeat center;
+    background-size: cover;
+    padding: 0 0 20px 0;
+}
+
+
+
+.kz-logo-line {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin: 0 0 25px 0;
+}
+
+.kz-logo-line .logo-block,
+.kz-logo-line .slogan-block,
+.kz-logo-line .phones-block {
+    display: table-cell;
+    vertical-align: top;
+    padding: 20px 0;
+}
+
+
+
+.kz-logo-line .logo-block {
+    width: 327px;
+}
+
+.kz-logo-line .logo-block img {
+    display: inline-block;
+    margin: 0;
+    max-width: 327px;
+    max-height: 150px;
+}
+
+.kz-logo-line .slogan-block {
+    color: #360606;
+    font-size: 32px;
+    line-height: 42px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.kz-logo-line .phones-block {
+    width: 305px;
+    text-align: right;
+    color: #360606;
+    font-size: 32px;
+    line-height: 42px;
+}
+
+.kz-logo-line .phones-block a {
+    color: #360606;
+    text-decoration: none;
+    font-size: 32px;
+}
+
+.kz-nav-line {
+    display: table;
+    width: 100%;
+    background: url("/templates/kazakhfilm-adaptive/_images/new-design/nav-bg.png") no-repeat center;
+    margin: 0 0 18px 0;
+}
+
+.kz-nav-line .nav-element {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    border-left: 1px solid #fff;
+}
+
+.kz-nav-line .nav-element:first-child {
+    border-left: none;
+}
+
+.kz-nav-line .nav-element > a {
+    display: table;
+    width: 100%;
+    height: 64px;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.kz-nav-line .nav-element > a.active {
+    background: #1d0505;
+}
+
+.kz-nav-line .nav-element > a > span {
+    display: table-cell;
+    vertical-align: middle;
+    height: 64px;
+    color: #dfbc60;
+    font-size: 40px;
+}
+
+.kz-nav-line .nav-element > a:hover > span {
+    color: #FFDC64;
+}
+
+.kz-promotext-line {
+    text-align: center;
+    line-height: 90px;
+    font-size: 100px;
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff, 0 0 30px #fff;
+}
+
+.kz-promotext-line .smaller-text {
+    text-align: center;
+    font-size: 55px;
+    text-transform: uppercase;
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff, 0 0 30px #fff;
+    margin: 10px 0 0 0;
+}
+
+.kz-booking-form {
+    max-width: 402px;
+    min-width: 280px;
+    margin: 20px auto 0 auto;
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    border: 1px solid #000;
+    background-color: rgba(255, 255, 255, 0.61);
+    padding: 15px 30px;
+}
+
+.kz-booking-form .heading {
+    margin: 0 -10px;
+    font-size: 35px;
+    line-height: 37px;
+    text-align: center;
+    padding: 0 0 7px 0;
+}
+
+.kz-booking-form .input-text {
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 55px;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 20px 12px 5px 12px;
+    margin: 0 0 7px 0;
+}
+
+.kz-booking-form input[type=text],
+.kz-booking-form input[type=tel] {
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 28px;
+    font-size: 24px;
+    border: none;
+    outline: none;
+    color: #230e0e;
+}
+
+.kz-booking-form [type="text"]::-webkit-input-placeholder,
+.kz-booking-form [type="tel"]::-webkit-input-placeholder {
+    opacity: 1;
+    color: #230e0e;
+}
+
+.kz-booking-form [type="text"]:-moz-placeholder,
+.kz-booking-form [type="tel"]:-moz-placeholder {
+    opacity: 1;
+    color: #230e0e;
+}
+
+.kz-booking-form [type="text"]::-moz-placeholder,
+.kz-booking-form [type="tel"]::-moz-placeholder {
+    opacity: 1;
+    color: #230e0e;
+}
+
+.kz-booking-form [type="text"]:-ms-input-placeholder,
+.kz-booking-form [type="tel"]:-ms-input-placeholder {
+    opacity: 1;
+    color: #230e0e;
+}
+
+.kz-booking-form input[type=text]:focus {
+    border: none;
+    outline: none;
+}
+
+.kz-booking-form input[type=submit] {
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    display: block;
+    width: 100%;
+    text-align: center;
+    height: 66px;
+    line-height: 66px;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #ff0000;
+    border: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.89), inset 0 -6px 6px -3px  rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    margin: 15px 0 0 0;
+}
+
+.kz-booking-form input[type=submit]:hover {
+    background-color: #E80000;
+}
+
+@media screen and (max-width: 768px) {
+    .kz-logo-line {
+        display: block;
+    }
+
+    .kz-logo-line .logo-block,
+    .kz-logo-line .slogan-block,
+    .kz-logo-line .phones-block {
+        display: block;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+
+    .kz-nav-line .nav-element > a > span {
+        font-size: 20px;
+    }
+}
+
+@media screen and (min-width: 769px)and (max-width: 1000px){
+    .kz-logo-line .slogan-block {
+        font-size: 20px;
+    }
+    .kz-nav-line .nav-element > a > span {
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 480px){
+    .kz-logo-line .logo-block img {
+        max-width: 300px;
+    }
+
+    .kz-logo-line .phones-block a {
+        font-size: 28px;
+    }
+
+    .kz-nav-line {
+        display: block;
+        background: none;
+    }
+
+    .kz-nav-line .nav-element {
+        display: block;
+        border-left: none;
+        background: url("/templates/kazakhfilm-adaptive/_images/new-design/nav-bg.png") no-repeat center;
+        margin: 0 0 1px 0;
+    }
+
+    .kz-nav-line .nav-element > a  {
+        border: none;
+    }
+
+    .kz-nav-line .nav-element > a > span {
+        font-size: 35px;
+    }
+
+    .kz-promotext-line {
+        text-align: center;
+        line-height: 40px;
+        font-size: 50px;
+    }
+
+    .kz-promotext-line .smaller-text {
+        text-align: center;
+        font-size: 24px;
+        text-transform: uppercase;
+        margin: 10px 0 0 0;
+    }
+
+    .kz-booking-form input[type=text],
+    .kz-booking-form input[type=tel] {
+        font-size: 20px;
+    }
+
+    .kz-booking-form input[type=submit] {
+        font-size: 20px;
+    }
+}
+
+.content-wrap {
+    margin: 30px 0;
+}
+
+.tpl-seo-text-block{
+    margin: 15px 0;
+    color: #525252;
+    font-family: inherit !important;
+}
+
+.tpl-seo-text-block div,
+.tpl-seo-text-block p,
+.tpl-seo-text-block span,
+.tpl-seo-text-block a {
+    font-family: inherit !important;
+    font-size: inherit !important;
+}
+
+.tpl-seo-text-block p{
+    color: #525252;
+}
+
+.see-all-seo {
+    padding: 0 5px;
+    text-decoration: none;
+    font-size: 12px;
+    color: rgb(128, 128, 128);
+}
+
+.see-all-seo:hover {
+    text-decoration: underline;
+}
+
+.contacts-big-map-block{
+    border: 1px solid #81513b;
+    position: relative;
+    width: 958px;
+    height: 560px;
+}
+
+.map-from-yandex{
+    float: right;
+    width: 692px;
+    height: 560px;
+}
+
+.contacts-big-map-caption{
+    width: 265px;
+    height: 560px;
+    float: left;
+    border-right: 1px solid #81513b;
+    background: url("/templates/kazakhfilm-adaptive/_images/p-2.png")left top;
+}
+
+.contacts-big-map-caption .contacts {
+    font-size: 22px;
+    color: #f3f500;
+    line-height: 31px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    padding: 18px;
+}
+
+.contacts-big-map-caption .contacts a.tel {
+    font-size: 22px;
+    color: #f3f500;
+    line-height: 31px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    text-decoration: none;
+}
+
+.contacts-big-map-caption .contacts span {
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+}
+
+.contacts-big-map-caption .contacts strong {
+    color: #ffffff;
+    font-weight: normal;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+}
+
+.contacts-big-map-caption .contacts a {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.contacts-big-map-caption a.skype {
+    font-size: 15px;
+    color: #ffffff;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+    display: inline-block;
+    padding: 2px 0 2px 26px;
+    background-image: url("/templates/kazakhfilm-adaptive/_images/icon-skype.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    text-decoration: none;
+}
+
+.contacts-big-map-caption .backcall {
+    text-align: center;
+    font-size: 16px;
+    color: #ffffff;
+    width: 250px;
+    margin: 0 auto;
+    padding: 18px 0;
+}
+
+.contacts-big-map-caption .button {
+    width: 158px;
+    height: 78px;
+    cursor: pointer;
+    background: url("/templates/kazakhfilm-adaptive/_images/backcall-bg-smaller.png") center no-repeat;
+    font-size: 14px;
+    color: #f8f1a7;
+    text-transform: uppercase;
+    padding: 15px 10px 0 81px;
+}
+
+.contacts-big-map-caption .button span {
+    display: block;
+    font-size: 28px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+}
+
+.contacts-big-map-caption .button:hover {
+    opacity: 0.8;
+}
+
+.kzh-page-content{
+    margin: 30px 0 15px 0;
+}
+
+.kzh-btn-default{
+    color: #f8f1a7;
+    text-shadow: #000000 0 1px 0;
+    border: 2px solid #c8a365;
+    padding: 0 15px;
+    border-radius: 30px;
+    background: url('/templates/kazakhfilm-adaptive/_images/book-button-bg.png') center center no-repeat;
+    height: 35px;
+    line-height: 35px;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 5px #200801;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.kzh-btn-default.tiled {
+    background-repeat: repeat-x;
+    font-size: 16px;
+}
+
+.kzh-btn-default.book-me {
+    width: 260px;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.kzh-btn-default:hover{
+    opacity: 0.8;
+}
+
+.kzh-warning-massage{
+    margin: 15px 0;
+    background-color: #fffcc8;
+}
+
+.kzh-warning-massage-content{
+    padding: 30px 30px 30px 100px;
+    background: url("/templates/kazakhfilm-adaptive/_images/warninng-msg-ico.png") 30px center no-repeat;
+}
+
+.kzh-add-feedback-block{
+    margin: 15px 0;
+    background-color: #fffcc8;
+}
+
+.kzh-add-feedback-block-text{
+    padding: 30px;
+}
+
+.add-feedback-btn>a{
+    margin: 30px;
+    margin-top: 0;
+}
+
+.feedback-list-block{
+    margin: 30px 0;
+}
+
+.feedback-list-item{
+    border-bottom: 2px solid #cdcdcd;
+    margin: 0 0 15px 0;
+    padding-bottom: 15px;
+}
+
+
+.feedback-list-item .image, .feedback-list-item .data {
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.feedback-list-item .image {
+    width: 100px;
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 -100px 0 0;
+}
+
+.feedback-list-item .image img {
+    width: 100%;
+    margin: 0;
+    display: block;
+}
+
+.feedback-list-item .data {
+    padding: 0 0 0 120px;
+}
+
+.feedback-list-item .data.no-image {
+    padding: 0 0 0 0;
+}
+
+
+
+.feedback-user-name{
+    font-weight: bold;
+}
+
+.feedback-post-date{
+    font-size: 12px;
+    color: #757570;
+    margin: 0 0 8px 0;
+}
+
+.feedback-list-item-text{
+    text-align: justify;
+}
+
+.kzh-room-preview-block{
+    margin: 0 0 60px 0;
+}
+
+.room-preview-images{
+    width: 340px;
+    float: left;
+    margin: 0 30px 0 0;
+}
+
+.room-preview-images a{
+    text-decoration: none;
+}
+
+.room-preview-images img {
+    display: block;
+    min-width: 280px;
+    max-width: 300px;
+    min-height: 180px;
+    max-height: 200px;
+    width: 300px;
+}
+
+.room-preview-additional-img img{
+    min-width: inherit;
+    max-width: inherit;
+    min-height: inherit;
+    max-width: inherit;
+    width: 90px;
+    height: 60px;
+}
+
+.room-preview-images .fancy-bg{
+    padding: 18px 22px;
+    background: url("/templates/kazakhfilm-adaptive/_images/big-image-block-bg.png") left top no-repeat;
+}
+
+
+.room-preview-main-img{
+    position: relative;
+}
+
+.room-preview-additional-img {
+    display: inline-block;
+    zoom: 0;
+    margin: 15px -15px 0 0 ;
+    padding: 0 20px;
+}
+
+.room-preview-additional-img a{
+    float: left;
+    margin: 0 15px 15px 0;
+    padding: 9px 0;
+    background: url("/templates/kazakhfilm-adaptive/_images/small-image-block-bg.png") top center no-repeat;
+}
+
+.room-preview-description{
+    width: 556px;
+    float: left;
+}
+
+.room-preview-description-header{
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    font-size: 24px;
+    color: #000000;
+    padding-bottom: 10px;
+}
+
+.room-preview-description-text{
+    margin: 0 0 10px 0;
+}
+
+.room-preview-price {
+    width: 280px;
+    float: left;
+    margin: 5px 0 0 0;
+}
+
+.room-preview-price td{
+    padding: 0 5px 0 0;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    font-size: 21px;
+    color: #61260a;
+}
+
+.flags {
+    text-align: center;
+    padding: 10px 0 0 0;
+}
+
+.flags a {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.flags .flag-kz {
+    background: url("/templates/kazakhfilm-adaptive/_images/flag_kazakhstan.png") no-repeat center;
+}
+
+.flags .flag-usa {
+    background: url("/templates/kazakhfilm-adaptive/_images/flag_usa.png") no-repeat center;
+}
+
+.booking-button-block{
+    float: right;
+    width: 260px;
+    margin: 0 0 0 15px;
+}
+
+.booking-button-block .booking-notice{
+    color: #61260a;
+    padding: 10px 0 0 30px;
+    text-align: center;
+}
+
+.room-futures-block ul{
+    float: left;
+    list-style: none;
+    padding: 0;
+    margin: 0 15px 0 0;
+    width: 190px;
+}
+
+li.room-futures-list-header{
+    font-size: 18px;
+    color: #474747;
+    font-family: 'cd-normal',Georgia,'Open Sans', Arial, serif;
+    padding-bottom: 10px;
+}
+
+span.room-future-name{
+    background: url('/templates/kazakhfilm-adaptive/_images/green-check-ico.png') left 4px no-repeat;
+    padding: 0 0 0 18px;
+}
+
+.kzh-modal-wrapp{
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-black-mask{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*position: fixed;*/
+    background: url("/templates/kazakhfilm-adaptive/_images/modal-black-mask.png");
+    z-index: 1001;
+}
+
+.kzh-modal{
+    background-color: #ffffff;
+    padding: 30px;
+    position: absolute;
+    /*top: 100px;*/
+    left: 50%;
+    z-index: 1002;
+}
+
+.kzh-modal-header{
+    font-family: 'cd-normal',Georgia,'Open Sans', Arial, serif;
+    font-size: 24px;
+    color: #61260a;
+    text-align: center;
+    margin: 0 0 15px 0;
+}
+
+.kzh-booking-form{
+
+}
+
+
+.kzh-booking-form label{
+    display: inline-block;
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+
+.kzh-booking-form label span{
+    color: #61260a;
+}
+
+.kzh-booking-form input[type=text]{
+    border: 2px solid #61260a;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 5px;
+    margin: 0;
+    display: inline-block;
+}
+
+.kzh-booking-form .long{
+    width: 220px;
+}
+
+.kzh-booking-form .semi-long{
+    width: 140px;
+}
+
+.kzh-booking-form textarea{
+    padding: 5px;
+    width: 473px;
+    height: 100px;
+    resize: vertical;
+    border: 2px solid #61260a;
+}
+
+.people-count{
+    width: 58px;
+}
+
+.room-type{
+    width: 150px;
+}
+
+.kzh-modal-submit{
+    text-align: center;
+    margin: 5px 0 0 0;
+}
+
+.kzh-callus-form{
+    text-align: center;
+}
+
+.kzh-callus-form input[type=text]{
+    border: 2px solid #61260a;
+    padding: 0 10px;
+    margin: 0;
+    display: inline-block;
+    width: 525px;
+    margin-top: 15px;
+    height: 63px;
+    line-height: 63px;
+    font-size: 40px;
+}
+
+.kzh-callus-form .kzh-modal-submit{
+    margin-top: 15px;
+}
+
+.feedbackModal .kzh-modal-content{
+    /*width: 500px;*/
+}
+
+.feedbackModal label{
+    display: inline-block;
+}
+
+.feedbackModal label span{
+    color: #61260a;
+}
+
+.feedbackModal input[type=text]{
+    border: 2px solid #61260a;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 5px;
+    margin: 0;
+    display: inline-block;
+    width: 225px;
+}
+
+.feedbackModal textarea{
+    padding: 5px;
+    width: 485px;
+    height: 100px;
+    resize: vertical;
+    border: 2px solid #61260a;
+}
+
+.feedbackModal .kzh-modal-submit{
+    margin-top: 20px;
+}
+
+.page-footer .counters{
+    float: left;
+    overflow: hidden;
+    padding: 4px 4px 0 4px;
+}
+
+.page-footer .counters img{
+    max-height: 40px;
+}
+
+.developers-block{
+    float: right;
+    color: #fff;
+    margin: 12px 10px 0 0;
+    font-size: 12px;
+}
+
+.developers-block a{
+    color: #fff;
+    font-size: 12px;
+}
+
+/*
+    Colorbox Core Style:
+    The following CSS is consistent between example themes and should not be altered.
+*/
+#colorbox, #cboxOverlay, #cboxWrapper{position:absolute; top:0; left:0; z-index:9999; overflow:hidden;}
+#cboxWrapper {max-width:none;}
+#cboxOverlay{position:fixed; width:100%; height:100%;}
+#cboxMiddleLeft, #cboxBottomLeft{clear:left;}
+#cboxContent{position:relative;}
+#cboxLoadedContent{overflow:auto; -webkit-overflow-scrolling: touch;}
+#cboxTitle{margin:0;}
+#cboxLoadingOverlay, #cboxLoadingGraphic{position:absolute; top:0; left:0; width:100%; height:100%;}
+#cboxPrevious, #cboxNext, #cboxClose, #cboxSlideshow{cursor:pointer;}
+.cboxPhoto{float:left; margin:auto; border:0; display:block; max-width:none; -ms-interpolation-mode:bicubic;}
+.cboxIframe{width:100%; height:100%; display:block; border:0; padding:0; margin:0;}
+#colorbox, #cboxContent, #cboxLoadedContent{box-sizing:content-box; -moz-box-sizing:content-box; -webkit-box-sizing:content-box;}
+
+/*
+    User Style:
+    Change the following styles to modify the appearance of Colorbox.  They are
+    ordered & tabbed in a way that represents the nesting of the generated HTML.
+*/
+#cboxOverlay{background:#000; opacity: 0.9; filter: alpha(opacity = 90);}
+#colorbox{outline:0;}
+#cboxContent{margin-top:20px;background:#000;}
+.cboxIframe{background:#fff;}
+#cboxError{padding:50px; border:1px solid #ccc;}
+#cboxLoadedContent{border:5px solid #000; background:#fff;}
+#cboxTitle{position:absolute; top:-20px; left:0; color:#ccc;}
+#cboxCurrent{position:absolute; top:-20px; right:0px; color:#ccc;}
+#cboxLoadingGraphic{background:url(../_images/loading.gif) no-repeat center center;}
+
+/* these elements are buttons, and may need to have additional styles reset to avoid unwanted base styles */
+#cboxPrevious, #cboxNext, #cboxSlideshow, #cboxClose {border:0; padding:0; margin:0; overflow:visible; width:auto; background:none; }
+
+/* avoid outlines on :active (mouseclick), but preserve outlines on :focus (tabbed navigating) */
+#cboxPrevious:active, #cboxNext:active, #cboxSlideshow:active, #cboxClose:active {outline:0;}
+
+#cboxSlideshow{position:absolute; top:-20px; right:90px; color:#fff;}
+#cboxPrevious{position:absolute; top:50%; left:5px; margin-top:-32px; background:url(../_images/controls.png) no-repeat top left; width:28px; height:65px; text-indent:-9999px;}
+#cboxPrevious:hover{background-position:bottom left;}
+#cboxNext{position:absolute; top:50%; right:5px; margin-top:-32px; background:url(../_images/controls.png) no-repeat top right; width:28px; height:65px; text-indent:-9999px;}
+#cboxNext:hover{background-position:bottom right;}
+#cboxClose{position:absolute; top:5px; right:5px; display:block; background:url(../_images/controls.png) no-repeat top center; width:38px; height:19px; text-indent:-9999px;}
+#cboxClose:hover{background-position:bottom center;}
+
+
+/*
+    SelectBox Core Style
+*/
+.sbHolder {
+    background-color: #fff;
+    border: 2px solid #61260a;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    height: 26px;
+    position: relative;
+    width: 311px;
+    outline: none;
+}
+
+.pcHolder {
+    background-color: #fff;
+    border: 2px solid #61260a;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    height: 26px;
+    position: relative;
+    width: 58px;
+    outline: none;
+}
+
+.sbHolder:focus .sbSelector {
+
+}
+
+.sbSelector {
+    display: block;
+    height: 26px;
+    left: 0;
+    line-height: 26px;
+    outline: none;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 10px;
+    top: 0;
+    width: 281px;
+}
+
+.pcSelector {
+    display: block;
+    height: 26px;
+    left: 0;
+    line-height: 26px;
+    outline: none;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 10px;
+    top: 0;
+    width: 30px;
+}
+
+.sbSelector:link, .sbSelector:visited, .sbSelector:hover, .pcSelector:link, .pcSelector:visited, .pcSelector:hover {
+    color: #000;
+    outline: none;
+    text-decoration: none;
+}
+
+.sbToggle {
+    background: url(/templates/kazakhfilm-adaptive/_images/select-icons.png) center no-repeat;
+    display: block;
+    height: 26px;
+    outline: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+}
+
+.sbToggle:hover {
+    background: url(/templates/kazakhfilm-adaptive/_images/select-icons.png) center no-repeat;
+}
+
+.sbToggleOpen {
+    background: url(/templates/kazakhfilm-adaptive/_images/select-icons.png) center no-repeat;
+}
+
+.sbToggleOpen:hover {
+    background: url(/templates/kazakhfilm-adaptive/_images/select-icons.png) center no-repeat;
+}
+
+.sbHolderDisabled {
+    background-color: #3C3C3C;
+    border: solid 1px #515151;
+}
+
+.sbOptions {
+    background-color: #fff;
+    border: 2px solid #61260a;
+    list-style: none;
+    left: -2px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 26px;
+    width: 311px;
+    z-index: 1;
+    overflow-y: auto;
+}
+
+.pcOptions {
+    background-color: #fff;
+    border: 2px solid #61260a;
+    list-style: none;
+    left: -2px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 26px;
+    width: 100px;
+    z-index: 1;
+    overflow-y: auto;
+}
+
+.pcOptions a,
+.sbOptions a {
+    /*border-bottom: dotted 1px #515151;*/
+    display: block;
+    outline: none;
+    padding: 7px 0 7px 10px;
+    text-decoration: none;
+}
+
+.pcOptions a:hover,
+.pcOptions a:focus,
+.pcOptions a.sbFocus,
+.sbOptions a:hover,
+.sbOptions a:focus,
+.sbOptions a.sbFocus{
+    background-color: #61260a;
+    color: #ffffff;
+}
+
+.pcOptions li.last a,
+.sbOptions li.last a {
+    border-bottom: none;
+}
+
+.pcOptions .sbDisabled,
+.sbOptions .sbDisabled {
+    display: block;
+    padding: 7px 0 7px 3px;
+}
+
+.pcOptions .sbGroup,
+.sbOptions .sbGroup {
+    color: #61260a;
+    display: block;
+    font-weight: bold;
+    padding: 7px 0 7px 3px;
+}
+
+.pcOptions .sbSub,
+.sbOptions .sbSub {
+    padding-left: 17px;
+}
+
+.shop-message-error {
+    margin: 0 0 0 0;
+    background-color: #e8e8e8;
+    background-image: url('/_images/message-error.png');
+    background-position: center left;
+    background-repeat: no-repeat;
+    -webkit-box-shadow: 0 1px 2px #d7d7d7 inset;
+    -moz-box-shadow: 0 1px 2px #d7d7d7 inset;
+    box-shadow: 0 1px 2px #d7d7d7 inset;
+    color: #818181;
+    padding: 24px 24px 24px 133px;
+    min-height: 45px;
+}
+
+.shop-message-success {
+    margin: 0 0 0 0;
+    background-color: #e8e8e8;
+    background-image: url('/_images/message-success.png');
+    background-position: center left;
+    background-repeat: no-repeat;
+    -webkit-box-shadow: 0 1px 2px #d7d7d7 inset;
+    -moz-box-shadow: 0 1px 2px #d7d7d7 inset;
+    box-shadow: 0 1px 2px #d7d7d7 inset;
+    color: #818181;
+    padding: 24px 24px 24px 133px;
+    min-height: 45px;
+}
+
+.kf-slider-block {
+    overflow: hidden;
+
+}
+
+.kf-slider-block .description{
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 100%;
+    background: url("/templates/kazakhfilm-adaptive/_images/carousel-bg.png");
+    color: #ffffff;
+    font-size: 14px;
+    opacity: 1;
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    -ms-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+}
+
+.kf-slider-block .description-content{
+    margin: 12px 18px;;
+    display: inline-block;
+}
+
+.kf-button {
+    border: none;
+    cursor: pointer;
+    width: 238px;
+    height: 41px;
+    line-height: 41px;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 16px;
+    color: #f8f1a7;
+    text-shadow: 1px 1px 1px #000;
+    display: inline-block;
+    vertical-align: middle;
+    background: url("../_images/kf-button.png") no-repeat center;
+}
+
+.kf-button:hover {
+    opacity: .9;
+}
+.kf-button:active {
+    position: relative;
+    top: 2px;
+}
+
+a.kf-button {
+    line-height: 41px;
+    text-decoration: none;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.kf-welcome {
+    background-image: url("../_images/form-bg2.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 50px 10px;
+    margin: 0 0 20px 0;
+}
+
+.kf-welcome .buttons {
+    text-align: center;
+    margin: 0 0 0 -4px;
+}
+
+.kf-welcome .kf-button {
+    margin: 0 auto;
+}
+
+.kf-welcome .form {
+    width: 230px;
+    padding: 34px 25px;
+    border: 1px solid #a34b21;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 auto 0 auto;
+}
+
+.kf-welcome .form .caption {
+    text-align: center;
+    color: #f8f1a7;
+    text-shadow: 1px 1px 0px #561b06;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 24px;
+    margin: 0 0 25px 0;
+}
+
+.kf-welcome .form [type="text"],
+.kf-welcome .form [type="tel"] {
+    width: 100%;
+    margin: 0 0 13px 0;
+    border: 1px solid #a34b21;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #f8f1a7;
+    text-shadow: 1px 1px 0px #561b06;
+    padding: 0 12px;
+    height: 35px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+}
+
+.kf-welcome .form [type="text"]::-webkit-input-placeholder,
+.kf-welcome .form [type="tel"]::-webkit-input-placeholder {
+    opacity: 1;
+    color: #f8f1a7;
+}
+
+.kf-welcome .form [type="text"]:-moz-placeholder,
+.kf-welcome .form [type="tel"]:-moz-placeholder {
+    opacity: 1;
+    color: #f8f1a7;
+}
+
+.kf-welcome .form [type="text"]::-moz-placeholder,
+.kf-welcome .form [type="tel"]::-moz-placeholder {
+    opacity: 1;
+    color: #f8f1a7;
+}
+
+.kf-welcome .form [type="text"]:-ms-input-placeholder,
+.kf-welcome .form [type="tel"]:-ms-input-placeholder {
+    opacity: 1;
+    color: #f8f1a7;
+}
+
+.kf-index-info {
+    color: #f8f1a7;
+    font-size: 24px;
+    text-align: center;
+    line-height: 27px;
+    margin: 0 0 30px 0;
+}
+
+.kf-key-serviсes {
+    padding: 0 0 50px 0;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+}
+
+.kf-key-serviсes .header {
+    text-align: center;
+    font-size: 30px;
+    color: #000;
+    padding: 0 0 20px 0;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+}
+
+.kf-key-serviсes .header > span {
+    color: #732000;
+    font-weight: bold;
+    font-family: 'cd-bold',Georgia, 'Open Sans', Arial, serif;
+}
+
+.kf-key-serviсes .wrap {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.kf-key-serviсes .cell {
+    display: table-cell;
+    vertical-align: top;
+    padding: 0 0 12px 6px;
+}
+
+
+
+
+
+.kf-key-serviсes .cell:first-child {
+    padding: 0 6px 12px 0;
+}
+
+.kf-key-serviсes .element {
+    border: 1px solid #702102;
+    box-shadow: inset 0 0 1px #d0b4a9;
+    padding: 15px 18px 36px 18px;
+    position: relative;
+    background-color: #fff;
+}
+
+.kf-key-serviсes .element > a {
+     position: absolute;
+     bottom: 0;
+     right: 0;
+     color: #fff;
+     background: #682103;
+     height: 27px;
+     line-height: 27px;
+     width: 110px;
+     text-align: center;
+     text-decoration: none;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    font-size: 13px;
+ }
+
+.kf-key-serviсes .element > a:hover {
+    opacity: .8;
+}
+
+
+.kf-key-serviсes .image, .kf-key-serviсes .text {
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    float: left;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+}
+
+.kf-key-serviсes .image {
+    width: 92px;
+    height: 93px;
+    margin: 0 -92px 0 0;
+}
+
+.kf-key-serviсes .image > a {
+    display: block;
+    width: 92px;
+    height: 93px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    margin: 0 auto;
+}
+
+.kf-key-serviсes .img-1 > a {
+    background-image: url("../_images/key-service-1.png");
+}
+
+.kf-key-serviсes .img-2 > a {
+    background-image: url("../_images/key-service-2.png");
+}
+
+.kf-key-serviсes .img-3 > a {
+    background-image: url("../_images/key-service-3.png");
+}
+
+.kf-key-serviсes .img-4 > a {
+    background-image: url("../_images/key-service-4.png");
+}
+
+.kf-key-serviсes .text {
+    width: 100%;
+    padding: 0 0 0 106px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    color: #762200;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.kf-key-serviсes .name {
+   padding: 0 0 8px 0;
+    color: #000;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 16px;
+    font-family: 'cd-bold',Georgia, 'Open Sans', Arial, serif;
+    font-weight: bold;
+}
+
+@media(max-width: 641px) {
+    .kf-key-serviсes .wrap {
+        display: block;
+        width: 100%;
+    }
+
+    .kf-key-serviсes .cell {
+        display: block;
+        vertical-align: top;
+        padding: 12px 0;
+    }
+
+    .kf-key-serviсes .cell:first-child {
+        padding: 12px 0;
+    }
+
+    .kf-key-serviсes .element {
+        display: block;
+        height: auto !important;
+
+    }
+}
+
+@media(max-width: 479px) {
+    .kf-key-serviсes .image, .kf-key-serviсes .text {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        float: none;
+        font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+        width: 100% !important;
+    }
+
+    .kf-key-serviсes .text {
+        padding: 20px 0 0 0;
+    }
+}
+
+.ks-services-block-text {
+    color: #360606;
+    font-size: 45px;
+    line-height: 49px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 0 30px 0;
+}
+
+.ks-services-block {
+    text-align: center;
+    display: inline-block;
+    margin: 0 -16px 0 0;
+}
+
+.ks-services-block .element {
+    width: 150px;
+    margin: 0 5px 16px 5px;
+    display: inline-block;
+    vertical-align: top;
+
+}
+
+.ks-services-block .element .image {
+    width: 150px;
+    height: 150px;
+    display: block;
+    background-image: url("../_images/services-spt-2.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.ks-services-block .el-01 .image {
+    background-position: 0px 0px;
+}
+
+.ks-services-block .el-02 .image {
+    background-position: 0px -150px;
+}
+
+.ks-services-block .el-03 .image {
+    background-position: 0px -300px;
+}
+
+.ks-services-block .el-04 .image {
+    background-position: 0px -450px;
+}
+
+.ks-services-block .el-05 .image {
+    background-position: 0px -600px;
+}
+
+.ks-services-block .el-06 .image {
+    background-position: 0px -750px;
+}
+
+.ks-services-block .el-07 .image {
+    background-position: 0px -900px;
+}
+
+.ks-services-block .el-08 .image {
+    background-position: 0px -1050px;
+}
+
+.ks-services-block .el-09 .image {
+    background-position: 0px -1200px;
+}
+
+.ks-services-block .el-10 .image {
+    background-position: 0px -1350px;
+}
+
+.ks-services-block .el-11 .image {
+    background-position: 0px -1500px;
+}
+
+.ks-services-block .el-12 .image {
+    background-position: 0px -1650px;
+}
+
+.ks-services-block .element span.text {
+    display: block;
+    width: 100%;
+    height: 38px;
+    overflow: hidden;
+    text-align: center;
+    color: #4c1d07;
+    font-size: 19px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    line-height: 19px;
+    margin-top: 5px;
+}
+
+.ks-review-element {
+    border: 2px solid #dddddd;
+    margin: 0 0 15px 0;
+    color: #4d4c4c;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.ks-review-element .name {
+    color: #61260a;
+    font-style: italic;
+}
+
+.ks-review-element .name u {
+    display: inline-block;
+    margin: 0 25px 0 0;
+}
+
+.ks-review-element .image, .ks-review-element .data {
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ks-review-element .image {
+    width: 100px;
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 -100px 0 0;
+}
+
+.ks-review-element .image img {
+    width: 100%;
+    margin: 0;
+    display: block;
+}
+
+.ks-review-element .data {
+    padding: 0 0 0 120px;
+}
+
+.ks-review-element .data.no-image {
+    padding: 0 0 0 0;
+}
+
+.kz-prefooter-block {
+    background: url("/templates/kazakhfilm-adaptive/_images/brown-tille-bg.png");
+    padding: 35px 0;
+}
+
+.kz-prefooter-block .contacts {
+    float: left;
+    font-size: 24px;
+    color: #f3f500;
+    line-height: 33px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    width: 313px;
+}
+
+.kz-prefooter-block .contacts a.tel {
+    font-size: 24px;
+    color: #f3f500;
+    text-decoration: none;
+    line-height: 33px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+}
+
+.kz-prefooter-block .contacts span {
+    color: #ffffff;
+}
+
+.kz-prefooter-block .contacts strong {
+    color: #ffffff;
+    font-weight: normal;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+}
+
+.kz-prefooter-block .contacts a {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.kz-prefooter-block a.skype{
+    font-size: 16px;
+    color: #ffffff;
+    font-family: 'cd-normal','Open Sans', Arial, sans-serif;
+    display: inline-block;
+    padding: 2px 0 2px 26px;
+    background-image: url("/templates/kazakhfilm-adaptive/_images/icon-skype.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    text-decoration: none;
+}
+
+.kz-prefooter-block .adress {
+    font-size: 18px;
+    color: #ffffff;
+    float: right;
+    width: 260px;
+}
+
+.kz-prefooter-block .backcall {
+    float: left;
+    text-align: center;
+    font-size: 18px;
+    color: #ffffff;
+    width: 281px;
+}
+
+.kz-prefooter-block .button {
+    width: 190px;
+    height: 90px;
+    cursor: pointer;
+    background: url("/templates/kazakhfilm-adaptive/_images/backcall-bg.png");
+    font-size: 16px;
+    color: #f8f1a7;
+    text-transform: uppercase;
+    padding: 15px 10px 0 81px;
+}
+
+.kz-prefooter-block .button span {
+    display: block;
+    font-size: 30px;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+}
+
+.kz-prefooter-block .button:hover {
+    opacity: 0.8;
+}
+
+.mobile-only {
+    display: none;
+}
+
+.os-404 {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    background-color: #ffffff;
+}
+
+.os-404 img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.ks-block-transfer-form {
+    width: 100%;
+    height: 407px;
+    overflow: hidden;
+    background: url("/templates/kazakhfilm-adaptive/_images/transfer/form-bg.jpg") no-repeat center;
+    background-size: cover;
+    margin-top: -30px;
+    text-align: center;
+    padding: 50px 0;
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+}
+
+.ks-block-transfer-form .caption {
+    font-family: 'cd-bold',Georgia, 'Open Sans', Arial, serif;
+    font-size: 30px;
+    color: #542008;
+    line-height: 36px;
+    font-weight: bold;
+    padding-bottom: 30px;
+}
+
+.ks-block-transfer-form input[type=text]{
+    display: block;
+     box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    width: 334px;
+    border: 1px solid #6c2706;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    margin: 0 auto 15px auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: #6c2706;
+}
+
+.ks-block-transfer-form input[type=text]::-webkit-input-placeholder {
+    color: #6c2706;
+}
+.ks-block-transfer-form input[type=text]:-moz-placeholder {
+    color: #6c2706;
+}
+.ks-block-transfer-form input[type=text]::-moz-placeholder{
+    color: #6c2706;
+}
+.ks-block-transfer-form input[type=text]:-ms-input-placeholder {
+    color: #6c2706;
+}
+
+
+.ks-block-transfer-form input[type=text]:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+.ks-block-transfer-form input[type=text]:focus:-moz-placeholder {
+    color: transparent;
+}
+.ks-block-transfer-form input[type=text]:focus::-moz-placeholder{
+    color: transparent;
+}
+.ks-block-transfer-form input[type=text]:focus:-ms-input-placeholder {
+    color: transparent;
+}
+
+
+.ks-block-transfer-form .buttons {
+    padding: 10px 0 0 0;
+}
+
+.ks-block-transfer-features {
+    padding: 50px 0 0 0;
+}
+
+.ks-block-transfer-features .inner {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.ks-block-transfer-features .cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: top;
+    font-size: 16px;
+    color: #000;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    padding: 0 0 50px 0;
+}
+
+.ks-block-transfer-features .image {
+    display: table;
+    width: 100%;
+    height: 93px;
+    margin: 0 0 20px 0;
+}
+
+.ks-block-transfer-features .image a {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    height: 93px;
+}
+
+.ks-block-transfer-features .image img {
+    display: block;
+    margin: 0 auto;
+    max-width: 93px;
+    max-height: 93px;
+}
+
+.ks-block-transfer-text {
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    line-height: 18px;
+    font-size: 14px;
+    color: #000000;
+    margin: 0 0 40px 0;
+}
+
+.ks-block-transfer-text div,
+.ks-block-transfer-text p,
+.ks-block-transfer-text a,
+.ks-block-transfer-text span {
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    font-size: 14px;
+    color: #000000;
+}
+
+.ks-block-transfer-pricelist {
+    padding: 0 0 50px 0;
+}
+
+.ks-block-transfer-pricelist table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 24px 0;
+}
+
+.ks-block-transfer-pricelist thead td {
+    background-color: #f3f3f3;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.ks-block-transfer-pricelist td {
+    padding: 10px;
+    border: 1px solid #f3f3f3;
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    font-size: 16px;
+}
+
+.ks-block-transfer-pricelist td a {
+    font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    font-size: 16px;
+    color: #482222;
+}
+
+.ks-block-transfer-pricelist .buttons {
+    text-align: center;
+}
+
+.ks-block-transfer-services {
+    padding: 50px 0 0 0;
+    margin: 0 0 82px 0;
+    background-color: #f4f4f4;
+}
+
+.ks-block-transfer-services .caption {
+    font-size: 24px;
+    font-family: 'cd-bold',Georgia, 'Open Sans', Arial, serif;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ks-block-transfer-services .buttons {
+    text-align: center;
+    position: relative;
+    top: 15px;
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OneBox</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1,width=device-width,user-scalable=0">
+
+    <script type="text/javascript" src="/packages/jQuery/jquery-1.8.2.min.js"></script>
+
+    <link href='//fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/modules/box/contents/admin/forms/form_order_page.css" />
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+    <div class="os-mainer">
+        <header class="os-header">
+            <a href="http://webproduction.ua/" class="logo">
+                <span>
+                    <img src="{|$host|}{|$logosrc|}" alt="logo" />
+                </span>
+            </a>
+            <div class="contacts">
+                <strong>Контактные данные</strong><br />
+                {|foreach from=$phones item="p" key="k"|}
+                    <div class="item">{|$p|}</div>
+                {|/foreach|}
+                <div class="item"><a href="mailto:support@webproduction.ua">{|$email|}</a></div>
+            </div>
+        </header>
+
+        <section class="os-content">
+            <div class="os-block-form">
+                {|if $message == 'field'|}
+                    <div class="required-field-message">
+                        {|$translate_delivery_error_field|} <br/>
+                    </div>
+                    <br>
+                {|/if|}
+                {|if $message == 'error'|}
+                    <div class="message-error">
+                        {|$translate_error|} <br/>
+                    </div>
+                    <br>
+                {|/if|}
+                {|if $message == 'ok'|}
+                    <div class="message-succses">
+                        {|$translate_forms_success|} <br/>
+                    </div>
+                    <br>
+                {|/if|}
+
+                {|if $message != 'ok'|}
+                    <h1>{|$formname|}</h1>
+                    <small>{|$formdescription|}</small>
+                    <br /><br />
+                    <form class="js-form-validate" action="" method="post">
+                        {|foreach from=$fieldArray item="e" key="key"|}
+                            {|if $e.type == 'checkbox'|}
+                                <div class="element">
+                                    <div class="title">{|$e.title|}</div>
+                                    <label>
+                                        <input type="checkbox" name="{|$e.name|}" {|if $e.value|} checked {|/if|} value="1"/>
+                                        <span class="description">{|$e.description|}</span>
+                                    </label>
+                                </div>
+                            {|/if|}
+
+                            {|if $e.type == 'string'|}
+                                <div class="element">
+                                    <div class="title">{|$e.title|}</div>
+                                    <input {|if $e.required|}class="js-required"{|/if|} type="text" name="{|$e.name|}" value="{|$e.value|}" />
+                                    {|if $e.required|}<div class="required-message">Обязательное поле</div>{|/if|}
+                                    <span class="description">{|$e.description|}</span>
+                                    <div class="clear"></div>
+                                </div>
+                            {|/if|}
+
+                            {|if $e.type == 'text'|}
+                                <div class="element">
+                                    <div class="title">{|$e.title|}</div>
+                                    <textarea {|if $e.required|}class="js-required"{|/if|} name="{|$e.name|}">{|$e.value|}</textarea>
+                                    {|if $e.required|}<div class="required-message">Обязательное поле</div>{|/if|}
+                                    <span class="description">{|$e.description|}</span>
+                                    <div class="clear"></div>
+                                </div>
+                            {|/if|}
+                        {|/foreach|}
+                        {|if $message != 'error'|}
+                            <input class="os-button js-check-required" type="submit" name="ok" value="{|$translate_send|}">
+                        {|/if|}
+                    </form>
+                {|/if|}
+            </div>
+
+        </section>
+        <div class="clear"></div>
+    </div>
+    <script>
+        var $elements = $('.js-form-validate input, .js-form-validate textarea');
+        var $elementsRequired = $('.js-required');
+        var allowValidate = true;
+
+        $(function() {
+            // фокусируемся на 1-ом элементе
+            setTimeout(function(){
+                $elements.slice(0,1).focus();
+            }, 1000);
+
+            $elements.focus(function(){
+                var $this = $(this);
+                setTimeout(function(){
+                    $('.zoomed').removeClass('zoomed');
+                    $this.closest('.element').addClass('zoomed');
+                }, 100);
+            });
+
+            $elements.focusout(function(){
+                $('.zoomed').removeClass('zoomed');
+                if (allowValidate) {
+                    checkValidation(this);
+                    console.log('allow');
+                }
+                setTimeout(function(){
+                    allowValidate = true;
+                }, 200);
+            });
+
+            $('.js-check-required').click(function(){
+                if (!allowValidate) {
+                    return false;
+                }
+            });
+        });
+
+        function checkValidation(e) {
+            $('.js-current').removeClass('js-current');
+            $('.js-required').removeClass('required-field');
+            $('.required-message').slideUp(300);
+            $(e).addClass('js-current');
+            $elementsRequired.each(function(){
+                if (!$.trim($(this).val())) {
+                    allowValidate = false;
+                    var $this = $(this);
+                    setTimeout(function(){
+                        $this.addClass('required-field').focus();
+                        $this.next('.required-message').slideDown(300);
+                    }, 100);
+                    return false;
+                }
+                if ($(this).hasClass('js-current')) {
+                    return false;
+                }
+
+                console.log('111');
+            });
+        }
+    </script>
+</body>
+</html>

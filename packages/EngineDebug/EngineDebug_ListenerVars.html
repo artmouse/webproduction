@@ -1,0 +1,73 @@
+<h2 class="wpp-h2">$_SERVER</h2>
+<div class="wpp-content-gray wpp-rounded">
+    <table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+        {|foreach from=$server item="v" key="k"|}
+            <tr valign="top">
+                <td><strong>{|$k|}</strong></td>
+                <td>{|$v|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>
+
+<h2 class="wpp-h2">$_SESSION</h2>
+<div class="wpp-content-gray wpp-rounded">
+    <table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+        {|foreach from=$server item="v" key="k"|}
+            <tr valign="top">
+                <td><strong>{|$k|}</strong></td>
+                <td>{|$v|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>
+
+<h2 class="wpp-h2">$_COOKIE</h2>
+<div class="wpp-content-gray wpp-rounded">
+    <table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+        {|foreach from=$cookie item="v" key="k"|}
+            <tr valign="top">
+                <td><strong>{|$k|}</strong></td>
+                <td>{|$v|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>
+
+<h2 class="wpp-h2">$_GET</h2>
+<div class="wpp-content-gray wpp-rounded">
+    <table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+        {|foreach from=$get item="v" key="k"|}
+            <tr valign="top">
+                <td><strong>{|$k|}</strong></td>
+                <td>{|$v|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>
+
+<h2 class="wpp-h2">$_POST</h2>
+<div class="wpp-content-gray wpp-rounded">
+    <table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+        {|foreach from=$post item="v" key="k"|}
+            <tr valign="top">
+                <td><strong>{|$k|}</strong></td>
+                <td>{|$v|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>
+
+{|*|}
+<a href="#" id="EngineDebug-globals-link" class="wpp-h2">$_GLOBALS (click)</a>
+<div class="EngineDebug-autohide wpp-content-gray wpp-rounded" id="EngineDebug-globals">
+    <table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+        {|foreach from=$globals item="v" key="k"|}
+            <tr valign="top">
+                <td><strong>{|$k|}</strong></td>
+                <td>{|$v|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>
+{|*|}

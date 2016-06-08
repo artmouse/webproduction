@@ -1,0 +1,17 @@
+{|if $pageIntervalBannerId|}
+    <div class="os-block-popup js-popup-pageinterval-block" >
+        <div class="dark" onclick="popup_pageinterval_close();"></div>
+        <div class="block-popup pageinterval-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close" onclick="popup_pageinterval_close();"></a>
+                {|$pageIntervalName|}
+            </div>
+            <img class="banner-image" src="{|$urlBannerLoginImg|}" width="800" height="350" alt=""/>
+            <div class="body"> {|$commentPageIntervalBanner|} </div>
+            <div class="foot">
+                <a class="os-submit green" href="{|$urlBannerLogin|}">{|$translate_registration|}</a>
+            </div>
+        </div>
+        <input type="hidden" id="pageIntervalBannerId" value="{|$pages|}">
+    </div>
+{|/if|}

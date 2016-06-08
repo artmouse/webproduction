@@ -1,0 +1,288 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|$translate_sale_quick|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="js-message-div"></div>
+
+{|if $messageprocess == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_sale_quick_message_success|}.
+    </div>
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $messageinfo == 'nosale'|}
+    <div class="shop-message-error">
+        {|$translate_sale_quick_message_nosale|}.
+    </div>
+{|/if|}
+
+{|if $messageprocess == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_sale_quick_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e.product|}
+                <strong>{|$translate_product|} {|$e.product|}</strong>:
+            {|/if|}
+            {|if $e.error == 'storagename'|}
+                {|$translate_sale_quick_error_warehouse|}.<br />
+            {|/if|}
+            {|if $e.error == 'permission'|}
+                {|$translate_storage_error_permission|}<br />
+            {|/if|}
+            {|if $e.error == 'product'|}
+                {|$translate_box_error_product|}.<br />
+            {|/if|}
+            {|if $e.error == 'count'|}
+                {|$translate_box_error_amount|}.<br />
+            {|/if|}
+            {|if $e.error == 'price'|}
+                {|$translate_incoming_error_price|}.<br />
+            {|/if|}
+            {|if $e.error == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.<br />
+            {|/if|}
+            {|if $e.error == 'currency'|}
+                {|$translate_incoming_error_currency|}.<br />
+            {|/if|}
+            {|if $e.error == 'lack'|}
+                {|$translate_storage_error_lack|}.<br />
+            {|/if|}
+            {|if $e.error == 'problem'|}
+                {|$translate_box_error_product|}.<br />
+            {|/if|}
+            {|if $e.error == 'contractor'|}
+                {|$translate_error_contractor|}.<br />
+            {|/if|}
+            {|if $e.error == 'client'|}
+                {|$translate_error_client|}.<br />
+            {|/if|}
+            
+            {|if $e.error == 'sum'|}
+                Неверная сумма платежа.
+            {|/if|}
+            {|if $e.error == 'accountDirectionRate'|}
+                Неверно указан курс.
+            {|/if|}
+            {|if $e.error == 'account'|}
+                Неверно указан аккаунт.
+            {|/if|}
+            {|if $e.error == 'permission'|}
+                Нет доступа к указанному аккаунту.
+            {|/if|}
+            {|if $e.error == 'category'|}
+                Неверно выбрана категория платежа.
+            {|/if|}
+            {|if $e.error == 'invoice'|}
+                Указанный счет не найден.
+            {|/if|}
+            {|if $e.error == 'accountDirection'|}
+                Не выбран аккаунт с которого/на который осуществляется платеж.
+            {|/if|}
+            {|if $e.error == 'direction'|}
+                Неверное направление платежа.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messageprocess != 'ok'|}
+    {|if !$control_storagefromid|}
+        {|if not $storagesfromArray|}
+            <div class="shop-message-error">
+                {|$translate_sale_todo|} <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>.
+            </div>
+        {|/if|}
+
+        <form action="" method="post" class="shop-block">
+            <strong>{|$translate_sale_warehouse_choose|}.
+            {|$translate_storage_no_change|}</strong><br />
+            <br />
+
+            <strong>{|$translate_storage_from_what|}</strong><br />
+            <select name="storagefromid">
+                {|foreach from=$storagesfromArray item="e"|}
+                    <option value="{|$e.id|}">{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+            <br />
+            <br />
+
+            <input class="ob-button" type="submit" value="{|$translate_select|}" />
+
+        </form>
+    {|else|}
+        <strong>{|$translate_storage_from|}: </strong> {|$storagefromname|}
+        <br />
+        <br />
+
+        <form action="" method="post" id="id-products">
+            {|$productTable|}
+        </form>
+
+        <br />
+
+        <div class="shop-block">
+            <a href="#" onclick="$j('#js-add-block').toggle(); return false;" style="display: block; font-size: 18px;">{|$translate_sale_add|}</a>
+
+            <div id="js-add-block" style="display: none;">
+                {|$addForm|}
+            </div>
+        </div>
+
+        <br />
+
+        <div class="shop-block">
+            <h1>{|$translate_sale_do|}:</h1>
+
+            <form action="" method="post" id="form2" enctype="multipart/form-data">
+
+                <input type="text" id="id-user-name"  style="width: 70%;" value="{|$client|}" placeholder="{|$clientName|}" />
+                <input type="hidden" name="userid" value="{|$control_userid|}" id="id-user-value" />
+                <a href="#" id="id-user" class="ob-button fl-r" style="width: 50px; margin-top: 1px;">Клиент</a>
+
+                <script type="text/javascript">
+                if ($j('#id-user-name').length) {
+                    $j('#id-user-name').click(function (event) {
+                        selectwindow_init('w2', 'id-user-name', 'id-user-value', {
+                            usersearch: true,
+                            usersearchcompanyonly: $j('.js-company-order-only').html(),
+                            useradd: true,
+                            useraddcompanyonly: $j('.js-company-order-only').html()
+                        });
+
+                        event.preventDefault();
+                    });
+
+                    $j('#id-user').click(function(e){
+                        $j('#id-user-name').click();
+                        e.preventDefault();
+                    });
+                }
+                </script>
+
+                <br />
+                <br />
+
+                <strong>{|$translate_contractor|}: </strong>
+                <select name="contractorid">
+                    {|foreach from=$contractorArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+                <br />
+                <br />
+
+                <strong>{|$translate_sale_date|}</strong><br />
+                <input type="text" name="date" value="{|$control_date|}" />
+                <br />
+                <br />
+
+                <strong>Комментарий: </strong><br />
+                <textarea name="comments" style="width: 98%;">{|$control_comments|}</textarea>
+                <br />
+                <br />
+                
+                {|if $accountArray|}
+                    <div class="shop-block" id="js-shop-block-payment">
+                        <h1>Создать платеж</h1>
+                        <div class="js-payment-form" style="display: none;">
+                
+                            <strong>{|$translate_account|}</strong>
+                            <select name="paymentaccountid">
+                                {|foreach from=$accountArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_paymentaccountid|}selected{|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                            <br />
+                            <br />
+                
+                            {|if $invoiceArray|}
+                                <strong>Счет (инвойс)</strong>
+                                <select name="paymentinvoiceid">
+                                    <option value="">---</option>
+                                    {|foreach from=$invoiceArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_paymentinvoiceid|}selected{|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                                <br />
+                                <br />
+                            {|/if|}
+                
+                            <strong>{|$translate_amount|}</strong>
+                            <input type="text" name="paymentamount" value="{|$control_paymentamount|}" style="width: 150px;">
+                            ({|$translate_account_curency_small|})
+                
+                            <br />
+                            <br />
+                
+                            <strong>{|$translate_payment_date|}: </strong>
+                            <input type="text" name="paymentpdate" id="js-calendar-cdate" value="{|$control_paymentpdate|}" style="width: 150px;">
+                            <script type="text/javascript">
+                            jQuery(function() {
+                                jQuery('#js-calendar-cdate').datepicker({
+                                    dateFormat: 'yy-mm-dd'
+                                });
+                            });
+                            </script>
+                
+                            <br />
+                
+                            <strong>{|$translate_comment|}</strong><br />
+                            <textarea name="paymentcomment" style="width: 99%; height: 100px;">{|$control_paymentcomment|}</textarea>
+                            <br />
+                            <br />
+                
+                            <strong>{|$translate_payment_category|}</strong><br />
+                            <select name="paymentcategoryid">
+                                <option value="">---</option>
+                                {|foreach from=$categoryArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_paymentcategoryid|}selected{|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                            <br />
+                            <br />
+                
+                            <strong>{|$translate_reference_code|}</strong> {|$translate_optionally|}<br />
+                            <input type="text" name="paymentcode" value="{|$control_paymentcode|}" style="width: 50%; ">
+                            <br />
+                            <br />
+                
+                            <strong>{|$translate_banking_details|}</strong> {|$translate_optionally|}<br />
+                            <textarea name="paymentbankdetail" style="width: 95%; height: 100px;">{|$control_paymentbankdetail|}</textarea>
+                            <br />
+                            <br />
+                
+                            <strong>{|$translate_file|}</strong> {|$translate_optionally|}<br />
+                            <input type="file" name="paymentfile"/>
+                            <br />
+                            <br />
+        
+                        </div>
+                    </div>
+                
+                    <script type="text/javascript">
+                    $j(function() {
+                        $j('#js-shop-block-payment h1').click(function(){
+                            $j('.js-payment-form').slideToggle();
+                        });
+                    });
+                    </script>
+                {|/if|}
+
+                <input type="hidden" name="process" value="1" />
+                <input class="ob-button" type="button" id="js-button-process" value="{|$translate_sale_post|}" onclick="if (confirm('{|$translate_sale_confirm|}?')) $j('#form2').submit(); else return false; " />
+            </form>
+        </div>
+    {|/if|}
+{|/if|}

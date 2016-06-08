@@ -1,0 +1,72 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/role/">{|$translate_spisok_roley|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h1>{|$translate_sozdanie_roli|}</h1>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <strong>{|$translate_nazvanie_roli|}</strong><br />
+    <input  type="text" name="name"  value=""  style="width: 80%; "  />
+    <br />
+    <br />
+    <strong>{|$translate_opisanie_roli|}</strong><br />
+    <textarea name="description" value="" style="width: 100%; height: 100px;" ></textarea>
+    <br />
+    <br />
+    <strong>{|$translate_cvet_bloka_roli|}</strong><br />
+    <input  type="text" name="blockcolor"  value=""  style="width: 80%; "  />
+    <br />
+    <br />
+    <strong>{|$translate_podchinyaetsya|}</strong><br />
+    <select name="parentid" >
+        <option value="">---</option>
+        {|foreach from=$arrayRole item='e'|}
+            <option value="{|$e.id|}">
+                {|section name=foo start=0 loop=$e.level|}
+                    &nbsp;&nbsp;&nbsp;
+                {|/section|}
+                {|$e.name|}
+            </option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+    {|foreach from=$arrayid item='id'|}
+        <strong>KPI{|$id|}</strong><br />
+        <select name="kpi{|$id|}id" >
+            <option value="0"  selected >---</option>
+            {|foreach from=$arrayKpi item='e'|}
+                <option value="{|$e.id|}">{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_parametr|}</strong><br />
+        <input  type="text" name="kpi{|$id|}param" value="" style="width: 80%; "/>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_fakticheskoe_znachenie|}</strong><br />
+        <input  type="text" name="kpi{|$id|}value" value="" style="width: 80%; "/>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_bp_dlya_zp|}</strong><br />
+        <select name="salary{|$id|}workflowid" >
+            <option value=""  selected >---</option>
+            {|foreach from=$arrayWorkflow item='e'|}
+                <option value="{|$e.id|}">{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_koefitsient_dlya_zp|}</strong><br />
+        <input  type="text" name="salary{|$id|}koef"  value="" style="width: 80%; "/>
+        <br />
+        <br />   
+    {|/foreach|}
+
+    <input type="submit" name="formsInsert" value="{|$translate_save|}" />
+</form>

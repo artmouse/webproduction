@@ -1,0 +1,20 @@
+<div class="ob-block-element wrapped">
+    <div class="block-caption">Исполнители</div>
+    <table class="shop-table" width="100%">
+        {|foreach from=$managerArray item="e"|}
+            <tr>
+                <td>
+                    {|$e.userName|}<br />
+                    <span class="light">{|$translate_vipolneno|}: {|$e.issueCountClosed|} / {|$translate_postavleno|}: {|$e.issueCount|}</span>
+                </td>
+                <td style="width: 150px;">
+                    <div class="ob-progressbar-grouped">
+                        <div class="ob-progressbar" title="{|$translate_only|}: {|$e.percentAll|}%" style=""><span style="width: {|$e.percentAll|}%;"></span></div>
+                        <div class="ob-progressbar red" title="{|$translate_otkrito|}: {|math equation="100-x" x=$e.percentAll|}%" style=""><span style="width: {|math equation="100-x" x=$e.percentAll|}%;"></span></div>
+                        <div class="ob-progressbar green" title="{|$translate_zakrito|}: {|$e.percentDone|}%"><span style="width: {|$e.percentDone|}%;"></span></div>
+                    </div>
+                </td>
+            </tr>
+        {|/foreach|}
+    </table>
+</div>

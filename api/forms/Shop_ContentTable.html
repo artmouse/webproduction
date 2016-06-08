@@ -1,0 +1,36 @@
+{|$filter|}
+
+<div class="shop-overflow-table">
+    <table class="{|$cssClassName|} table-filter">
+        {|$headers|}
+
+        {|foreach from=$rowsArray item="r"|}
+            {|$r|}
+        {|/foreach|}
+    </table>
+</div>
+
+<div class="shop-table-control">
+    {|$stepper|}
+
+    {|if $rowsArray && ($isUserAdmin || $canExport) AND not $disableExports|}
+        <div class="ob-block-export js-block-export">
+            <a href="#" class="link" onclick="$j('.options').toggle(); return false;"><span>{|$translate_export_to|}</span></a>
+            <div class="options" id="options" style="display: none;">
+                <div class="block">
+                    <a href="{|$urlexportcsv|}" class="csv">{|$translate_export_to|} CSV</a>
+                    <a href="{|$urlexportxls|}" class="xls">{|$translate_export_to|} XLS</a>
+                    <a href="{|$urlexportxml|}" class="xml">{|$translate_export_to|} XML</a>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $j(function() {
+                $j(".js-block-export .block a").click(function (event) {
+                    $j('.js-block-export .options').toggle();
+                });
+            });
+        </script>
+    {|/if|}
+    <div class="clear"></div>
+</div>

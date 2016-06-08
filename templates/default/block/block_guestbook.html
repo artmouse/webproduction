@@ -1,0 +1,21 @@
+{|if $response and $guestbookArray|}
+    <div class="os-block-caption">{|$translate_testimonials|}</div>
+    <div class="os-block-faq">
+        {|foreach from=$guestbookArray item="e"|}
+            <div class="element">
+                <div class="identifier" style="background-color: {|$e.color|};"></div>
+                <a href="/{|$gurl|}/">{|$e.response|}</a>
+                <div class="date">
+                    {|$e.date|}
+                    {|if $e.name|}
+                        {|$translate_from_small|}
+                        {|$e.name|}
+                    {|elseif $e.login|}
+                        {|$translate_from_small|}
+                        {|$e.login|}
+                    {|/if|}
+                </div>
+            </div>          
+        {|/foreach|}
+    </div>
+{|/if|}

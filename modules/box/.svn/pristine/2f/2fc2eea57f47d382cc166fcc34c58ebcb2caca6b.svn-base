@@ -1,0 +1,116 @@
+{|$block_menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_vo_vremya_sohraneniya_proizoshla_oshibka|}.
+    </div>
+{|/if|}
+
+<div class="ob-block-details">
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption" style="width: 300px;">{|$translate_ord|}:</div>
+            <div class="el-value"><strong>{|$orderName|}</strong></div>
+        </div>
+    </div>
+
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption" style="width: 300px;">{|$translate_summa_zakaza|}:</div>
+            <div class="el-value">{|$sum|} {|$currency|}</div>
+        </div>
+    </div>
+
+    {|if $sum != $sumWithoutTax|}
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption" style="width: 300px;">{|$translate_summa_zakaza_bez_nds|}:</div>
+                <div class="el-value">{|$sumWithoutTax|} {|$currency|}</div>
+            </div>
+        </div>
+    {|/if|}
+
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption" style="width: 300px;">{|$translate_raspredeleno_mezhdu_ispolnitelyami|}:</div>
+            <div class="el-value">{|$employerSum|} {|$currency|}</div>
+        </div>
+    </div>
+</div>
+
+<form action="" method="post">
+    <div class="shop-overflow-table">
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_ispolnitel|}</td>
+                    <td>{|$translate_etap|}</td>
+                    <td>{|$translate_kraynik_srok_etapa|}</td>
+                    <td>{|$translate_rol|}</td>
+                    <td>{|$translate_sum|} ({|$currency|})</td>
+                    <td>{|$translate_percentage|}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            {|foreach from=$employerArray item="e" key="index"|}
+                <tr>
+                    <td>
+                        <select name="manager{|$index|}" class="chzn-select" style="width: 300px;" {|if not $canEdit|} disabled {|/if|}>
+                            <option value="0">---</option>
+                            {|foreach from=$managerArray item="m"|}
+                                <option value="{|$m.id|}" {|if $m.id == $e.managerid|} selected {|/if|}>{|$m.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="status{|$index|}" class="chzn-select" style="width: 300px;" {|if not $canEdit|} disabled {|/if|}>
+                            <option value="0">---</option>
+                            {|foreach from=$statusArray item="m"|}
+                                <option value="{|$m.id|}" {|if $m.id == $e.statusid|} selected {|/if|}>{|$m.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td><input type="text" name="term{|$index|}" value="{|$e.term|}" class="js-datetime" {|if not $canEdit|} disabled {|/if|} style="width: 180px;" /></td>
+                    <td>
+                        <select name="role{|$index|}" class="chzn-select" style="width: 300px;" {|if not $canEdit|} disabled {|/if|}>
+                            <option value="0">---</option>
+                            {|foreach from=$roleArray item='rr'|}
+                                <option value="{|$rr.name|}" {|if $rr.name == $e.role|} selected {|/if|} >
+                                    {|section name=foo start=0 loop=$rr.level|}
+                                    &nbsp;&nbsp;&nbsp;
+                                    {|/section|}
+                                    {|$rr.name|}
+                                </option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td><input type="text" name="sum{|$index|}" value="{|$e.sum|}" {|if not $canEdit|} disabled {|/if|} /></td>
+                    <td><input type="text" name="percent{|$index|}" value="{|$e.percent|}" {|if not $canEdit|} disabled {|/if|} style="width: 70px;" /></td>
+                    <td class="nowrap">{|if $e.total|}= {|$e.total|} {|$currency|}{|/if|}</td>
+                    <td><a class="ob-link-delete ob-icon js-clear-line" href="javascript:void(0);" title="Удалить исполнителя"></a></td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+
+    {|if $canEdit|}
+        <div class="ob-button-fixed">
+            <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green js-form-submit" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    {|/if|}
+</form>
+
+<script>
+    $j('.js-clear-line').click(function(){
+        $j(this).closest('tr').find('input, select').val('');
+        $j('.js-form-submit').click();
+    });
+</script>

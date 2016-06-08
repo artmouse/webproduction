@@ -1,0 +1,66 @@
+<table style="width: 100%;" >
+    {|foreach from=$workflowArray item="status" key="key"|}
+        <tr>
+            <td>
+                <div>
+                    {|foreach from=$status item="w"|}
+                        {|if $w|@count>1 && $w.name|}
+                            <label>
+                                <input id="check{|$w.id|}" type="checkbox" data-name="{|$status.name|}" data-id="{|$key|}" onclick="fade_workflow(this);" value='{|$status.json|}' checked>
+                                {|$w.name|}
+                            </label>
+                            <br />
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            </td>
+            <td align="center">
+                <div id="funnel-{|$key|}" style="min-width: 410px; height: 420px; margin: 0 auto auto 20px"></div>
+                <br />
+                <br />
+            </td>
+        </tr>
+    {|/foreach|}
+</table>
+
+<script type="text/javascript">
+    $j(function() {
+        {|foreach from=$workflowArray item="w" key="wKey"|}
+            $j('#funnel-{|$wKey|}').highcharts({
+                chart: {
+                    type: 'funnel',
+                    marginRight: 300
+                },
+                title: {
+                    text: '{|$w.name|}',
+                    x: -150
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b> ({point.y:,.0f})',
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                            softConnector: true
+                        },
+                        neckWidth: '30%',
+                        neckHeight: '25%'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    data: [
+                        {|foreach from=$w item="e"|}
+                            {|if $e|@count > 1|}
+                                ['{|$e.name|}', {|$e.count|}],
+                            {|/if|}
+                        {|/foreach|}
+
+                    ]
+                }]
+            });
+        {|/foreach|}
+    });
+</script>

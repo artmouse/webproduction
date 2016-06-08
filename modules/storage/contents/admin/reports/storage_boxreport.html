@@ -1,0 +1,48 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_storage|}</div>
+                <select name="storagenameid" class="chzn-select">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_storagenameid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_storage_box_report|}</h1>
+
+        {|if $boxArray|}
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table sortable">
+                <thead>
+                <tr>
+                    <th width="100">{|$translate_code_small|}</th>
+                    <th>{|$translate_box|}</th>
+                    <th align="right" width="100">{|$translate_sum|}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {|foreach from=$boxArray item="e"|}
+                    <tr>
+                        <td>{|$e.id|}</td>
+                        <td>{|$e.name|}</td>
+                        <td align="right">{|$e.amount|}</td>
+                    </tr>
+                {|/foreach|}
+                </tbody>
+            </table>
+        {|elseif $arg_ok|}
+            <div class="shop-message-info">{|$translate_storage_error_box_report|}.</div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

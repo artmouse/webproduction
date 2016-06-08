@@ -1,0 +1,66 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_storage|}</div>
+                <select name="storagenameid" class="chzn-select">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_storagenameid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_storage_reserve|}</h1>
+
+        {|if $message == 'error'|}
+            <div class="shop-message-error">
+                {|$translate_box_message_error|}.<br />
+            </div>
+        {|/if|}
+
+        {|if $productsArray|}
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table sortable">
+                <thead>
+                <tr>
+                    <th>{|$translate_code_small|}</th>
+                    <th>{|$translate_product|}</th>
+                    <th>{|$translate_quantity_in_stock|}</th>
+                    <th>{|$translate_required_reserve_small|}</th>
+                    <th>{|$translate_percentage_of_reserve|}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {|foreach from=$productsArray item="e"|}
+                    <tr>
+                        <td {|if $e.lack|} style="color: red;" {|/if|} {|if $e.plenty|} style="color: green;" {|/if|}>
+                            {|$e.productid|}
+                        </td>
+                        <td {|if $e.lack|} style="color: red;" {|/if|} {|if $e.plenty|} style="color: green;" {|/if|}>
+                            {|$e.name|}
+                        </td>
+                        <td align="right" {|if $e.lack|} style="color: red;" {|/if|} {|if $e.plenty|} style="color: green;" {|/if|} >
+                            {|$e.count|}
+                        </td>
+                        <td align="right" {|if $e.lack|} style="color: red;" {|/if|} {|if $e.plenty|} style="color: green;" {|/if|} >
+                            {|$e.reserve|}
+                        </td>
+                        <td align="percent" {|if $e.lack|} style="color: red;" {|/if|} {|if $e.plenty|} style="color: green;" {|/if|} >
+                            {|$e.percent|}%
+                        </td>
+                    </tr>
+                {|/foreach|}
+                </tbody>
+            </table>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

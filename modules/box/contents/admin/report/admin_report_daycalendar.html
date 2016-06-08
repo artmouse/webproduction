@@ -1,0 +1,91 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/report/daycalendar/" class="selected" >{|$translate_analiz_rabochego_dnya|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_s|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_po|}" />
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_employee|}</div>
+                <select name="userid" class="chzn-select">
+                    <option value="">&nbsp;</option>
+                    {|foreach from=$userArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_userid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $dateArray|}
+            <h1>{|$translate_analiz_rabochego_dnya|}: {|$name|}</h1>
+
+            <div class="shop-overflow-table">
+                <table class="shop-table box-table-daylyreport">
+                    <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            {|foreach from=$dateArray item="date"|}
+                                <td class="ta-center">{|$date|}</td>
+                            {|/foreach|}
+                        </tr>
+                    </thead>
+                    {|foreach from=$hourArray item="hour"|}
+                        <tr>
+                            <td class="ta-center">
+                                <strong>{|$hour|}:00</strong>
+                            </td>
+                            {|foreach from=$dateArray item="date"|}
+                                <td>
+                                    {|if $reportArray.$date.$hour|}
+                                        <a class="dayly-tasks" href="javascript:void(0);" onclick="popupOpen('.js-elementlist-popup-{|$date|}{|$hour|}');"></a>
+
+                                        <div class="shop-block-popup js-elementlist-popup-{|$date|}{|$hour|}" style="display: none;">
+                                            <div class="dark"></div>
+                                            <div class="popupblock">
+                                                <a class="close" onclick="popupClose('.js-elementlist-popup-{|$date|}{|$hour|}');" href="#">
+                                                    <svg viewBox="0 0 16 16">
+                                                        <use xlink:href="#icon-close"></use>
+                                                    </svg>
+                                                </a>
+                                                <div class="head">{|$hour|}:00</div>
+                                                <div class="window-content">
+                                                    {|foreach from=$reportArray.$date.$hour item="timeArray"|}
+                                                        {|foreach from=$timeArray item="e"|}
+                                                            <div class="day-element">
+                                                                <span class="time">{|$e.time|}</span>
+                                                                <a href="{|$e.url|}" class="{|$e.class|}" data-id="{|$e.id|}" >{|$e.name|}</a>
+                                                                {|if $e.comment|} - {|$translate_napisal_kommentariy|} &quot;{|$e.comment|}&quot;{|/if|}
+                                                            </div>
+                                                        {|/foreach|}
+                                                    {|/foreach|}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {|/if|}
+                                </td>
+                            {|/foreach|}
+                        </tr>
+                    {|/foreach|}
+                </table>
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

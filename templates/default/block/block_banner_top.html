@@ -1,0 +1,14 @@
+{|if $bannerArray|}
+    <div class="os-block-slick-slider js-block-slick-slider">
+        {|foreach from=$bannerArray item="b"|}
+        <div>
+            <a href="{|$b.url|}" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+            <img src="{|$b.image|}" alt="">
+            {|if $b.comment|}
+            <span class="comment">{|$b.comment|}</span>
+            {|/if|}
+            </a>
+        </div>
+        {|/foreach|}
+    </div>
+{|/if|}

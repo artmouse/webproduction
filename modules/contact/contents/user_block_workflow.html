@@ -1,0 +1,16 @@
+{|if $workflowArray|}
+    {|foreach from=$workflowArray item="e2" key="name"|}
+        <h2>{|$translate_obyazannosti|} {|$name|}</h2>
+        <ul>
+        {|foreach from=$e2 item="e"|}
+            <li>
+                <strong>{|$e.workflow|} > {|$e.name|}</strong>
+                <br />
+                {|$e.content|nl2br|}
+                <br />
+                <br />
+            </li>
+        {|/foreach|}
+        </ul>
+    {|/foreach|}
+{|/if|}

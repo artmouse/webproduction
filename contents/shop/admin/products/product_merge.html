@@ -1,0 +1,78 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/products/">&lsaquo; {|$translate_many_products|}</a></div>
+        <div class="tab-element"><a href="/admin/product/merge/" class="selected">{|$translate_skleyka_tovarov|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get" class="js-productmerge-filter-form">
+            <div class="element">
+                <select name="categoryid" class="chzn-select-tree" style="width: 200px;">
+                    <option value="0">{|$translate_category_all|}</option>
+                    {|foreach from=$categoryArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_categoryid == $e.id|}selected{|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <input type="text" name="productname" value="{|$control_productname|}" placeholder="{|$translate_nazvanie_kod_produkta|}" />
+            </div>
+            <input type="submit" name="ok" value="{|$translate_filter|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $message == 'ok'|}
+            <div class="shop-message-success">
+                {|$translate_tovari_skleeni|}.
+            </div>
+        {|/if|}
+
+        {|if $message == 'error'|}
+            <div class="shop-message-error">
+                {|$translate_error|}.
+            </div>
+        {|/if|}
+
+        {|if $productArray|}
+            <div class="ob-merge-list">
+                {|foreach from=$productArray item="e"|}
+                    <div class="ob-merge-element js-productmerge-product" data-productid="{|$e.id|}">
+                        <div class="image"><img src="{|$e.photo|}"/></div>
+                        <div class="info">
+                            {|$e.name|}<br />
+                            {|if $e.categoryName|}{|$e.categoryName|}<br />{|/if|}
+                            {|if $e.brandName|}{|$e.brandName|}<br />{|/if|}
+                            {|$e.price|} {|$e.currency|}
+
+                            <input type="hidden" name="product_id[]" value="{|$e.id|}" />
+                            <input type="hidden" name="product_sort[]" value="" class="js-productmerge-sort" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {|/foreach|}
+            </div>
+
+            <div class="ob-merge-group">
+                <form class="js-productmerge-list">
+
+                    <input type="submit" name="merge" value="{|$translate_skleit|}" class="ob-button button-green js-productmerge-button-merge" style="display:none;" />
+                    <input type="button" value="{|$translate_clear|}" class="ob-button button-cancel js-productmerge-button-clear" style="display:none;" />
+                    <input type="hidden" name="ok" value="1" />
+                    <div style="display:none; " class="js-productmerge-list-hidden"></div>
+                </form>
+            </div>
+            <div class="clear"></div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

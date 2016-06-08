@@ -1,0 +1,96 @@
+<?php
+class block_banner_top extends Engine_Class {
+
+    public function process() {
+        // список баннеров сверху
+        $bannerArray = $this->getBanners('top');
+
+        $buttonsArray = array();
+        $i = 0;
+        foreach ($bannerArray as $value) {
+            $buttonsArray[] = $i;
+            $i++;
+        }
+
+        $this->setValue('buttonsArray', $buttonsArray);
+        $this->setValue('bannerArray', $bannerArray);
+        $this->setValue('countBanners',count($buttonsArray));
+    }
+
+    private $_bannerArray = false;
+
+    private function getBanners($place = false) {
+        if ($this->_bannerArray === false) {
+            $this->_bannerArray = array();
+            $banners = Shop::Get()->getShopService()->getBannerAll();
+            $banners->setOrder(array('sort', 'id'), 'ASC');
+            $banners->setHidden(0);
+            while ($x = $banners->getNext()) {
+                $this->_bannerArray[] = $x;
+            }
+        }
+
+        $a = array();
+        $countBanners = 0;
+        foreach ($this->_bannerArray as $x) {
+            if ($countBanners >= 7) {
+                return $a;
+            }
+            if ($place && $x->getPlace() == $place) {
+                if ($x->getOnlyIndex()) {
+                    if (Engine::Get()->getRequest()->getContentID() == 'index') {
+                        $a[] = $this->makeInfoArray($x);
+                        continue;
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                $a[] = $this->makeInfoArray($x);
+                $countBanners++;
+            }
+        }
+        return $a;
+    }
+
+
+
+    public function makeInfoArray(ShopBanner $x) {
+        $a = array();
+        $a['id'] = $x->getId();
+        $a['name'] = $x->getName();
+        $a['place'] = $x->getPlace();
+        $a['comment'] = $x->getComment();
+        $a['image'] = str_replace(PackageLoader::Get()->getProjectPath(), '',Shop_ImageProcessor::MakeThumbCrop(PackageLoader::Get()->getProjectPath().'/media/shop/'.$x->getImage(), 980, 397, 'png'));
+        //$a['imageOriginal'] = $this->makeImage();
+
+        $url = $x->getUrl();
+        $host = Engine::Get()->getConfigField('project-host');
+        if (preg_match('#^https?://'.preg_quote($host, '#').'/#', $url)) {
+            // internal link
+            $a['url'] = $url;
+            $a['external'] = false;
+        } else {
+            // external link
+            if (strpos($url, '?') === false) {
+                $url .= '?utm_source='.urlencode($host).'&utm_medium=banner_'.$a['place'].'&utm_campaign='.urlencode($a['name']);
+            }
+
+            $a['url'] = Engine::Get()->GetLinkMaker()->makeURLByContentIDParams(
+                'shop-click',
+                array(
+                    'url' => urlencode($url),
+                    'id' => $x->getId()
+                )
+            );
+            $a['external'] = true;
+        }
+
+        //print_r($a);exit;
+
+        return $a;
+    }
+
+
+
+}

@@ -1,0 +1,15 @@
+{|if $headersArray|}
+    <thead>
+        <tr>
+            {|foreach from=$headersArray item="e"|}
+                <td>
+                    {|if $e.url|}
+                        <a href="{|$e.url|}">{|$e.name|}</a>
+                    {|else|}
+                        {|$e.name|}
+                    {|/if|}
+                </td>
+            {|/foreach|}
+        </tr>
+    </thead>
+{|/if|}

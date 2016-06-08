@@ -1,0 +1,337 @@
+<h1>Инструкция интеграции OneBox и сторонних систем (1С)</h1>
+
+90% клиентов, которые начинают работать с OneBox хотят интеграцию с 1С и сами нифига не понимают что это значит :)<br />
+Эта инструкция описывает что нужно сделать нам с нашей стороны технически, чтобы сделать интеграцию с 1С как хочет клиент.<br />
+<br />
+
+<strong>Внимание!</strong><br />
+<li>Вместо 1С может быть любая другая учетная система (ДелоПро, МойСклад и тд) - но сути это не меняет.</li>
+<li>Это стандартная схема, которая подходит под 90% проектов.</li>
+<br />
+
+<h2>Кто главный?</h2>
+Изначально надо решить, какая база для заказов-клиентов и товаров будет главная: 1С или OneBox.
+Главная – master, не главная – slave (ведомая).
+<br />
+
+Возможны такие случаи:<br />
+<br />
+
+<strong>Заказы и клиенты:</strong>
+<ul>
+    <li>главная база для заказов в OneBox.<br />
+        В таком случае OneBox передает в 1С всю информацию о складских движениях и операциях с заказами.</li>
+    <li>главная база для заказов будет 1С.<br />
+        1С передает информацию о заказах в OneBox чисто для статистики.</li>
+</ul>
+
+<strong>Товары:</strong>
+<ul>
+    <li>главный OneBox.<br />
+        Все механизмы рассчета цен, переучет, склады - все в OneBox и он передает эти данные в 1С,
+        чтобы бухгалтера могли сдавать отчеты и заниматься своими делами.</li>
+    <li>главная 1С.<br />
+        Все переценки, склады и тд - в 1С. 1С передает в OneBox информацию о товарах,
+        их ценах и наличиях в OneBox.</li>
+</ul>
+
+После того как определен механизм “кто главный для каких сущностей” - приступаем к интеграции.<br />
+Для нас <strong>лучше всего, чтобы главным в обоих случая был OneBox</strong>. В этом случае у нас уже все готово.<br />
+<br />
+
+<h2>Если для товаров главный OneBox (OneBox product master)</h2>
+<ol>
+    <li>достаточно дать FTP доступ к директории /media/export/product/,
+        в которой будет несколько файлов - product.xml, brand.xml, category.xml … и в формате JSON тоже.</li>
+    <li>Нужно дать доступ по FTP к этим файлам и пусть 1Сник сами решает как их подтягивать.<br />
+        Для того чтобы данные выгрузились в файлы product.xml, brand.xml, category.xml необходимо<br />
+        в Настройках в пункте Глобальные настройки зачем Интеграции: Учетные системы активирировать соответсвующие пункты.
+        Файлы обновляются раз в час.<br />
+        Структура данных очень понятна и документирована.<br />
+        Если 1Сник будет требовать документацию – то это означает что он даже не посмотрел файлы.<br />
+        Данные выгружаются автоматически в XML и JSON и CSV, пусть выбирает формат, который ему нравится.<br />
+    </li>
+</ol>
+
+<h2>Если для заказов главный OneBox (OneBox order master)</h2>
+<ol>
+    <li>в настройке этапа бизнес-процесса нужно добавить Действие “Выгружать заказ в XML” или “Выгружать заказ в CSV”.</li>
+    <li>Дать FTP-доступ к директории /media/export/order/ - тут будут данные о заказах.</li>
+    <li>Дать FTP-доступ к директории /media/export/storage/ - тут будут данные о складах.
+        Все операции по складам выгружаются автоматически.</li>
+    <li>И дальше 1Сник уже сам решает как забирать себе эти данные.<br />
+        Структура данных очень понятна и документирована.<br />
+        Если 1Сник будет требовать документацию – то это означает что он даже не посмотрел файлы.<br />
+        Данные выгружаются автоматически в XML и JSON и CSV, пусть выбирает формат, который ему нравится.<br />
+    </li>
+</ol>
+
+<h2>Если для товаров главная 1С (OneBox product slave)</h2>
+<ol>
+    <li>1Снику необходимо дать FTP-доступ к директории /media/import/product/
+    <li>необходимо сообщить 1Снику чтобы он формировал файл с данными о товарах и загружал его в эту директорию по FTP.
+    <li>Формат файла должен быть или XML или JSON (никаких других)
+    <li>Файл с товарами обязательно должен содержать такие поля:<br />
+        Наименование товара<br />
+        Код товара<br />
+        Артикул (если есть)<br />
+        Цена товара<br />
+        Закупочная цена (если есть)<br />
+        Наличие товара (есть или нет, только два состояния)<br />
+        Расширенная информация о наличии (строка)<br />
+    </li>
+    <li>Передать задачу разработчику, чтобы он настроил импорт данных из файла по cron hour.<br />
+        После обработки XML файла необходимо этот файл удалять.<br />
+        Обработку писать как модуль projectname/trunk<br />
+    </li>
+</ol>
+
+<h2>Если для заказов главная 1С (OneBox order slave)</h2>
+В целом механизм тот-же:
+<ol>
+    <li>Дать FTP доступ 1Снику в директорию /media/import/order/</li>
+    <li>Просить его забрасывать в эту директорию заказы в формате XML или JSON.
+        Причем все достаточно просто: <strong>один заказ - это один файл</strong>.</li>
+    <li>Передать задачу разработчику, чтобы он настроил импорт данных в заказы OneBox по cron hour.<br />
+        После обработки файла с заказом - файл нужно удалять.<br />
+        Обработку писать как модуль projectname/trunk<br />
+    </li>
+</ol>
+
+<h2>Технические нюансы как писать обработчики:</h2>
+<ul>
+    <li>Индивидуальный обработчик пишется как модуль и подключается к проекту.</li>
+    <li>в модуле делаются нужные cron hour, cron minute</li>
+    <li>пример обработчиков - это модуль ukrshina или модуль owox.</li>
+    Например: <a href="https://svn.webproduction.ua/wpshop/wpshop/modules/ukrshina/api/">https://svn.webproduction.ua/wpshop/wpshop/modules/ukrshina/api/</a></li>
+    <li>если вам нужно читать из XML товары или заказы и записывать их в базу - используйте существующие методы API нашего OneBox.<br />
+        Например: нужно добавить заказ - используйте addOrder(), нужно добавить товар - addProduct() и так далее.</li>
+    <li>после УСПЕШНОЙ обработки файла старайтесь его удалить, так будет ясно обработали этот файл или нет.</li>
+    <li>не забывайте в обработчиках про try catch, если что-то вылетит, то хоть остальные обработчики доработают до конца.</li>
+    <li>Всегда подключайте обработчик на боевой проект и проверяйте сами. Задача считается выполненой, когда она выгружена и работает.</li>
+</ul>
+
+<h2>Примеры</h2>
+Пример обработчика, который получает заказы из XML стороннего API.
+
+<code><pre>
+/**
+ * Получаем все заказы OWOX Engine по REST API
+ *
+ * @author Maxim Miroshnichenko &lt;max@webproduction.ua&gt;
+ * @copyright WebProduction
+ * @package OneBox
+ */
+class OWOX_CronMinute implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event = $event;
+
+        $this->_login = Shop::Get()->getSettingsService()->getSettingValue('owox-login');
+        $this->_password = Shop::Get()->getSettingsService()->getSettingValue('owox-password');
+        $this->_urlPoint = Shop::Get()->getSettingsService()->getSettingValue('owox-url');
+        $userID = Shop::Get()->getSettingsService()->getSettingValue('owox-userid');
+
+        if (!$this->_login || !$this->_password || !$this->_urlPoint) {
+            return;
+        }
+
+        try {
+            $cuser = Shop::Get()->getUserService()->getUserByID($userID);
+        } catch (Exception $e) {
+            return;
+        }
+
+        $result = $this->_owoxRequest('Orders/?status=new');
+        foreach ($result->records->record as $x) {
+            $x = (array) $x;
+            //print_r($x);
+
+            $orderID = $x['id'];
+            $orderAmount = $x['amount'];
+            $linkkey = 'owox-'.$orderID;
+
+            $order = new ShopOrder();
+            $order->setLinkkey($linkkey);
+            if ($order->select()) {
+                continue;
+            }
+
+            $client = (array) $x['user'];
+            //print_r($client);
+            $clientNameFirst = $client['first_name'];
+            $clientNameLast = $client['last_name'];
+            $clientEmail = $client['email'].'';
+            $clientPhone = $client['phones']->record[0]->title.'';
+            $cdate = $x['created'];
+            $comment = $x['comment'];
+
+            $productArray = array();
+            //print_r($x['merchandises']);
+            foreach ($x['merchandises']->record as $p) {
+                //print_r($p);
+
+                $tmp = $this->_owoxRequest('Goods/SKU/?id='.$p->goods->id.'');
+                $tmp = (array) $tmp;
+                $title = $tmp['records']->record->title.'';
+                $extID = $tmp['records']->record->ext_id.'';
+
+                $cost = (float) $p->cost.'';
+                $quantity = (float) $p->quantity.'';
+
+                $productArray[] = array(
+                    //'id' => $extID,
+                    'id' => $p->goods->id.'',
+                    'title' => $title,
+                    'count' => $quantity,
+                    'cost' => $cost,
+                    'price' => round($cost / $quantity, 2),
+                );
+            }
+
+            $delivery = $x['deliveries']->record->method->title.'';
+            $payment = $x['invoices']->record->payment_method->title.'';
+
+            print "owoxID = {$orderID}\n";
+            print "nameFirst = {$clientNameFirst}\n";
+            print "nameLast = {$clientNameLast}\n";
+            print "email = {$clientEmail}\n";
+            print "phone = {$clientPhone}\n";
+            print "cdate = {$cdate}\n";
+            print "comment = {$comment}\n";
+            print "delivery = {$delivery}\n";
+            print "payment = {$payment}\n";
+            print "owox amount = {$orderAmount}\n";
+            print_r($productArray);
+            print "\n";
+
+            // добавляем заказ
+            try {
+                SQLObject::TransactionStart();
+
+                $order = new ShopOrder();
+                $order->setLinkkey($linkkey);
+                if (!$order->select()) {
+
+                    // добавляем продукты, если их нет
+                    $a = array();
+                    foreach ($productArray as $p) {
+                        try {
+                            $product = Shop::Get()->getShopService()->getProductByID(
+                                $p['id']
+                            );
+                        } catch (Exception $productEx) {
+                            $product = Shop::Get()->getShopService()->addProduct(
+                                $p['title'],
+                                $p['id']
+                            );
+                        }
+
+                        $a[] = array(
+                        'id' => $product->getId(),
+                        'count' => $p['count'],
+                        'price' => $p['price'],
+                        );
+                    }
+
+                    // создаем клиента
+                    $client = Shop::Get()->getUserService()->addUserClient(
+                        $clientNameFirst,
+                        false, // login
+                        false, // password
+                        $clientEmail,
+                        $clientPhone,
+                        false, // address
+                        false, // company
+                        false, // time
+                        false, // comment
+                        false, // group type
+                        $clientNameLast
+                    );
+
+                    $comment = trim($comment."\nOWOXID=".$orderID);
+
+                    // создаем заказ
+                    $order = Shop::Get()->getShopService()->addOrder(
+                        $cuser,
+                        false, // name
+                        $comment,
+                        $cuser->getId(), // managerID
+                        false, // default workflow
+                        false, // dateto,
+                        $client->getId(),
+                        false, // parentID
+                        $a
+                    );
+
+                    // ставим ему linkkey-привязку (защита от дублей)
+                    $order->setLinkkey($linkkey);
+
+                    // ставим способ доставки
+                    if ($delivery) {
+                        $deliveryObject = Shop::Get()->getDeliveryService()->addDelivery($delivery);
+                        $order->setDeliveryid($deliveryObject->getId());
+                    }
+
+                    // ставим способ оплаты
+                    if ($payment) {
+                        $paymentObject = Shop::Get()->getShopService()->addPayment($payment);
+                        $order->setPaymentid($paymentObject->getId());
+                    }
+
+                    $order->update();
+
+                    // пересчитываем цены
+                    Shop::Get()->getShopService()->recalculateOrderSums($order);
+
+                    if ($order->getSum() > $orderAmount) {
+                        $op = new ShopOrderProduct();
+                        $op->setProductname('Скидка');
+                        $op->setProductcount(1);
+                        $op->setCurrencyid($order->getCurrencyid());
+                        $op->setProductprice($orderAmount - $order->getSum());
+                        $op->insert();
+
+                        Shop::Get()->getShopService()->recalculateOrderSums($order);
+                    }
+                }
+
+                SQLObject::TransactionCommit();
+            } catch (Exception $ge) {
+                SQLObject::TransactionRollback();
+                print $ge;
+            }
+        }
+    }
+
+    private function _owoxRequest($url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->_urlPoint.$url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_login.':'.$this->_password);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        if ($statusCode != 0) {
+            return false;
+        }
+
+        if (!$result) {
+            return false;
+        }
+
+        $result = simplexml_load_string($result);
+        return $result;
+    }
+
+    private $_login;
+
+    private $_password;
+
+    private $_urlPoint;
+
+}
+</pre></code>

@@ -1,0 +1,42 @@
+<?php
+class review extends Engine_Class {
+
+    public function process() {
+
+        try {
+
+            $review = new ShopProductComment();
+            $review->setId($this->getArgument('id'));
+            if ($review->select()) {
+
+                try {
+                    $name = $review->getProduct()->getName();
+                    $brand = $review->getProduct()->getBrand();
+
+                    $this->setValue('productname', $name);
+                    $this->setValue('brandname', $brand->getName());
+                } catch (Exception $e) {
+
+
+                }
+
+
+                $this->setValue('date', $review->getCdate());
+                $this->setValue('user', $review->getUsername());
+                $this->setValue('content', $review->getText());
+
+            } else {
+
+                throw new Exception('Comment by id not found');
+            }
+
+        } catch (Exception $e) {
+            Engine::Get()->getRequest()->setContentNotFound();
+        }
+
+
+
+
+    }
+
+}

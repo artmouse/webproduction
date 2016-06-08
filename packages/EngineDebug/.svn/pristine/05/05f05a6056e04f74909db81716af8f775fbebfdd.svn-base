@@ -1,0 +1,7 @@
+{|foreach from=$messagesArray item="e"|}
+    <pre class="wpp-content-gray wpp-rounded">{|$e|}</pre>
+{|foreachelse|}
+    <div class="wpp-content-error wpp-rounded">
+        Сообщений нет.
+    </div>
+{|/foreach|}

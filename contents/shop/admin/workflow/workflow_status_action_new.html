@@ -1,0 +1,68 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/workflow/">&lsaquo; {|$translate_biznes_protsessi|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflow/{|$categoryid|}/">{|$translate_workflow|} {|$categoryName|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusId|}/">{|$translate_etap|} {|$name|}</a></div>
+        {|if $box|}
+            <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusId|}/interface/">{|$translate_interfeys|}</a></div>
+        {|/if|}
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusId|}/action/new/" class="selected">{|$translate_motion|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $edit_ok|}
+    <div class="shop-message-success">
+        {|$translate_dannie_etapa_uspeshno_sohraneni|}.
+    </div>
+{|/if|}
+
+<form id="js-form" action="" method="post" enctype="multipart/form-data">
+    <div class="ob-grid-control">
+        <div class="control">
+            <strong class="grid-block-caption js-caption-height">{|$translate_biblioteka_deystviya|}</strong>
+            <div class="control-search">
+                <input class="js-block-helper" type="text" name="" value="" placeholder="{|$translate_bistriy_poisk|}" />
+            </div>
+
+            <div class="control-wrap js-block-list">
+                {|foreach from=$actionBlocks item="b"|}
+                    <div data-id="{|$b.id|}" data-name="{|$b.name|}" data-content="{|$b.contentId|}" class="block-element">
+                        {|$b.name|} <br>
+                        {|if $b.description|}
+                            <span class="element-caption-description">{|$b.description|}</span>
+                        {|/if|}
+                    </div>
+                {|/foreach|}
+            </div>
+        </div>
+        <div class="grid">
+            <div class="ob-grid-default">
+                <strong class="grid-block-caption js-caption-height">{|$translate_plan_deystviy_v_etape|} {|$name|}</strong>
+                <div class="block-zone js-block-zone">
+                    <div class="temp-content js-droppable js-form-block">
+                        {|foreach from=$actionBlockStructure item="b"|}
+                            {|$b.html|}
+                        {|/foreach|}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <input type="hidden" value="" name="block_structure" id="js-block-value">
+    </div>
+    <br />
+
+    <div class="ob-button-fixed">
+        <input type="hidden" value="{|$statusId|}" id="js-status-id">
+        <input type="hidden" value="{|$indexCount|}" id="js-index-count">
+        <input class="ob-button button-green" type="submit" name="ok" value="{|$translate_save|}" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+
+<div id="js-button-delete" style="display: none;">
+    <span class="ob-link-delete js-block-delete"></span>
+</div>

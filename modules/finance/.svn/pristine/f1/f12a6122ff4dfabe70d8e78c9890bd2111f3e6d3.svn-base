@@ -1,0 +1,107 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/finance/">&lsaquo; {|$translate_simple_back|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/invoice/list/">{|$translate_invoice|}</a></div>
+        <div class="tab-element"><a href="{|$urlView|}">{|$translate_invoice_small|} #{|$id|}</a></div>
+        <div class="tab-element"><a href="{|$urlPayment|}">{|$translate_payment_add|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_invoice_edit|}</a></div>
+        <div class="tab-element"><a href="{|$urlDelete|}">{|$translate_invoice_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_schet_sohranen|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorArray item="e"|}
+            {|if $e.error == 'sum'|}
+                {|$translate_nevernaya_summa|}.<br />
+            {|/if|}
+            {|if $e.error == 'currency'|}
+                {|$translate_nevernaya_valyuta|}.<br />
+            {|/if|}
+            {|if $e.error == 'client'|}
+                {|$translate_neverniy_klient|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <h1>{|$translate_invoice_edit|}</h1>
+    <br />
+
+    <div class="ob-block-element">
+        <strong>{|$translate_amount|}</strong>
+        <input type="text" name="sum" value="{|$control_sum|}" >
+        <select class="chzn-select inline" name="currencyid" style="width: 100px;">
+            {|foreach from=$currencyArray item="e"|}
+                <option value="{|$e.id|}" {|if $e.id == $control_currencyid|} selected {|/if|}>{|$e.symbol|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+
+        <strong>{|$translate_naznachenie|}</strong>
+        <input type="text" name="name" value="{|$control_name|}" style="width: 300px;" />
+        <br />
+        <br />
+
+        <select class="chzn-select inline" name="type" style="width: 200px;">
+            <option value="in" {|if $control_type == 'in'|} selected {|/if|}>{|$translate_vhodyashchiy|}</option>
+            <option value="out" {|if $control_type == 'out'|} selected {|/if|}>{|$translate_ishodyashchiy|}</option>
+        </select>
+
+        <span class="js-client-container">
+            <input type="text" name="client" id="js-client-name" value="{|$client|}"  style="width: 40%;"/>
+            <input type="hidden" name="clientid" id="js-client-value" value="{|$control_clientid|}" />
+            <a href="#" id="js-client" class="ob-button">{|$translate_change_contact|}</a>
+            <script type="text/javascript">
+            $j(function () {
+                $j('#js-client-name').click(function (event) {
+                    selectwindow_init('w2', 'js-client-name', 'js-client-value', {
+                        usersearch: true,
+                        useradd: true
+                    });
+
+                    event.preventDefault();
+                });
+
+                $j('#js-client').click(function(e){
+                    $j('#js-client-name').click();
+                    e.preventDefault();
+                });
+            });
+            </script>
+        </span>
+        <br />
+        <br />
+
+        <strong>{|$translate_contractor|}: </strong>
+        <select class="chzn-select inline" name="contractorid">
+            {|foreach from=$contractorArray item="e"|}
+                <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+
+        <strong>{|$translate_vistavlen|}: </strong>
+        <input class="js-date" type="text" name="date" value="{|$control_date|}" style="width: 150px;">
+        <br />
+        <br />
+
+    </div>
+
+    <input class="ob-button" type="submit" name="ok" value="{|$translate_save_changes_small|}" />
+
+</form>
+

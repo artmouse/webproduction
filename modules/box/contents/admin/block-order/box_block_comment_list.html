@@ -1,0 +1,424 @@
+<div class="ob-comment-add js-droppable-zone{|$time|}">
+    <div class="nb-block-tabs js-slide-tabs js-comment-tabs">
+        <input id="js-comment-type" type="hidden" name="commenttype" value="comment">
+
+        <div class="tab-element"><a class="selected js-order-comment-link-dashed" href="#" data-name="comment">{|$translate_leave_comment|}</a></div>
+        {|if $clientPostEmail|}
+            <div class="tab-element"><a href="#" class="js-order-comment-link-dashed" data-name="letter">{|$translate_write_letter|}</a></div>
+        {|/if|}
+        {|if $clientPostSmsArray|}
+            <div class="tab-element"><a href="#" class="js-order-comment-link-dashed" data-name="sms">{|$translate_napisat_sms|}</a></div>
+        {|/if|}
+        {|if $box|}
+            <div class="tab-element"><a href="#" class="js-order-comment-link-dashed" data-name="issue">{|$translate_postavit_zadachu|}</a></div>
+            {|if $client|}
+                <div class="tab-element"><a href="#" class="js-order-comment-link-dashed" data-name="forms">{|$translate_send_forms|}</a></div>
+            {|/if|}
+        {|/if|}
+        <span class="hover"></span>
+        <div class="clear"></div>
+    </div>
+
+    <div class="comment-wrap">
+        <div class="comment-cell">
+            <div class="js-order-comment-div">
+                <div class="js-order-comment-letter-div" style="display: none;">
+                    <input type="text" placeholder="{|$translate_vvedite_e_mail|}" value="{|$clientPostEmail|}" name="post_letter_email" style="width: 100%;" />
+                    <br />
+                    <br />
+                    <input type="text" placeholder="{|$translate_ukazhite_temu|}" value="" name="post_letter_subject" style="width: 100%;" />
+                    <br />
+                    <br />
+                </div>
+                    
+                <div class="js-order-comment-sms-div" style="display: none;">
+                    <select name="post_sms_number" class="chzn-select" style="width: 170px;">
+                        {|foreach from=$clientPostSmsArray item="p"|}
+                        <option value="{|$p|}">{|$p|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br />
+                </div>
+
+                <div class="area-wrap">
+                    <textarea id="js-postcomment" name="postcomment" class="js-autosize js-usertextcomplete" placeholder="{|$translate_message|}"></textarea>
+                    <div class="quick-buttons">
+                        <a class="js-add-codetag" href="#">[code]</a>
+                    </div>
+                </div>
+                {|if $watcherArray|}
+                    <span class="watchers">
+                        {|$translate_poluchayut_uvedomleniya|}:
+                        {|foreach from=$watcherArray item="e"|}
+                            <a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.name|}</a>
+                        {|/foreach|}
+                    </span>
+                {|/if|}
+
+                <div class="js-order-comment-forms-div" style="display: none;">
+                    {|$translate_select_forms|}
+                    <select name="select_forms" class="chzn-select" style="width: 300px;">
+                        {|foreach from=$formsArray item="f"|}
+                        <option value="{|$f.id|}">{|$f.name|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br />
+                </div>
+                
+                <div class="js-order-comment-letter-div" style="display: none;">
+                    <div {|if $emailFromArray|@count < 2|}style="display: none;"{|/if|}>
+                        Email {|$translate_otpravitelya|}:
+                        <select class="chzn-select" name="post_letter_email_from">
+                            {|foreach from=$emailFromArray item="em"|}
+                                <option value="{|$em|}">{|$em|}</option>
+                            {|/foreach|}
+                        </select>
+                        <br />
+                    </div>
+                    <div class="js-order-html-letter">
+                        <label><input type="checkbox" name="letter_email_html"/>{|$translate_otpravit_krasivoe_html_pismo|}</label>
+                    </div>
+                    <br />
+                </div>
+                
+            </div>
+        </div>
+
+        {|if $commentTemplateArray|}
+            <div class="template-cell js-template-cell">
+                <div class="list">
+                    {|foreach from=$commentTemplateArray item="comment"|}
+                        <a href="javascript:void(0);" class="ob-link-dashed" data-text="{|$comment.text|}"
+                           onclick="$j('#js-postcomment').val($j('#js-postcomment').val()+$j(this).data('text')).trigger('autosize.resize');">{|$comment.name|}</a>
+                        <br>
+                    {|/foreach|}
+                </div>
+            </div>
+        {|/if|}
+    </div>
+
+    {|if $box|}
+        <div class="ob-block-attach">
+            <a href="#" name="file[]" class="ob-button-attach js-uploader{|$time|}">{|$translate_prilozhit_fayli|}...</a>
+        </div>
+        <script type="text/javascript">
+            var uploader = new DropUploader('.js-droppable-zone{|$time|}', '.js-uploader{|$time|}');
+        </script>
+    {|/if|}
+</div>
+
+{|if $commentArray|}
+    <div class="ob-block-comments">
+        <div class="nb-block-tabs js-slide-tabs js-comments-type">
+            <div class="tab-element"><a class="selected" href="#">{|$translate_contacts_all|}</a></div>
+            <div class="tab-element"><a href="#" data-type="comment">{|$acl_comments|}</a></div>
+            <div class="tab-element"><a href="#" data-type="notify">{|$translate_uvedomleniya|}</a></div>
+            <div class="tab-element"><a href="#" data-type="email">{|$translate_pisma|}</a></div>
+            <div class="tab-element"><a href="#" data-type="sms">SMS</a></div>
+            <div class="tab-element"><a href="#" data-type="call">{|$translate_zvonki|}</a></div>
+            <div class="tab-element"><a href="#" data-type="change">{|$translate_changes|}</a></div>
+            <span class="hover"></span>
+            <div class="clear"></div>
+        </div>
+
+        {|foreach from=$commentArray item="e"|}
+            {|if $e.type == 'commentresult'|}
+                {|* результат задачи *|}
+                <div class="comment-item {|if $e.my|}my-comment{|/if|} result js-item-comment">
+                    <div class="avatar nb-block-avatar" style="background-image: url('{|$e.avatar|}');"></div>
+                    <div class="identifier" style="background-color: {|$e.color|};"></div>
+                    <div class="chead">
+                        {|if $e.content != $translate_soobshchenie_udaleno|}
+                            {|if $e.edit|}
+                                <a class="ob-link-delete ob-icon js-edit-message" href="#" data-id="{|$e.id|}" data-action="delete"></a>
+                                <a class="ob-link-edit ob-icon js-edit-message" href="#" data-id="{|$e.id|}" data-action="edit"></a>
+                            {|/if|}
+                            <a class="ob-link-quote ob-icon js-quote-message" href="#" data-id="{|$e.id|}" title="{|$translate_tsitirovat|}"></a>
+                            <span style="display: none;" class="js-comment-content-original" data-id="{|$e.id|}">{|$e.contentOriginal|}</span>
+                        {|/if|}
+
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        {|if $e.companyName|}
+                            <span class="tag">{|$e.companyName|}</span>
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    <div class="cbody" id="js-text-{|$e.id|}">
+                        {|$e.content|}
+                    </div>
+                </div>
+            {|elseif  $e.type == 'comment'|}
+                {|* обычный комментарий *|}
+                <div class="comment-item {|if $e.my|}my-comment{|/if|} js-item-comment">
+                    <div class="identifier" style="background-color: {|$e.color|};"></div>
+                    <div class="avatar nb-block-avatar" style="background-image: url('{|$e.avatar|}');"></div>
+                    <div class="chead">
+                        {|if $e.content != $translate_soobshchenie_udaleno|}
+                            {|if $e.edit|}
+                                <a class="ob-link-delete ob-icon js-edit-message" href="#" data-id="{|$e.id|}" data-action="delete"></a>
+                                <a class="ob-link-edit ob-icon js-edit-message" href="#" data-id="{|$e.id|}" data-action="edit"></a>
+                            {|/if|}
+                            <a class="ob-link-quote ob-icon js-quote-message" href="#" data-id="{|$e.id|}" title="{|$translate_tsitirovat|}"></a>
+                            <span style="display: none;" class="js-comment-content-original" data-id="{|$e.id|}">{|$e.contentOriginal|}</span>
+                        {|/if|}
+
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        {|if $e.companyName|}
+                            <span class="tag">{|$e.companyName|}</span>
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    <div class="cbody" id="js-text-{|$e.id|}">
+                        {|$e.content|}
+                    </div>
+                </div>
+            {|elseif $e.type == 'notify'|}
+                {|* системное уведомление *|}
+                <div class="comment-item other js-item-notify">
+                    <span class="icon-type ob-icon-warning"></span>
+                    <div class="chead">
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    {|$e.content|}
+                    <div class="clear"></div>
+                </div>
+            {|elseif $e.type == 'ecall'|}
+                {|* звонок *|}
+                <div class="comment-item other js-item-comment">
+                    <span class="icon-type ob-icon-call"></span>
+                    <div class="chead">
+                        {|if $e.eventData.urlFrom|}
+                            <a class="js-contact-preview" href="{|$e.eventData.urlFrom|}" data-id="{|$e.eventData.idFrom|}">{|$e.eventData.nameFrom|}</a>
+                        {|else|}
+                            {|$e.eventData.nameFrom|}
+                        {|/if|}
+
+                        {|$translate_pozvonil|}
+
+                        {|if $e.eventData.urlTo|}
+                            <a class="js-contact-preview" href="{|$e.eventData.urlTo|}" data-id="{|$e.eventData.idTo|}">{|$e.eventData.nameTo|}</a>
+                        {|else|}
+                            {|$e.eventData.nameTo|}
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+
+                    {|if $e.content == 'load'|}
+                        <div class="audio-wrap">
+                            <a href="#{|$e.ip|}" class="ob-link-dashed js-soundfile-load" data-id="{|$e.ip|}">{|$translate_proslushat_zapis_zvonka|}</a>
+                        </div>
+                    {|elseif $e.content|}
+                        <div class="audio-wrap">
+                            <div class="ob-block-audio-element">
+                                <div class="track">
+                                    <audio src="{|$e.contentOriginal|}" preload="none" controls></audio>
+                                </div>
+                                <div class="link">
+                                    <a class="ob-link-download" href="{|$e.contentOriginal|}" download="sound-{|$e.id|}">{|$translate_skachat_zvukozapis|}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {|/if|}
+                </div>
+            {|elseif $e.type == 'document'|}
+                {|* документы *|}
+                <div class="comment-item other js-item-document">
+                    <span class="icon-type ob-icon-edit"></span>
+                    <div class="chead">
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    {|$e.content|}
+                </div>
+            {|elseif $e.type == 'change'|}
+                {|* изменение каких-либо данных *|}
+                <div class="comment-item other js-item-change">
+                    <span class="icon-type ob-icon-edit"></span>
+                    <div class="chead">
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    {|$e.content|}
+                </div>
+            {|elseif $e.type == 'email'|}
+                {|* email *|}
+                <div class="comment-item other {|if $e.my|}my-comment{|/if|} js-item-email">
+                    <div class="identifier" style="background-color: {|$e.color|};"></div>
+                    <span class="icon-type ob-icon-email"></span>
+                    <div class="chead">
+                        {|if $e.content != $translate_soobshchenie_udaleno|}
+                            <a class="ob-link-quote ob-icon js-quote-message" href="#" data-id="{|$e.id|}" title="{|$translate_tsitirovat|}"></a>
+                            <span style="display: none;" class="js-comment-content-original" data-id="{|$e.id|}">{|$e.contentOriginal|}</span>
+                        {|/if|}
+
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        {|if $e.companyName|}
+                            <span class="tag">{|$e.companyName|}</span>
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    <div class="cbody" id="js-text-{|$e.id|}">
+                        {|$e.content|}
+                    </div>
+                </div>
+            {|elseif $e.type == 'sms'|}
+                {|* sms *|}
+                <div class="comment-item other {|if $e.my|}my-comment{|/if|} js-item-sms">
+                    <div class="identifier" style="background-color: {|$e.color|};"></div>
+                    <span class="icon-type ob-icon-sms"></span>
+                    <div class="chead">
+                        {|if $e.content != $translate_soobshchenie_udaleno|}
+                            <a class="ob-link-quote ob-icon js-quote-message" href="#" data-id="{|$e.id|}" title="{|$translate_tsitirovat|}"></a>
+                            <span style="display: none;" class="js-comment-content-original" data-id="{|$e.id|}">{|$e.contentOriginal|}</span>
+                        {|/if|}
+
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        {|if $e.companyName|}
+                            <span class="tag">{|$e.companyName|}</span>
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    <div class="cbody" id="js-text-{|$e.id|}">
+                        {|$e.content|}
+                    </div>
+                </div>
+            {|elseif $e.type == 'call'|}
+                {|* call *|}
+                <div class="comment-item other {|if $e.my|}my-comment{|/if|} js-item-call">
+                    <div class="identifier" style="background-color: {|$e.color|};"></div>
+                    <span class="icon-type ob-icon-sms"></span>
+                    <div class="chead">
+                        {|if $e.content != $translate_soobshchenie_udaleno|}
+                            <a class="ob-link-quote ob-icon js-quote-message" href="#" data-id="{|$e.id|}" title="{|$translate_tsitirovat|}"></a>
+                            <span style="display: none;" class="js-comment-content-original" data-id="{|$e.id|}">{|$e.contentOriginal|}</span>
+                        {|/if|}
+
+                        {|if $e.userURL|}
+                            <a href="{|$e.userURL|}" class="name js-contact-preview js-comment-author-{|$e.id|}" data-id="{|$e.userID|}">{|$e.userName|}</a>
+                        {|else|}
+                            {|$e.userName|}
+                        {|/if|}
+
+                        {|if $e.companyName|}
+                            <span class="tag">{|$e.companyName|}</span>
+                        {|/if|}
+
+                        <span class="date">{|$e.datetime|}</span>
+                    </div>
+                    <div class="cbody" id="js-text-{|$e.id|}">
+                        {|$e.content|}
+                    </div>
+                </div>
+            {|else|}
+                <div class="comment-item other js-item-notify">
+                    <span class="icon-type ob-icon-warning"></span>
+                    <span class="important">{|$translate_neizvestniy_format_zapisi|} #{|$e.id|}.</span><br />
+                    {|$e.content|}
+                </div>
+            {|/if|}
+        {|/foreach|}
+
+        {|if count($pagesArray) > 1|}        
+            <div class="ob-block-stepper">
+                {|if $urlprev|}
+                    <a href="{|$urlprev|}" class="prev">&lsaquo; {|$translate_back|}</a>
+                    {|if $hellip|}&hellip;{|/if|}
+                {|/if|}
+
+                {|foreach from=$pagesArray item="e"|}
+                    <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+                {|/foreach|}
+
+                {|if $urlnext|}
+                    {|if $hellip|}&hellip;{|/if|}
+                    <a href="{|$urlnext|}" class="next">{|$translate_next|} &rsaquo;</a>
+                {|/if|}
+            </div>
+        {|/if|}
+    </div>
+{|/if|}
+
+<div class="shop-block-popup js-edit-message-popup" style="display: none;">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a href="#" class="close" onclick="popupClose('.js-edit-message-popup');">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="head">
+            <span class="js-popup-title">{|$translate_redaktirovat_soobshchenie|}</span>
+        </div>
+        <div class="window-content window-form">
+            <div class="element">
+                <textarea class="js-autosize js-edit-comment-text" val=""></textarea>
+            </div>
+
+            <div class="ob-button-fixed">
+                <input type="button" value="" data-id="" data-action="" class="ob-button button-green js-edit-comment" />
+                <input class="ob-button button-cancel" type="button" value="{|$translate_cancel|}" onclick="popupClose('.js-edit-message-popup');"/>
+            </div>
+            <div class="ob-button-fixed-place"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        $j('.js-soundfile-load').click(function (event) {
+            var eventID = $j(event.target).data('id');
+            $j.ajax({
+                url: '/admin/shop/event/load/',
+                data: {
+                    id: eventID
+                },
+                success: function (html) {
+                    $j(event.target).closest('div').html(html);
+                }
+            });
+
+            event.preventDefault();
+        });
+    });
+</script>

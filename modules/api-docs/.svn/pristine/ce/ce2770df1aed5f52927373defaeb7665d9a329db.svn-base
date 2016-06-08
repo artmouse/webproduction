@@ -1,0 +1,323 @@
+<h1>Работа с валютой в системе OneBox</h1>
+<br />
+<h2>Что такое CurrencyService?</h2>
+CurrencyService - это сервис предназначеный для работы с валютами .
+<br>
+<br>
+<h2>Как работать с CurrencyService?</h2>
+Для того чтобы вы поняли как работать с этим сервисом, вам нужно внимательно ознакомиться с данными примерами:
+<br>
+<br>
+<h2>Что такое системная валюта?</h2>
+Валюта по умолчанию в системе может быть только одна. 
+В системной валюте проводятся все внутренние операции системы, например, оформление заказа, пересчет цен в заказе и т.д.
+Один объект в системе может храниться только в одной какой-то валюте. Например товар XXX может иметь цену только в одной какой-то валюте.
+<br>
+<br>
+<h2>Как получить все валюты?</h2>
+Чтобы получить все валюты из системы OneBox вам нужно воспользоваться методом getCurrencyAll() . Например: 
+<br /><br />
+<code><pre>
+// список валют
+$currency = Shop::Get()->getCurrencyService()->getCurrencyAll();
+</pre></code>
+<br />
+Метод вернёт вам все валюты которые есть в системе OneBox.
+<br>
+<br>
+<h2>Как получить все активные валюты?</h2>
+Чтобы получить все активные валюты вам нужно воспользоваться методом getCurrencyActive() . Например: 
+<br /><br />
+<code><pre>
+$currencyActive = Shop::Get()->getCurrencyService()->getCurrencyActive();
+$currencyArray = array();
+while ($c = $currencyActive->getNext()) {
+    $currencyArray[$c->getId()] = $c->getName();
+}
+</pre></code>
+<br />
+Метод вернёт все активные валюты в системе OneBox, ну дальше в данном примере валюты запишутся в массив $currencyArray.
+<br>
+<br>
+<h2>Как получить валюту по ID?</h2>
+Чтобы получить валюту по ID вам нужно воспользоваться методом getCurrencyByID() . Например: 
+<br /><br />
+<code><pre>
+$currencyId = $this->getArgumentSecure('id');
+$currency = Shop::Get()->getCurrencyService()->getCurrencyByID($currencyId);
+</pre></code>
+<br />
+Метод вернёт объект валюты по её id.<br/> По факту метод принимает такие параметры:
+<br/><br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>   
+    <tr>
+        <td>1</td>
+        <td>$currencyId</td>
+        <td>id валюты которую нужно найти.</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>Как получить валюту по имени?</h2>
+Чтобы получить валюту по имени вам нужно воспользоваться методом getCurrencyByName() . Например: 
+<br /><br />
+<code><pre>
+$currencyName = 'USD';
+$currency = Shop::Get()->getCurrencyService()->getCurrencyByName($currencyName);
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>   
+    <tr>
+        <td>1</td>
+        <td>$currencyName</td>
+        <td>Имя валюты</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>Как получить системную валюту?</h2>
+Чтобы получить системную валюту нужно воспользоваться методом getCurrencySystem() . Например: 
+<br /><br />
+<code><pre>
+$currencyDefault = Shop::Get()->getCurrencyService()->getCurrencySystem();
+</pre></code>
+<br />
+Все расчёты производятся в системной валюте.
+<br>
+<br>
+<h2>Как конвертировать сумму из одной валюты в другую?</h2>
+Чтобы конвертировать сумму из одной валюты в другую вам нужно воспользоваться методом convertCurrency() . Например: 
+<br /><br />
+<code><pre>
+$orderProduct = $this->getOrderProducts();
+while ($x = $orderProduct->getNext()) {
+    $price = Shop::Get()->getCurrencyService()->convertCurrency(
+        $x->getProductprice(),
+        $x->getCurrency(),
+        Shop::Get()->getCurrencyService()->getCurrencySystem()
+    );
+}
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>   
+    <tr>
+        <td>1</td>
+        <td>$sum</td>
+        <td>Сумма которую нужно конвертировать</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$currencyFrom</td>
+        <td>Валюта из которой конвертируется</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>$currencyTo</td>
+        <td>Валюта в которую конвертировать</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>Как обновить валюту?</h2>
+Чтобы обновить данные о валюте вам нужно воспользоваться методом updateCurrency() . Например: 
+<br /><br />
+<code><pre>
+$symbolArray = $this->getArgumentSecure('symbol');
+$currencyArray = $this->getArgumentSecure('currency');
+$deleteArray = $this->getArgumentSecure('delete');
+$hiddenArray = $this->getArgumentSecure('hidden');
+$sortArray = $this->getArgumentSecure('sort');
+$autoupdateArray = $this->getArgumentSecure('autoupdate');
+$percentArray = $this->getArgumentSecure('percent');
+
+if ($currencyArray) {
+    foreach ($currencyArray as $id=>$rate){
+        $select = false;
+
+        Shop::Get()->getCurrencyService()->updateCurrency(
+        $id,
+        $rate,
+        $symbolArray[$id],
+        @$hiddenArray[$id],
+        @$autoupdateArray[$id],
+        @$percentArray[$id],
+        @$sortArray[$id]
+        );
+    }
+}
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>$currencyID</td>
+        <td>id валюты</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$rate</td>
+        <td>курс</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>$symbol</td>
+        <td>символ валюты</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>$hidden</td>
+        <td>Скрытая или нет (активная или нет)</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>$logicclass</td>
+        <td>Логический класс</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>$percent</td>
+        <td>Процент</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>$sort</td>
+        <td>сортировка</td>
+        <td>Нет</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>Как удалить валюту?</h2>
+Чтобы удалить валюту вам нужно воспользоваться методом deleteCurrency() . Например: 
+<br /><br />
+<code><pre>
+$deleteID = $this->getArgument('id');
+Shop::Get()->getCurrencyService()->deleteCurrency($deleteID);
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>$deleteID</td>
+        <td>id валюты которую нужно удалить</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>Как обновить курс валюты?</h2>
+Чтобы обновить курс валюты вам нужно воспользоваться методом updateCurrencyRate() . Например: 
+<br /><br />
+<code><pre>
+$rate *= (100 + $c->getPercent()) / 100;
+
+Shop::Get()->getCurrencyService()->updateCurrencyRate($c, $rate);
+</pre></code>
+<br />
+<br/>
+По факту метод принимает такие параметры:
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>ShopCurrency $currency</td>
+        <td>Объект валюты в которой нужно обновить курс</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$rate</td>
+        <td>Новый курс валюты</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>Как задать системную валюту?</h2>
+Чтобы задать системную валюту вам нужно воспользоваться методом setCurrencySystem() . Например: 
+<br /><br />
+<code><pre>
+$currencyName = $this->getArgumentSecure('currencyName');
+if ($currencyName) {
+    Shop::Get()->getCurrencyService()->setCurrencySystem($currencyName);
+}
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>$currencyName</td>
+        <td>Имя системной валюты</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>

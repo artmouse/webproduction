@@ -1,0 +1,77 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/workflowtype/">&lsaquo; {|$translate_tipi_biznes_protsessov|}</a></div>
+        <div class="tab-element"><a href="../edit/" class="selected">{|$translate_redaktirovat_tip|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_update_data_error|}.
+        {|foreach from=$errorArray item="er"|}
+            {|if $er == 'name'|}
+                <br>
+                {|$translate_imya_obyazatelno|}.
+            {|/if|}
+            {|if $er == 'type'|}
+                <br>
+                {|$translate_tip_obyazatelno|}.
+            {|/if|}
+            {|if $er == 'typeUnique'|}
+                <br>
+                {|$translate_takoy_tip_uzhe_sushchestvuet|}.
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <div>
+        {|$translate_box_name_small|}
+        <br>
+        <input type="text" name="name" value="{|$control_name|}" style="width: 50%;">
+        <br>
+        <br>
+        {|$translate_mnozhestvennoe_nazvanie|}
+        <br>
+        <input type="text" name="mname" value="{|$control_mname|}" style="width: 50%;">
+        <br>
+        <br>
+        {|$translate_type_shot|}
+        <br>
+        <input type="text" name="type" value="{|$control_type|}"  style="width: 50%;">
+        <br>
+        <br>
+        {|$translate_ikonka_unicode_|}
+        <br>
+        <input type="text" name="icon" value="{|$control_icon|}"  style="width: 50%;">
+        <br>
+        <br>
+        {|$translate_stranitsa_dobavleniya_kak_dlya|}:
+        <br>
+        <select name="addtype" class="chzn-select" style="width: 50%;">
+            <option value="issue" {|if $control_addtype == 'issue'|}selected{|/if|}>{|$acl_issue|}</option>
+            <option value="order" {|if $control_addtype == 'order'|}selected{|/if|}>{|$translate_zakaza|}</option>
+            <option value="project" {|if $control_addtype == 'project'|}selected{|/if|}>{|$translate_proekta|}</option>
+        </select>
+        <br>
+        <br>
+        Id {|$translate_kontenta|}
+        <br>
+        <input type="text" name="contentId" value="{|$control_contentId|}"  style="width: 50%;">
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" value="{|$translate_edit_writing|}" name="ok" class="ob-button button-green">
+        <input type="submit" value="{|$translate_delete_entry|}" name="delete" class="ob-button">
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

@@ -1,0 +1,122 @@
+<div class="os-crumbs">
+    <a href="/">{|$translate_main|}</a>
+    {|$translate_ord|} #{|$orderid|}
+</div>
+
+<h1 class="title">{|if $seoh1|} {|$seoh1|} {|else|} {|$translate_ord|} #{|$orderid|} {|/if|}</h1>
+
+{|$translate_order_date|}: {|$orderdate|}<br />
+{|$translate_order_status|}: {|$orderstatus|}<br />
+<br />
+
+<strong>{|$translate_client_info|}</strong><br />
+{|$translate_fio|}: {|$clientname|}<br />
+Email: {|$clientemail|}<br />
+{|$translate_phone|}: {|$clientphone|}<br />
+{|if $clientcontacts|}
+    {|$translate_contacts|}: {|$clientcontacts|}<br />
+{|/if|}
+{|if $comments|}
+    {|$translate_comment|}: {|$comments|}<br />
+{|/if|}
+<br />
+
+{|if $managername || $manageremail|| $managerphone|}
+    <strong>{|$translate_manager_info|}</strong><br />
+    {|if $managername|}
+        {|$translate_fio|}: {|$managername|}<br />
+    {|/if|}
+    {|if $manageremail|}
+        Email: {|$manageremail|}<br />
+    {|/if|}
+    {|if $managerphone|}
+        {|$translate_phone|}: {|$managerphone|}<br />
+    {|/if|}
+    <br />
+{|/if|}
+
+{|if $productsArray|}
+    <div class="os-basket-page">
+        <table>
+            <thead>
+                <tr>
+                    <td class="h-image">&nbsp;</td>
+                    <td>{|$translate_product|}</td>
+                    <td class="h-price ta-center">{|$translate_price|}</td>
+                    <td class="h-count ta-center">{|$translate_number|}</td>
+                    <td class="h-summ ta-center">{|$translate_total|}</td>
+                    <td class="h-summ ta-center">{|$translate_download|}</td>
+                </tr>
+            </thead>
+            {|foreach from=$productsArray item="b"|}
+                <tr>
+                    <td class="ta-center"><a href="{|$b.producturl|}" target="_blank"><img src="{|$b.image|}" alt="{|$b.name|}" title="{|$b.name|}" /></a></td>
+                    <td>
+                        <div class="name">
+                            <a href="{|$b.producturl|}" target="_blank">{|$b.name|}</a>
+                        </div>
+                        {|$b.description|}
+                    </td>
+                    <td>
+                       {|if $b.price == '0.00'|}
+                           <div class="specify">{|$translate_specify_price|}.</div>
+                       {|else|}
+                          <div class="price">{|$b.price|} {|$b.currency|} {|$b.tax|}</div>
+                       {|/if|}
+                    </td>
+                    <td class="ta-center">
+                        <strong>{|$b.amount|} <span>{|$b.unit|}</span></strong>
+                    </td>
+                    <td>
+                       {|if $b.sum == '0.00'|}
+                           <div class="specify">{|$translate_specify_price|}.</div>
+                       {|else|}
+                           <div class="price">{|$b.sum|} {|$b.currency|}</div>
+                       {|/if|}
+                    </td>
+                    <td>
+                        {|if $b.url|}
+                        <a href="{|$b.url|}">{|$translate_download|}...</a>
+                        {|else|}
+                        &nbsp;
+                        {|/if|}
+                    </td>
+                </tr>
+            {|/foreach|}
+            {|if $discountSum > 0|}
+                <tr class="delivery">
+                    <td colspan="2">&nbsp;</td>
+                    <td colspan="2">
+                        {|$translate_discount|}: {|$discountName|}
+                    </td>
+                    <td>
+                        <div class="price">-{|$discountSum|} {|$currency|}</div>
+                    </td>
+                    <td></td>
+                </tr>
+            {|/if|}
+            {|if $deliveryPrice|}
+                <tr class="delivery">
+                    <td colspan="2">&nbsp;</td>
+                    <td colspan="2">
+                        {|$translate_delivery|}: {|$deliveryname|}
+                    </td>
+                    <td>
+                        <div class="summ">{|$deliveryPrice|}{|$currency|}</div>
+                    </td>
+                    <td></td>
+                </tr>
+            {|/if|}
+            <tr class="total">
+                <td colspan="2">&nbsp;</td>
+                <td colspan="2">
+                    {|$translate_in_total|}:
+                </td>
+                <td>
+                    <div class="summ-total">{|$allSum|} {|$currency|}</div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+{|/if|}

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Barcodes</title>
+    {|$engine_includes|}
+
+    <style type="text/css">
+    .print-table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        color: #000;
+        border: 0px;
+        font-size: 13px;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .print-table thead h1{
+        text-align: center;
+    }
+
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        padding: 2px 4px;
+        border: 1px solid #000;
+    }
+    .table thead td{
+        font-weight: bold;
+        background-color: #CCC;
+        text-align: center;
+    }
+    .table td {
+        border: 1px solid #000;
+    }
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    .barcode {
+        display: inline-block;
+        margin-top: 30px;
+        width: 80px;
+        height: 40px;
+        overflow: hidden;
+        font-size: 10px;
+    }
+    .barcode img {
+        width: 100%;
+    }
+    </style>
+</head>
+<body>
+    <table class="print-table">
+        <thead>
+            <tr>
+                <td>
+
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table">
+                    <tr>
+                        {|assign var=n value=0|}
+                        {|if $barcodeimageinternal|}
+                            {|section name=req loop=$count|}
+                                <td align="center">
+                                <div class="barcode">
+                                    #{|$productid|} -
+                                    {|$name|}
+                                    <img src="{|$barcodeimageinternal|}" />
+                                </div>
+                                </td>
+    
+                                {|assign var=n value=`$n+1`|}
+                                {|if $n == 5|}
+                                    {|assign var=n value=0|}
+                                    </tr>
+                                    <tr>
+                                {|/if|}
+                            {|/section|}
+                        {|/if|}
+                    </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

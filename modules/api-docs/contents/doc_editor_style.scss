@@ -1,0 +1,84 @@
+//typography
+$baseFont: 'Noto Sans', sans-serif;
+$baseFontSize: 14px;
+$baseLineHeight: 20px;
+$colorBase: #0177cf;
+$colorDark: #555555;
+$colorNice: #f05c1e;
+$colorImportant: #f00424;
+
+//mixin
+@mixin box-sizing($boxsizing) {
+    -moz-box-sizing: $boxsizing;
+    -webkit-box-sizing: $boxsizing;
+    box-sizing: $boxsizing;
+}
+$bb: border-box;
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body, form, div, p, a, img, h1, h2, h3, h4, h5, h6, table, table tr, table td {
+    border: none;
+    color: $colorDark;
+    font-family: $baseFont;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+    @include box-sizing($bb);
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: $colorBase;
+}
+
+h1, h2 {
+    font-size: $baseFontSize + 8;
+    padding: 0 0 10px 0;
+    margin: 0;
+    color: $colorDark;
+    font-weight: bold;
+
+    a {
+        font-size: inherit;
+        font-weight: inherit;
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+}
+
+h2 {
+    font-size: $baseFontSize + 6;
+}
+
+img {
+    max-width: 100%;
+}
+
+code {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-left: 2px dashed $colorNice;
+    box-sizing: border-box;
+    display: block;
+    overflow: auto;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+
+    pre {
+        padding: 0;
+        margin: 0;
+    }
+}

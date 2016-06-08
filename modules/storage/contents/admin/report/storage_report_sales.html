@@ -1,0 +1,215 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|$translate_storage_report_profits|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_date|} {|$translate_with|}</div>
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-datepicker" />
+            </div>
+            
+            <div class="element">
+                <div class="caption-field">{|$translate_date|} {|$translate_for|}</div>
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-datepicker" />
+            </div>
+        
+            <div class="element">
+                <div class="caption-field">{|$translate_storage|}</div>
+                <select name="storagenameid[]" multiple class="chzn-select">
+                    <option value="all">Все склады</option>
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $storagenameSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_product|}</div>
+                <input type="hidden" name="productid" value="{|$control_productid|}" class="js-product-filter-autocomplete" id="js-productid-filter" style="width: 200px;" />
+                <script type="text/javascript">
+                    $j(function () {
+                        var tags = [
+                        {|foreach from=$productArray item="p" name="foreach1"|}
+                        {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                        {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                        {|/foreach|}
+                        ];
+
+                        $j("#js-productid-filter").select2('data', tags);
+                    });
+                </script>
+            </div>
+                
+            <div class="element">
+                <div class="caption-field">{|$translate_user_small|}</div>
+                <select name="userid[]" multiple class="chzn-select">
+                    {|foreach from=$userArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $userSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>    
+            
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <select name="clientid[]" multiple class="chzn-select">
+                    {|foreach from=$clientArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $clientSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>           
+            
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $tableArray|}
+            {|foreach from=$tableArray item="e"|}
+                <h1>{|$e.date|}</h1>
+                <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable" width="100%">
+                    <thead>
+                        <tr>
+                            <th>{|if $step == 'day'|}{|$translate_document_number|}{|else|}&nbsp;{|/if|}</th>
+                            <th>{|$translate_sum_order|}</th>
+                            <th>{|$translate_sum_sale|}</th>
+                            <th>{|$translate_sum_cost|}</th>
+                            <th>{|$translate_sum_margin|}</th>
+                            <th>{|$translate_sum_refusal|}</th>
+                            <th>{|$translate_storage|}</th>
+                            <th>{|$translate_user_small|}</th>
+                           {|*|} <th>{|$translate_department|}</th> {|*|}
+                            <th>{|$translate_client_small|}</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody>
+                        {|foreach from=$e.orderArray item="o" name='foreachorder'|}
+                            <tr>
+                                <td><a href="{|$o.url|}">{|$o.id|}</a></td>
+                                <td align="right">{|$o.orderSum|}{|$currency|}</td>
+                                <td align="right">{|$o.saleSum|}{|$currency|}</td>
+                                <td align="right">{|$o.costSum|}{|$currency|}</td>
+                                <td align="right">{|$o.marginSum|}{|$currency|}</td>
+                                <td align="right">{|$o.rejectSum|}{|$currency|}</td>
+                                <td>{|$o.storagename|}</td>
+                                <td>{|$o.manager|}</td>
+                                {|*|} <td>{|$o.department|}</td> {|*|}
+                                <td>{|$o.client|}</td>
+                            </tr>
+                        {|/foreach|}
+                        {|if $e.orderCount > 1|}
+                            <tfoot>
+                                <tr>
+                                    <td>{|$translate_in_total|}:</td>
+                                    <td align="right"><strong>{|$e.orderSum|}{|$currency|}</strong></td>
+                                    <td align="right"><strong>{|$e.saleSum|}{|$currency|}</strong></td>
+                                    <td align="right"><strong>{|$e.costSum|}{|$currency|}</strong></td>
+                                    <td align="right"><strong>{|$e.marginSum|}{|$currency|}</strong></td>
+                                    <td align="right"><strong>{|$e.rejectSum|}{|$currency|}</strong></td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </tfoot>
+                        {|/if|}
+                    </tbody>
+                </table>
+                <br />
+            {|/foreach|}
+        
+            <h1>{|$translate_in_total|}</h1>
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{|$translate_date|}</th>
+                        <th>{|$translate_sum_order|}</th>
+                        <th>{|$translate_sum_sale|}</th>
+                        <th>{|$translate_sum_cost|}</th>
+                        <th>{|$translate_sum_margin|}</th>
+                        <th>{|$translate_sum_refusal|}</th>
+                        <th>{|$translate_storage|}</th>
+                        <th>{|$translate_user_small|}</th>
+                        {|*|} <th>{|$translate_department|}</th> {|*|}
+                        <th>{|$translate_client_small|}</th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+                    {|foreach from=$tableArray item="e"|}
+                        <tr>
+                            <td>{|$e.date|}</td>
+                            <td align="right">{|$e.orderSum|}{|$currency|}</td>
+                            <td align="right">{|$e.saleSum|}{|$currency|}</td>
+                            <td align="right">{|$e.costSum|}{|$currency|}</td>
+                            <td align="right">{|$e.marginSum|}{|$currency|}</td>
+                            <td align="right">{|$e.rejectSum|}{|$currency|}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    {|/foreach|}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>{|$translate_in_total|}:</td>
+                        <td align="right"><strong>{|$total.orderSum|}{|$currency|}</strong></td>
+                        <td align="right"><strong>{|$total.saleSum|}{|$currency|}</strong></td>
+                        <td align="right"><strong>{|$total.costSum|}{|$currency|}</strong></td>
+                        <td align="right"><strong>{|$total.marginSum|}{|$currency|}</strong></td>
+                        <td align="right"><strong>{|$total.rejectSum|}{|$currency|}</strong></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <br />
+        
+            <script type="text/javascript">
+            $j(function () {
+                $j('.js-sortable').tablesorter();
+            });
+            </script>
+        
+            {|*|}
+            <div class="ob-block-export js-block-export">
+                 <a href="#" class="link" onclick="$j('.options').toggle(); return false;"><span>{|$translate_export_to|}</span></a>
+                <div class="options" id="options" style="display: none;">
+                     <div class="block">
+                          <a href="{|$urlexportxls|}" class="xls">{|$translate_export_to|} XLS</a>
+                          <a href="{|$urlexportpdf|}" class="pdf">{|$translate_export_to|} PDF</a>
+                     </div>
+                </div>
+            </div>
+            {|*|}
+        
+            <br />
+            <br />
+        {|elseif $arg_ok|}    
+            {|if $message == 'error'|}
+                <div class="shop-message-info">    
+                    {|foreach from=$errorsArray item="e"|}
+                        {|if $e == 'period'|}
+                            Выбран слишком большой период дат.<br />
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            {|else|}
+                <div class="shop-message-info">{|$translate_no_data|}.</div>
+            {|/if|}
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div

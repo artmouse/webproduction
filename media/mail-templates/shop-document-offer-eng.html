@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    {|$engine_includes|}
+
+    <style>
+        body{
+            padding: 60px 20px 55px 107px;
+        }
+        .print-table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            color: #000;
+            border: 0px;
+            font-size: 13px;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .print-table thead h1{
+            text-align: center;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            padding: 3px 4px;
+        }
+
+        .table td {
+            border: 1px solid #000;
+        }
+
+        .header {
+            border: none;
+            border-collapse: collapse;
+        }
+
+        .header td {
+            padding: 0 10px 10px 0;
+        }
+
+        .table thead td{
+            font-weight: bold;
+            background-color: #CCC;
+            text-align: center;
+        }
+        .table tr.total td{
+            font-weight: bold;
+            border: 0;
+        }
+        .table tr.total td.border {
+            border: 1px solid black;
+        }
+        .sign {
+            border: none;
+            border-collapse: collapse;
+        }
+        .sign td {
+            padding: 5px 3px;
+            text-align: right;
+        }
+        .pdv {
+            width: 50px;
+            display: inline-block;
+        }
+    </style>
+
+</head>
+<body>
+
+    <table class="print-table">
+        <thead>
+            <tr>
+                <td>
+                    <table class="header">
+                        <tr valign="top">
+                            <td><u>Provider</u></td>
+                            <td>
+                                {|*|}<strong>{|$contractorname|}</strong><br />{|*|}
+                                {|$contractordetails|}
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td><u>Recipient</u></td>
+                            <td>
+                                {|if $clientname|}
+                                    <strong>{|$clientname|}</strong>
+                                {|else|}
+                                    ________________________________________________
+                                {|/if|}
+                                <br />
+                                {|if $clientphone|}
+                                    {|$clientphone|}
+                                    <br />
+                                {|/if|}
+                                {|if $clientemail|}
+                                    {|$clientemail|}
+                                    <br />
+                                {|/if|}
+                                {|if $clientaddress|}
+                                    {|$clientaddress|}
+                                    <br />
+                                {|/if|}
+                            </td>
+                        </tr>
+                        {|*|}
+                            <tr valign="top">
+                                <td><u>Order</u></td>
+                                <td>According to the application №{|$number|}</td>
+                            </tr>
+                        {|*|}
+                    </table>
+                    <h1>Offer #{|$number|}</h1>
+
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td width="50"><strong>№</strong></td>
+                                <td><strong>Item</strong></td>
+                                <td width="80" align="center"><strong>Amount</strong></td>
+                                <td width="80"><strong>Units</strong></td>
+                                <td width="120" align="center"><strong>Price</strong></td>
+                                <td width="120" align="center"><strong>Total</strong></td>
+                            </tr>
+                        </thead>
+                        {|foreach from=$productsArray item="b" key="i"|}
+                            <tr>
+                                <td align="center">
+                                    {|$i+1|}
+                                </td>
+                                <td>
+                                    {|$b.name|}<br />
+                                    {|$b.comment|}
+                                </td>
+                                <td align="center">
+                                    {|$b.count|}
+                                </td>
+                                <td align="center">
+                                    {|$b.unit|}
+                                </td>
+                                <td align="right">
+                                   {|$b.pricenotax|} {|$ordercurrency|}
+                                </td>
+                                <td align="right">
+                                    {|$b.sumnotax|} {|$ordercurrency|}
+                                </td>
+                            </tr>
+                        {|/foreach|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="center" class="border">
+                                {|$productsum|}
+                            </td>
+                            <td>&nbsp;</td>
+                            <td align="right">Total</td>
+                            <td align="right" class="border">
+                                {|$ordersumwithouttax|} {|$ordercurrency|}
+                            </td>
+                        </tr>
+                        {|if $taxsum != '0.00'|}
+                            <tr class="total">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td align="right">
+                                    Total without VAT
+                                </td>
+                                <td align="right" class="border">
+                                    {|$ordersumwithouttax|} {|$ordercurrency|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                        {|if $taxsum != '0.00'|}
+                            <tr class="total">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>
+                                   &nbsp;
+                                </td>
+                                <td>&nbsp;</td>
+                                <td align="right">
+                                    VAT
+                                </td>
+                                <td align="right" class="border">
+                                    {|$taxsum|} {|$ordercurrency|}
+                                </td>
+                            </tr>
+                        {|else|}
+                            <tr class="total">
+                                <td>&nbsp;</td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                   &nbsp;
+                                </td>
+                                <td align="right">VAT</td>
+                                <td align="right" class="border">
+                                    Without VAT
+                                </td>
+                            </tr>
+                        {|/if|}
+                        {|if $deliveryprice != '0.00'|}
+                            <tr class="total">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td align="right">
+                                    Delivery
+                                </td>
+                                <td align="right" class="border">
+                                    {|$deliveryprice|} {|$ordercurrency|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                        {|if $discountsum != '0.00'|}
+                            <tr class="total">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td align="right">
+                                    Discount
+                                </td>
+                                <td align="right" class="border">
+                                   -{|$discountsum|} {|$ordercurrency|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">
+                                Total with VAT
+                            </td>
+                            <td align="right" class="border">
+                                {|$ordersumwithtax|} {|$ordercurrency|}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    {|*|}
+                        <br />
+                        Total cost: <br />
+                        <strong>{|$ordersumtext|}</strong> <br />
+                        {|if $taxsum != '0.00'|}<span class="pdv">VAT:</span> {|$taxsum|} {|$ordercurrency|}{|/if|}
+                    {|*|}
+                    <br />
+                    <br />
+
+                    <table align="right" class="sign">
+                        <tr align="right">
+                            <td>Ordered by</td>
+                            <td>_____________________________________</td>
+                        </tr>
+                    </table>
+                    <br />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

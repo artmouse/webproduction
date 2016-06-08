@@ -1,0 +1,202 @@
+@media screen and (max-width: 990px){
+    .rtm-submit.small {
+        font-size: 16px;
+        background-image: url("/templates/rtm/_images/ptm-submit.png");
+        height: 35px;
+        line-height: 35px;
+        padding: 0 15px;
+    }
+
+    .inner {
+        width: 720px;
+        padding: 0 10px;
+    }
+
+    header {
+        .rtm-logo {
+            margin-right: 25px;
+        }
+    }
+
+    .rtm-headerright-block {
+        width: 215px;
+
+        .search-block {
+            input[type=text] {
+                padding: 8px 5px;
+            }
+        }
+    }
+
+    .rtm-topcontacts-block {
+        width: 295px;
+
+        .telephone-wrapp {
+            display: inline-block;
+            max-width: 225px;
+        }
+    }
+
+    .rtm-index-features {
+        float: none;
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+
+        .element {
+            width: auto;
+            margin: 0 5px;
+            background-position: 9px 13px;
+
+            span {
+                width: auto;
+                height: 45px;
+            }
+        }
+    }
+
+    .rtm-index-cat-list {
+        .item {
+            width: 230px;
+
+            .image {
+                width: 230px;
+                height: 227px;
+
+                a {
+                    width: 230px;
+                    height: 227px;
+                }
+
+                img {
+                    max-width: 230px;
+                    max-height: 227px;
+                }
+            }
+        }
+    }
+
+    .rtm-index-carousel {
+        .line {
+            li {
+                margin: 0 0 0 3px;
+            }
+        }
+    }
+
+    .page-footer {
+        .item {
+            padding: 0 10px;
+            font-size: 12px;
+            width: 22%;
+
+            .foot-address,
+            .footer-mail,
+            .menu-item {
+                font-size: 12px !important;
+            }
+
+            .head {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .rtm-navigation {
+        .navi {
+            > li > a {
+                text-transform: none;
+            }
+
+            .main {
+                display: none;
+            }
+
+            .devices,
+            .device-main {
+                display: block;
+            }
+
+            .sub-devices {
+                display: none !important;
+
+                &.open {
+                    display: block !important;
+                }
+            }
+        }
+    }
+
+    .rtm-auth-block {
+        margin-bottom: 20px;
+
+        .rtm-user {
+            line-height: 35px !important;
+            height: 35px !important;
+        }
+    }
+
+    .rtm-banner-top {
+        float: none;
+        width: 100%;
+    }
+
+    section.right-layer {
+        width: 472px;
+    }
+
+    .rtm-filter-block input[type="text"] {
+        padding: 8px 5px;
+    }
+
+    .rtm-product-view {
+        .main-image {
+            overflow: hidden;
+        }
+
+        .left-col {
+            width: 365px;
+            overflow: hidden;
+        }
+    }
+
+    .zoomPad {
+        width: 363px !important;
+        height: auto !important;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .zoomWindow,
+    .zoomPreload {
+        display: none !important;
+    }
+
+    .rtm-popup-block {
+        .popup-block.basketp-block {
+            width: 700px;
+        }
+    }
+
+    .ui-autocomplete {
+        display: none !important;
+    }
+
+    .rtm-contacts {
+        .text{
+            width: 375px;
+        }
+    }
+
+    .rtm-contacts  {
+        .rtm-feedback-block {
+            width: 330px;
+        }
+    }
+
+    .rtm-blog-layer {
+        width: 450px;
+    }
+}

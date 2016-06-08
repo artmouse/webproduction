@@ -1,0 +1,132 @@
+<input type="hidden" value="{|$show|}" id="js-product-list-show">
+<div class="os-product-layer {|if not $showFilters|}nofilter{|/if|}">
+    <div class="inner-layer">
+        {|if $categoryid|}
+            <div class="js-product-list-group-id" data-id="{|$categoryid|}" data-key="category" style="display:none"></div>
+        {|elseif $brandid|}
+            <div class="js-product-list-group-id" data-id="{|$brandid|}" data-key="brand" style="display:none"></div>
+        {|/if|}
+        <div class="js-product-list">
+            {|if $pathArray|}
+                <div class="os-crumbs">
+                    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url">
+                            <span itemprop="title">{|$storeTitle|}</span>
+                        </a>
+                    </div>
+                    {|foreach from=$pathArray item="e" name="foo"|}
+                        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="{|$e.url|}" data-rel=".tab-ordered" itemprop="url">
+                                <span itemprop="title">{|$e.name|}</span>
+                            </a>
+                        </div>
+                    {|/foreach|}
+                    {|foreach from=$pathAdditionalArray item="e" name="foo"|}
+                        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="{|$e.url|}" data-rel=".tab-ordered" itemprop="url">
+                                <span itemprop="title">{|$e.name|}</span>
+                            </a>
+                        </div>
+                    {|/foreach|}
+                </div>
+            {|/if|}
+
+            {|if $showSort|}
+                <script>
+                    function filterChange(e) {
+                        if($j(e).val() != '{|$sort|}') {
+                            $j('[data-id=id-sort-form]').submit();
+                        }
+                    }
+                </script>
+
+                <form action="{|$formUrl|}" method="post" data-id="id-sort-form">
+                    <div class="os-block-productsort">
+                        {|$translate_sort|}:
+                        <select name="sort" onchange="filterChange(this);">
+                            <option value="rating" {|if $sort == 'rating'|}selected="selected" {|/if|}>{|$translate_sort_rating|}</option>
+                            <option value="ordered" {|if $sort == 'ordered'|}selected="selected" {|/if|}>{|$translate_sort_ordered|}</option>
+                            <option value="name" {|if $sort == 'name'|} selected="selected" {|/if|}>{|$translate_sort_name|}</option>
+                            <option value="price-asc" {|if $sort == 'price-asc'|} selected="selected" {|/if|}>{|$translate_sort_price_asc|}</option>
+                            <option value="price-desc" {|if $sort == 'price-desc'|} selected="selected" {|/if|}>{|$translate_sort_price_desc|}</option>
+                            <option value="avail" {|if $sort == 'avail'|} selected="selected" {|/if|}>{|$translate_sort_avail|}</option>
+                            {|if $need_relevance_sort|}
+                                <option value="relevance" {|if $sort == 'relevance'|} selected="selected" {|/if|}>{|$translate_sort_relevance|}</option>
+                            {|/if|}
+                        </select>
+                    </div>
+                </form>
+            {|/if|}
+
+            {|$block_subscribe_category|}
+
+            {|$container|}
+
+            {|if $showPages AND count($pagesArray) > 1|}
+                <div class="os-submit red os-show-more js-show-more">
+                    <div class="load"></div>
+                    <span class="js-stepper-next-count">{|$translate_pokazat_eshche|} {|$nextCount|} {|$translate_tovarov|}</span>
+                </div>
+
+                <div class="os-stepper js-stepper">
+                    {|if $urlprev|}
+                        <a class="prev" href="{|$urlprev|}" data-rel="prev" id="back">&larr;{|$translate_back|}</a>
+                    {|/if|}
+                    {|foreach from=$pagesArray item="e"|}
+                        <a href="{|$e.url|}" {|if !$e.visible|}style="display:none"{|/if|} {|if $e.selected|}class="selected"{|/if|} data-type="page">{|$e.name|}</a>
+                    {|/foreach|}
+                    {|if $urlnext|}
+                        <a class="next" href="{|$urlnext|}" data-rel="next" id="next">{|$translate_next|}&rarr;</a>
+                    {|/if|}
+                </div>
+            {|/if|}
+        </div>
+
+        {|if $contentID != 'index' AND $contentID != 'shop-basket'|}
+            {|foreach from=$carouselArray item="e"|}
+                <div class="os-block-caption"><h3>{|$e.name|}</h3></div>
+                {|$e.html|}
+            {|/foreach|}
+        {|/if|}
+    </div>
+</div>
+
+{|if $showFilters|}
+    <aside class="filter-layer js-wrap-filter">
+        <div class="inner js-block-filter">
+            {|if $isbrand|}
+                <div class="os-brand-info">
+                    {|if $branddescription || $brandsiteurl|}
+                        <div class="description">
+                            {|if $brandsiteurl|}
+                            {|$translate_official_site_of_brand|}:
+                            <a href="{|$brandsiteurl|}" rel="nofollow">{|$brandsiteurl|}</a>
+                            <br />
+                            {|/if|}
+                            {|$branddescription|}
+                        </div>
+                    {|/if|}
+                    {|if $brandimage|}
+                        <div class="logo">
+                            <img src="{|$brandimage|}" alt="{|$brandname|escape|}" />
+                        </div>
+                    {|/if|}
+                </div>
+            {|/if|}
+
+            {|$block_productfilter|}
+
+            {|$block_banner_left|}
+
+            {|if $integration_google_adsence_left|}
+                <div class="os-block-adsense-left">
+                    <!--adsense left place-->
+                    {|$integration_google_adsence_left|}
+                </div>
+            {|/if|}
+
+            <div class="clear"></div>
+        </div>
+    </aside>
+{|/if|}
+<div class="clear"></div>

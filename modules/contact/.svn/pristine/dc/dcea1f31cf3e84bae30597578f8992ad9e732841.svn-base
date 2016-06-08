@@ -1,0 +1,20 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a class="js-filter-contacts selected" data-type="" href="#">{|$translate_contacts_all|}</a></div>
+        <div class="tab-element"><a class="js-filter-contacts" data-type="company" href="#">{|$translate_all_company|}</a></div>
+        <div class="tab-element"><a class="js-filter-contacts" data-type="contact" href="#">{|$translate_users_people|}</a></div>
+        <div class="tab-element"><a class="js-filter-contacts" data-type="employer" href="#">Сотрудники</a></div>
+        {|if $canUserAdd|}
+            <div class="tab-element">
+                <a href="./add/">{|$translate_users_add|}</a>
+            </div>
+        {|/if|}
+        <div class="tab-element"><a href="/admin/shop/users/exchange-xls/">{|$translate_import_and_export_excel|}</a> </div>
+
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|$block_users|}

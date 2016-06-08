@@ -1,0 +1,8 @@
+# every minute
+*   *   *   *   *   /usr/bin/php -d memory_limit=500M -f [wwwpath]cron/cron-minute.php > /dev/null 2>&1
+
+# every hour
+0   *   *   *   *   /usr/bin/php -d memory_limit=500M -f [wwwpath]cron/cron-hour.php > /dev/null 2>&1
+
+# every day
+0   1   *   *   *   /usr/bin/php -d memory_limit=500M -f [wwwpath]cron/cron-day.php > /dev/null 2>&1

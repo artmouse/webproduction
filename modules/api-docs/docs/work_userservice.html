@@ -1,0 +1,594 @@
+<h1>Работа с пользователями и контактами в OneBox</h1>
+<br />
+<h2>Что такое UserService?</h2>
+UserService - это сервис предназначеный для работы с контактами (добавление, удаление, поиск и тд...) .
+<br>
+<br>
+<h2>Как работать с UserService?</h2>
+Для того чтобы вы поняли как работать с этим сервисом, вам нужно внимательно ознакомиться с данными примерами:
+<br>
+<br>
+<h2>1.Как добавить клиента?</h2>
+Чтобы добавить клиента в систему OneBox вам нужно воспользоваться методом addClient() . Например: 
+<br /><br />
+<code><pre>
+Shop::Get()->getUserService()->addClient(
+    $clientName,
+    $namelast,
+    $namemiddle,
+    $typesex,
+    $company,
+    $post,
+    $email,
+    $phone,
+    $address,
+    $commentadmin,
+    $userlogin,
+    $userpass
+);
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>$clientName</td>
+        <td>имя клиента</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$namelast</td>
+        <td>фамилия клиента</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>$namemiddle</td>
+        <td>отчество клиента</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>$typesex</td>
+        <td>пол (man, woman, company)</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>$company</td>
+        <td>компания</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>$post</td>
+        <td>должность</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>$email</td>
+        <td>e-mail клиента</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>$phone</td>
+        <td>телефон клиента</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>$address</td>
+        <td>адресс</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>$commentAdmin</td>
+        <td>коментарий</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>$login</td>
+        <td>логин клиента</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>$password</td>
+        <td>пароль</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>$action</td>
+        <td>действия если система найдёт такой же контакт в базе. Всего данный парамтр может принять такие значения: <br />
+            <ul>
+                <li>writing - обновить данный</li>
+                <li>exception - выбросить Exception в случае если нашли.</li>
+            </ul>
+        </td>
+        <td>Нет</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>2.Как удалить клиента?</h2>
+Чтобы удалить клиента из системы OneBox вам нужно воспользоваться методом deleteUser() . Например: 
+<br /><br />
+<code><pre>
+// получаем пользователя по id
+$user = Shop::Get()->getUserService()->getUserByID($this->getArgument('id'));
+
+Shop::Get()->getUserService()->deleteUser($user); // удаляем пользователя
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>User $user</td>
+        <td>обьект нашего пользователя, которого удаляем</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$cuser</td>
+        <td>кто удаляет</td>
+        <td>Нет</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>3.Как отредактирвать пользователя?</h2>
+Чтобы отредактировать пользователя в системе OneBox вам нужно воспользоваться методом updateUserProfile() . Например: 
+<br /><br />
+<code><pre>
+Shop::Get()->getUserService()->updateUserProfile(
+    $user, 
+    $email, 
+    false,   
+    $this->getControlValue('name'),
+    $phone,                  
+    $this->getControlValue('address'), 
+    $bdate,                       
+    $phones,                             
+    $emails,                           
+    $this->getControlValue('urls'),
+    $this->getControlValue('time'),
+    $this->getControlValue('parentid'),
+    false, // не выполнять проверки
+    $this->getControlValue('commentadmin'),
+    $this->getControlValue('managerid'),
+    $this->getArgumentSecure('group', 'array'),
+    $this->getControlValue('login'),
+    $this->getControlValue('company'),
+    $this->getControlValue('pricelevel'),
+    $this->getArgumentSecure('distribution'),
+    $this->getControlValue('tags'),
+    $this->getControlValue('cdate'),
+    $this->getControlValue('namelast'),
+    $this->getControlValue('namemiddle'),
+    $this->getControlValue('post'),
+    $this->getControlValue('typesex'),
+    $this->getControlValue('skype'),
+    $this->getControlValue('jabber'),
+    $this->getControlValue('whatsapp'),
+    $this->getArgumentSecure('employer'),
+    (int) $this->getArgumentSecure('allowreferal'),
+    $this->getControlValue('discount')
+);
+</pre></code>
+<br />
+Метод принимает такие параметры:
+<br/>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>User $user</td>
+        <td>обьект нашего пользователя, которого редактируем</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$email</td>
+        <td>E-mail пользователя</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>$password</td>
+        <td>пароль пользователя</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>$name</td>
+        <td>имя</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>$phone</td>
+        <td>телефон</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>$address</td>
+        <td>адресс</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>$bdate</td>
+        <td>дата рождения в формате (Y-m-d)</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>$phones</td>
+        <td>список (через пробел) всех телефонов пользователя</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>$emails</td>
+        <td>список (через пробел) всех email пользователя</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>$urls</td>
+        <td>сайты (через пробел) пользователя</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>$time</td>
+        <td>время</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>$parentid</td>
+        <td>id автора пользователя (кто создал)</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>13</td>
+        <td>$check</td>
+        <td>проверка email на коктность возможные значения только true или false</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>14</td>
+        <td>$commentadmin</td>
+        <td>комментарий администратора</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td>$managerid</td>
+        <td>id менеджера пользователя</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>$groupArray</td>
+        <td>массив групп в которых состоит пользователь</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>17</td>
+        <td>$login</td>
+        <td>логин пользователя</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>18</td>
+        <td>$company</td>
+        <td>компания</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>19</td>
+        <td>$pricelevel</td>
+        <td>уровень цен (id)</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td>$distribution</td>
+        <td>подписан ли на рассылку (true / false)</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>21</td>
+        <td>$tags</td>
+        <td>теги</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>22</td>
+        <td>$cdate</td>
+        <td>дата создания</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>23</td>
+        <td>$namelast</td>
+        <td>фамилия</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>24</td>
+        <td>$namemiddle</td>
+        <td>отчество</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>25</td>
+        <td>$post</td>
+        <td>должность</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>26</td>
+        <td>$typesex</td>
+        <td>пол</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>27</td>
+        <td>$skype</td>
+        <td>скайп</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>28</td>
+        <td>$jabber</td>
+        <td>джаббер</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>29</td>
+        <td>$whatsapp</td>
+        <td>ватсап</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>30</td>
+        <td>$employer</td>
+        <td>сотрудник или нет (true / false)</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>31</td>
+        <td>$allowreferal</td>
+        <td>рекомендации</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>32</td>
+        <td>$discountid</td>
+        <td>id скидки для пользователя на заказы</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>33</td>
+        <td>$sourceid</td>
+        <td>id источника контакта</td>
+        <td>Нет</td>
+    </tr>
+    <tr>
+        <td>34</td>
+        <td>$contractorid</td>
+        <td>id юридического лица</td>
+        <td>Нет</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>4.Как получить пользователя по ID?</h2>
+Чтобы получить пользователя по id в системе OneBox вам нужно воспользоваться методом getUserByID() . Например: 
+<br /><br />
+<code><pre>
+$userID = $this->getArgument('id');
+$user = Shop::Get()->getUserService()->getUserByID($userID);
+</pre></code>
+<br />
+По факту метод принимает один параметр - id пользователя, на выходе метод getUserByID вернёт 
+вам объект с которым вы уже сможете работать(получать и редактировать данные, и тд..)
+<br>
+<br>
+<h2>5.Как получить всех пользователей?</h2>
+Чтобы получить всех пользователей в системе OneBox вам нужно воспользоваться методом getUsersAll() . Например: 
+<br /><br />
+<code><pre>
+$users = Shop::Get()->getUserService()->getUsersAll();
+</pre></code>
+<br />
+Метод вернёт вам всех пользователей.
+<br>
+<br>
+<h2>6.Как найти пользователя?</h2>
+Чтобы найти пользователя в системе OneBox вам нужно воспользоваться методами findUserByContact() . Например: 
+<br /><br />
+<code><pre>
+// поиск пользователя по email
+if ($email) {
+
+    if (!Checker::CheckEmail($email)) {
+        $ex->addError('email');
+    }
+
+    try {
+        $this->findUserByContact($email, 'email');
+        $ex->addError('email-exists');
+    } catch (Exception $userEx) {
+
+    }
+
+} else if (!$email  && $password) {
+    $ex->addError('email');
+}
+
+// поиск пользователя по телефону
+if ($phone) {
+    try {
+        $this->findUserByContact($phone, 'call');
+        if (!$allow_phone_doubl) {
+            $ex->addError('phone-exists');
+        }
+    } catch (Exception $userEx) {
+
+    }
+}
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>$contact</td>
+        <td>данные по которым мы будем искать (контакт) - это может быть телефон, почта, skype, whatsapp</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>$type</td>
+        <td>тип ваших данных:
+            <br />
+            <ul>
+                <li>call (для номеров телефонов)</li> 
+                <li>email (для почты)</li>  
+                <li>skype (для скайпа)</li> 
+                <li>whatsapp (для ватсап)</li> 
+            </ul>
+        </td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+
+Если метод не найдёт пользователя по заданым параметрам, он вернёт Exception.
+<br>
+<br>
+<h2>7.Как добавить пользователя в группу?</h2>
+Чтобы добавить пользователя в группу, вам нужно воспользоваться методом addUserToGroup() . Например: 
+<br /><br />
+<code><pre>
+try{
+    $group = Shop::Get()->getUserService()->getUserGroupByName($nameGroup); // найдёт группу по имени и вернёт объект
+
+    $user = Shop::Get()->getUserService()->getUserByID($this->getArgument('id'));
+
+    Shop::Get()->getUserService()->addUserToGroup($user, $group); // добавит пользователя в группу
+} catch (Exception $e) {
+
+}
+
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br />
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>User $user</td>
+        <td>объект пользователя которого нужно добавить в группу</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>ShopUserGroup $group</td>
+        <td>объект группы в которую нужно добавить пользователя</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br>
+<br>
+<h2>8.Как удалить пользователя из группы?</h2>
+Чтобы удалить пользователя из группы, вам нужно воспользоваться методом removeUserFromGroup() . Например: 
+<br /><br />
+<code><pre>
+// убрать пользователей из группы
+$groupID = $this->getControlValue('removegroup');
+if ($groupID) {
+    if (preg_match_all("/(\d+)/ius", $this->getControlValue('moveids'), $r)) {
+        foreach ($r[1] as $userID) {
+            try {
+                $user = Shop::Get()->getUserService()->getUserByID($userID);
+
+                Shop::Get()->getUserService()->removeUserFromGroup(
+                    $user,
+                    Shop::Get()->getUserService()->getUserGroupByID($groupID)
+                );
+            } catch (Exception $pe) {
+
+            }
+        }
+    }
+}
+</pre></code>
+<br />
+По факту метод принимает такие параметры:
+<br />
+<table>
+    <tr>
+        <th>№</th>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Обязательное Да / Нет</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>User $user</td>
+        <td>объект пользователя которого нужно удалить из группы</td>
+        <td>Да</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>ShopUserGroup $group</td>
+        <td>объект группы из которой удаляется пользователь</td>
+        <td>Да</td>
+    </tr>
+</table>
+<br />

@@ -1,0 +1,38 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success visible">
+        {|$translate_product|} #{|$id|}: <strong>{|$name|}</strong>  успешно добавлен в корзину переучета.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error visible">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'product'|}
+                {|$translate_box_error_product|}.<br />
+            {|/if|}
+            {|if $e == 'count'|}
+                {|$translate_box_error_amount|}.<br />
+            {|/if|}
+            {|if $e == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.<br />
+            {|/if|}
+            {|if $e == 'permission'|}
+                {|$translate_storage_error_permission|}<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messagesave == 'ok'|}
+    <div class="shop-message-success visible">
+        {|$translate_message_success_update|}.
+    </div>
+{|/if|}
+
+{|if $message == 'loadok'|}
+    <div class="shop-message-success visible">
+        Товары со склада успешно добавлены в корзину переучета.
+    </div>
+{|/if|}

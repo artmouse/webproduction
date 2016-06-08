@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine>
+
+<content id="PREFIX-tpl-global">
+<filehtml>tpl_global.html</filehtml>
+<filecss>tpl_global.css</filecss>
+<filephp>tpl_global.php</filephp>
+<fileclass>wpp_tpl_global</fileclass>
+<argument>
+    <name>uiprefix</name>
+    <value>PREFIX-</value>
+    <type>string</type>
+</argument>
+</content>
+
+<content id="PREFIX-404">
+<title>Ошибка 404</title>
+<filehtml>error404.html</filehtml>
+<filecss>error404.css</filecss>
+<moveto>PREFIX-tpl-global</moveto>
+<moveas>content</moveas>
+<argument>
+    <name>uiprefix</name>
+    <value>PREFIX-</value>
+    <type>string</type>
+</argument>
+</content>
+
+<content id="PREFIX-demo">
+<title>UI WPP (PREFIX-) Demo</title>
+<url>/ui/PREFIX-demo/</url>
+<filehtml>wpp-demo.html</filehtml>
+<moveto>PREFIX-tpl-global</moveto>
+<moveas>content</moveas>
+<argument>
+    <name>uiprefix</name>
+    <value>PREFIX-</value>
+    <type>string</type>
+</argument>
+</content>
+
+</engine>

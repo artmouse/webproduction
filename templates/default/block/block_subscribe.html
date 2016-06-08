@@ -1,0 +1,42 @@
+{|if $subscribe_status !== 'ok'|}
+    <form method="post">
+        <div class="os-block-caption">{|$translate_subscription|}</div>
+        <div class="os-block-subscribe">
+            {|if !$useremail|}
+                <input type="text" name="distribution_email" class="ui-autocomplete-input" value="{|$control_distribution_email|}" placeholder="Email">
+            {|/if|}
+            <input type="submit" class="os-submit grey" name="distribution_ok" value="{|$translate_subscribe|}">
+        </div>
+    </form>
+{|/if|}
+
+{|if $subscribe_message|}
+    <div class="os-block-popup js-popup-subscribe">
+        <div class="dark" onclick="popupClose('.js-popup-subscribe');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="#" class="close" onclick="popupClose('.js-popup-subscribe');">&nbsp;</a>
+                {|$translate_subscription|}
+            </div>
+            
+            {|if $subscribe_message == 'ok'|}
+                <div class="message-success">
+                    {|$translate_you_have_successfully_subscribed|}.
+                </div>
+            {|/if|}
+
+
+            {|if $subscribe_message == 'error'|}
+                <div class="message-error">
+                    {|$translate_you_did_not_enter_email_address|}.
+                </div>
+            {|/if|}
+
+            <script type="text/javascript">
+                setTimeout(function() {
+                     popupClose('.js-popup-subscribe');
+                }, 3000);
+            </script>
+        </div>
+    </div>
+{|/if|}

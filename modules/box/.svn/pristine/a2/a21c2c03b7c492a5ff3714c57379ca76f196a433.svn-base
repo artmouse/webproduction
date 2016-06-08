@@ -1,0 +1,244 @@
+<div class="ob-block-voip js-voip-call">
+    <div class="head">
+        <span class="close" onclick="box_voip_call_close('{|$callID|}');">
+            <span class="nb-icon-close">
+                <svg viewBox="0 0 16 16">
+                    <use xlink:href="#icon-close">
+                </svg>
+            </span>
+        </span>
+        <div class="nb-icon-sms type">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-call">
+            </svg>
+        </div>
+        {|if $direction == 'in'|}{|$translate_vhodyashchiy_zvonok|}{|else|}{|$translate_ishodyashchiy_zvonok|}{|/if|}
+    </div>
+    <div class="body">
+        <div class="block-comment-add">
+            {|* блок комментария к звонку - он отдельный *|}
+            <textarea class="js-autosize-comment" name="callcomment" id="js-call-comment" placeholder="{|$translate_kommentariy_k_zvonku|}"></textarea>
+
+            <div class="comment-result js-call-comment-result"></div>
+
+            <input type="button" class="ob-button button-green" value="{|$translate_sohranit_kommentariy|}" onclick="box_voip_call_comment('{|$callID|}', $j('#js-call-comment').val());" />
+
+            <script type="text/javascript">
+                function call_comment_autosave() {
+                    box_voip_call_comment('{|$callID|}', $j('#js-call-comment').val());
+
+                    setTimeout(call_comment_autosave, 5000);
+                }
+
+                setTimeout(call_comment_autosave, 5000);
+            </script>
+            {|* конец блока комментария к звонку *|}
+        </div>
+
+        <div class="js-call-contact-block">
+            {|if $block_contact|}
+                {|* блок информации о контакте *|}
+
+                {|$block_contact|}
+
+                <div class="option-element">
+                    <select class="chzn-select2" placeholder="{|$translate_nachat_biznes_protsess|}" onchange="makeUrlWorkflow($j(this).val());" style="width: 100%;">
+                        <option value=""></option>
+                        {|foreach from=$workflowArray item="e"|}
+                        <option value="{|$e.url|}">{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|else|}
+                {|* блок-форма создания контакта *|}
+                <select class="chzn-select2" placeholder="{|$translate_nachat_biznes_protsess|}" onchange="makeUrlWorkflow($j(this).val());" style="width: 100%;">
+                    <option value=""></option>
+                    {|foreach from=$workflowArray item="e"|}
+                        <option value="{|$e.url|}">{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+                <br>
+                <br>
+
+                <input type="text" name="client" id="js-call-client-name" value="" placeholder="{|$translate_poisk_klienta|}"/>
+                <input type="hidden" name="clientid" id="js-call-client-value" value=""/>
+                <br>
+                <br>
+                <script type="text/javascript">
+                    $j(function () {
+                        var query = '';
+                        if ($j('#js-call-client-name').length) {
+                            $j('#js-call-client-name').autocomplete({
+                                delay: 500,
+                                source: function (request, response) {
+                                    query = request.term;
+                                    $j.ajax({
+                                        url: "/admin/shop/users/ajax/autocomplete/select2/",
+                                        dataType: "json",
+                                        data: {
+                                            name: request.term,
+                                            noAdd: 1
+                                        },
+                                        success: function (data) {
+                                            if (data == null) response(null);
+                                            response($j.map(data, function (item) {
+                                                name = item.name;
+                                                return {
+                                                    id: item.id,
+                                                    label: name,
+                                                    value: name,
+                                                    phoneArray:item.phoneArray,
+                                                    post: item.post,
+                                                    company: item.company,
+                                                    typesex: item.typesex,
+                                                    namefirst: item.nameFirst,
+                                                    namelast: item.nameLast,
+                                                    namemiddle: item.nameMiddle,
+                                                    groups: item.groups,
+                                                    source: item.source
+                                                }
+                                            }));
+                                        }
+                                    });
+                                },
+                                select: function (event, ui) {
+                                    $j('#js-call-client-value').val(ui.item.id);
+
+                                    // телефоны
+                                    $j('.js-call-phone').empty();
+                                    var count = 0;
+                                    jQuery.each(ui.item.phoneArray, function (i, item2) {
+                                        $j('.js-call-phone').append(item2+"\n");
+                                    });
+
+                                    $j('.js-call-phone').append("\n"+$j('.js-call-phone-original').val());
+
+                                    // скрываем остальные блоки
+                                    $j('.js-call-namefirst').hide();
+                                    $j('.js-call-namelast').hide();
+                                    $j('.js-call-namemiddle').hide();
+                                    $j('.js-call-company').hide();
+                                    $j('.js-call-source').hide();
+                                    $j('.js-call-title').hide();
+                                    $j('.js-call-groupid').hide();
+                                    $j('.js-call-typesex').hide();
+                                    $j('.js-call-typesex').hide();
+                                    $j('.js-call-create-button').hide();
+                                    $j('.js-call-edit').show();
+
+                                    $j('.js-call-phone').trigger('autosize.resize');
+                                },
+                                minLength: 3
+                            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                ul.removeClass().addClass("ob-autocomplete");
+                                var inner_html = '<span>' + item.label + '</span>';
+                                    return $j("<li></li>")
+                                            .data("item.autocomplete", item)
+                                            .append(inner_html)
+                                            .appendTo(ul);
+                            };
+
+                            $j('.js-call-edit-cancel-button').click(function () {
+                                $j('.js-call-phone').html($j('.js-call-phone-original').val());
+                                $j('.js-call-phone').resize();
+
+                                $j('.js-call-phone').trigger('autosize.resize');
+
+                                $j('.js-call-namefirst').show();
+                                $j('.js-call-namelast').show();
+                                $j('.js-call-namemiddle').show();
+                                $j('.js-call-company').show();
+                                $j('.js-call-source').show();
+                                $j('.js-call-title').show();
+                                $j('.js-call-groupid').show();
+                                $j('.js-call-typesex').show();
+                                $j('.js-call-typesex').show();
+                                $j('.js-call-create-button').show();
+                                $j('.js-call-edit').hide();
+
+                                $j('#js-call-client-name').val('');
+                                $j('#js-call-client-value').val('');
+                            });
+
+                        }
+
+                    });
+                </script>
+
+                <textarea class="js-call-phone js-call-autosize" placeholder="{|$translate_phones|}" style="height: 30px;">{|$phone|}</textarea>
+                <input class="js-call-phone-original" type="hidden" value="{|$phone|}">
+                <input type="text" class="js-call-namefirst" value="" placeholder="{|$translate_name_small|}" />
+                <input type="text" class="js-call-namelast" value="" placeholder="{|$translate_name_last|}" />
+                <input type="text" class="js-call-namemiddle" value="" placeholder="{|$translate_name_middle|}" />
+                <select class="chzn-select js-call-typesex">
+                    <option value="man">{|$translate_user_man|}</option>
+                    <option value="woman">{|$translate_user_woman|}</option>
+                </select>
+
+                <select class="chzn-select js-call-groupid">
+                    <option value="0">---</option>
+                    {|foreach from=$groupArray item="g"|}
+                        <option value="{|$g.id|}">{|$g.name|}</option>
+                    {|/foreach|}
+                </select>
+                <input type="text" name="source" class="js-call-source" value="" placeholder="{|$translate_istochnik|}" />
+                <input type="text" name="company" class="js-call-company" value="" placeholder="{|$translate_company|}" />
+                <script type="text/javascript">
+                    company_autocomplete($j('.js-call-company'));
+                    source_autocomplete($j('.js-call-source'));
+                </script>
+
+                <input type="text" class="js-call-title" value="" placeholder="{|$translate_post|}" />
+                <input type="button" class="ob-button button-green js-call-create-button" value="{|$translate_sozdat_kontakt|}" onclick="box_voip_call_contact();" />
+                <div class="js-call-edit" style="display: none;">
+                    <input type="button" class="ob-button button-green" value="{|$translate_redaktirovat_kontakt|}" onclick="box_voip_call_contact_edit_phone();"/>
+                    <br>
+                    <br>
+                    <input type="button" class="ob-button button-cancel js-call-edit-cancel-button" value="{|$translate_vernutsya_k_sozdaniyu_kontakta|}"/>
+                </div>
+               {|/if|}
+        </div>
+
+
+        <!--<audio autoplay="autoplay">
+            <source src="/_ring/default.wav" type="audio/wav">
+            <source src="/_ring/default.mp3" type="audio/mpeg">
+        </audio>-->
+
+        <!--<input type="button" class="ob-button" onclick="box_voip_call_close('{|$callID|}');" value="{|$translate_close|}" />-->
+    </div>
+</div>
+
+<script>
+    $j('.js-voip-call').addClass('open');
+
+    $j('.js-autosize-comment').autosize();
+    $j('.js-call-autosize').autosize();
+
+    // select
+    $j('.chzn-select2').select2();
+
+    function makeUrlWorkflow (str) {
+        if ($j('[name=clientid]').length && $j('[name=clientid]').val()) {
+            str+= 'clientid='+$j('[name=clientid]').val()+'&';
+        }
+
+        if ($j('.js-call-phone').length && $j('.js-call-phone').val()) {
+            str+= 'clientphone='+$j('.js-call-phone').val()+'&';
+        }
+
+        if ($j('.js-call-namefirst').length && $j('.js-call-namefirst').val()) {
+            str+= 'namefirst='+$j('.js-call-namefirst').val()+'&';
+        }
+
+        if ($j('.js-call-namelast').length && $j('.js-call-namelast').val()) {
+            str+= 'namelast='+$j('.js-call-namelast').val()+'&';
+        }
+
+        if ($j('.js-call-namemiddle').length && $j('.js-call-namemiddle').val()) {
+            str+= 'namemiddle='+$j('.js-call-namemiddle').val()+'&';
+        }
+
+        window.open(str,'_blank');
+    }
+</script>

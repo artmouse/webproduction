@@ -1,0 +1,20 @@
+<br />
+<div class="ob-brands-list">
+    {|foreach from=$brandsArray key="k" item="brands"|}
+    {|if $brands|}
+    <div class="element">
+        <div class="letter">{|if $k == 'others'|}<span title="{|$translate_other_brands|}">#</span>{|else|}{|$k|}{|/if|}</div>
+        {|foreach from=$brands item="e"|}
+        <a href="{|$e.url|}">{|$e.name|}</a> {|if $e.productCount|}({|$e.productCount|}){|/if|}<br />
+        {|/foreach|}
+    </div>
+    {|/if|}
+    {|/foreach|}
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+</div>

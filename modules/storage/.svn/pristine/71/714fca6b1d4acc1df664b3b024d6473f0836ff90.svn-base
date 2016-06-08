@@ -1,0 +1,51 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/orders/incoming/" >{|$translate_orders_incoming|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/order/{|$orderid|}/edit/" >{|$translate_ord|} #{|$orderid|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_incoming_do|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'basketNotEmpty'|}
+    <div class="shop-message-info">
+        {|$translate_incoming_basket_not_empty|}.<br />
+        <form action="" method="get">
+            <input class="ob-button" type="submit" name="okadd" value="{|$translate_incoming_basket_append|}" />
+        </form>
+        <br />
+        <form action="" method="get">   
+            <input class="ob-button" type="submit" name="okempty" value="{|$translate_incoming_basket_replace|}" />
+        </form>
+        <br />
+        <form action="/admin/shop/storage/incoming/" method="post">    
+            <input class="ob-button" type="submit" name="go" value="{|$translate_incoming_basket_finish|}" />
+        </form>
+        <br />
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_incoming_basket_redirect|}...
+    </div>
+{|/if|}
+
+{|if $message == 'alreadyInBasket'|}
+    <div class="shop-message-success">
+        {|$translate_incoming_already_in_basket|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_incoming_message_error|}
+    </div>
+{|/if|}
+
+{|if $urlredirect|}
+    <script type="text/javascript">
+    document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}

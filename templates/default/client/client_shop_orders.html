@@ -1,0 +1,36 @@
+{|if $ordersArray|}
+    <table class="sortable resizable os-table">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>{|$translate_issued|}</td>
+                <td>{|$translate_status|}</td>
+                <td>{|$translate_manager|}</td>
+                <td>{|$translate_total|}</td>
+                <td>&nbsp;</td>
+            </tr>
+        </thead>
+        {|foreach from=$ordersArray item="e"|}
+            <tr>
+                <td>{|$e.id|}</td>
+                <td>{|$e.datetime|}</td>
+                <td>
+                    {|$e.status|}
+                </td>
+                <td>
+                    {|$e.manager|}
+                </td>
+                <td>
+                    {|$e.sum|} {|$e.currency|}
+                </td>
+                <td>
+                    <a href="{|$e.url|}">{|$translate_more|}</a>
+                </td>
+            </tr>
+        {|/foreach|}
+    </table>
+{|else|}
+    <div class="os-message-error">
+        {|$translate_no_orders|}
+    </div>
+{|/if|}

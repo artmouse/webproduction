@@ -1,0 +1,155 @@
+<h1>Блок вкладок и его модификации</h1>
+
+<h2>Стандартный блок вкладок</h2>
+<div class="ui-class">.nb-block-tabs</div>
+<code>
+    <pre>
+&lt;div class="nb-block-tabs"&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a class="selected" href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="clear"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 100px;">
+    <div class="nb-block-tabs">
+        <div class="tab-element">
+            <a class="selected" href="#">Tab name</a>
+        </div>
+        <div class="tab-element">
+            <a href="javascript:void(0);">Tab name</a>
+        </div>
+        <div class="tab-element">
+            <a href="javascript:void(0);">Tab name</a>
+        </div>
+        <div class="tab-element">
+            <a href="javascript:void(0);">Tab name</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Фиксированный блок вкладок</h2>
+Для отображения фиксированного блока вкладок (блока вкладок, прижатого к верхним границам страницы) необходимо использовать обвертку <div class="ui-class inline">.nb-top-nav .js-top-nav</div> в сочетании с дополнительным блоком <div class="ui-class inline">.nb-top-nav-place. js-top-nav-buffer</div> для резервации места на странице.
+<br>
+<br>
+<div class="ui-class">.nb-top-nav</div>
+<code>
+    <pre>
+&lt;div class="nb-top-nav-place js-top-nav-buffer"&gt;&lt;/div&gt;
+&lt;div class="nb-top-nav js-top-nav"&gt;
+    &lt;div class="nb-block-tabs"&gt;
+        &lt;div class="tab-element"&gt;
+            &lt;a class="selected" href="#"&gt;Tab name&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="tab-element"&gt;
+            &lt;a href="#"&gt;Tab name&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="tab-element"&gt;
+            &lt;a href="#"&gt;Tab name&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="tab-element"&gt;
+            &lt;a href="#"&gt;Tab name&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="clear"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 200px;">
+    <div class="nb-top-nav-place js-top-nav-buffer"></div>
+    <div class="nb-top-nav js-top-nav">
+        <div class="nb-block-tabs">
+            <div class="tab-element">
+                <a class="selected" href="#">Tab name</a>
+            </div>
+            <div class="tab-element">
+                <a href="javascript:void(0);">Tab name</a>
+            </div>
+            <div class="tab-element">
+                <a href="javascript:void(0);">Tab name</a>
+            </div>
+            <div class="tab-element">
+                <a href="javascript:void(0);">Tab name</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="temp"></div>
+
+    <style>
+        .temp {background: url("/_images/admin/head-bg.jpg") center center no-repeat; background-size: cover; height: 300px;}
+        .nb-top-nav{padding: 10px 5px;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Слайд блок вкладок</h2>
+Слайд блок вкладок - это блок вкладок с анимацией. Для правильного отображения блока, необходимо добавить класс <div class="ui-class inline">.js-slide-tabs</div> для контейнера <div class="ui-class inline">.nb-block-tabs</div>, а также, к элементам блока добавить span c классом <div class="ui-class inline">.hover</div>.
+<br>
+<br>
+<code>
+     <pre>
+&lt;div class="nb-block-tabs js-slide-tabs"&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a class="selected" href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-element"&gt;
+        &lt;a href="#"&gt;Tab name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;span class="hover"&gt;&lt;/span&gt;
+    &lt;div class="clear"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="3" style="width: 100%; height: 100px;">
+    <div class="nb-block-tabs js-slide-tabs">
+        <div class="tab-element">
+            <a class="selected" href="#">Tab name</a>
+        </div>
+        <div class="tab-element">
+            <a href="javascript:void(0);">Tab name</a>
+        </div>
+        <div class="tab-element">
+            <a href="javascript:void(0);">Tab name</a>
+        </div>
+        <div class="tab-element">
+            <a href="javascript:void(0);">Tab name</a>
+        </div>
+        <span class="hover"></span>
+        <div class="clear"></div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

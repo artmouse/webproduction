@@ -1,0 +1,39 @@
+<div class="shop-overflow-table">
+    <table width="100%" class="shop-table">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>{|$translate_date|}</td>
+                <td>{|$translate_provider|}</td>
+                <td>{|$translate_processeded|}</td>
+                <td>{|$translate_updated|}</td>
+                <td>{|$translate_posted|}</td>
+                <td>{|$translate_errors|}</td>
+                <td>{|$translate_download|}</td>
+            </tr>
+        </thead>
+        {|foreach from=$resaltArray item="e"|}
+            <tr>
+                <td>{|$e.priceid|}</td>
+                <td>{|$e.dateUpload|}</td>
+                <td>{|$e.supplier|}</td>
+                <td>{|if $e.processStatus|}
+                        {|$e.dateProcessed|}
+                    {|else|}
+                        {|$translate_in_the_queue|}
+                    {|/if|}
+                </td>
+                <td><a target="_blank" href="{|$e.urlPrint|}">{|$e.resultSuccess|}</a></td>
+                <td><a target="_blank" href="{|$e.urlPrint|}">{|$e.resultAdded|}</a></td>
+                <td><a target="_blank" href="{|$e.urlPrint|}">{|$e.resultFail|}</a></td>
+                <td>
+                    {|if $e.notEmpty|}
+                    <a class="js-preventdefault" href="#" data-id="{|$e.id|}">{|$translate_download|}</a>
+                    {|/if|}
+                </td>
+            </tr>
+        {|/foreach|}
+
+
+    </table>
+</div>

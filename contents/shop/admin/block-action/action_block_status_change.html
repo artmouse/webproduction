@@ -1,0 +1,81 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+    </div>
+
+    <div class="double">
+        <div class="form-element">
+            <br />
+            <select id="js-nextworkflowid{|$index|}" name="{|$index|}_nextworkflowid" class="{|$index|}-chzn-select" style="width: 100%;">
+                <option value="0">{|$translate_workflow|}</option>
+                {|foreach from=$nextWorkflowArray item="w"|}
+                    <option value="{|$w.id|}" {|if $w.id == $nextworkflowid|} selected {|/if|}>
+                        {|$w.name|}
+                    </option>
+                {|/foreach|}
+            </select>
+        </div>
+        <div class="form-element last">
+            {|$translate_status|}
+            <input type="hidden" value="{|$nextstatusid|}" id="js-nextstatusid-value{|$index|}">
+            <select name="{|$index|}_nextstatusid" id="js-nextstatusid{|$index|}" class="{|$index|}-chzn-select"
+                    style="width: 100%;">
+                <option value="0">{|$translate_viberite_biznes_protsess|}</option>
+            </select>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        var nextWorkflow = $j('#js-nextworkflowid{|$index|}').val();
+        if (nextWorkflow) {
+            loadStatuses(nextWorkflow);
+        }
+    });
+
+    $j(function () {
+        $j('.{|$index|}-chzn-select').select2();
+
+    });
+
+    $j(function () {
+        $j('#js-nextworkflowid{|$index|}').change(function () {
+            loadStatuses($j('#js-nextworkflowid{|$index|}').val());
+        });
+    });
+
+    function loadStatuses(nextWorkflow) {
+        $j.ajax({
+            url: '/workflow/status/list/ajax/',
+            dataType: "json",
+            data: {
+                id: nextWorkflow
+            },
+            success: function (data) {
+                if (data == 'error') {
+                    $j("#js-nextstatusid{|$index|}").empty();
+                    $j("#js-nextstatusid{|$index|}").append($j('<option>', {value:0, text: "{|$translate_viberite_biznes_protsess|}"}));
+                    $j("#js-nextstatusid{|$index|}").select2('val', 0);
+                } else {
+                    $j("#js-nextstatusid{|$index|}").empty();
+                    $j("#js-nextstatusid{|$index|}").append($j('<option>', {value:0, text: "{|$translate_startoviy_etap|}"}));
+                    $j(data).each(function (e, item) {
+                        $j("#js-nextstatusid{|$index|}").append($j('<option>', {value:item.id, text: item.name}));
+                    });
+                    $j("#js-nextstatusid{|$index|}").select2('val', $j('#js-nextstatusid-value{|$index|}').val());
+
+                }
+            }
+        });
+    }
+</script>

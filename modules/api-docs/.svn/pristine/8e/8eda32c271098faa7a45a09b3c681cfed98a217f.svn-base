@@ -1,0 +1,65 @@
+<h1>Прогрессбар</h1>
+
+<h2>Стандартный прогрессбар</h2>
+<div class="ui-class">.ob-progressbar</div>
+<code>
+    <pre>
+&lt;div class="ob-progressbar"&gt;
+    &lt;span style="width: 20%;"&gt;&lt;/span&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 25px;">
+    <div class="ob-progressbar">
+        <span style="width: 20%;"></span>
+    </div>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Модификации прогрессбара по цветам</h2>
+Для изменения цвета прогрессбара можно использовать модификаторы цветов
+<div class="ui-class inline">.red</div>
+<div class="ui-class inline">.green</div>
+<div class="ui-class inline">.orange</div>
+<br>
+<br>
+<div class="ui-class">.ob-progressbar.red / .ob-progressbar.green / .ob-progressbar.orange</div>
+<code>
+    <pre>
+&lt;div class="ob-progressbar red"&gt;
+    &lt;span style="width: 40%;"&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="ob-progressbar green"&gt;
+    &lt;span style="width: 60%;"&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="ob-progressbar orange"&gt;
+    &lt;span style="width: 80%;"&gt;&lt;/span&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 75px;">
+    <div class="ob-progressbar red">
+        <span style="width: 40%;"></span>
+    </div>
+    <br>
+    <div class="ob-progressbar green">
+        <span style="width: 60%;"></span>
+    </div>
+    <br>
+    <div class="ob-progressbar orange">
+        <span style="width: 80%;"></span>
+    </div>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

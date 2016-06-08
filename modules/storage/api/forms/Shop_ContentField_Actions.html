@@ -1,0 +1,3 @@
+{|foreach from=$actionAray item=e name='foo'|}
+    <a href="{|$e.url|}">{|$e.name|}</a>{|if !$smarty.foreach.foo.last|}<br />{|/if|}
+{|/foreach|}

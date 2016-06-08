@@ -1,0 +1,113 @@
+<h1>Кнопки</h1>
+
+<h2>Стандартная кнопка</h2>
+Класс для кнопки можно применять как для ссылки, так и для <strong>input[submit]</strong> / <strong>input[button]</strong> / <strong>button</strong> <br>
+<br>
+<div class="ui-class">.ob-button</div>
+<code>
+    <pre>
+&lt;a class="ob-button" href="#"&gt;Button&lt;/a&gt;
+&lt;input class="ob-button" type="submit" value="Button"&gt;</pre>
+</code>
+<br>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 50px;">
+    <a class="ob-button" href="javaScript:void(0);">Button</a>
+    <input class="ob-button" type="submit" value="Button">
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+Кнопки по умолчанию имеют 4 состояния - <strong>normal</strong> / <strong>hover</strong> / <strong>active</strong> / <strong>disabled</strong>
+<br>
+<br>
+<br>
+
+<h2>Модификации кнопок по цветам</h2>
+Для группировки кнопок по какому-либо признаку можно использовать модификаторы цветов
+<div class="ui-class inline">.button-orange </div>
+<div class="ui-class inline">.button-green</div>
+<div class="ui-class inline">.button-red</div>
+<div class="ui-class inline">.button-cancel</div>
+<br>
+<br>
+<div class="ui-class">.ob-button.button-orange / .ob-button.button-green / .ob-button.button-red / .ob-button.button-cancel </div>
+<code>
+    <pre>
+&lt;a class="ob-button button-orange" href="#"&gt;Button&lt;/a&gt;
+&lt;a class="ob-button button-green" href="#"&gt;Button&lt;/a&gt;
+&lt;a class="ob-button button-red" href="#"&gt;Button&lt;/a&gt;
+&lt;a class="ob-button button-cancel" href="#"&gt;Button&lt;/a&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 50px;">
+    <a class="ob-button button-orange" href="javaScript:void(0);">Button</a>
+    <a class="ob-button button-green" href="javaScript:void(0);">Button</a>
+    <a class="ob-button button-red" href="javaScript:void(0);">Button</a>
+    <a class="ob-button button-cancel" href="javaScript:void(0);">Button</a>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Кнопка загрузки</h2>
+Класс кнопки загрузки создает только визуальное оформление кнопки, а не функционал загрузки файла
+<br>
+<br>
+<div class="ui-class">.ob-button-attach</div>
+<code>
+    <pre>
+&lt;a class="ob-button-attach" href="#"&gt;Upload button&lt;/a&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="3" style="width: 100%; height: 50px;">
+    <a class="ob-button-attach" href="javaScript:void(0);">Upload button</a>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Фиксированные кнопки</h2>
+Для отображения фиксированных кнопок (кнопок, прижатых к нижним границам страницы) необходимо использовать обвертку <div class="ui-class inline">.ob-button-fixed</div> в сочетании с дополнительным блоком <div class="ui-class inline">.ob-button-fixed-place</div> для резервации места на странице.
+<br>
+<br>
+<div class="ui-class">.ob-button-fixed</div>
+<code>
+    <pre>
+&lt;div class="ob-button-fixed"&gt;
+    &lt;a class="ob-button button-orange" href="#"&gt;Button&lt;/a&gt;
+    &lt;a class="ob-button button-green" href="#"&gt;Button&lt;/a&gt;
+    &lt;a class="ob-button button-red" href="#"&gt;Button&lt;/a&gt;
+    &lt;a class="ob-button button-cancel" href="#"&gt;Button&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class="ob-button-fixed-place"&gt;&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="4" style="width: 100%; height: 200px;">
+    <div class="temp"></div>
+    <div class="ob-button-fixed">
+        <a class="ob-button button-orange" href="javaScript:void(0);">Button</a>
+        <a class="ob-button button-green" href="javaScript:void(0);">Button</a>
+        <a class="ob-button button-red" href="javaScript:void(0);">Button</a>
+        <a class="ob-button button-cancel" href="javaScript:void(0);">Button</a>
+    </div>
+    <div class="ob-button-fixed-place"></div>
+
+    <style>
+        .temp {background: url("/_images/admin/head-bg.jpg") center center no-repeat; background-size: cover; height: 300px;}
+    </style>
+</boxui>

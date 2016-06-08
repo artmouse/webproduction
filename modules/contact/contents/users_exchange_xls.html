@@ -1,0 +1,100 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/users/">&lsaquo; {|$translate_users|}</a></div>
+        <div class="tab-element"><a href="."  class="selected">{|$translate_import_and_export_excel|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+<div class="shop-message-success">
+    {|$translate_shop_message_success|}<br />
+    {|$translate_shop_message_success_minute|}
+</div>
+{|/if|}
+
+{|if $message == 'error'|}
+<div class="shop-message-error">
+    {|$translate_shop_message_error|}
+</div>
+{|/if|}
+
+{|if $invalidfile|}
+<div class="shop-message-error">
+    Invalid XLS-file format. Supports only application/vnd.ms-excel files.
+</div>
+{|/if|}
+
+{|if $message_export == 'ok'|}
+<div class="shop-message-success">
+    {|$translate_the_quest_for_the_xls_file_with_the_goods_received|}.
+    {|$translate_after_a_few_minutes_to_your_email_you_receive_xls_file|}.
+</div>
+{|/if|}
+
+{|if $message_export == 'error'|}
+<div class="shop-message-error">
+    {|$translate_error_formation_xls_file|}.
+</div>
+{|/if|}
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+    <tr valign="top">
+        <td width="49%">
+            <h1>{|$translate_step1_preparation_of_the_XLS_file|}</h1>
+
+            <form action="" method="post" class="ob-block-element import">
+                {|$translate_snachala_skachayte_neobhodimuyu_chast_bazi_kontaktov_v_format_xls|}<br />
+                <br />
+
+                1. {|$translate_formirovanie_spiska_produktov_v_xls_mozhet_zanyat_neskolko_minut|}.
+                <br />
+
+                2. {|$translate_posle_zaversheniya_formirovaniya_xls_fayla_on_priydet_vam_na_elektronnuyu_pochtu|}.
+                <br />
+                <br />
+
+                <select class="chzn-select-tree" style="width: 300px;" name="group">
+                    <option value="0">{|$translate_all_users|}</option>
+                    <option value="-1">{|$translate_kontakti_bez_grupp|}</option>
+                    <option value="-2">{|$translate_podpisani_na_rassilku|}</option>
+                    <option value="-3">{|$translate_ne_podpisani_na_rassilku|}</option>
+                    {|foreach from=$groupArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.name == $control_group|} selected {|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+                <br />
+                Send XLS files to emails:<br />
+                <textarea name="emails" style="width: 280px; height: 50px;">{|$control_emails|}</textarea>
+                <br />
+                <br />
+
+                <input class="ob-button" type="submit" name="download" value="{|$translate_download_all_the_data_in_excel|}" />
+            </form>
+        </td>
+
+        <td width="10">&nbsp;</td>
+
+        <td>
+            <h1>{|$translate_step2_download_the_XLS_file|}</h1>
+
+            <form action="" method="post" enctype="multipart/form-data" class="ob-block-element export">
+                {|$translate_edit_the_file_and_upload_the_file_back|}<br />
+                <br />
+
+                {|$translate_important_do_not_remove|}
+                <br />
+                <br />
+
+                <input type="file" name="file" />
+                <br />
+                <br />
+
+                <input class="ob-button" type="submit" name="upload" value="{|$translate_download_all_data_from_excel|}" />
+            </form>
+        </td>
+    </tr>
+</table>

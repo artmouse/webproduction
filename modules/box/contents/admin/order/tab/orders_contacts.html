@@ -1,0 +1,39 @@
+{|$block_menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_vo_vremya_sohraneniya_proizoshla_oshibka|}.
+    </div>
+{|/if|}
+
+{|if !$block_users|}
+    <div class="shop-message-light">{|$translate_spisok_pust|}. {|$translate_dobavte_kontakti|}.</div>
+{|else|}
+    {|$block_users|}       
+{|/if|}
+
+<form class="js-add-user-form" action="" method="post">
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption static">{|$translate_dobavit_kontakti|}:</div>
+            <div class="el-value">
+                <input type="hidden" name="clientid" value="" class="js-user-filter-autocomplete" id="js-user-filter" style="width: 300px;" />
+                <input type="hidden" id="id-user" name="moveids" />
+                <input type="submit" name="ok" value="{|$translate_save|}" onclick="" class="ob-button button-green js-submit" />
+                <input type="submit" onclick="return confirm('{|$translate_podtverzhdaete_udalenie|}?');" name="delete-project-users" value="{|$translate_delete|}" class="ob-button js-submit" />
+            </div>
+        </div>
+    </div>
+</form>
+
+{|if $block_users|}
+    <script>
+        $j('.js-add-user-form').appendTo('.js-layer-result');
+    </script>
+{|/if|}

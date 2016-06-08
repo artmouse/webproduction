@@ -1,0 +1,31 @@
+<h2 class="wpp-h2">Подключено пакетов: {|$packagesArray|@count|} за {|$packagesTime|} сек.</h2>
+<table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+    {|foreach from=$packagesArray item="e"|}
+        <tr>
+            <td>
+                <strong>{|$e.package|}</strong><br />
+                {|$e.path|}
+            </td>
+            <td align="right">
+                {|$e.time|}&nbsp;sec.
+            </td>
+        </tr>
+    {|/foreach|}
+</table>
+<br />
+<br />
+
+<h2 class="wpp-h2">Загружено классов: {|$classesArray|@count|} за {|$classesTime|} сек.</h2>
+<table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+    {|foreach from=$classesArray item="e"|}
+        <tr>
+            <td>
+                <strong>{|$e.class|}</strong><br />
+                {|$e.path|}
+            </td>
+            <td align="right">
+                {|$e.time|}&nbsp;sec.
+            </td>
+        </tr>
+    {|/foreach|}
+</table>

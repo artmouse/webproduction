@@ -1,0 +1,76 @@
+<div class="nb-search-result-element">
+    <div class="elements-caption">{|$acl_users|}</div>
+
+    {|if !$userArray|}
+        <div class="no-result">
+            Ничего не нашлось.
+            <span>Попробуйте еще.</span>
+        </div>
+    {|/if|}
+
+    <div class="list">
+        {|foreach from=$userArray item="user"|}
+            <div class="element {|if !$user.image|}no-avatar-included{|/if|}">
+                {|if $user.image|}
+                    <div class="avatar">
+                        <a class="nb-block-avatar" href="{|$user.url|}" style="background-image: url('{|$user.image|}');"></a>
+                    </div>
+                {|/if|}
+
+                <div class="data">
+                    {|if $user.name OR $user.company OR $user.title|}
+                        <div class="item first">
+                            {|if $user.name|}
+                                <a class="name" href="{|$user.url|}">{|$user.name|}</a>
+
+                                {|if $user.company OR $user.title|}
+                                    <div class="post">
+                                        {|if $user.company|}
+                                            {|if $user.companyURL|}
+                                                <a href="{|$user.companyURL|}">{|$user.company|}</a>
+                                            {|else|}
+                                                {|$user.company|}
+                                            {|/if|}
+                                            <br />
+                                        {|/if|}
+                                        {|if $user.title|}({|$user.title|}){|/if|}
+                                    </div>
+                                {|/if|}
+                            {|else|}
+                                {|if $user.company|}
+                                    {|if $user.companyURL|}
+                                        <a class="name" href="{|$user.companyURL|}">{|$user.company|}</a>
+                                    {|else|}
+                                        <span class="name">{|$user.company|}</span>
+                                    {|/if|}
+                                {|/if|}
+
+                                {|if $user.title|}
+                                    <div class="post">
+                                         {|$user.title|}
+                                    </div>
+                                {|/if|}
+                            {|/if|}
+                        </div>
+                    {|/if|}
+
+                    <div class="item">
+                        {|foreach from=$user.phoneArray item="e"|}
+                            <a class="ob-link-phone connect-item ob-link-dashed js-call-originate js-tooltip" href="#" data-phone="{|$e|}" title="{|$translate_pozvonit|} {|$e|}">{|$e|}</a>
+                            {|if $canSMS|}
+                                &nbsp;
+                                <a class="ob-link-email connect-item ob-link-dashed js-tooltip" href="#" onclick='sms_popup_open("{|$e|}");' title="{|$translate_napisat|} {|$e|}">SMS</a>
+                            {|/if|}
+                        <br>
+                        {|/foreach|}
+                        {|foreach from=$user.emailArray item="e"|}
+                            <a class="ob-link-email connect-item ob-link-dashed js-email-write js-tooltip" href="#" data-email="{|$e|}" title="{|$translate_napisat|} {|$e|}">{|$e|}</a>
+                        <br>
+                        {|/foreach|}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+    </div>
+</div>

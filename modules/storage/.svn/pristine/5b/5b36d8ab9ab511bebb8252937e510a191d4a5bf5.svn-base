@@ -1,0 +1,96 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/outcoming/" class="selected">{|$translate_outcoming_products|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="js-message-div"></div>
+
+{|if $messageprocess == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_outcoming_message_ok|}.
+    </div>
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $messageinfo == 'nooutcoming'|}
+    <div class="shop-message-error">
+        {|$translate_outcoming_message_no_products|}.
+    </div>
+{|/if|}
+
+{|if $messageprocess == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_outcoming_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e.product|}
+                <strong>{|$translate_product|} {|$e.product|}</strong>:
+            {|/if|}
+            {|if $e.error == 'permission' || $e.error == 'user'|}
+                {|$translate_storage_error_permission|}<br />
+            {|/if|}
+            {|if $e.error == 'lack'|}
+                {|$translate_storage_error_lack|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messageprocess != 'ok'|}
+    {|if !$control_storagefromid|}
+        {|if not $storagesfromArray|}
+            <div class="shop-message-error">
+                {|$translate_outcoming_todo|} <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>.
+            </div>
+        {|/if|}
+
+        <form action="" method="post" class="ob-block-form">
+            <strong>{|$translate_outcoming_warehouse_choose|}. {|$translate_storage_no_change|}</strong><br />
+            <br />
+
+            <table>
+                <tr>
+                    <td>{|$translate_storage_from_what|}</td>
+                    <td>
+                        <select class="chzn-select" name="storagefromid">
+                            {|foreach from=$storagesfromArray item="e"|}
+                                <option value="{|$e.id|}">{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input class="ob-button" type="submit" value="{|$translate_select|}" /></td>
+                </tr>
+            </table>
+        </form>
+    {|else|}
+        <br />
+        <strong>{|$translate_storage_from|}: </strong> {|$storagefromname|}
+        <br />
+        <br />
+
+        {|$block_table|}
+
+        {|$block_form|}
+
+        <form action="" method="post" id="form2" class="shop-block">
+            <h1>{|$translate_outcoming_products|}:</h1>
+
+            <strong>{|$translate_outcoming_date|}</strong>
+            <input type="text" name="date" value="{|$control_date|}" />
+
+            <input type="hidden" name="process" value="1" />
+            <input class="ob-button" type="button" id="js-button-process" value="{|$translate_outcoming_post|}" onclick="if (confirm('{|$translate_outcoming_confirm|}?')) $j('#form2').submit(); else return false; " />
+        </form>
+    {|/if|}
+{|/if|}

@@ -1,0 +1,111 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/stocktaking/" class="selected">Переучет</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if !$control_storagefromid|}
+    {|if not $storagesfromArray|}
+        <div class="shop-message-error">
+            Для того, чтобы провести переучет, <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>.
+        </div>
+    {|/if|}
+
+    <form action="" method="post" class="ob-block-form">
+        <strong>Выберите склад для переучета.
+        {|$translate_storage_no_change|}</strong><br />
+        <br />
+
+        <table>
+            <tr>
+                <td>Склад:</td>
+                <td>
+                    <select class="chzn-select" name="storagefromid">
+                        {|foreach from=$storagesfromArray item="e"|}
+                            <option value="{|$e.id|}">{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="ob-button" type="submit" value="{|$translate_select|}" /></td>
+            </tr>
+        </table>
+    </form>
+{|else|}
+    <div class="shop-block">
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr valign="top">
+                <td width="50%">
+                    <h1>Добавить товар в корзину переучета</h1>
+                    <form action="" method="post" id="id-form-stocktaking-add" >
+                        <strong>Склад: </strong> {|$storagefromname|}
+                        <br />
+                        <br />
+                    
+                        <table cellpadding="0" cellspacing="0">
+                            <tr valign="top">
+                                <td>
+                                    <strong>{|$translate_product|}:</strong><br />
+                                    <input type="text" name="productid" value="" style="width: 300px;" />
+                                    <br />
+                                    <br />
+                                </td>
+                                <td style="width: 10px;">
+                                </td>
+                                <td>
+                                    <strong>{|$translate_number|}:</strong><br />
+                                    <input type="text" name="count" value="{|$control_count|}" id="id-product-amount" style="width: 90px;" />
+                                    <span id="id-unit"></span>
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <input type="hidden" name="storagefromid" value="{|$control_storagefromid|}" />
+                        <input type="hidden" name="ok" value="1" />
+                        
+                        <input class="ob-button" type="submit" value="{|$translate_add|}" />
+                    </form>
+                </td>
+                <td width="50%">
+                    <h1>Подгрузить товары со склада</h1>
+                    <form action="" method="post" id="id-form-stocktaking-load" style="width: 400px;" >
+                        <strong>Склад: </strong> {|$storagefromname|}
+                        <br />
+                        <br />
+                    
+                        <strong>{|$translate_product_category|}: </strong>
+                        <select name="categoryid" class="chzn-select-tree">
+                            <option value="0">{|$translate_category_all|}</option>
+                            {|foreach from=$categoryArray item="e"|}
+                                <option value="{|$e.id|}" data-level="{|$e.level|}">
+                                {|$e.name|}
+                                </option>
+                            {|/foreach|}
+                        </select>
+                        <br />
+                    
+                        <input type="hidden" name="storagefromid" value="{|$control_storagefromid|}" />
+                        <input type="hidden" name="ok" value="1" />
+                        
+                        <input class="ob-button" type="button" value="Подгрузить" onclick="$j('#id-form-stocktaking-load').submit();" />
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div id="js-message-div"></div>
+
+    <form action="" method="post" id="id-products">
+        {|$basketTable|}
+    </form>
+
+    <br />
+    <br />
+{|/if|}

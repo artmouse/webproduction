@@ -1,0 +1,357 @@
+{|$menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_permissions_save_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_update_data_error|}.<br />
+        {|foreach from=$errorsArray item="e"|}
+        {|if $e == 'login'|}
+            {|$translate_order_error_login|}. {|$translate_order_error_login_must_be|}.<br />
+        {|else|}
+            {|if $e == 'password'|}
+                {|$translate_profile_error_password|}.<br />
+            {|else|}
+                {|$e|}
+            {|/if|}
+        {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption"></div>
+                    <div class="ob-data-element js-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_login_small|}:</div>
+                            <div class="el-value">
+                                {|$control_userlogin|}
+                                <a class="ob-link-edit" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="data-edit">
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+                            <input type="text" name="userlogin" value="{|$control_userlogin|}" class="js-user-name" autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element js-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_password_small|}:</div>
+                            <div class="el-value">
+                                {|$control_userpassword|}
+                                <span class="light" style="display: inline;">({|$translate_leave_blank|})</span>
+                                <a class="ob-link-edit" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="data-edit">
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+                            <input type="password" name="userpassword" value="{|$control_userpassword|}" class="js-user-password" autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element js-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_razreshenniy_ip_adres|}:</div>
+                            <div class="el-value">
+                                {|$control_controlip|}
+                                <a class="ob-link-edit" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="data-edit">
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+                            <input type="text" name="controlip" value="{|$control_controlip|}" autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption"></div>
+                            <div class="el-value">
+                                <label>
+                                    <input type="checkbox"  name="generatepassword"/>{|$translate_generate_password|}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element js-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_user_edate|}:</div>
+                            <div class="el-value">
+                                {|$control_edate|}
+                                <a class="ob-link-edit" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="data-edit">
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+                            <input class="js-date" type="text" name="edate" value="{|$control_edate|}" />
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element js-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_level_access|}:</div>
+                            <div class="el-value">
+                                {|if $control_level == 0|}{|$translate_blocked_big|}{|/if|}
+                                {|if $control_level == 1|}{|$translate_client_small|}{|/if|}
+                                {|if $control_level == 2|}{|$translate_employee|}{|/if|}
+                                {|if $control_level == 3|}{|$translate_administrator_big|}{|/if|}
+                                <a class="ob-link-edit" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="data-edit">
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+                            <select class="chzn-select" name="level">
+                                <option value="0" {|if $control_level == 0|} selected {|/if|}>{|$translate_blocked_big|}</option>
+                                <option value="1" {|if $control_level == 1|} selected {|/if|}>{|$translate_client_small|}</option>
+                                <option value="2" {|if $control_level == 2|} selected {|/if|}>{|$translate_employee|}</option>
+                                <option value="3" {|if $control_level == 3|} selected {|/if|}>{|$translate_administrator_big|}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_sposobi_uvedomleniy|}:</div>
+                            <div class="el-value">
+                                <label>
+                                    <input type="checkbox" name="notify_email_one" value="1" {|if $control_notify_email_one|} checked{|/if|}/>{|$translate_prisilat_kazhdoe_uvedomlenie_na_email|}
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="checkbox" name="notify_email_group" value="1" {|if $control_notify_email_group|} checked{|/if|}/>{|$translate_prisilat_gruppirovannie_uvedomleniya_na_email|}
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="checkbox" name="notify_sms" value="1" {|if $control_notify_sms|} checked{|/if|}/>{|$translate_prisilat_uvedomleniya_po_sms|}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />             
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption"></div>
+                            <div class="el-value">
+                                <label>
+                                    <input type="checkbox" name="system_work_time" value="1" {|if $control_system_work_time|} checked{|/if|}/>
+                                    Разрешать работать в системе только в заданное рабочее время
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption"></div>
+                            <div class="el-value">
+                                <label>
+                                    <input type="checkbox" name="voip_block" value="1" {|if $control_voip_block|} checked{|/if|}/>
+                                    Показывать всплывающее окно при входящем звонке
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption"></div>
+                            <div class="el-value">
+                                <label>
+                                    <input type="checkbox" name="notification_block" value="1" {|if $control_notification_block|} checked{|/if|}/>
+                                    Показывать центр уведомлений
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_skopirovat_prava_dostupa|}</div>
+                    <select class="js-permission-copy chzn-select">
+                        <option value="0">---</option>
+                        {|foreach from=$userArray item="e"|}
+                            <option value="{|$e.id|}">{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                    <script type="text/javascript">
+                        $j(function () {
+                            $j('.js-permission-copy').change(function (event) {
+                                var id = $j(event.target).val();
+                                $j.ajax({
+                                    url: '/user/permission/json/',
+                                    data: {
+                                        id: id
+                                    },
+                                    dataType: 'json',
+                                    success: function (json) {
+                                        $j('.js-checkbox').prop('checked', false);
+                                        $j(json).each(function (i, key) {
+                                            $j('.js-checkbox[value="'+key+'"]').prop('checked', true);
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_permissions|} ({|$translate_managers_only|})</div>
+                    <input class="js-acl-helper" type="text" value="" placeholder="{|$translate_bistriy_poisk|}">
+                </div>
+
+                <div class="form-element">
+                    <a href="#" class="js-acl-allow">{|$translate_sellect_all|}</a> /
+                    <a href="#" class="js-acl-deny">{|$translate_uncheck_all_small|}</a>
+                    <br />
+                    <div class="ob-block-tree js-block-tree">
+                        {|if $newAclArray.parent|}
+                            <ul>
+                                {|foreach from=$newAclArray.parent item="e"|}
+                                    <li>
+                                        {|if $e.key|}
+                                            <label>
+                                                <input type="checkbox" class="js-checkbox" name="acl[]" value="{|$e.key|}" {|if $e.selected|} checked {|/if|} />
+                                                {|$e.name|}
+                                                <span class="key">{|$e.key|}</span>
+                                            </label>
+                                        {|else|}
+                                            {|$e.name|}
+                                        {|/if|}
+                                        {|if $newAclArray[$e.id]|}
+                                            <span class="expand"></span>
+                                            <ul style="display: none;">
+                                                {|foreach from=$newAclArray[$e.id] item="e2"|}
+                                                    <li>
+                                                        {|if $e2.key|}
+                                                            <label>
+                                                                <input type="checkbox" class="js-checkbox" name="acl[]" value="{|$e2.key|}" {|if $e2.selected|} checked {|/if|} />
+                                                                {|$e2.name|}
+                                                                <span class="key">{|$e2.key|}</span>
+                                                            </label>
+                                                        {|else|}
+                                                            {|$e2.name|}
+                                                        {|/if|}
+                                                        {|if $newAclArray[$e2.id]|}
+                                                            <span class="expand"></span>
+                                                            <ul style="display: none;">
+                                                                {|foreach from=$newAclArray[$e2.id] item="e3"|}
+                                                                    <li>
+                                                                        {|if $e3.key|}
+                                                                            <label>
+                                                                                <input type="checkbox" class="js-checkbox" name="acl[]" value="{|$e3.key|}" {|if $e3.selected|} checked {|/if|} />
+                                                                                {|$e3.name|}
+                                                                                <span class="key">{|$e3.key|}</span>
+                                                                            </label>
+                                                                        {|else|}
+                                                                            {|$e3.name|}
+                                                                        {|/if|}
+                                                                        {|if $newAclArray[$e3.id]|}
+                                                                            <span class="expand"></span>
+                                                                            <ul style="display: none;">
+                                                                                {|foreach from=$newAclArray[$e3.id] item="e4"|}
+                                                                                    <li>
+                                                                                        {|if $e4.key|}
+                                                                                            <label>
+                                                                                                <input type="checkbox" class="js-checkbox" name="acl[]" value="{|$e4.key|}" {|if $e4.selected|} checked {|/if|} />
+                                                                                                {|$e4.name|}
+                                                                                                <span class="key">{|$e4.key|}</span>
+                                                                                            </label>
+                                                                                        {|else|}
+                                                                                            {|$e4.name|}
+                                                                                        {|/if|}
+                                                                                        {|if $newAclArray[$e4.id]|}
+                                                                                            <span class="expand"></span>
+                                                                                            <ul style="display: none;">
+                                                                                                {|foreach from=$newAclArray[$e4.id] item="e5"|}
+                                                                                                    <li>
+                                                                                                        {|if $e5.key|}
+                                                                                                            <label>
+                                                                                                                <input type="checkbox" class="js-checkbox" name="acl[]" value="{|$e5.key|}" {|if $e5.selected|} checked {|/if|} />
+                                                                                                                {|$e5.name|}
+                                                                                                                <span class="key">{|$e5.key|}</span>
+                                                                                                            </label>
+                                                                                                        {|else|}
+                                                                                                            {|$e5.name|}
+                                                                                                        {|/if|}
+                                                                                                    </li>
+                                                                                                {|/foreach|}
+                                                                                            </ul>
+                                                                                        {|/if|}
+                                                                                    </li>
+                                                                                {|/foreach|}
+                                                                            </ul>
+                                                                        {|/if|}
+                                                                    </li>
+                                                                {|/foreach|}
+                                                            </ul>
+                                                        {|/if|}
+                                                    </li>
+                                                {|/foreach|}
+                                            </ul>
+                                        {|/if|}
+                                    </li>
+                                {|/foreach|}
+                            </ul>
+                        {|/if|}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="hidden" name="ok" value="1" />
+        <input type="submit" value="{|$translate_save|}" class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+
+<script type="text/javascript">
+    $j('.js-acl-allow').click(function (event) {
+        $j('.js-checkbox').prop('checked', true);
+        event.preventDefault();
+    });
+
+    $j('.js-acl-deny').click(function (event) {
+        $j('.js-checkbox').prop('checked', false);
+        event.preventDefault();
+    });
+
+    // быстрый поиск acl
+    $j('.js-acl-helper').keyup(function() {
+        aclSearch('.js-block-tree li', this);
+        $j('.js-block-tree .expand').addClass('open');
+        $j('.js-block-tree ul').slideDown();
+    });
+
+    function aclSearch( item ,e){
+        if($j(e).val() !== ''){
+            $j(item).hide();
+            $j(item).each(function(){
+                var a = $j(this).text().toLowerCase().replace(/\s/g, "");
+                if(a.match($j(e).val().toLowerCase().replace(/\s/g, ""))){
+                    $j(this).show();
+                }
+            })
+        }else{
+            $j(item).show();
+        }
+    }
+</script>

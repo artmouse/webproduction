@@ -1,0 +1,34 @@
+<div style="height: 300px;"></div>
+
+<div class="def-block-popup">
+    <div class="dark"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a class="close def-icon-cancel-circled" href="/"></a>
+            <div class="def-section-caption">
+                <h3><strong>{|$translate_error_need_authorization|}</strong></h3>
+            </div>
+        </div>
+        <form method="post">
+            <div class="body">
+                <table>
+                    <tr>
+                        <td>{|$translate_login_small|}:</td>
+                        <td><input type="text" name="auth_login" value="{|$control_auth_login|}" /></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_password_small|}:</td>
+                        <td><input type="password" name="auth_password" value="{|$control_auth_password|}" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a href="/remindpassword/">{|$translate_forgot_password|}?</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="foot">
+                <input class="def-submit" type="submit" name="logok" value="{|$translate_sign_in|}" />
+            </div>
+        </form>
+    </div>
+</div>

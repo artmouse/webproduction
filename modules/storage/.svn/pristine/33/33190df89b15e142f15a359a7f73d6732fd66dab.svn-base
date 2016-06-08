@@ -1,0 +1,17 @@
+<div class="shop-stepper">
+    {|if count($pagesArray) > 1|}
+        {|if $urlprev|}
+            <a href="{|$urlprev|}" class="prev">&larr; {|$translate_back|}</a>
+            {|if $hellip|} ... {|/if|}
+        {|/if|}
+
+        {|foreach from=$pagesArray item="e"|}
+            <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>,
+        {|/foreach|}
+
+        {|if $urlnext|}
+            {|if $hellip|} ... {|/if|}
+            <a href="{|$urlnext|}" class="next">{|$translate_next|} &rarr;</a>
+        {|/if|}
+    {|/if|}
+</div>

@@ -1,0 +1,15 @@
+{|if $subcategoriesArray|}
+    <div class="rtm-index-cat-list">
+        {|foreach from=$subcategoriesArray item="e"|}
+            <div class="item">
+                <a class="head" href="{|$e.url|}">{|$e.name|}</a>
+                <div class="image">
+                    <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|}" title="{|$e.name|}" /></a>
+                </div>
+            </div>
+        {|/foreach|}
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+    </div>
+{|/if|}

@@ -1,0 +1,62 @@
+##########################START UPDATE=2015-Дек-11:time=16:56:29#########################
+=========================================OLD-CORE========================================
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/core
+UUID репозитория: be7e8ddd-10ab-4bf2-81b7-dd55e47c74ba
+=======================================OLD-MODULES=======================================
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/api-docs
+Relative URL: ^/wpshop/red/api-docs
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/box
+Relative URL: ^/wpshop/red/box
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/custom-collars
+Relative URL: ^/wpshop/red/custom-collars
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/contact
+Relative URL: ^/wpshop/red/contact
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/document
+Relative URL: ^/wpshop/red/document
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/finance
+Relative URL: ^/wpshop/red/finance
+URL: https://svn.webproduction.ua/wpshop/wpshop/templates/kazakhfilm-adaptive
+Relative URL: ^/wpshop/templates/kazakhfilm-adaptive
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/order
+Relative URL: ^/wpshop/red/order
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/product-favoirite
+Relative URL: ^/wpshop/red/product-favoirite
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/product-margin
+Relative URL: ^/wpshop/red/product-margin
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/product-supplierprice
+Relative URL: ^/wpshop/red/product-supplierprice
+URL: https://svn.webproduction.ua/wpshop/wpshop/modules/shop-land/trunk
+Relative URL: ^/wpshop/modules/shop-land/trunk
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/storage
+Relative URL: ^/wpshop/red/storage
+===========================================NEW-CORE======================================
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/core
+UUID репозитория: be7e8ddd-10ab-4bf2-81b7-dd55e47c74ba
+=========================================NEW-MODULES=====================================
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/api-docs
+Relative URL: ^/wpshop/red/api-docs
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/box
+Relative URL: ^/wpshop/red/box
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/custom-collars
+Relative URL: ^/wpshop/red/custom-collars
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/contact
+Relative URL: ^/wpshop/red/contact
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/document
+Relative URL: ^/wpshop/red/document
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/finance
+Relative URL: ^/wpshop/red/finance
+URL: https://svn.webproduction.ua/wpshop/wpshop/templates/kazakhfilm-adaptive
+Relative URL: ^/wpshop/templates/kazakhfilm-adaptive
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/order
+Relative URL: ^/wpshop/red/order
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/product-favoirite
+Relative URL: ^/wpshop/red/product-favoirite
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/product-margin
+Relative URL: ^/wpshop/red/product-margin
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/product-supplierprice
+Relative URL: ^/wpshop/red/product-supplierprice
+URL: https://svn.webproduction.ua/wpshop/wpshop/modules/shop-land/trunk
+Relative URL: ^/wpshop/modules/shop-land/trunk
+URL: https://svn.webproduction.ua/wpshop/wpshop/red/storage
+Relative URL: ^/wpshop/red/storage
+########################################END UPDATE#######################################

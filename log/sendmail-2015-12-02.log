@@ -1,0 +1,75 @@
+[2015-12-02 18:18:26]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: 0=from: maesh.kyryll@gmail.com
+1=to: k.maesh@webproduction.ua
+2=subject: projecthost OneBox support request
+3=
+4=method: mail
+5=class: MailUtils_SenderMail
+6=host: 
+7=username: 
+
+
+[2015-12-02 18:26:35]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: 0=from: maesh.kyryll@gmail.com
+1=to: k.maesh@webproduction.ua
+2=subject: projecthost OneBox support request
+3=
+4=method: mail
+5=class: MailUtils_SenderMail
+6=host: 
+7=username: 
+
+
+[2015-12-02 18:26:35]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: 0=from: maesh.kyryll@gmail.com
+1=to: k.maesh@webproduction.ua
+2=subject: projecthost OneBox support request
+3=
+4=method: mail
+5=class: MailUtils_SenderMail
+6=host: 
+7=username: 
+
+
+[2015-12-02 18:28:27]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: 0=from: maesh.kyryll@gmail.com
+1=to: k.maesh@webproduction.ua
+2=subject: projecthost OneBox support request
+3=
+4=method: mail
+5=class: MailUtils_SenderMail
+6=host: 
+7=username: 
+
+
+[2015-12-02 18:33:13]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: 0=from: maesh.kyryll@gmail.com
+1=to: k.maesh@webproduction.ua
+2=subject: projecthost OneBox support request
+3=
+4=method: mail
+5=class: MailUtils_SenderMail
+6=host: 
+7=username: 
+
+

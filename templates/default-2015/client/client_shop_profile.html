@@ -1,0 +1,116 @@
+{|if $message == 'ok'|}
+    <div class="def-message-success">
+        {|$translate_update_profile_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="def-message-error">
+        {|$translate_update_profile_error|}:
+        <br />
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'password'|}
+                {|$translate_profile_error_password|}.<br />
+            {|/if|}
+            {|if $e == 'email'|}
+                {|$translate_profile_error_mail|}.<br />
+            {|/if|}
+            {|if $e == 'email-exists'|}
+                {|$translate_profile_error_mail_exists|}.<br />
+            {|/if|}
+            {|if $e == 'bdate'|}
+                {|$translate_profile_error_bdate|}.<br />
+            {|/if|}
+            {|if $e == 'phone'|}
+                    {|$translate_profile_error_phone|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form class="def-block-form centered-form" method="post">
+    <table>
+        <tr>
+            <td class="vtop">E-mail:</td>
+            <td>
+                <input type="text" name="email" value="{|$control_email|}"  autocomplete="off" /><br />
+                <span class="light">({|$translate_at_example|}: example@example.ua)</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vtop">{|$translate_password_small|}:</td>
+            <td>
+                <input type="password" name="password" value="{|$control_password|}" autocomplete="off"/><br />
+                <span class="light">({|$translate_leave_empty|})</span>
+            </td>
+        </tr>
+        <tr>
+            <td>{|$translate_name_small|}:</td>
+            <td><input type="text" name="name" value="{|$control_name|}" /></td>
+        </tr>
+        <tr>
+            <td>{|$translate_name_last|}:</td>
+            <td><input type="text" name="namelast" value="{|$control_namelast|}" /></td>
+        </tr>
+        <tr>
+            <td>{|$translate_name_middle|}:</td>
+            <td><input type="text" name="namemiddle" value="{|$control_namemiddle|}" /></td>
+        </tr>
+        <tr>
+            <td class="vtop">{|$translate_phone|}:</td>
+            <td>
+                <input type="text" name="phone" value="{|$control_phone|}" class="js-phone-formatter" /><br />
+                <span class="light">({|$translate_at_example|} 1-11-11 {|$translate_or|} +38(0XX)XX-XXX-XXX)</span>
+            </td>
+        </tr>
+        <tr>
+            <td>{|$translate_address_small|}:</td>
+            <td><input type="text" name="address" value="{|$control_address|}" /></td>
+        </tr>
+        <tr>
+            <td class="vtop">{|$translate_bdate|}:</td>
+            <td>
+                {|$translate_day|}
+                <input style="width: 40px;" type="text" name="bdate_day" value="{|$control_bdate_day|}"  autocomplete="off"/>
+
+                {|$translate_month|}
+                <input style="width: 40px;" type="text" name="bdate_month" value="{|$control_bdate_month|}"  autocomplete="off"/>
+
+                {|$translate_year|}
+                <input style="width: 80px;" type="text" name="bdate_year" value="{|$control_bdate_year|}"  autocomplete="off"/>
+            </td>
+        </tr>
+        <tr>
+            <td>{|$translate_convenient_time|}:</td>
+            <td><input type="text" name="time" value="{|$control_time|}" /></td>
+        </tr>
+        <tr>
+            <td class="vtop">{|$translate_more_mail|} e-mail:</td>
+            <td>
+                <textarea name="emails" >{|$control_emails|}</textarea><br />
+                <span class="light">({|$translate_at_example|}: example@example.ua)</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vtop">{|$translate_more_phone|}:</td>
+            <td><textarea name="phones" >{|$control_phones|}</textarea></td>
+        </tr>
+        <tr>
+            <td class="vtop">{|$translate_urls|}:</td>
+            <td><textarea name="urls" >{|$control_urls|}</textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <label>
+                    <input type="checkbox" checked name="zakon" value="1" onclick="this.checked ? $j('#demail').removeAttr('disabled') : $j('#demail').attr('disabled', 'disabled');" />
+                <span class="light">{|$used_user_info|}</span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input class="def-submit" type="submit" id="demail" name="ok" value="{|$translate_save|}" /></td>
+        </tr>
+    </table>
+</form>

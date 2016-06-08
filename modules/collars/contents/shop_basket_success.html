@@ -1,0 +1,44 @@
+<h1>{|$translate_checkout|}</h1>
+
+<div class="cl-crumbs">
+    <div><a href="/">{|$translate_main|}</a></div>
+    <div><a href="/basket/">{|$translate_my_basket|}</a></div>
+    <div>
+        <a>{|$translate_checkout|}</a>
+    </div>
+</div>
+
+
+
+<div class="os-message-success order-success">
+    {|$goodmessage|}
+</div>
+
+{|if $productsArray|}
+    <div class="os-product-success-list">
+        <ul class="small-block-grid-1 smaller-block-grid-2 medium-block-grid-3 large-block-grid-4">
+            {|foreach from=$productsArray item="p"|}
+                <li>
+                    <div class="os-category-element">
+                        <div class="image">
+                            <a  href="{|$p.url|}"><img src="{|$p.image|}" /></a>
+                        </div>
+                        <div class="name"><a href="{|$p.url|}">{|$p.name|}</a></div>
+                    </div>
+                </li>
+            {|/foreach|}
+        </ul>
+    </div>
+{|/if|}
+<br />
+<br />
+
+{|*|}
+{|if $bannerSuccess|}
+    <div class="os-block-ordersuccess">
+        <a {|if $bannerSuccessUrl|} href="{|$bannerSuccessUrl|}" {|/if|}>
+        <img class="success-image" src="{|$bannerSuccess|}" alt="" />
+        </a>
+    </div>
+{|/if|}
+{|*|}

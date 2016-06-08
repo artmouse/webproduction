@@ -1,0 +1,124 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/marginrule/">Автоматические наценки на товары</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_rule_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        Правила сохранены.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        Произошла ошибка.
+    </div>
+{|/if|}
+{|if $message == 'empty'|}
+    <div class="shop-message-error">
+        Не выбрана категория и/или не указаан процент скидки
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <strong>{|$translate_single_category|}</strong>
+    <select name="categoryid[]" multiple class="chzn-select-tree inline" style="width: 250px;">
+        <option value="-1">{|$translate_category_all|}{|if in_array(-1, $categorySelectedArray)|} selected {|/if|}</option>
+        {|foreach from=$categoryArray item="e"|}
+            <option value="{|$e.id|}" {|if in_array($e.id, $categorySelectedArray)|} selected {|/if|} data-level="{|$e.level|}">
+        {|$e.name|}
+        (#{|$e.id|})
+        {|if $e.hidden|}
+            - {|$translate_hidden1_small|}
+        {|/if|}
+        </option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <div class="shop-overflow-table">
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>Цена от (включительно)</td>
+                    <td>Цена до (включительно)</td>
+                    <td>Тип наценки</td>
+                    <td>Значение наценки</td>
+                    <td>Валюта</td>
+                    <td>{|$translate_brand|}</td>
+                    <td>{|$translate_provider|}</td>
+                    <td>{|$translate_priority|} (0-99)</td>
+                </tr>
+            </thead>
+            {|section name=i start=1 loop=11 step=1|}
+            
+                <tr>
+                    <td>
+                        <input type="text" name="pricefrom{|$smarty.section.i.index|}" value="{|$control_pricefrom.$smarty.section.i.index|}" style="width: 100%;"/>
+                    </td>
+                    <td>
+                        <input type="text" name="priceto{|$smarty.section.i.index|}" value="{|$control_priceto.$smarty.section.i.index|}" style="width: 100%;"/>
+                    </td>
+                    <td>
+                        <select name="type{|$smarty.section.i.index|}">
+                            <option value="percent" {|if 'percent' == $control_type.$smarty.section.i.index|}selected{|/if|}>Процент</option>
+                            <option value="sum" {|if 'sum' == $control_type.$smarty.section.i.index|}selected{|/if|}>Сумма</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" name="value{|$smarty.section.i.index|}" value="{|$control_value.$smarty.section.i.index|}" style="width: 100%;"/>
+                    </td>
+                    <td>
+                        <select name="currencyid{|$smarty.section.i.index|}">
+                            {|foreach from=$currencyArray item="e"|}
+                                <option value="{|$e.id|}"
+                                        {|if $e.id == $control_currencyid.$smarty.section.i.index|}selected{|/if|} >{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="brandid{|$smarty.section.i.index|}" class="chzn-select" style="width: 200px;">
+                            <option value="0">
+                                ---
+                            </option>
+                            {|foreach from=$brandArray item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_brandid.$smarty.section.i.index|}selected{|/if|}>
+                                    {|$e.name|}
+                                    (#{|$e.id|})
+                                </option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="supplierid{|$smarty.section.i.index|}" class="chzn-select" style="width: 200px;">
+                            <option value="0">
+                                ---
+                            </option>
+                            {|foreach from=$suppliersArray item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_supplierid.$smarty.section.i.index|}selected{|/if|}>
+                                    {|$e.name|}
+                                    (#{|$e.id|})
+                                </option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" name="priority{|$smarty.section.i.index|}" value="{|$control_priority.$smarty.section.i.index|}" style="width: 100%;"/>
+                    </td>
+                </tr>
+            {|/section|}           
+        </table>
+        <br />
+        <br />
+    </div>
+
+    <div class="ob-button-fixed">
+        <input class="ob-button" type="submit" name="ok" value="Сохранить правила" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

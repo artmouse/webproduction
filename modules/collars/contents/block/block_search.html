@@ -1,0 +1,13 @@
+<a href="javascript:void(0);" class="search-toggle-button js-toggle-search"></a>
+<div class="search">
+    <form action="/search/" method="get">
+        <select id="js_search_category" name="categoryid" style="display: none;">
+            <option value="-1" {|if !$categoryIdSelected || $categoryIdSelected == 0|}selected{|/if|}>{|$translate_category_all|}</option>
+            {|foreach from=$categoryArray item=c|}
+            <option value="{|$c.id|}" {|if $categoryIdSelected == $c.id|}selected{|/if|}>{|$c.name|}</option>
+            {|/foreach|}
+        </select>
+        <input class="js-input-search" type="text" name="query" value="{|$control_query|}"  />
+        <input type="submit" value="" />
+    </form>
+</div>

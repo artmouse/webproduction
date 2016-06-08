@@ -1,0 +1,12 @@
+{|if $currencyArray|}
+<div class="os-block-caption">{|$translate_exchange_rate|}</div>
+<div class="os-block-subscribe">
+
+    {|foreach from=$currencyArray item="e"|}
+    <div class="success">
+        1 {|$e.name|} - {|$e.rate|} {|$translate_uah|}.
+    </div>
+    {|/foreach|}
+
+</div>
+{|/if|}

@@ -1,0 +1,34 @@
+$baseFont: 'Noto Sans', sans-serif;
+$baseFontSize: 13px;
+$baseLineHeight: 18px;
+$colorBase: #1097ff;
+$colorBaseDark: #000000;
+$colorBaseVisited: darken($colorBase, 30%);
+$colorLight: #7a7a7a;
+$colorSuccess: #0cb061;
+$colorImportant: #da6633;
+$bgBase: #e8e8e8;
+$bshadowBase: 0 1px 2px rgba(0, 0, 0, 0.10) inset;
+
+@mixin box-sizing($boxsizing) {
+    -moz-box-sizing: $boxsizing;
+    -webkit-box-sizing: $boxsizing;
+    box-sizing: $boxsizing;
+}
+$bb: border-box;
+
+@mixin product-scale ($scale) {
+    -moz-transform: scale($scale, $scale);
+    -webkit-transform: scale($scale, $scale);
+    -o-transform: scale($scale, $scale);
+    -ms-transform: scale($scale, $scale);
+    transform: scale($scale, $scale);
+}
+
+@mixin transition-duration($duration) {
+    -webkit-transition-duration: $duration;
+    -moz-transition-duration: $duration;
+    -o-transition-duration: $duration;
+    -ms-transition-duration: $duration;
+    transition-duration: $duration;
+}

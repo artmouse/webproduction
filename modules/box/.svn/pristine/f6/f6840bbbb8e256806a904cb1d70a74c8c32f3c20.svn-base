@@ -1,0 +1,12 @@
+{|if $statusedArray|@count > 1|}
+    <div class="ob-block-history">
+        {|foreach from=$statusedArray item="s" name="statusArrayForeach"|}
+            {|if $smarty.foreach.statusArrayForeach.last|}
+                <div class="stage selected" style="background-color: {|$s.color|};">{|$s.name|}</div>
+            {|else|}
+                <div class="stage" style="background-color: {|$s.color|};">{|$s.name|}</div> &rarr;
+            {|/if|}
+        {|/foreach|}
+        <div class="clear"></div>
+    </div>
+{|/if|}

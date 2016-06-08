@@ -1,0 +1,187 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_zakaza_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+
+            {|$block_workflow_filter|}
+
+            {|if $sourceArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kanal_zakaza|}</div>
+                    <select name="sourceid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$sourceArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_sourceid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_menedzher_zakaza|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_avtor_zakaza|}</div>
+                    <select name="authorid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_authorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $contractorArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="contractorid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$contractorArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $brandArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_brend_tovara|}</div>
+                    <select name="brandid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$brandArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_brandid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $categoryArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kategoriya_tovara|}</div>
+                    <select name="categoryid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$categoryArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_categoryid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_samie_zakazivaemie_tovari|}</h1>
+
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_code|}</td>
+                    <td>{|$translate_produkt|}</td>
+                    <td align="right">{|$translate_the_number_of_orders|}</td>
+                    <td align="right">{|$translate_summa_produktov_v_zakazah|} ({|$currency|})</td>
+                    <td align="right">{|$translate_sredniy_chek_produkta|} ({|$currency|})</td>
+                </tr>
+            </thead>
+            {|foreach from=$productArray item="product" key="productID"|}
+                <tr>
+                    <td>
+                        <a href="{|$product.url|}" data-id="{|$productID|}" class="js-product-preview">{|$productID|}</a>
+                    </td>
+                    <td>{|$product.name|}</td>
+                    <td align="right">{|$reportCountArray[$productID]|}</td>
+                    <td align="right">{|$reportSumArray[$productID]|}</td>
+                    <td align="right">{|$reportAvgArray[$productID]|}</td>
+                </tr>
+            {|/foreach|}
+        </table>
+
+        {|if $reportCountArray|}
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                ['Product', 'Sales'],
+                {|foreach from=$productArray item="product" key="productID"|}
+                    ['{|$product.name|}',  {|$reportCountArray[$productID]|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+
+                var data = google.visualization.arrayToDataTable([
+                ['Product', 'Revenue'],
+                {|foreach from=$productArray item="product" key="productID"|}
+                    ['{|$product.name|}',  {|$reportSumArray[$productID]|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
+                chart.draw(data, options);
+
+                var data = google.visualization.arrayToDataTable([
+                ['Product', 'AVG'],
+                {|foreach from=$productArray item="product" key="productID"|}
+                    ['{|$product.name|}',  {|$reportAvgArray[$productID]|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
+                chart.draw(data, options);
+            }
+            </script>
+
+            <h2>{|$translate_kolichestvenniy_grafik_produktov|}</h2>
+            <div id="chart_div" style="width: 100%; height: 500px;"></div>
+
+            <br />
+            <br />
+
+            <h2>{|$translate_denezhniy_grafik_produktov|}</h2>
+            <div id="chart_div2" style="width: 100%; height: 500px;"></div>
+
+            <br />
+            <br />
+
+            <h2>{|$translate_sredniy_chek_produkta_v_zakaze|}</h2>
+            <div id="chart_div3" style="width: 100%; height: 500px;"></div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

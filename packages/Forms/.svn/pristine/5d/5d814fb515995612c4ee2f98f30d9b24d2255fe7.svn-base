@@ -1,0 +1,1 @@
+<textarea class="js-editor" name="{|$key|}" style="width: 100%; height: 350px;" id="id-{|$key|}">{|$value|}</textarea>

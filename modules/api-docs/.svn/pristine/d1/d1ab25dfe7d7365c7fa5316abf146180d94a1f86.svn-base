@@ -1,0 +1,120 @@
+<h1>SQLObject: подмена полей. override getField() и setField()</h1>
+
+В SQLObject есть особое извращение для любителей настоящего хардкора,
+мистики и невозможности дебага: подмена полей.<br />
+<br />
+
+Например:<br />
+<ol>
+    <li>Вы хотите getName() - а получаете getLogin()</li>
+    <li>Записываете в login, а реально пишется в какое-то другое поле</li>
+    <li>Читаете или пишете из определенного поля, а реально операции делаются даже не в этой таблице</li>
+</ol>
+<br />
+
+<h2>Как такое можно сделать?</h2>
+
+Для этого нужно сделать свой обработчик события и прицепиться к событию<br />
+<strong>YouClassName.getField.after</strong> (для подмены чтения)<br />
+или<br />
+<strong>YouClassName.setField.before</strong> (для подмены записи).<br />
+<br />
+<br />
+
+<h2>Подмена getField (чтение)</h2>
+
+<code><pre>
+class MyHandler1 implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $object = $event->getObject();
+        $fieldName = $event->getFieldName();
+        $fieldValue = $event->getFieldValue();
+
+        // меняем значение как хотим
+        if ($fieldName == 'id' || $fieldName == 'name') {
+            $event->setFieldValue($fieldValue.'xxx');
+        }
+
+        // Если нужно достать какое-то другое поле, то НЕЛЬЗЯ ВЫЗЫВАТЬ $object->getField(),
+        // потому что он снова вызовет это же событие и будет рекурсия.
+        // Поэтому, есть два варианта.
+
+        // Вариант 1: вызвать getField со вторым параметром false, он сигнализирует о том,
+        // что не надо стартовать события.
+        $object->getField('xxx', false);
+
+        // Вариант 2: получить все поля как массив и выбрать оттуда нужное поле.
+        $a = $object->getValues();
+        $x = $a['xxx'];
+    }
+
+}
+
+// вешаем обработчик для getField класса XUser
+// after - потому что сначала нужно выбрать значения из базы, а потом (after) уже что-то менять.
+Events::Get()->addEvent('XUser.getField.after', 'SQLObject_EventField'); // эта строчка ОБЯЗАТЕЛЬНА! Именно EventField!
+Events::Get()->observe('XUser.getField.after', 'MyHandler1');
+
+// проверяем:
+$user = new XUser(1);
+var_dump($user->getId()); // будет переопределенное
+var_dump($user->getName()); // будет переопределенное
+var_dump($user->getLogin()); // НЕ будет переопределенное
+
+// Вывод будет такой:
+//string(4) "1xxx"
+//string(15) "Максимxxx"
+//string(3) "max"
+</pre></code>
+<br />
+<br />
+
+<h2>Подмена setField (запись)</h2>
+
+<code><pre>
+class MyHandler2 implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $object = $event->getObject();
+        $fieldName = $event->getFieldName();
+        $fieldValue = $event->getFieldValue();
+
+        // запись в name перезаправляем в запись commentadmin
+        if ($fieldName == 'name') {
+            $event->setFieldName('commentadmin');
+        }
+    }
+
+}
+
+// вешаем обработчик для setField класса XUser.
+// Для setField обработчик before, потому что setField надо делать ДО записи в базу.
+Events::Get()->addEvent('XUser.setField.before', 'SQLObject_EventField'); // эта строчка ОБЯЗАТЕЛЬНА! Именно EventField!
+Events::Get()->observe('XUser.setField.before', 'MyHandler2');
+
+// проверяем
+$user = new XUser(1);
+$user->setName('test');
+$user->update();
+
+// показываем что реально записалось в поле commentadmin
+var_dump($user->getCommentadmin());
+
+// получим вывод:
+// string(4) "test"
+</pre></code>
+<br />
+<br />
+
+<h2>Как этот механизм работает в реальности?</h2>
+
+Все привыкли использовать setXXX/getXXX в SQLObject. Например, setName, getName.<br />
+В реальности когда вы вызываете метод User::getName(),<br />
+то вызывается метод XUser::getName(),<br />
+который вызывает SQLObject::getField('name')<br />
+<br />
+Так как вся система построена на SQLObject, то изменив поведение getField или setField мы можем влиять на все и сразу.<br />
+<br />
+Только вот переопределять User или XUser не удобно, потому что это плодит fork-кода (жесткий custom), поэтому
+намного легче оперировать событиями (events).<br />

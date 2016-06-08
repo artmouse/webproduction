@@ -1,0 +1,24 @@
+{|foreach from=$roleArray item="r1"|}
+    <li>
+        <div class="role">
+            <div class="wrap" style="background-color: {|$r1.block_color|}">
+                <strong>{|$r1.name|}</strong>
+                {|if $r1.description|}
+                    {|$r1.description|}<br />
+                {|/if|}
+                {|if $r1.employerArray|}
+                    {|foreach from=$r1.employerArray item="e"|}
+                        <a class="js-contact-preview" data-id="{|$e.id|}" href="{|$e.url|}">{|$e.name|}</a>
+                        <br/>
+                    {|/foreach|}
+                {|/if|}
+            </div>
+        </div>
+
+        {|if $r1.block_structure|}
+            <ul {|if $r1.last|}class="last"{|/if|}>
+                {|$r1.block_structure|}
+            </ul>
+        {|/if|}
+    </li>
+{|/foreach|}

@@ -1,0 +1,16 @@
+<div class="os-block-caption"><h3>{|$translate_most_discussed|}</h3></div>
+<div class="os-block-faq">
+    <div class="element">
+        {|$f.question|}
+        <div class="name">{|$f.name|}</div>
+    </div>
+    <div class="element answer">
+        {|if $f.answer|}
+            <strong>{|$translate_answer|}:</strong> {|$f.answer|} <br/>
+            <div class="date">{|$f.cdate|}</div>
+        {|else|}
+            <strong>{|$translate_answer|}</strong>
+            <div class="date">{|$translate_the_answer_is_expected|}</div>
+        {|/if|}
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<table class="shop-table">
+    <thead>
+        <tr>
+            <td>{|$translate_operator|}</td>
+            <td>&nbsp;</td>
+            <td>{|$translate_kto_zvonit_govorit|}?</td>
+            <td>&nbsp;</td>
+        </tr>
+    </thead>
+    {|foreach from=$voipArray item="e"|}
+        <tr>
+            <td>{|$e.to|}</td>
+            <td>
+                {|if $e.toName|}
+                    <a href="{|$e.urlURL|}">{|$e.toName|}</a>
+                {|/if|}
+            </td>
+            <td>{|$e.from|}</td>
+            <td>
+                {|if $e.fromName|}
+                    <a href="{|$e.fromURL|}">{|$e.fromName|}</a>
+                {|/if|}
+            </td>
+        </tr>
+    {|/foreach|}
+</table>

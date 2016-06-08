@@ -1,0 +1,153 @@
+<div class="shop-tabs fixed">
+    <a href="/admin/shop/news/">&lsaquo; {|$translate_news|}</a>
+    <a href="" class="selected">{|$translate_news_edit|}</a>
+    <div class="clear"></div>
+</div>
+<div class="shop-tabs-place">&nbsp;</div>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <strong>{|$translate_title_header|}</strong><br />
+    <input type="text" name="name" value="" style="width: 80%; ">
+    <br />
+    <br />
+
+    <strong>{|$translate_short_contents|}</strong><br />
+    <textarea name="contentpreview"  style="width: 99%; height: 100px; visibility: hidden; display: none;" id="id-contentpreview"></textarea>
+    <script type="text/javascript" src="/packages/CKEditor/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('id-contentpreview', {
+            filebrowserBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html',
+            filebrowserImageBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Flash',
+            filebrowserUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+            filebrowserFlashUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+        });
+    </script>
+    <br />
+    <br />
+
+    <strong>{|$translate_contents|}</strong><br />
+    <textarea name="content"  style="width: 99%; height: 300px; visibility: hidden; display: none;" id="id-content"></textarea>
+    <script type="text/javascript" src="/packages/CKEditor/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('id-content', {
+            filebrowserBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html',
+            filebrowserImageBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Flash',
+            filebrowserUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+            filebrowserFlashUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+        });
+    </script>
+    <br />
+    <br />
+
+    <strong>{|$translate_picture|}</strong><br />
+    <input type="file" name="image" />
+    <br />
+    <br />
+
+    <strong>Статья относится к странице</strong><br />
+    <select name="pageid">
+        <option value="0" {|if !$control_pageid|} selected {|/if|}>---</option>
+        {|foreach from=$pageArray item="e"|}
+        <option value="{|$e.id|}" {|if $e.id == $control_pageid|} selected {|/if|}>
+        {|$e.name|}
+        </option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>{|$translate_hidden|}</strong><br />
+    <input type="checkbox" name="hidden" value="1" />
+    <br />
+    <br />
+
+    <strong>{|$translate_set_up|}</strong><br />
+    <input type="text" name="cdate" class="js-date" value="" style="width: 150px;">
+    <br />
+    <br />
+
+    <strong>{|$translate_article_about_this_product|}</strong> ({|$translate_start_typing_the_name_of_the_product|})<br />
+    <input type="text" name="addproduct" value="" id="id-addproduct"/>
+    <br />
+    <br />
+
+    <strong>{|$translate_the_article_refers_to_the_category_of|}</strong><br />
+    <select name="category">
+        <option value="0">---</option>
+        {|foreach from=$categoryArray item="e"|}
+        <option value="{|$e.id|}" {|if $e.id == $control_category|} selected {|/if|}>
+        {|section name=foo start=0 loop=$e.level|}
+        &nbsp;&nbsp;&nbsp;
+        {|/section|}
+        {|$e.name|}
+        ({|$e.id|})
+        {|if $e.hidden|}
+        - {|$translate_hidden1_small|}
+        {|/if|}
+        </option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>{|$translate_the_article_refers_to_the_brand|}</strong><br />
+    <select name="brand">
+        <option value="0">---</option>
+        {|foreach from=$brandsArray item="e"|}
+        <option value="{|$e.id|}" {|if $control_brand == $e.id|} selected {|/if|}>{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>URL</strong><br />
+    <input type="text" name="url" value="{|$control_url|}" style="width: 80%; ">
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_heading|} (title)</strong><br />
+    <input type="text" name="seotitle" value="{|$control_seotitle|}" style="width: 80%; ">
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_description_small|} (description)</strong><br />
+    <textarea name="seodescription" style="width: 99%; height: 100px;">{|$control_seodescription|}</textarea>
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_seo_content|} (content)</strong><br />
+    <textarea name="seocontent" style="width: 99%; height: 100px; visibility: hidden; display: none;" id="id-seocontent"></textarea>
+    <script type="text/javascript" src="/packages/CKEditor/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('id-seocontent', {
+            filebrowserBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html',
+            filebrowserImageBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Flash',
+            filebrowserUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+            filebrowserFlashUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+        });
+    </script>
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_seo_kaewords|} (keywords)</strong><br />
+    <textarea name="seokeywords" style="width: 99%; height: 100px;">{|$control_seokeywords|}</textarea>
+    <br />
+    <br />
+
+    <input class="ob-button" type="submit" name="formsInsert" value="{|$translate_news_add|}">
+
+</form>
+
+<script type="text/javascript">
+    /*$j(function() {
+     $j(".rte-zone").htmlarea({
+     css: '/_css/jquery.htmlarea.editor.css'
+     });
+     });*/
+</script>

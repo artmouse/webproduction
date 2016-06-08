@@ -1,0 +1,112 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element ulist">
+                <div class="ulist-caption">
+                    {|foreach from=$managerArray item="e"|}
+                        <label>
+                            <input type="checkbox" name="managerid[]" value="{|$e.id|}" {|if $e.selected|} checked {|/if|}>
+                            {|$e.name|}
+                        </label>
+                    {|/foreach|}
+                </div>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <div id="js-chart-issue"></div>
+    <div id="js-chart-event"></div>
+
+    <script type="text/javascript">
+    google.load('visualization', '1', {packages: ['corechart']});
+    google.setOnLoadCallback(chartDraw);
+
+    function chartDraw() {
+        var options = {
+            title: '{|$translate_kolichestvo_vipolnennih_zadach_po_dnyam|}',
+            width: '100%',
+            height: 400,
+            chartArea:{left:50,top:50,height:"70%"},
+            lineWidth: 5,
+            //curveType: 'function',
+        };
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '{|$translate_day|}');
+
+        {|foreach from=$employerArray item="employer"|}
+        data.addColumn('number', '{|$employer.name|}');
+        {|/foreach|}
+
+        data.addRows([
+
+        {|foreach from=$dateArray item="date"|}
+        ['{|$date|}', {|foreach from=$employerArray item="employer"|} {|$reportArray[$employer.id][$date].issue|}, {|/foreach|}],
+        {|/foreach|}
+        ]);
+
+        var chart = new google.visualization.LineChart(
+        document.getElementById('js-chart-issue')
+        );
+        chart.draw(data, options);
+
+        // ---
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '{|$translate_day|}');
+
+        {|foreach from=$employerArray item="employer"|}
+        data.addColumn('number', '{|$employer.name|}');
+        {|/foreach|}
+
+        data.addRows([
+
+        {|foreach from=$dateArray item="date"|}
+        ['{|$date|}', {|foreach from=$employerArray item="employer"|} {|$reportArray[$employer.id][$date].event|}, {|/foreach|}],
+        {|/foreach|}
+        ]);
+
+        var options = {
+            title: '{|$translate_kolichestvo_sovershennih_pisem_i_zvonkov_po_dnyam|}',
+            width: '100%',
+            height: 400,
+            chartArea:{left:50,top:50,height:"70%"},
+            lineWidth: 5,
+            //curveType: 'function',
+        };
+
+        var chart = new google.visualization.LineChart(
+        document.getElementById('js-chart-event')
+        );
+        chart.draw(data, options);
+    }
+
+    function report_refresh() {
+        location.reload();
+    }
+
+    // автообновление страницы каждые 60 секунд
+    $j(function () {
+        setTimeout(report_refresh, 60000);
+    });
+
+    </script>
+
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        body {
+            padding: 0;
+            font-family: Arial;
+        }
+        .clear {
+            height: 0;
+            line-height: 0;
+            font-size: 0;
+            clear: both;
+            page-break-after: always;
+        }
+        .item {
+            float: left;
+            padding: 0 7px 0 5px;
+            width: 108px;
+            height: 60px;
+            overflow: hidden;
+            margin: 0 3px 0 2px;
+        }
+        .item .image {
+            height: 20px;
+            overflow: hidden;
+            padding: 0 7px;
+        }
+        .item .text {
+            overflow: hidden;
+            font-size: 8px;
+            padding: 0 7px;
+            line-height: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div style="margin: 0 -10px 0 0;">
+        {|assign var=n value=0|}
+        {|foreach from=$productArray item="b"|}
+            {|if $b.barcodeimageinternal|}
+                {|section name=req1 loop=$loop|}
+                    {|section name=req loop=$b.count|}
+                        {|assign var=n value=`$n+1`|}
+                        <div class="item">
+                            <div class="image"><img src="{|$b.barcodeimageinternal|}" width="100%" height="" alt="" /></div>
+                            <div class="text">{|$b.name|}</div>
+                        </div>
+        
+                        {|if $n == 3|}
+                            {|assign var=n value=0|}
+                            <div class="clear"></div>
+                        {|/if|}
+                    {|/section|}
+                {|/section|}
+            {|/if|}
+        {|/foreach|}
+    </div>
+
+</body>
+</html>

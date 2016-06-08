@@ -1,0 +1,26 @@
+{|$block_menu|}
+
+{|if $message == 'ok' OR $arg_message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_order_update_success|}.
+    </div>
+{|/if|}
+
+{|if not $canEdit|}
+    <div class="shop-message-info">
+        {|$translate_order_cant_edit_mess|}.
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    {|$block_info|}
+
+    {|if $canEdit|}
+        <div class="ob-button-fixed">
+            <input type="hidden" name="ok" value="1" />
+            <input type="submit" value="{|$translate_save|}" class="ob-button button-green" onclick="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_zakaza|}.');" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    {|/if|}
+
+</form>

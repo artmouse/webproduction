@@ -1,0 +1,25 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element">
+            <a class="selected" href="/admin/forms/">Формы</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'name'|}
+    <div class="shop-message-error">
+        {|$translate_error|}<br>
+        {|$translate_name|}
+    </div>
+{|/if|}
+
+{|$table|}
+
+<form class="ob-block-element" action="" method="post">
+    <h2>{|$translate_create_forms|}</h2>
+    <input type="text" name="name" value="{|$control_name|}" placeholder="{|$translate_create_forms_name|}" style="width: 200px;" />
+    <input type="text" name="description" value="{|$control_description|}" placeholder="{|$translate_description|}" style="width: 400px;" />
+    <input class="ob-button" type="submit" name="add" value="{|$translate_create|}..." />
+</form>

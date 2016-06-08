@@ -1,0 +1,392 @@
+[2015-12-11 12:33:09]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=6085 kyryll    6085  0.0  0.0   4476   872 pts/5    S+   12:33   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 12:33:09]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=6087 kyryll    6087  0.0  0.0  14940  2156 pts/5    S+   12:33   0:00 grep cron-ami
+
+[2015-12-11 12:33:09]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=6092 kyryll    6092  0.0  0.0   4476   780 pts/5    S+   12:33   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 12:33:09]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=6094 kyryll    6094  0.0  0.0  14940  2160 pts/5    S+   12:33   0:00 grep cron-imap
+
+[2015-12-11 12:49:33]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7063 kyryll    7063  0.0  0.0   4476   764 pts/5    S+   12:49   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 12:49:33]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7065 kyryll    7065  0.0  0.0  14940  2164 pts/5    S+   12:49   0:00 grep cron-ami
+
+[2015-12-11 12:49:33]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7070 kyryll    7070  0.0  0.0   4476   864 pts/5    S+   12:49   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 12:49:33]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7072 kyryll    7072  0.0  0.0  14940  2220 pts/5    S+   12:49   0:00 grep cron-imap
+
+[2015-12-11 12:53:19]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7357 kyryll    7357  0.0  0.0   4476   764 pts/5    S+   12:53   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 12:53:19]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7359 kyryll    7359  0.0  0.0  14940  2200 pts/5    S+   12:53   0:00 grep cron-ami
+
+[2015-12-11 12:53:19]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7364 kyryll    7364  0.0  0.0   4476   772 pts/5    S+   12:53   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 12:53:19]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7366 kyryll    7366  0.0  0.0  14940  2208 pts/5    S+   12:53   0:00 grep cron-imap
+
+[2015-12-11 12:57:12]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7663 kyryll    7663  0.0  0.0   4476   760 pts/5    S+   12:57   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 12:57:12]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7665 kyryll    7665  0.0  0.0  14940  2216 pts/5    S+   12:57   0:00 grep cron-ami
+
+[2015-12-11 12:57:12]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7670 kyryll    7670  0.0  0.0   4476   812 pts/5    S+   12:57   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 12:57:12]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=7672 kyryll    7672  0.0  0.0  14940  2188 pts/5    S+   12:57   0:00 grep cron-imap
+
+[2015-12-11 13:03:48]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=8160 kyryll    8160  0.0  0.0   4476   916 pts/5    S+   13:03   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 13:03:48]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=8162 kyryll    8162  0.0  0.0  14940  2156 pts/5    S+   13:03   0:00 grep cron-ami
+
+[2015-12-11 13:03:48]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=8167 kyryll    8167  0.0  0.0   4476   868 pts/5    S+   13:03   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 13:03:48]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=8169 kyryll    8169  0.0  0.0  14940  2076 pts/5    S+   13:03   0:00 grep cron-imap
+
+[2015-12-11 16:11:15]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=13642 kyryll   13642  0.0  0.0   4476   768 pts/6    S+   16:11   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:11:15]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=13644 kyryll   13644  0.0  0.0  14940  2200 pts/6    S+   16:11   0:00 grep cron-ami
+
+[2015-12-11 16:11:15]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=13649 kyryll   13649  0.0  0.0   4476   820 pts/6    S+   16:11   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:11:15]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=13651 kyryll   13651  0.0  0.0  14940  2120 pts/6    S+   16:11   0:00 grep cron-imap
+
+[2015-12-11 16:16:00]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=14041 kyryll   14041  0.0  0.0   4476   916 pts/6    S+   16:16   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:16:01]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=14043 kyryll   14043  0.0  0.0  14940  2096 pts/6    S+   16:16   0:00 grep cron-ami
+
+[2015-12-11 16:16:01]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=14048 kyryll   14048  0.0  0.0   4476   816 pts/6    S+   16:16   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:16:01]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=14050 kyryll   14050  0.0  0.0  14940  2208 pts/6    S+   16:16   0:00 grep cron-imap
+
+[2015-12-11 16:30:57]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15236 kyryll   15236  0.0  0.0   4476   740 pts/6    S+   16:30   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:30:57]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15238 kyryll   15238  0.0  0.0  14940  2152 pts/6    S+   16:30   0:00 grep cron-ami
+
+[2015-12-11 16:30:57]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15243 kyryll   15243  0.0  0.0   4476   768 pts/6    S+   16:30   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:30:57]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15245 kyryll   15245  0.0  0.0  14940  2152 pts/6    S+   16:30   0:00 grep cron-imap
+
+[2015-12-11 16:34:26]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15482 kyryll   15482  0.0  0.0   4476   840 pts/6    S+   16:34   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:34:26]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15484 kyryll   15484  0.0  0.0  14940  2092 pts/6    S+   16:34   0:00 grep cron-ami
+
+[2015-12-11 16:34:26]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15489 kyryll   15489  0.0  0.0   4476   840 pts/6    S+   16:34   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:34:26]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15491 kyryll   15491  0.0  0.0  14940  2160 pts/6    S+   16:34   0:00 grep cron-imap
+
+[2015-12-11 16:39:18]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15757 kyryll   15757  0.0  0.0   4476   904 pts/6    S+   16:39   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:39:18]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15759 kyryll   15759  0.0  0.0  14940  2108 pts/6    S+   16:39   0:00 grep cron-ami
+
+[2015-12-11 16:39:18]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15764 kyryll   15764  0.0  0.0   4476   912 pts/6    S+   16:39   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:39:18]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=15766 kyryll   15766  0.0  0.0  14940  2220 pts/6    S+   16:39   0:00 grep cron-imap
+
+[2015-12-11 16:57:16]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17002 kyryll   17002  0.0  0.0   4476   864 pts/6    S+   16:57   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:57:16]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17004 kyryll   17004  0.0  0.0  14940  2220 pts/6    S+   16:57   0:00 grep cron-ami
+
+[2015-12-11 16:57:16]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17009 kyryll   17009  0.0  0.0   4476   832 pts/6    S+   16:57   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:57:16]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17011 kyryll   17011  0.0  0.0  14940  2220 pts/6    S+   16:57   0:00 grep cron-imap
+
+[2015-12-11 16:57:52]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17023 kyryll   17023  0.0  0.0   4476   808 pts/6    S+   16:57   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 16:57:52]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17025 kyryll   17025  0.0  0.0  14940  2132 pts/6    S+   16:57   0:00 grep cron-ami
+
+[2015-12-11 16:57:52]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17030 kyryll   17030  0.0  0.0   4476   776 pts/6    S+   16:57   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 16:57:52]
+host: 
+url: 
+contentID: 
+point: /var/www/shop.local/updater.sh
+data: Killing process PID=17032 kyryll   17032  0.0  0.0  14940  2208 pts/6    S+   16:57   0:00 grep cron-imap
+
+[2015-12-11 17:08:19]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17585 kyryll   17585  0.0  0.0   4476   916 pts/6    S+   17:08   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 17:08:19]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17587 kyryll   17587  0.0  0.0  14940  2152 pts/6    S+   17:08   0:00 grep cron-ami
+
+[2015-12-11 17:08:20]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17592 kyryll   17592  0.0  0.0   4476   776 pts/6    S+   17:08   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 17:08:20]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17594 kyryll   17594  0.0  0.0  14940  2144 pts/6    S+   17:08   0:00 grep cron-imap
+
+[2015-12-11 17:12:14]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17919 kyryll   17919  0.0  0.0   4476   768 pts/6    S+   17:12   0:00 sh -c ps ux | grep cron-ami
+
+[2015-12-11 17:12:14]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17921 kyryll   17921  0.0  0.0  14940  2196 pts/6    S+   17:12   0:00 grep cron-ami
+
+[2015-12-11 17:12:14]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17926 kyryll   17926  0.0  0.0   4476   872 pts/6    S+   17:12   0:00 sh -c ps ux | grep cron-imap
+
+[2015-12-11 17:12:14]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: Killing process PID=17928 kyryll   17928  0.0  0.0  14940  2064 pts/6    S+   17:12   0:00 grep cron-imap
+

@@ -1,0 +1,37 @@
+{|if $message != 'ok'|}
+    <div class="nb-top-nav-place js-top-nav-buffer"></div>
+    <div class="nb-top-nav js-top-nav">
+        <div class="nb-block-tabs">
+            <div class="tab-element"><a href="/admin/shop/workflow/">&lsaquo; {|$translate_biznes_protsessi|}</a></div>
+            <div class="tab-element"><a href="/admin/shop/workflow/{|$orderCategoryId|}/">{|$translate_workflow|} #{|$orderCategoryId|}</a></div>
+            <div class="tab-element"><a href="../delete/" class="selected">{|$translate_delete|}</a></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+<div class="shop-message-success">
+    {|$translate_zapis_uspeshno_udalena|}.<br />
+    <a href="/admin/shop/workflow/">{|$translate_biznes_protsessi|}</a>
+</div>
+{|/if|}
+
+{|if $message == 'error'|}
+<div class="shop-message-error">
+    {|$translate_quiz_delete_error|}.
+</div>
+{|/if|}
+
+{|if $message != 'ok'|}
+<div class="ob-block-element">
+    <form action="" method="post">
+        {|$translate_vi_deystvitelno_hotite_udalit_biznes_protsess|}
+        <strong>#{|$orderCategoryId|}</strong>?
+        <br />
+        <br />
+        <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+        <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='../';" />
+    </form>
+</div>
+{|/if|}

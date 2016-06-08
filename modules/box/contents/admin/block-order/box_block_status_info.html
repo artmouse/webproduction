@@ -1,0 +1,107 @@
+<div class="ob-block-details" style="background-color: {|if $statusColor|}{|$statusColor|}{|else|}#ebebeb{|/if|};">
+    <div class="flex-wrap">
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_order_status_ind|}:</div>
+                <div class="el-value">
+                    {|if $statusURL|}
+                        <a href="{|$statusURL|}">{|$statusName|}</a>
+                    {|/if|}
+                    {|if $allClosed|}
+                        <div class="status ok"></div>
+                    {|/if|}
+                    {|if $statusNextArray && $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <select name="status" class="chzn-select js-disabled">
+                    {|foreach from=$statusNextArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_status|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_krayniy_srok_etapa|}:</div>
+                <div class="el-value">
+                    {|$control_termEmployer|}
+                    {|if $fireIssueStatus|}
+                        <div class="ob-icon-overdue"></div>
+                    {|/if|}
+                    {|if $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <input class="js-datetime" name="termEmployer" value="{|$control_termEmployer|}"
+                       {|if not $canEdit|}disabled{|/if|}>
+            </div>
+        </div>
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_otvetstvenniy_etapa|}:</div>
+                <div class="el-value">
+                    {|if $managerNameEmployer|}
+                        <a href="{|$managerUrlEmployer|}" class="js-contact-preview" data-id="{|$managerIdEmployer|}">
+                            {|$managerNameEmployer|}
+                        </a>
+                    {|/if|}
+                    {|if $managerArray && $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <select name="managerEmployer" class="chzn-select" {|if not $canEdit|}disabled{|/if|}>
+                    <option value="">---</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_managerEmployer|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+
+        {|if $workflowName|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_workflow|}:</div>
+                    <div class="el-value">
+                        {|if $$workflowURL|}
+                            <a href="{|$workflowURL|}">{|$workflowName|}</a>
+                        {|/if|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    {|if $workflowArray|}
+                        <select name="categoryid" class="chzn-select js-disabled">
+                            {|foreach from=$workflowArray item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_categoryid|} selected {|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    {|/if|}
+                </div>
+            </div>
+        {|/if|}
+
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+    </div>
+</div>

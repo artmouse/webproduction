@@ -1,0 +1,1 @@
+{|$type|}{|if $return|} ({|$translate_return|}){|/if|}

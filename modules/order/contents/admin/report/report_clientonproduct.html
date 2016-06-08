@@ -1,0 +1,54 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="filterproductname" id="id-value" value="{|$control_filterproductname|}" class="help-hint-filter-login js-product-autocomplete-input" placeholder="{|$translate_item_title|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_zakaza_ot|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+            {|$block_workflow_filter|}
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <table width="100%">
+            <tr>
+                <td><h1>{|$translate_klienti_kotorie_zakazali_danniy_tovar|}</h1></td>
+                <td align="right"><a href="/admin/shop/report/clientonproduct/?{|$urlget|}&export-xls=1" class="xls" name="export-xls">{|$translate_export_to|} XLS</a></td>
+            </tr>
+        </table>
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_order_number|}</td>
+                    <td>{|$translate_client_small|}</td>
+                    <td>E-mail</td>
+                    <td align="right">{|$translate_phone|}</td>
+                </tr>
+            </thead>
+            {|foreach from=$clientsArray item="client"|}
+                <tr>
+                    <td> {|$client.idorder|} </td>
+                    <td> <a href="/admin/shop/users/{|$client.clientid|}/">{|$client.name|}</a> </td>
+                    <td> {|$client.email|} </td>
+                    <td> {|$client.phone|} </td>
+                </tr>
+            {|/foreach|}
+        </table> 
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

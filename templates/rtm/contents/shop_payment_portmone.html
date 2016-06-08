@@ -1,0 +1,28 @@
+{|if $success|}
+    <div class="os-message-success">
+        {|$translate_thank_you_payment_was_successfully_received|}
+        {|$translate_in_the_near_future|}
+    </div>
+{|elseif $fail | (!$order | !$payee_id)|}
+    <div class="os-message-error">
+        Произошла ошибка.
+    </div>
+{|/if|}
+
+{|if $order && $payee_id|}
+    <div class="os-message-error">
+        Для проведения оплаты с помощью системы Portmone.com, нажмите на кнопку "Оплатить".
+    </div>
+
+    <form action="https://www.portmone.com.ua/gateway/" method="post">
+        <input type="hidden" name="payee_id" value="{|$payee_id|}" />
+        <input type="hidden" name="shop_order_number" value="{|$order.shop_order_number|}" />
+        <input type="hidden" name="bill_amount" value="{|$order.bill_amount|}"/>
+        <input type="hidden" name="description" value="{|$order.description|}"/>
+        <input type="hidden" name="success_url" value="{|$order.success_url|}" />
+        <input type="hidden" name="failure_url" value="{|$order.failure_url|}" />
+        <input type="hidden" name="lang" value="RU" />
+        <input type="hidden" name="encoding" value="UTF-8" />
+        <input class="rtm-submit" type="submit" value="Оплатить" />
+    </form>
+{|/if|}

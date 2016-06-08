@@ -1,0 +1,21 @@
+<div class="nb-search-result-element">
+    <div class="elements-caption">{|$translate_sobitiya|}</div>
+
+    {|if !$eventArray|}
+        <div class="no-result">
+            Ничего не нашлось.
+            <span>Попробуйте еще.</span>
+        </div>
+    {|/if|}
+
+    {|foreach from=$eventArray item="event"|}
+        <div class="element no-padding">
+            <div class="data">
+                <div class="item">
+                    <a href="{|$event.url|}">{|$event.name|}</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {|/foreach|}
+</div>

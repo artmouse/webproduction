@@ -1,0 +1,143 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+    {|if $templateArray|}
+        <div class="form-element separate">
+            <div class="element-caption js-handele move">{|$blockName|}</div><br>
+            <input type="text" name="{|$index|}_documentname" value="{|$documentname|}" style="width: 100%;" placeholder="Название документа" />
+        </div>
+
+        <div class="double">
+            <div class="form-element separate">
+                <select class="{|$index|}-chzn-select" name="{|$index|}_templateid" style="width: 100%;">
+                    <option value="">Шаблон документа</option>
+                    {|foreach from=$templateArray item="e"|}
+                        <option value="{|$e.id|}" {|if $templateid == $e.id|} selected{|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="form-element separate">
+                <select class="{|$index|}-chzn-select" name="{|$index|}_contractorid" style="width: 100%;">
+                    {|foreach from=$contractorArray item="e"|}
+                        <option value="{|$e.id|}" {|if $contractorid == $e.id|} selected{|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="form-element">
+            <div class="element-caption">Менеджер, для создания документа</div>
+            <select class="chzn-select" name="{|$index|}_managerId">
+                <option value="0">---</option>
+                {|foreach from=$managerArray item="m"|}
+                    <option value="{|$m.id|}" {|if $m.id == $managerId|}selected{|/if|}>{|$m.name|}</option>
+                {|/foreach|}
+            </select>
+            <br>
+        </div>
+
+        <div class="form-element separate">
+            <label>
+                <input type="checkbox" value="1" name="{|$index|}_letter" {|if $letter|}checked{|/if|}>
+                Отправить документ клиенту, письмом.
+            </label>
+        </div>
+
+        <div class="js-{|$index|}-text-block">
+            <div class="form-element separate">
+                Отправлять письмо, только если оплата
+                <select class="{|$index|}-chzn-select" name="{|$index|}_paymentId" style="width: 100%">
+                    <option value="0" {|if !$paymentId|}selected{|/if|}>Любая оплата</option>
+                    {|foreach from=$paymentArray item="p"|}
+                        <option value="{|$p.id|}" {|if $paymentId == $p.id|}selected{|/if|}>{|$p.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="form-element">
+                Текст письма
+                <textarea class="js-autosize-{|$index|}" name="{|$index|}_letter_text" style="width: 100%;">{|$letter_text|}</textarea>
+            </div>
+        </div>
+
+        <script>
+            $j(function () {
+                $j('[name={|$index|}_letter]').change(function () {
+                    if ($j(this).prop('checked')) {
+                        $j('.js-{|$index|}-text-block').show();
+                    } else {
+                        $j('.js-{|$index|}-text-block').hide();
+                    }
+                });
+
+                $j('[name={|$index|}_letter]').change();
+            });
+        </script>
+
+        {|*|}
+            <div class="element">
+                <div class="el-caption">Отправлен</div>
+                <div class="el-value">
+                    <label>
+                        <input type="checkbox" name="{|$index|}_sent" value="1" {|if $sent|} checked{|/if|} class="js-document-checkbox-date" />
+                    </label>
+                    <input type="text" name="{|$index|}_sdate" value="{|$sdate|}" class="{|$index|}-js-date" style="width: 200px;" />
+                </div>
+            </div>
+
+            <div class="element">
+                <div class="el-caption">Получен</div>
+                <div class="el-value">
+                    <label>
+                        <input type="checkbox" name="{|$index|}_recieved" value="1" {|if $recieved|} checked{|/if|} class="js-document-checkbox-date">
+                    </label>
+                    <input type="text" name="{|$index|}_bdate" value="{|$bdate|}" class="{|$index|}-js-date" style="width: 200px;" />
+                </div>
+            </div>
+
+            <div class="element">
+                <div class="el-caption">Архив</div>
+                <div class="el-value">
+                    <label>
+                        <input type="checkbox" name="{|$index|}_archive" value="1" {|if $archive|} checked{|/if|} class="js-document-checkbox-date">
+                    </label>
+                    <input type="text" name="{|$index|}_adate" value="{|$adate|}" class="{|$index|}-js-date" style="width: 200px;" />
+                </div>
+            </div>
+
+            <div class="element">
+                <div class="el-caption">Файл с оригиналом</div>
+                <div class="el-value">
+                    <input type="file" name="{|$index|}_fileoriginal" /> <br />
+                    (на замену автоматически генерируемому файлу)
+                </div>
+            </div>
+            {|*|}
+    {|else|}
+        <div class="form-element">
+            <div class="element-caption">Нет шаблоков документов</div>
+        </div>
+    {|/if|}
+</div>
+
+<script>
+    $j(function () {
+        $j('.{|$index|}-chzn-select').select2();
+
+        $j('.js-autosize-{|$index|}').autosize();
+
+        // выбор даты
+        /*$j('.{|$index|}-js-date').each(function (i, e) {
+            var $e = $j(e);
+            var format = $e.data('dateformat');
+            if (!format) {
+                format = 'yy-mm-dd';
+            }
+            $e.datepicker({
+                dateFormat: format,
+                changeMonth: true,
+                changeYear: true
+            });
+        });*/
+    });
+</script>

@@ -1,0 +1,57 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/orders/transfer/" >{|$translate_orders_transfer|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/order/{|$orderid|}/edit/" >{|$translate_ord|} #{|$orderid|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_order_to_transfer|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'basketNotEmpty'|}
+    <div class="shop-message-info">
+        {|$translate_transfer_basket_not_empty|} {|$basketStorageName|}.<br />
+        <form action="" method="get">
+            <input class="ob-button" type="submit" name="okadd" value="{|$translate_transfer_basket_append|}" />
+        </form>
+        <br />
+        <form action="" method="get">   
+            <input class="ob-button" type="submit" name="okempty" value="{|$translate_transfer_basket_replace|}" />
+        </form>
+        <br />
+        <form action="/admin/shop/storage/transfer/" method="post">    
+            <input class="ob-button" type="submit" name="go" value="{|$translate_transfer_basket_finish|}" />
+        </form>
+        <br />
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_transfer_basket_redirect|}...
+    </div>
+{|/if|}
+
+{|if $message == 'alreadyInBasket'|}
+    <div class="shop-message-success">
+        {|$translate_transfer_already_in_basket|}.
+    </div>
+{|/if|}
+
+{|if $message == 'noStorageName'|}
+    <div class="shop-message-error">
+        {|$translate_order_transfer_message_warehouse|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_transfer_message_error|}
+    </div>
+{|/if|}
+
+{|if $urlredirect|}
+    <script type="text/javascript">
+    document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}

@@ -1,0 +1,74 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input class="js-date" name="startdate" type="text" value="{|$control_startdate|}" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input class="js-date" name="enddate" type="text" value="{|$control_enddate|}" placeholder="{|$translate_date_to|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <select name="clientid" class="chzn-select">
+                    <option value="" >{|$translate_contacts_all|}</option>
+                    {|foreach from=$clientArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_clientid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input type="submit" name="ok" value="{|$translate_show|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $text|}
+            <p>{|$translate_report_last_two_weeks|}</p>
+        {|/if|}
+
+        <table border="0" cellpadding="0" cellspacing="0" class="shop-table table-filter">
+            <thead>
+                <tr>
+                    <td>{|$translate_client_small|}</td>
+                    <td>{|$translate_startoviy_balans|}</td>
+                    <td>{|$translate_summa_vhodyashchih_schetov|}</td>
+                    <td>{|$translate_summa_ishodyashchih_schetov|}</td>
+                    <td>{|$translate_summa_vhodyashchih_platezhey|}</td>
+                    <td>{|$translate_summa_ishodyashchih_platezhey|}</td>
+                    <td>{|$translate_itogoviy_balans|}</td>
+                </tr>
+            </thead>
+            <tbody>
+                {|foreach from=$table item="e" key="key"|}
+                    <tr>
+                        <td>{|if $clientArray[$key]|}{|$clientArray[$key].name|}{|else|}{|$translate_klient_ne_ukazan|}{|/if|}</td>
+                        <td align="right">{|$e.balance_start|number_format:2|} {|$currency|}</td>
+                        <td align="right">{|$e.invoices_in|number_format:2|} {|$currency|}</td>
+                        <td align="right">{|$e.invoices_out|number_format:2|} {|$currency|}</td>
+                        <td align="right">{|$e.payments_out|number_format:2|} {|$currency|}</td>
+                        <td align="right">{|$e.payments_in|number_format:2|} {|$currency|}</td>
+                        <td align="right">{|$e.balance_end|number_format:2|} {|$currency|}</td>
+                    </tr>
+                {|/foreach|}
+                <tr>
+                    <td align="right"><strong>{|$translate_in_total|}: </strong></td>
+                    <td align="right"><strong>{|$all.balance_start|number_format:2|} {|$currency|}</strong></td>
+                    <td align="right"><strong>{|$all.invoices_in|number_format:2|} {|$currency|}</strong></td>
+                    <td align="right"><strong>{|$all.invoices_out|number_format:2|} {|$currency|}</strong></td>
+                    <td align="right"><strong>{|$all.payments_out|number_format:2|} {|$currency|}</strong></td>
+                    <td align="right"><strong>{|$all.payments_in|number_format:2|} {|$currency|}</strong></td>
+                    <td align="right"><strong>{|$all.balance_end|number_format:2|} {|$currency|}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

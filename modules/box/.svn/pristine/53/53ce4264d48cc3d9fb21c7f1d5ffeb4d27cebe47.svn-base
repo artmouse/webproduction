@@ -1,0 +1,59 @@
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br/>
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'user'|}
+                {|$translate_box_error_user|}.
+                <br/>
+            {|/if|}
+            {|if $e == 'phone'|}
+                {|$translate_order_error_phone|}.
+                <br/>
+            {|/if|}
+            {|if $e == 'email'|}
+                {|$translate_order_error_login|}.
+                <br/>
+            {|/if|}
+        {|/foreach|}
+        {|$errorText|}
+    </div>
+{|/if|}
+
+<div class="ob-block-details">
+    <div class="block-caption">{|$translate_zapolnit_kartochku_kontakta|}</div>
+    <div class="js-user-view">
+        <div class="ob-data-element">
+            <div class="data-add">
+                <div class="el-caption">Ф.И.О.:</div>
+                <div class="el-value">
+                    <input type="text" name="clientNameFill" value="{|$control_clientNameFill|}" {|if !$canEdit|}disabled{|/if|}/>
+                </div>
+            </div>
+        </div>
+        <div class="ob-data-element">
+            <div class="data-add">
+                <div class="el-caption">Email:</div>
+                <div class="el-value">
+                    <input type="text" name="clientEmailFill" value="{|$control_clientEmailFill|}" {|if !$canEdit|}disabled{|/if|}/>
+                </div>
+            </div>
+        </div>
+        <div class="ob-data-element">
+            <div class="data-add">
+                <div class="el-caption">{|$translate_user_phone|}:</div>
+                <div class="el-value">
+                    <input type="text" name="clientPhoneFill" value="{|$control_clientPhoneFill|}" {|if !$canEdit|}disabled{|/if|}/>
+                </div>
+            </div>
+        </div>
+        <div class="ob-data-element">
+            <div class="data-add">
+                <div class="el-caption">{|$translate_address_small|}:</div>
+                <div class="el-value">
+                    <input type="text" name="clientAddressFill" value="{|$control_clientAddressFill|}" {|if !$canEdit|}disabled{|/if|}/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

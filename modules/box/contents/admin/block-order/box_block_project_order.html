@@ -1,0 +1,49 @@
+{|if $subIssueArray|}
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">{|$translate_spisok_zadach_proekta|}</div>
+        <div class="shop-overflow-table">
+            <table id="js-table-sort" class="shop-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th align="left"><a href="javascript:void(0);">#</a></th>
+                        <th align="left"><a href="javascript:void(0);">{|$translate_box_name_small|}</a></th>
+                        <th align="left"><a href="javascript:void(0);">{|$translate_order_status_ind|}</a></th>
+                        <th align="left"><a href="javascript:void(0);">{|$translate_responsible|}</a></th>
+                        <th align="left"><a href="javascript:void(0);">{|$translate_execute_to|}</a></th>
+                        <th align="left"><a href="javascript:void(0);">{|$translate_author|}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {|foreach from=$subIssueArray item="e"|}
+                    <tr>
+                        <td><a href="{|$e.url|}">{|$e.id|}</a></td>
+                        <td>{|$e.name|}</td>
+                        <td>{|$e.statusName|}</td>
+                        <td>
+                            {|if $e.managerName|}
+                                <a href="{|$e.managerUrl|}">{|$e.managerName|}</a>
+                            {|/if|}
+                        </td>
+                        <td>{|$e.dateto|}</td>
+                        <td>
+                            {|if $e.authorName|}
+                                <a href="{|$e.authorUrl|}">{|$e.authorName|}</a>
+                            {|/if|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $j(function () {
+            $j('#js-table-sort').DataTable({
+                "bPaginate": false,
+                "bInfo": false,
+                "bFilter": false
+            });
+        });
+    </script>
+{|/if|}

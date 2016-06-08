@@ -1,0 +1,54 @@
+<div class="rtm-crumbs">
+    <a href="/">{|$translate_main|}</a> &rarr;
+    {|$translate_my_basket|}
+</div>
+
+<div class="rtm-sitemap-view">
+    <ul>
+        <li><a href="/">Главная</a></li>
+        {|foreach from=$textpageArray item="e1"|}
+            {|if $e1.btnName == 'О компании'|}
+            <li>
+                <a href="{|$e1.url|}">{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</a>
+                {|if $e1.childArray|}
+                <ul class="sub">
+                    {|foreach from=$e1.childArray item="e2"|}
+                    <li><a href="{|$e2.url|}" title="{|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}">
+                        {|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}
+                    </a></li>
+                    {|/foreach|}
+                </ul>
+                {|/if|}
+            </li>
+            {|/if|}
+        {|/foreach|}
+
+        <li>
+            <a href="javascript:void(0);">Интернет магазин</a>
+            {|if $mainCategoryArray|}
+            <ul class="sub">
+                {|foreach from=$mainCategoryArray item="e"|}
+                <li><a href="{|$e.url|}" title="{|$e.name|}">{|$e.name|}</a></li>
+                {|/foreach|}
+            </ul>
+            {|/if|}
+        </li>
+
+        {|foreach from=$textpageArray item="e1"|}
+        {|if $e1.btnName != 'О компании'|}
+        <li >
+            <a href="{|$e1.url|}">{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</a>
+            {|if $e1.childArray|}
+            <ul class="sub">
+                {|foreach from=$e1.childArray item="e2"|}
+                <li><a href="{|$e2.url|}" title="{|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}">
+                    {|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}
+                </a></li>
+                {|/foreach|}
+            </ul>
+            {|/if|}
+        </li>
+        {|/if|}
+        {|/foreach|}
+    </ul>
+</div>

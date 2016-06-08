@@ -1,0 +1,115 @@
+{|if $message == 'ok'|}
+    <div class="os-message-success">
+        {|$translate_update_profile_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="os-message-error">
+        {|$translate_update_profile_error|}:
+        <br />
+        {|foreach from=$errorsArray item="e"|}
+        {|if $e == 'password'|}
+        {|$translate_profile_error_password|}.<br />
+        {|/if|}
+        {|if $e == 'email'|}
+        {|$translate_profile_error_mail|}.<br />
+        {|/if|}
+        {|if $e == 'email-exists'|}
+        {|$translate_profile_error_mail_exists|}.<br />
+        {|/if|}
+        {|if $e == 'bdate'|}
+        {|$translate_profile_error_bdate|}.<br />
+        {|/if|}
+        {|if $e == 'phone'|}
+        {|$translate_profile_error_phone|}.<br />
+        {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form method="post">
+    <div class="cl-block-form block-width">
+        <div class="form-element">
+            <div class="descript">E-mail:</div>
+            <input type="text" name="email" value="{|$control_email|}"  autocomplete="off" /><br />
+            <span class="light">({|$translate_at_example|}: example@example.ua)</span>
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_password_small|}:</div>
+            <input type="password" name="password" value="{|$control_password|}" autocomplete="off"/><br />
+            <span class="light">({|$translate_leave_empty|})</span>
+        </div>
+        <div class="form-element">
+            <div class="descript">Sex:</div>
+            <label>
+                <input type="radio" name="typesex" value="man" {|if $control_typesex == 'man'|}checked{|/if|}>
+                {|$translate_user_man|}
+            </label>
+            &nbsp;
+            <label>
+                <input type="radio" name="typesex" value="woman" {|if $control_typesex == 'woman'|}checked{|/if|}>
+                {|$translate_user_woman|}
+            </label>
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_name_small|}:</div>
+            <input type="text" name="name" value="{|$control_name|}" />
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_name_last|}:</div>
+            <input type="text" name="namelast" value="{|$control_namelast|}" />
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_name_middle|}:</div>
+            <input type="text" name="namemiddle" value="{|$control_namemiddle|}" />
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_phone|}:</div>
+            <input type="text" name="phone" value="{|$control_phone|}" class="js-phone-formatter" /><br />
+            <span class="light">({|$translate_at_example|} 1-11-11 {|$translate_or|} +38(0XX)XX-XXX-XXX)</span>
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_address_small|}:</div>
+            <input type="text" name="address" value="{|$control_address|}" />
+        </div>
+
+        <div class="form-element">
+            <div class="descript">{|$translate_bdate|}:</div>
+            {|$translate_day|}
+            <input style="width: 52px;" type="text" name="bdate_day" value="{|$control_bdate_day|}"  autocomplete="off"/>
+
+            {|$translate_month|}
+            <input style="width: 52px;" type="text" name="bdate_month" value="{|$control_bdate_month|}"  autocomplete="off"/>
+
+            {|$translate_year|}
+            <input style="width: 80px;" type="text" name="bdate_year" value="{|$control_bdate_year|}"  autocomplete="off"/>
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_convenient_time|}:</div>
+            <input type="text" name="time" value="{|$control_time|}" />
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_more_mail|} e-mail:</div>
+            <textarea name="emails" >{|$control_emails|}</textarea><br />
+            <span class="light">({|$translate_at_example|}: example@example.ua)</span>
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_more_phone|}:</div>
+            <textarea name="phones" >{|$control_phones|}</textarea>
+        </div>
+        <div class="form-element">
+            <div class="descript">{|$translate_urls|}:</div>
+            <textarea name="urls" >{|$control_urls|}</textarea>
+        </div>
+        <div class="form-element">
+            <label>
+                <input type="checkbox" checked name="zakon" value="1" onclick="this.checked ? $j('#demail').removeAttr('disabled') : $j('#demail').attr('disabled', 'disabled');" />
+                <span class="light">{|$used_user_info|}</span>
+            </label>
+        </div>
+        <div class="form-element">
+            <input type="submit" id="demail" name="ok" value="{|$translate_save|}" class="cl-button green" />
+        </div>
+    </div>
+</form>

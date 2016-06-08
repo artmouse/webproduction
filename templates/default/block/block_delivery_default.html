@@ -1,0 +1,56 @@
+{|if $contentAdmin|}
+    {|if $needcountry|}
+        <div class="form-element">
+            <div class="element-caption">{|$translate_country|}</div>
+            <input type="text" name="country" value="{|$control_country|}" />
+        </div>
+    {|/if|}
+
+    {|if $needcity|}
+        <div class="form-element">
+            <div class="element-caption">{|$translate_city|}</div>
+            <input type="text" name="city" value="{|$control_city|}" />
+        </div>
+    {|/if|}
+
+    {|if $needaddress|}
+        <div class="form-element">
+            <div class="element-caption">{|$translate_delivery_address|}</div>
+            <input type="text" name="address" value="{|$control_address|}" />
+        </div>
+    {|/if|}
+{|else|}
+    <table>
+        {|if $needcountry|}
+            <tr id="needcountry">
+                <td class="vtop" style="width: 120px;">{|$translate_country|} <span class="important">*</span>:</td>
+                <td><input class="js-required" type="text" id="usercountry" name="country" value="{|$control_country|}" /></td>
+            </tr>
+        {|/if|}
+
+        {|if $needcity|}
+            <tr id="needcity">
+                <td class="vtop" style="width: 120px;">{|$translate_city|} <span class="important">*</span>:</td>
+                <td>
+                    <div style="display: none;">
+                        <select id="js-delivery-city-select" name="city_select" class="chzn-select" style="width: 90%;"></select>
+                    </div>
+                    <input class="js-required" id="usercity" type="text" name="city" value="{|$control_city|}" />
+                </td>
+            </tr>
+        {|/if|}
+
+        {|if $needaddress|}
+            <tr id="needaddress">
+                <td class="vtop" style="width: 120px;">{|$translate_delivery_address|} <span class="important">*</span>:</td>
+                <td>
+                    <div style="display: none;">
+                        <select id="js-delivery-office-select" name="delivery_office_select" class="chzn-select" style="width: 90%;"></select>
+                    </div>
+                    <input class="js-required" type="text" id="useraddress" name="address" value="{|$control_address|}" />
+                    <input class="js-required" type="text" id="useraddress" name="address" value="{|$control_address|}" />
+                </td>
+            </tr>
+        {|/if|}
+    </table>
+{|/if|}

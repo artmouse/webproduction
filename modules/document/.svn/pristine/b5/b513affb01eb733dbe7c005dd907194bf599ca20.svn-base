@@ -1,0 +1,194 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="hidden" name="filter1_key" value="number" />
+                <input type="hidden" name="filter1_type" value="search" />
+                <input type="text" name="filter1_value" value="{|$control_filter1_value|}" placeholder="Номер" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter2_key" value="name" />
+                <input type="hidden" name="filter2_type" value="search" />
+                <input type="text" name="filter2_value" value="{|$control_filter2_value|}" placeholder="Название" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">Направление</div>
+                <select name="filterdirection" class="chzn-select">
+                    <option value="">Все</option>
+                    <option value="in" {|if 'in' == $control_filterdirection|} selected {|/if|}>Входящие</option>
+                    <option value="out" {|if 'our' == $control_filterdirection|} selected {|/if|}>Исходящие</option>
+                    <option value="our" {|if 'out' == $control_filtertdirection|} selected {|/if|}>Внутренние</option>
+                </select>
+            </div>
+
+            {|if $groupArray|}
+                <div class="element">
+                    <div class="caption-field">Группа</div>
+                    <select name="filtergroupname" class="chzn-select">
+                        <option value="">Все группы</option>
+                        {|foreach from=$groupArray item="e"|}
+                            <option value="{|$e|}" {|if $e == $control_filtergroupname|} selected {|/if|}>{|$e|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <div class="caption-field">Подгруппа</div>
+                <select name="filtertemplateid" class="chzn-select">
+                    <option value="">Все шаблоны</option>
+                    {|foreach from=$templateArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_filtertemplateid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">Автор</div>
+                <input type="hidden" name="filter3_key" value="userid" />
+                <input type="hidden" name="filter3_type" value="equals" />
+                <select name="filter3_value" class="chzn-select">
+                    <option value="">{|$translate_all_managers|}</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_filtermanagerid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <input type="hidden" name="filterclientid" value="{|$control_filterclientid|}" class="js-select2 js-select2-clientid" data-type="user" />
+                <script type="text/javascript">
+                $j(function () {
+                    var tags = [
+                        {|foreach from=$filterClientArray item="p" name="foreach1"|}
+                            {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                            {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                        {|/foreach|}
+                    ];
+
+                    $j(".js-select2-clientid").select2('data', tags);
+                });
+                </script>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_ord|}</div>
+                <input type="hidden" name="filterorderid" value="{|$control_filterorderid|}" class="js-select2 js-select2-orderid" data-url="/admin/shop/order/jsonautocomplete/select2/" style="width: 200px;" />
+                <script type="text/javascript">
+                $j(function () {
+                    var tags = [
+                        {|foreach from=$filterOrderArray item="p" name="foreach2"|}
+                            {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                            {|if !$smarty.foreach.foreach2.last|},{|/if|}
+                        {|/foreach|}
+                    ];
+
+                    $j(".js-select2-orderid").select2('data', tags);
+                });
+                </script>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="radio" name="status" value="new" {|if $control_status == 'new'|}checked{|/if|}>
+                    Сформирован
+                </label>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="radio" name="status" value="sent" {|if $control_status == 'sent'|}checked{|/if|}>
+                    Отправлен
+                </label>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="radio" name="status" value="recieved" {|if $control_status == 'recieved'|}checked{|/if|}>
+                    Получен
+                </label>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="radio" name="status" value="archive" {|if $control_status == 'archive'|}checked{|/if|}>
+                    В архиве
+                </label>
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter8_key" value="cdate" />
+                <input type="hidden" name="filter8_type" value="gte" />
+                <input type="text" class="js-date" name="filter8_value" value="{|$control_filter8_value|}" placeholder="Дата формирования от" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter9_key" value="cdate" />
+                <input type="hidden" name="filter9_type" value="lte" />
+                <input type="text" class="js-date" name="filter9_value" value="{|$control_filter9_value|}" placeholder="Дата формирования до" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter10_key" value="sdate" />
+                <input type="hidden" name="filter10_type" value="gte" />
+                <input type="text" class="js-date" name="filter10_value" value="{|$control_filter10_value|}" placeholder="Дата отправки от" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter11_key" value="sdate" />
+                <input type="hidden" name="filter11_type" value="lte" />
+                <input type="text" class="js-date" name="filter11_value" value="{|$control_filter11_value|}" placeholder="Дата отправки до" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter12_key" value="bdate" />
+                <input type="hidden" name="filter12_type" value="gte" />
+                <input type="text" class="js-date" name="filter12_value" value="{|$control_filter12_value|}" placeholder="Дата получения от" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter13_key" value="bdate" />
+                <input type="hidden" name="filter13_type" value="lte" />
+                <input type="text" class="js-date" name="filter13_value" value="{|$control_filter13_value|}" placeholder="Дата получения до" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter14_key" value="adate" />
+                <input type="hidden" name="filter14_type" value="gte" />
+                <input type="text" class="js-date" name="filter14_value" value="{|$control_filter14_value|}" placeholder="Дата архивации от" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter15_key" value="adate" />
+                <input type="hidden" name="filter15_type" value="lte" />
+                <input type="text" class="js-date" name="filter15_value" value="{|$control_filter15_value|}" placeholder="Дата архивации до" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter16_key" value="edate" />
+                <input type="hidden" name="filter16_type" value="gte" />
+                <input type="text" class="js-date" name="filter16_value" value="{|$control_filter16_value|}" placeholder="Срок окончания от" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter17_key" value="edate" />
+                <input type="hidden" name="filter17_type" value="lte" />
+                <input type="text" class="js-date" name="filter17_value" value="{|$control_filter17_value|}" placeholder="Срок окончания до" />
+            </div>
+
+            <input class="ob-button button-orange help-hint-filter-submit" type="submit" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+    {|$table|}
+    <div class="js-table-footer"></div>
+    </div>
+</div>
+<div class="clear"></div>

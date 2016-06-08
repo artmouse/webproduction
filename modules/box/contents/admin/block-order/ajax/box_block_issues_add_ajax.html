@@ -1,0 +1,90 @@
+<div class="ob-block-details">
+    <div class="block-caption">{|$translate_postavit_zadachu|}</div>
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption">{|$translate_nazvanie_zadachi|}:</div>
+            <div class="el-value">
+                <input type="text" name="issuename[]" value="">
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption">{|$translate_na_kogo_naznachit|}:</div>
+            <div class="el-value">
+                <select class="chzn-select js-select-{|$time|}" name="issuemanager[]">
+                    <option value="0">---</option>
+                    {|foreach from=$managerArray item="m"|}
+                        <option value="{|$m.id|}">{|$m.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption">{|$translate_tekst_zadachi|}:</div>
+            <div class="el-value">
+                <textarea name="issuetext[]"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption">{|$translate_data_vipolneniya|}:</div>
+            <div class="el-value">
+                <input class="js-date" type="text" name="issuedate[]" value="">
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption">К чему относится:</div>
+            <div class="el-value">
+                <select class="chzn-select js-select-{|$time|}" name="issueparent[]">
+                    <option value="issue" selected>К задаче</option>
+                    <option value="project">К проекту</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-data-element">
+        <div class="data-add">
+            <div class="el-caption">{|$translate_workflow|}:</div>
+            <div class="el-value">
+                <select class="chzn-select js-select-{|$time|}" name="issueworkflow[]">
+                    <option value="0">---</option>
+                    {|foreach from=$workflowArray item="w"|}
+                        <option value="{|$w.id|}">{|$w.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // select
+    $j(function() {
+        $j('.js-select-{|$time|}').select2();
+
+        // выбор даты
+        $j('.js-date').each(function (i, e) {
+            var $e = $j(e);
+            var format = $e.data('dateformat');
+            if (!format) {
+                format = 'yy-mm-dd';
+            }
+            $e.datepicker({
+                dateFormat: format,
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    });
+</script>

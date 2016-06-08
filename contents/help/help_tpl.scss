@@ -1,0 +1,610 @@
+//typography
+$baseFont: 'Noto Sans', sans-serif;
+$baseFontSize: 14px;
+$baseLineHeight: 20px;
+$colorBase: #0177cf;
+$colorDark: #555555;
+$colorNice: #f05c1e;
+$colorSuccess: #6ece26;
+$colorImportant: #f00424;
+
+//breakpoints
+$mobile-breakpoint:  640px;
+$tablet-breakpoint: 1024px;
+
+//mixin
+@mixin box-sizing($boxsizing) {
+    -moz-box-sizing: $boxsizing;
+    -webkit-box-sizing: $boxsizing;
+    box-sizing: $boxsizing;
+}
+$bb: border-box;
+
+@mixin transition-duration($duration) {
+    -webkit-transition-duration: $duration;
+    -moz-transition-duration: $duration;
+    -o-transition-duration: $duration;
+    -ms-transition-duration: $duration;
+    transition-duration: $duration;
+}
+
+@mixin translate ($x, $y) {
+    -moz-transform: translate($x, $y);
+    -webkit-transform: translate($x, $y);
+    -o-transform: translate($x, $y);
+    -ms-transform: translate($x, $y);
+    transform: translate($x, $y);
+}
+
+@mixin translateX ($x) {
+    -moz-transform: translateX($x);
+    -webkit-transform: translateX($x);
+    -o-transform: translateX($x);
+    -ms-transform: translateX($x);
+    transform: translateX($x);
+}
+
+@mixin translateY ($y) {
+    -moz-transform: translateY($y);
+    -webkit-transform: translateY($y);
+    -o-transform: translateY($y);
+    -ms-transform: translateY($y);
+    transform: translateY($y);
+}
+
+@mixin rotate($x) {
+    -moz-transform: rotate($x);
+    -webkit-transform: rotate($x);
+    -o-transform: rotate($x);
+    -ms-transform: rotate($x);
+    transform: rotate($x);
+}
+
+@mixin elementScale ($scale) {
+    -moz-transform: scale($scale, $scale);
+    -webkit-transform: scale($scale, $scale);
+    -o-transform: scale($scale, $scale);
+    -ms-transform: scale($scale, $scale);
+    transform: scale($scale, $scale);
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    min-width: 768px;
+}
+
+body, form, div, p, a, img, h1, h2, h3, h4, h5, h6, table, table tr, table td {
+    border: none;
+    color: $colorDark;
+    font-family: $baseFont;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+textarea,
+select {
+    outline: none;
+    font-family: $baseFont;
+    font-size: 14px;
+    @include box-sizing($bb);
+}
+
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    height: 40px;
+    padding: 0 10px;
+    @include transition-duration(0.3s);
+
+    &:focus {
+        border-color: $colorBase;
+    }
+
+    &:invalid {
+        box-shadow: none;
+    }
+
+    &.required-field {
+        border-color: $colorImportant;
+    }
+}
+
+textarea {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    @include transition-duration(0.3s);
+
+    &:focus {
+        border-color: $colorBase;
+    }
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+h1, h2, h3 {
+    font-size: $baseFontSize + 8;
+    padding: 0 0 10px 0;
+    margin: 0;
+    color: $colorDark;
+    font-weight: bold;
+
+    a {
+        font-size: inherit;
+        font-weight: inherit;
+        text-decoration: none !important;
+        color: inherit !important;
+
+        &:hover {
+            text-decoration: underline !important;
+        }
+    }
+}
+
+h2 {
+    font-size: $baseFontSize + 6;
+}
+
+h3 {
+    font-size: $baseFontSize + 4;
+}
+
+.clear {
+    clear: both;
+    font-size: 0;
+    line-height: 0;
+    height: 0;
+}
+
+.important {
+    color: $colorImportant;
+}
+
+a.os-button {
+    line-height: 50px;
+}
+
+.os-mainer {
+    padding: 20px;
+}
+
+.os-header {
+    float: left;
+    width: 300px;
+    margin: 0 0 0 -100%;
+    @include box-sizing($bb);
+
+    .logo {
+        display: block;
+        background: url("/_images/help/logo.png") center 20px no-repeat $colorBase;
+        height: 100px;
+        position: relative;
+
+        span {
+            position: absolute;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-weight: bold;
+            top: 63px;
+            left: 95px;
+            font-size: $baseFontSize - 2;
+        }
+    }
+
+    .menu {
+        background-color: #ffffff;
+
+        .menu-wrap {
+            overflow: auto;
+            padding: 20px;
+            position: relative;
+
+            ul {
+                padding: 10px 0 0 0;
+                margin: 0;
+                list-style: none;
+            }
+
+            > ul {
+                padding: 0;
+            }
+
+            li {
+                padding: 0 0 10px 16px;
+                position: relative;
+                line-height: 14px;
+            }
+
+            .expand {
+                cursor: pointer;
+                width: 10px;
+                height: 10px;
+                background: url("/_images/help/plus-minus.png") no-repeat;
+                text-decoration: none;
+                position: absolute;
+                left: 0;
+                top: 2px;
+
+                &:hover {
+                    background-position: right top;
+                }
+
+                &.open {
+                    background-position: left bottom;
+
+                    &:hover {
+                        background-position: right bottom;
+                    }
+                }
+            }
+
+            .selected {
+                color: $colorNice;
+                text-decoration: none;
+                position: relative;
+            }
+
+            .navi {
+                li {
+                    padding-bottom: 5px;
+                }
+
+                a {
+                    font-size: $baseFontSize - 2;
+
+                    &:hover {
+                        text-decoration: none;
+                        border-bottom: 1px dotted;
+                    }
+                }
+            }
+        }
+
+        .search-helper {
+            input[type="text"] {
+                width: 100%;
+                border-top: none;
+                border-left-color: transparent;
+                border-right-color: transparent;
+                padding: 0 20px;
+
+                &:focus {
+                    border-color: $colorBase;
+                }
+            }
+        }
+    }
+}
+
+.os-content {
+    float: left;
+    width: 100%;
+    padding: 0 0 0 320px;
+    @include box-sizing($bb);
+
+    .content-wrapper {
+        background-color: #ffffff;
+        padding: 20px;
+        @include box-sizing($bb);
+        overflow: auto;
+        position: relative;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    code {
+        background-color: rgba(0, 0, 0, 0.05);
+        border-left: 2px dashed $colorNice;
+        @include box-sizing($bb);
+        display: block;
+        padding: 10px;
+        width: 100%;
+        margin: 0;
+        overflow: auto;
+
+        pre {
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    a {
+        color: $colorBase;
+    }
+
+    table {
+        border-collapse: collapse;
+
+        td {
+            padding: 5px 10px;
+            border: 1px solid rgba($colorDark, 0.2);
+        }
+
+        thead {
+            td {
+                font-weight: bold;
+                background-color: rgba($colorDark, 0.1) !important;
+            }
+        }
+
+        tr.marked td {
+            background-color: rgba($colorSuccess, 0.1);
+        }
+
+        tr:hover td {
+            background-color: rgba($colorNice, 0.1);
+        }
+    }
+
+    iframe {
+        border: none;
+        @include box-sizing($bb);
+    }
+
+    .ui-class {
+        background-color: rgba(0, 0, 0, 0.05);
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px 5px 0 0;
+
+        &.inline {
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    }
+
+    .ui-name {
+        background-color: #f6f7f9;
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .link-dashed {
+        text-decoration: none;
+        border-bottom: 1px dashed;
+
+        &:hover {
+            border-color: transparent;
+        }
+    }
+
+    .block-toggle {
+        padding: 20px 0 0 0;
+        display: none;
+    }
+}
+
+.os-block-search {
+    margin: 0 0 20px 0;
+
+    input[type="text"] {
+        width: 100%;
+        padding: 0 20px;
+        height: 50px;
+        font-size: $baseFontSize + 4;
+    }
+}
+
+.os-block-list {
+    margin: 0 0 -20px 0;
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    li {
+        padding: 0 0 20px 0;
+
+        li {
+            padding: 0 0 10px 20px;
+            position: relative;
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 6px;
+                width: 8px;
+                height: 8px;
+                background-color: $colorBase;
+                border-radius: 100%;
+            }
+        }
+    }
+}
+
+.os-crumbs {
+    padding: 10px 20px;
+    margin: -20px -20px 20px -20px;
+    background-color: rgba(0, 0, 0, 0.05);
+
+    div {
+        display: inline;
+        font-size: $baseFontSize - 2;
+    }
+
+    a {
+        font-size: $baseFontSize - 2;
+    }
+}
+.hljs {
+    display: block;
+    overflow-x: auto;
+    color: black;
+    -webkit-text-size-adjust: none
+}
+
+.hljs-comment,
+.hljs-template_comment,
+.hljs-javadoc {
+    color: #006a00
+}
+
+.hljs-keyword,
+.hljs-literal,
+.nginx .hljs-title {
+    color: #aa0d91
+}
+
+.method,
+.hljs-list .hljs-title,
+.hljs-tag .hljs-title,
+.setting .hljs-value,
+.hljs-winutils,
+.tex .hljs-command,
+.http .hljs-title,
+.hljs-request,
+.hljs-status {
+    color: #008
+}
+
+.hljs-envvar,
+.tex .hljs-special {
+    color: #660
+}
+
+.hljs-string {
+    color: #c41a16
+}
+
+.hljs-tag .hljs-value,
+.hljs-cdata,
+.hljs-filter .hljs-argument,
+.hljs-attr_selector,
+.apache .hljs-cbracket,
+.hljs-date,
+.hljs-regexp {
+    color: #080
+}
+
+.hljs-sub .hljs-identifier,
+.hljs-pi,
+.hljs-tag,
+.hljs-tag .hljs-keyword,
+.hljs-decorator,
+.ini .hljs-title,
+.hljs-shebang,
+.hljs-prompt,
+.hljs-hexcolor,
+.hljs-rules .hljs-value,
+.hljs-symbol,
+.hljs-symbol .hljs-string,
+.hljs-number,
+.css .hljs-function,
+.hljs-function .hljs-title,
+.coffeescript .hljs-attribute {
+    color: #1c00cf
+}
+
+.hljs-class .hljs-title,
+.smalltalk .hljs-class,
+.hljs-javadoctag,
+.hljs-yardoctag,
+.hljs-phpdoc,
+.hljs-dartdoc,
+.hljs-type,
+.hljs-typename,
+.hljs-tag .hljs-attribute,
+.hljs-doctype,
+.hljs-class .hljs-id,
+.hljs-built_in,
+.setting,
+.hljs-params,
+.clojure .hljs-attribute {
+    color: #5c2699
+}
+
+.hljs-variable {
+    color: #3f6e74
+}
+
+.css .hljs-tag,
+.hljs-rules .hljs-property,
+.hljs-pseudo,
+.hljs-subst {
+    color: #000
+}
+
+.css .hljs-class,
+.css .hljs-id {
+    color: #9b703f
+}
+
+.hljs-value .hljs-important {
+    color: #f70;
+    font-weight: bold
+}
+
+.hljs-rules .hljs-keyword {
+    color: #c5af75
+}
+
+.hljs-annotation,
+.apache .hljs-sqbracket,
+.nginx .hljs-built_in {
+    color: #9b859d
+}
+
+.hljs-preprocessor,
+.hljs-preprocessor *,
+.hljs-pragma {
+    color: #643820
+}
+
+.tex .hljs-formula {
+    background-color: #eee;
+    font-style: italic
+}
+
+.diff .hljs-header,
+.hljs-chunk {
+    color: #808080;
+    font-weight: bold
+}
+
+.diff .hljs-change {
+    background-color: #bccff9
+}
+
+.hljs-addition {
+    background-color: #baeeba
+}
+
+.hljs-deletion {
+    background-color: #ffc8bd
+}
+
+.hljs-comment .hljs-yardoctag {
+    font-weight: bold
+}
+
+.method .hljs-id {
+    color: #000
+}

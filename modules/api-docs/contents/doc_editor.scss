@@ -1,0 +1,20 @@
+body {
+    overflow: hidden;
+}
+
+.doc-menu-overflow {
+    height: 500px;
+    overflow: auto;
+    position: relative;
+}
+
+.shop-filter-panel {
+    width: 320px !important;
+    margin-right: -320px !important;
+}
+
+.shop-result-list {
+    .filter-reserve {
+        margin-left: 320px !important;
+    }
+}

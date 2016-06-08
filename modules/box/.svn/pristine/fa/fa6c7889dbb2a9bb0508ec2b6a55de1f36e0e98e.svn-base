@@ -1,0 +1,104 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_proekt|} {|if $messageIssueInfo|}<a href="{|$messageIssueInfo.url|}">#{|$messageIssueInfo.id|}</a>{|/if|} {|$translate_uspeshno_sozdan|}.
+
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_oshibka_sozdaniya_proekta|}.
+    </div>
+{|/if|}
+
+{|if $urlredirect|}
+    <script type="text/javascript">
+    document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/project/add/" class="selected">{|$translate_proekt|}</a></div>
+        <div class="tab-element"><a href="/admin/issue/add/">{|$translate_task|}</a></div>
+        <div class="tab-element"><a href="/admin/order/add/">{|$translate_ord|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h1>{|$translate_dobavit_proekt|}</h1>
+<br />
+
+<form action="" method="post" onsubmit="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_proekta|}.');" >
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_biznes_protsess_proekta|}</div>
+                    <select name="workflowid" class="js-workflowid chzn-select" id="js-workflow">
+                        {|foreach from=$workflowArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_workflowid|}selected{|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_nazvanie_proekta|}</div>
+                    <input type="text" name="name" class="js-issuename" value="{|if !$clearFields|}{|$control_name|}{|/if|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_kto_otvetstvenniy|}?</div>
+                    <select id="managerid" name="managerid" class="chzn-select js-managerid">
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.selected |} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_opisanie_proekta|}</div>
+                    <textarea name="content" style="height: 100px;" class="js-autosize" rows="5">{|if !$clearFields|}{|$control_content|}{|/if|}</textarea>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_contact|}</div>
+                    <input type="text" name="clientname" id="id-clientid-name" value="{|$control_clientname|}" placeholder="{|$translate_client_select|}" />
+                    <input type="hidden" name="clientid" id="id-clientid-value" value="{|$control_clientid|}"/>
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_kanal|}</div>
+                    <select class="chzn-select" name="source">
+                        <option value="0">---</option>
+                        {|foreach from=$sourceArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id== $control_source|}selected{|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_data_zaversheniya_proekta|}</div>
+                    <input type="text" name="dateto" value="{|$control_dateto|}" class="js-datetime js-dateto"/>
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_roditelskiy_proekt|}</div>
+                    <input type="text" id="js-parent-name" name="parentid" value="{|$control_parentid|}" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="js-workflow-container"></div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+        <input type="submit" name="oknext" value="{|$translate_save_plus_add|}" class="ob-button" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+<input id="js-user-id" type="hidden" value="{|$userId|}">
+
+{|if $block_event|}
+    {|$block_event|}
+{|/if|}

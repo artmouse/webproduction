@@ -1,0 +1,49 @@
+{|if $message != 'ok'|}
+    {|$menu|}
+{|/if|}
+
+{|if $message == 'okdeleted'|}
+    <div class="shop-message-success">
+        {|$translate_products_hide|}.<br />
+        <a href="/admin/shop/products/">{|$translate_product_list_run|}</a>
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_products_remote|}.<br />
+        <a href="/admin/shop/products/">{|$translate_product_list_run|}</a>
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_products_delete_error|}.
+        {|$translate_products_delete_error_for|}.
+        {|$translate_products_delete_error_can|}.
+    </div>
+
+    <div class="ob-block-element">
+        <form action="" method="post">
+            {|$translate_add_to_wishlist|} <strong>#{|$productid|} {|$name|}</strong> {|$translate_remote|}?
+            <br />
+            <br />
+            <input type="submit" name="okdeleted" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='../edit/';" />
+        </form>
+    </div>
+{|/if|}
+
+{|if !$message|}
+    <div class="ob-block-element">
+        <form action="" method="post">
+            {|$translate_products_delete_confirm|}
+            <strong>#{|$productid|} {|$name|}</strong>?
+            <br />
+            <br />
+
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='../edit/';" />
+        </form>
+    </div>
+{|/if|}

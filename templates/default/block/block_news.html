@@ -1,0 +1,11 @@
+{|if $newsArray|}
+    <div class="os-block-caption">{|$translate_site_news|}</div>
+    <div class="os-block-news">
+        {|foreach from=$newsArray item="e"|}
+            <div class="element">
+                <a href="{|$e.url|}">{|$e.name|}</a>
+                <div class="date">{|$e.date|}</div>
+            </div>
+        {|/foreach|}
+    </div>
+{|/if|}

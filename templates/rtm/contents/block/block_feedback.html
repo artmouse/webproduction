@@ -1,0 +1,45 @@
+{|if $feedbackmessage == 'ok'|}
+    <div class="message-success">
+        {|$translate_message_success_small|}.
+    </div>
+{|else|}
+    {|if $feedbackArray|}
+        <div class="message-error">
+            {|foreach from=$feedbackArray item="f"|}
+                {|if $f == 'name'|}
+                    {|$translate_enter_name|}.<br />
+                {|/if|}
+                {|if $f == 'email'|}
+                    {|$translate_mail_error|}.<br />
+                {|/if|}
+                {|if $f == 'phone'|}
+                    {|$translate_phone_error|}.<br />
+                {|/if|}
+                {|if $f == 'message'|}
+                    {|$translate_text_error|}.<br />
+                {|/if|}
+            {|/foreach|}
+        </div>
+    {|/if|}
+    <form method="post">
+        <table>
+            <tr>
+                <td>ФИО*</td>
+                <td><input type="text" class="js-required rtm-check-fill03" name="fbname" value="{|$control_fbname|}"/></td>
+            </tr>
+            <tr>
+                <td>Ваш e-mail:</td>
+                <td><input type="text" class="js-required rtm-check-fill03" name="fbemail" value="{|$control_fbemail|}"/></td>
+            </tr>
+            <tr>
+                <td class="va_top">Ваше сообщение:</td>
+                <td><textarea class="js-required rtm-check-fill03" name="fbmessage">{|$control_fbmessage|}</textarea></td>
+                <input type="hidden" name="ajs" class="ajs" value="1" />
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" name="feedback" class="rtm-submit js-form-validation rtm-submit-fill03" value="Отправить" disabled="disabled" /></td>
+            </tr>
+        </table>
+    </form>
+{|/if|}

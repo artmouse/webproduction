@@ -1,0 +1,13 @@
+<select name="{|$key|}" >
+    {|if $allowEmptyOption|}
+        <option value="">---</option>
+    {|/if|}
+    {|foreach from=$optionsArray item="e"|}
+        <option value="{|$e.value|}" {|if $e.value == $value|} selected {|/if|}>
+            {|section name=foo start=0 loop=$e.level|}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {|/section|}
+            {|$e.name|}
+        </option>
+    {|/foreach|}
+</select>

@@ -1,0 +1,11 @@
+<tr {|if $class|}class="{|$class|}"{|/if|}>
+    {|foreach from=$cellsArray item="c" key="fieldkey"|}
+        <td {|if $productId|}data-id="{|$productId|}"{|/if|} data-ds="{|$datasource|}" data-pkv="{|$c.pkValue|}" data-fk="{|$fieldkey|}" class="{|if $c.quickedit|}quickedit{|/if|} {|if $classPreview|}{|$classPreview|}{|/if|}">
+            {|if $fieldkey=='statusid'|}
+                <div class="ob-wf-stage nowrap" {|if $c.colour|}style="background-color: {|$c.colour|};"{|/if|}>{|$c.cells|}</div>
+            {|else|}
+                {|$c.cells|}
+            {|/if|}
+        </td>
+    {|/foreach|}
+</tr>

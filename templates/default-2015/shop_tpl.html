@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|$title|}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="{|$shopname|}" />
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1,width=device-width,user-scalable=0">
+    {|if $shopName|}<meta name="dcterms.rightsHolder" content="{|$shopName|}" />{|/if|}
+
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+
+    <link href='//fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+
+    {|$hreflang|}
+
+    {|$integration_google_wmt|}
+    {|$integration_yandex_wmt|}
+    {|$loginzaVerification|}
+
+    {|if $cssUrl|}
+        <link href="{|$cssUrl|}" rel="stylesheet" type="text/css">
+    {|/if|}
+    {|if $jsUrl|}
+        <script type="text/javascript" src="{|$jsUrl|}"> </script>
+    {|/if|}
+    {|$engine_includes|}
+    {|$integration_facebook_pixel_head|}
+    <!--[if IE 8]><script src="/_js/html5shiv.js"></script><![endif]-->
+</head>
+<body>
+
+    {|if $seocontent|}
+    <div class="def-block-seo">
+        <div class="seo-inner">
+            {|$seocontent|}
+        </div>
+    </div>
+{|/if|}
+
+<header>
+    <div class="def-block-header-top">
+        <div class="def-container">
+            <div class="def-block-client-tools">
+                {|if $userlogin|}
+                    <div class="block-tool">
+                        <ul class="def-block-auth">
+                            <li>
+                                <a href="javascript:void(0);" class="def-icon-user user-icon"><span>{|$translate_client_account|}</span></a>
+
+                                <ul class="drop-auth">
+                                    {|if $admin|}
+                                        <li><a href="{|$main|}/admin/">{|$translate_admin|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/client/orders/">{|$translate_my_orders|}</a></li>
+                                    {|if $balance|}
+                                        <li><a href="{|$main|}/client/cash/">{|$translate_balance|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/client/profile/">{|$translate_profile|}</a></li>
+                                    <li><a href="{|$main|}/client/products/viewed/">{|$translate_products_viewed|}</a></li>
+                                    {|if $countCompare|}
+                                        <li><a href="/compare/">{|$translate_products_compare|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/client/products/ordered/">{|$translate_products_ordered|}</a></li>
+                                    {|if $favoriteUrl|}
+                                        <li><a href="{|$main|}{|$favoriteUrl|}">{|$translate_wish|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/logout/">{|$translate_logout|}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                {|else|}
+                    <div class="block-tool">
+                        <ul class="def-block-auth">
+                            <li>
+                                <a href="javascript:void(0);" onclick="popupOpen('.js-popup-auth-block');" class="def-icon-lock"><span>{|$translate_enter|}</span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="block-tool">
+                        <ul class="def-block-auth">
+                            <li>
+                                <a href="{|$main|}/registration/" class="def-icon-user"><span>{|$translate_registration|}</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                {|/if|}
+            </div>
+
+            {|if $worktime|}
+                <div class="def-block-worktime">
+                    {|$translate_working_hours_big|}: {|$worktime|}
+                </div>
+            {|/if|}
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="def-block-header-main">
+        <div class="def-container">
+            <div class="def-block-table">
+                <div class="block-cell logo">
+                    {|if $contentID == 'index'|}
+                        <span class="def-logo-top" title="{|$shopName|}">
+                            <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                        </span>
+                    {|else|}
+                        <a class="def-logo-top" href="/" title="{|$shopName|}">
+                            <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                        </a>
+                    {|/if|}
+                </div>
+                <div class="block-cell search">
+                    {|$block_search|}
+                </div>
+
+                <div class="block-cell phones">
+                    <div class="def-phone-top def-icon-phone-squared" onclick="popupOpen('.js-popup-callblock');">
+                        <div class="inner">
+                            <div class="head">HOT LINE:</div>
+                            {|if $phone1|}
+                                {|$phone1|}
+                            {|else|}
+                                {|$translate_call_back|}
+                            {|/if|}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="def-block-header-bot">
+        <div class="def-container relative">
+            <a class="tpage-toggle def-icon-angle-down js-tpage-toggle" href="javascript:void(0);" style="display: none;"></a>
+
+            {|$block_menu_textpage|}
+
+            <div class="js-basket">
+                {|* baskets loads with ajax *|}
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+</header>
+
+{|if $contentID == index|}
+    {|$block_banner_wide|}
+{|/if|}
+
+<div class="def-container">
+    {|$content|}
+
+    {|if $contentID == 'index'|}
+        {|$block_brand_alphabet|}
+    {|/if|}
+
+    <div class="js-seo-wrap"></div>
+</div>
+
+<footer>
+    <div class="def-block-top-footer">
+        <div class="def-container">
+            <div class="def-block-foot-soc">
+                <div class="def-block-table">
+                    <div class="block-cell">
+                        <a class="def-icon-facebook" href="#"></a>
+                    </div>
+                    <div class="block-cell">
+                        <a class="def-icon-vkontakte" href="#"></a>
+                    </div>
+                    <div class="block-cell">
+                        <a class="def-icon-twitter" href="#"></a>
+                    </div>
+                    <div class="block-cell">
+                        <a class="def-icon-pinterest-circled" href="#"></a>
+                    </div>
+                </div>
+            </div>
+
+            {|$block_subscribe|}
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="def-block-mid-footer">
+        <div class="def-container">
+            <ul class="small-block-grid-2 medium-block-grid-4 footer-sections">
+                <li class="foot-section js-foot-section">
+                    <a class="logo" href="/" title="{|$shopName|}">
+                        <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                    </a>
+                </li>
+
+                {|if $block_footer_textpage|}
+                    {|$block_footer_textpage|}
+                {|/if|}
+
+                <li class="foot-section usefull js-foot-section">
+                    <div class="foot-caption">{|$translate_client_account|}</div>
+
+                    <ul class="list">
+                        {|if $userlogin|}
+                            {|if $admin|}
+                                <li><a href="{|$main|}/admin/"><span class="def-icon-angle-double-right"></span>{|$translate_admin|}</a></li>
+                            {|/if|}
+                            <li><a href="{|$main|}/client/orders/"><span class="def-icon-angle-double-right"></span>{|$translate_my_orders|}</a></li>
+                            {|if $balance|}
+                                <li><a href="{|$main|}/client/cash/"><span class="def-icon-angle-double-right"></span>{|$translate_balance|}</a></li>
+                            {|/if|}
+                            <li><a href="{|$main|}/client/profile/"><span class="def-icon-angle-double-right"></span>{|$translate_profile|}</a></li>
+                            <li><a href="{|$main|}/client/products/viewed/"><span class="def-icon-angle-double-right"></span>{|$translate_products_viewed|}</a></li>
+                            {|if $countCompare|}
+                                <li><a href="/compare/"><span class="def-icon-angle-double-right"></span>{|$translate_products_compare|}</a></li>
+                            {|/if|}
+                            <li><a href="{|$main|}/client/products/ordered/"><span class="def-icon-angle-double-right"></span>{|$translate_products_ordered|}</a></li>
+                            <li><a href="{|$main|}/logout/"><span class="def-icon-angle-double-right"></span>{|$translate_logout|}</a></li>
+                        {|else|}
+                            <li><a class="os-link-dashed" href="javascript: void(0);" onclick="popupOpen('.js-popup-auth-block');"><span class="def-icon-angle-double-right"></span>{|$translate_enter|}</a></li>
+                            <li><a href="{|$main|}/registration/"><span class="def-icon-angle-double-right"></span>{|$translate_registration|}</a></li>
+                        {|/if|}
+                    </ul>
+                </li>
+                <li class="foot-section js-foot-section">
+                    <div class="foot-caption">{|$translate_contact_information|}</div>
+                    <ul class="list">
+                        {|if $address|}
+                            <li><span class="def-icon-home red-mark"><span>{|$address|}</span></span></li>
+                        {|/if|}
+
+                        <li>
+                            <span class="def-icon-phone-squared red-mark">
+                                <span>
+                                    {|$translate_phones|}:
+                                    {|if $phone1|}{|$phone1|}{|/if|}
+                                    {|if $phone2|}{|$phone3|}{|/if|}
+                                    {|if $phone4|}{|$phone5|}{|/if|}
+                                    {|if $phone4|}{|$phone4|}{|/if|}
+                                </span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="def-icon-mail-alt red-mark">
+                                {|if $email|}
+                                    <span>E-mail:</span>
+                                    <a href="javascript: void(0);"
+                                       onclick="popupOpen('.js-popup-mail-block');" itemprop="email">{|$email|}</a>
+                                {|else|}
+                                    <a href="javascript: void(0);"
+                                       onclick="popupOpen('.js-popup-mail-block');">{|$translate_write_letter|}</a>
+                                {|/if|}
+                            </span>
+                        </li>
+                    </ul>
+
+                    <div class="js-async">
+                        {|$integration_yandex_counter|}
+                        {|$integration_ga|}
+                    </div>
+                    <script>
+                        var $asyncBlock = $j('.js-async')
+                        var asyncInfo = $asyncBlock.html();
+                        $asyncBlock.html('');
+
+                        $j(window).bind('load', function() {
+                            $asyncBlock.html(asyncInfo);
+                        });
+                    </script>
+                    {|$integration_liveinternet|}
+                    {|$integration_cloudim|}
+                    {|$integration_facebook_pixel_body|}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="def-block-bot-footer">
+        <div class="def-container">
+            <div class="copy">
+                {|$copyright|}
+                <a href="http://webproduction.ua/">{|$translate_creating_online_shops|}</a>
+                {|$translate_on_platform|}
+                <a href="http://webproduction.ua/oneclick">OneBox &reg;</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="def-loading os-loading">
+    <div class="dark"></div>
+    <div class="loader def-icon-spin2 animate-spin"></div>
+</div>
+
+<div class="def-block-popup js-popup-auth-block" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-popup-auth-block');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-auth-block');">&nbsp;</a>
+            <div class="def-section-caption">
+                <span><strong>{|$translate_authorization|}</strong></span>
+            </div>
+        </div>
+        <form method="post">
+            <div class="body">
+                <table>
+                    <tr>
+                        <td>{|$translate_login_email|}</td>
+                        <td><input name="auth_login" id="id-auth-login" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_password_small|}</td>
+                        <td><input name="auth_password" id="id-auth-password" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><a href="/remindpassword/">{|$translate_forgot_password|}?</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="foot">
+                <input class="def-submit" type="submit" value="{|$translate_sign_in|}" />
+            </div>
+        </form>
+    </div>
+</div>
+
+{|if $welcomeBannerId|}
+    <div class="def-block-popup js-popup-welcome-block" style="display: none" >
+        <div class="dark" onclick="popup_welcome_close({|$welcomeBannerId|});"></div>
+        <div class="block-popup welcome-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popup_welcome_close({|$welcomeBannerId|});"></a>
+                <div class="def-section-caption">
+                    <span><strong>{|$welcomeName|}</strong></span>
+                </div>
+            </div>
+            <img class="banner-image" src="{|$urlBannerWelcome|}" width="800" height="350" alt=""/>
+            <div class="foot">
+                <a class="def-submit" href="javascript: void(0);" onclick="popup_welcome_close({|$welcomeBannerId|});">{|$translate_to_website|}</a>
+            </div>
+        </div>
+        <input type="hidden" id="welcomeBannerId" value="{|$welcomeBannerId|}">
+    </div>
+{|/if|}
+
+{|$block_callback|}
+
+{|$block_feedback|}
+
+{|$quickOrder|}
+
+<div style="display: none;" class="js-phone-mask">{|$phone_mask|}</div>
+{|$integration_gadwords|}
+</body>
+</html>

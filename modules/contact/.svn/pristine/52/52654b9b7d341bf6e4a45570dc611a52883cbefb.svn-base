@@ -1,0 +1,80 @@
+{|if
+$authorName OR
+$totalCallback > 0 OR
+$totalFeedback > 0 OR
+$totalComment > 0 OR
+$rating OR 
+$moduleBlockArray
+|}
+    <div class="ob-block-details">
+        <div class="single-wrap">
+            {|if $authorName|}
+                <div class="ob-data-element">
+                    <div class="data-view">
+                        <div class="el-caption">{|$translate_sozdal|}:</div>
+                        <div class="el-value">
+                            <a href="{|$authorURL|}" class="js-contact-preview" data-id="{|$authorId|}">{|$authorName|}</a>
+                        </div>
+                    </div>
+                </div>
+            {|/if|}
+
+            {|foreach from=$moduleBlockArray item="block"|}
+                {|$block|}
+            {|/foreach|}
+
+            {|if $totalCallback > 0|}
+                <div class="ob-data-element">
+                    <div class="data-view">
+                        <div class="el-caption">
+                            <a href="/admin/shop/callback/?filter10_key=userid&filter10_value={|$userID|}">{|$translate_made_a_custom_calls|}</a>:
+                        </div>
+                        <div class="el-value">
+                            {|$totalCallback|}
+                        </div>
+                    </div>
+                </div>
+            {|/if|}
+
+            {|if $totalFeedback > 0|}
+                <div class="ob-data-element">
+                    <div class="data-view">
+                        <div class="el-caption">
+                            <a href="/admin/shop/feedback/?filter10_key=userid&filter10_value={|$userID|}">{|$translate_wrote_letters|}</a>:
+                        </div>
+                        <div class="el-value">
+                            {|$totalFeedback|}
+                        </div>
+                    </div>
+                </div>
+            {|/if|}
+
+            {|if $totalComment > 0|}
+                <div class="ob-data-element">
+                    <div class="data-view">
+                        <div class="el-caption">
+                            <a href="/admin/shop/comments/?filter10_key=userid&filter10_value={|$userID|}">{|$translate_posted_a_comment_yet|}</a>:
+                        </div>
+                        <div class="el-value">
+                            {|$totalComment|}
+                        </div>
+                    </div>
+                </div>
+            {|/if|}
+
+            {|if $rating|}
+                <div class="ob-data-element">
+                    <div class="data-view">
+                        <div class="el-caption">{|$translate_info_rating|}:</div>
+                        <div class="el-value">
+                            <div class="ob-block-rating">
+                                <div class="inner" style="width: {|$rating*20|}%;"></div>
+                                <div class="text">({|$ratingValue|})</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {|/if|}
+        </div>
+    </div>
+{|/if|}

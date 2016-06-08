@@ -1,0 +1,44 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|if $ordertype == 'incoming'|}{|$translate_orders_incoming|}{|elseif $ordertype == 'transfer'|}{|$translate_orders_transfer|}{|elseif $ordertype == 'production'|}{|$translate_orders_production|}{|/if|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/order/{|$ordertype|}/add/" class="highlighted">{|$translate_order_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="hidden" name="filter2_key" value="id" />
+                <input type="hidden" name="filter2_type" value="search" />
+                <input type="text" name="filter2_value" value="{|$control_filter2_value|}" placeholder="{|$translate_code|}" />
+            </div>
+            <div class="element">
+                <input type="hidden" name="filter3_key" value="cdate" />
+                <input type="hidden" name="filter3_type" value="gte" />
+                <input type="text" class="js-date" name="filter3_value" value="{|$control_filter3_value|}" placeholder="{|$translate_date|} {|$translate_from_small|}" />
+            </div>
+            <script type="text/javascript">
+                $j(function () {
+                    $j('.js-date').datepicker({
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+            </script>
+
+            <input type="submit" value="{|$translate_filter|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div id="shop-admin-fixed-table">
+            {|$table|}
+        </div>
+    </div>
+</div>
+<div class="clear"></div>

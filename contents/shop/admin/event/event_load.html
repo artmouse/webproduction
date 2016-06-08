@@ -1,0 +1,12 @@
+{|if $fileSound|}
+    <div class="ob-block-audio-element">
+        <div class="track">
+            <audio src="{|$fileSound|}" autobuffer controls></audio>
+        </div>
+        <div class="link">
+            <a class="ob-link-download" href="{|$fileSound|}" download="sound-{|$id|}">{|$translate_skachat_zvukozapis|}</a>
+        </div>
+    </div>
+{|else|}
+    {|$translate_zvukozapis_vremenno_nedostupna|}.
+{|/if|}

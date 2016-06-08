@@ -1,0 +1,101 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_tip_sobitiya|}</div>
+                <select name="type" class="chzn-select">
+                    <option value="">{|$translate_contacts_all|}</option>
+                    <option value="email" {|if $control_type == 'email'|} selected {|/if|}>Email</option>
+                    <option value="call" {|if $control_type == 'call'|} selected {|/if|}>{|$translate_zvonki|}</option>
+                    <option value="sms" {|if $control_type == 'sms'|} selected {|/if|}>SMS</option>
+                    <option value="skype" {|if $control_type == 'skype'|} selected {|/if|}>Skype</option>
+                    <option value="jabber" {|if $control_type == 'jabber'|} selected {|/if|}>Jabber</option>
+                    <option value="whatsapp" {|if $control_type == 'whatsapp'|} selected {|/if|}>WhatsApp</option>
+                    <option value="viber" {|if $control_type == 'viber'|} selected {|/if|}>Viber</option>
+                </select>
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_status_dlya_zvonkov_|}</div>
+                <select name="status" class="chzn-select">
+                    <option value="">{|$translate_contacts_all|}</option>
+                    <option value="answer" {|if $control_status == 'answer'|} selected {|/if|}>{|$translate_razgovor_sostoyalsya|}</option>
+                    <option value="noanswer" {|if $control_status == 'noanswer'|} selected {|/if|}>{|$translate_ne_vzyali_trubku|}</option>
+                    <option value="chanunavail" {|if $control_status == 'chanunavail'|} selected {|/if|}>{|$translate_svyaz_ne_dostupna|}</option>
+                    <option value="cancel" {|if $control_status == 'cancel'|} selected {|/if|}>{|$translate_peredumal|}</option>
+                    <option value="busy" {|if $control_status == 'busy'|} selected {|/if|}>{|$translate_sbrosil_zanyat_|}</option>
+                    <option value="invalid" {|if $control_status == 'invalid'|} selected {|/if|}>{|$translate_neverniy_nomer|}</option>
+                    <option value="transfer" {|if $control_status == 'transfer'|} selected {|/if|}>{|$translate_pereveden|}</option>
+                    <option value="autotransfer" {|if $control_status == 'autotransfer'|} selected {|/if|}>{|$translate_pereveden_avtomaticheski|}</option>
+                </select>
+            </div>
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_zakaza_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+
+            {|$block_workflow_filter|} 
+            <br />
+            <div class="element">
+                <label><input type="checkbox" name="not-active">{|$translate_pokazivat_ne_aktivnih|}</label>
+            </div>
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <table width="100%">
+            <tr>
+                <td><h1>{|$translate_otchet_po_holodnim_kontaktkam_za_period|}</h1></td>
+                <td align="right"><a href="/admin/shop/report/holdusersperiod/?{|$urlget|}&export-xls=1" class="xls" name="export-xls">{|$translate_export_to|} XLS</a></td>
+            </tr>
+        </table>
+        <div class="shop-overflow-table">
+            <table class="shop-table">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>{|$translate_contact|}</td>
+                        <td>{|$translate_user_company|}</td>
+                        <td>{|$translate_telefon_klienta|}</td>
+                        <td>{|$translate_telefon_kompanii|}</td>
+                        <td>E-mail {|$translate_client|}</td>
+                        <td>E-mail {|$translate_kompanii|}</td>
+                        <td>{|$translate_adres_klienta|}</td>
+                        <td>{|$translate_adres_kompanii|}</td>
+                    </tr>
+                </thead>
+                {|foreach from=$clientsArray item="clients" key="key"|}
+                    <tr>
+                        <td><a href="{|$clients.url|}" data-id="{|$clients.id|}">{|$clients.id|}</a></td>
+                        <td>
+                            <a href="{|$clients.url|}" data-id="{|$clients.id|}" class="js-contact-preview done">{|$clients.name|}</a>
+                        </td>
+                        <td>        
+                            {|$clients.company|}
+                        </td>
+                        <td>{|$clients.phone|}</td>
+                        <td>{|$clients.phoneCompany|}</td>
+                        <td>{|$clients.email|}</td>
+                        <td>{|$clients.emailCompany|}</td>
+                        <td>{|$clients.address|}</td>
+                        <td align="right">{|$clients.addressCompany|}</td>
+                    </tr>
+                {|/foreach|}
+            </table>  
+        </div>
+          
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

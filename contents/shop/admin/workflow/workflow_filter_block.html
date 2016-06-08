@@ -1,0 +1,24 @@
+{|foreach from=$workflowArray item="w"|}
+    <div class="element ulist">
+        <div class="ulist-caption js-filter-block-toggle">
+            <input type="checkbox" name="workflowid[]" value="{|$w.id|}" {|if $w.selected|} checked {|/if|}>
+            <span>{|$w.name|}</span>
+        </div>
+        <div class="js-filter-block" style="display: none;">
+            {|foreach from=$w.statusArray item="s"|}
+                <label {|if $s.color|} style="background-color: {|$s.color|};" {|/if|}>
+                    <input type="checkbox" name="statusid[]" value="{|$s.id|}" {|if $s.selected|} checked {|/if|}>
+                    {|$s.name|}
+                </label>
+            {|/foreach|}
+        </div>
+    </div>
+{|/foreach|}
+
+<script type="text/javascript">
+$j(function() {
+    $j('.js-filter-block-toggle').click(function(){
+        $j(this).next('.js-filter-block').slideToggle();
+    });
+});
+</script>

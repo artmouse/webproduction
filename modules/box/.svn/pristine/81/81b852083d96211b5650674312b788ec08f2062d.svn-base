@@ -1,0 +1,32 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="ulist-caption">Перенаправление звонков</div>
+            <div class="element">
+                <input type="text" name="from" value="{|$control_from|}" class="js-text" placeholder="From" />
+            </div>
+            <div class="element">
+                <input type="text" name="to" value="{|$control_to|}" class="js-text" placeholder="To" />
+            </div>
+            <div class="element">
+                <input type="text" name="name" value="{|$control_name|}" class="js-text" placeholder="Name" />
+            </div>
+            <div class="element">
+                <input type="text" name="comment" value="{|$control_comment|}" class="js-text" placeholder="Comment" />
+            </div>
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>Перенаправление звонков</h1>
+        {|$table|}
+    </div>
+</div>
+<div class="clear"></div>
+

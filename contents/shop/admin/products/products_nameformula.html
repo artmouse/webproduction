@@ -1,0 +1,20 @@
+{|if $formulaArray|}
+    {|foreach from=$formulaArray item="e"|}
+        <strong>{|$e.name|}</strong>
+        <br />
+
+        {|if $e.valuesArray|}
+            <select name="{|$name|}[]" class="{|$name|}">
+                {|foreach from=$e.valuesArray item="v"|}
+                    <option value="{|$v|}">{|$v|}</option>
+                {|/foreach|}
+            </select>
+        {|else|}
+            <input type="text" class="{|$name|}" name="{|$name|}[]" style="width: 90%;" {|if $val|}value="{|$val|}"{|/if|}/>
+        {|/if|}
+        <br />
+    {|/foreach|}
+{|else|}
+    <input type="text" class="{|$name|}" name="{|$name|}[]" style="width: 90%; "{|if $val|} value="{|$val|}"{|/if|} />
+    <br />
+{|/if|}

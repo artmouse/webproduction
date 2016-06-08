@@ -1,0 +1,105 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/products/">&lsaquo; {|$translate_many_products|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/products/productslist/" class="selected">{|$translate_products_in_list|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/products/list/">{|$translate_products_control|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $listArray|}
+    <div class="filter-hidden"></div>
+    <div class="shop-filter-panel open">
+        <div class="inner-pannel">
+            <h1>{|$translate_products_in_list|}</h1>
+            <div class="ob-block-tree">
+                <ul>
+                    {|foreach from=$listArray item="l"|}
+                        <li><a href="?l={|$l.id|}">{|$l.name|}{|if $l.linkkey|} ({|$l.linkkey|}){|/if|}</a></li>
+                    {|/foreach|}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-result-list">
+        <div class="inner-list filter-reserve">
+            {|if $message == 'ok'|}
+                <div class="shop-message-success">
+                    {|$translate_products_upgrade_success|}.
+                </div>
+            {|/if|}
+
+            {|if $message == 'error'|}
+                <div class="shop-message-error">
+                    {|$translate_products_upgrade_error|}.
+                </div>
+            {|/if|}
+
+            {|if $name|}
+                <h2>{|$name|}</h2>{|if !$logicclass|} ({|$translate_list_is_automatically_generated|}){|/if|}
+            {|/if|}
+
+            {|$table|}
+
+            {|if !$table|}
+                <div class="shop-message-info">{|$translate_list_select|}.</div>
+            {|/if|}
+
+            {|if count($pagesArray) > 1|}
+                <div class="ob-block-stepper">
+                    {|if $urlprev|}
+                        <a href="{|$urlprev|}" class="prev">&lsaquo; {|$translate_back|}</a>
+                        {|if $hellip|}&hellip;{|/if|}
+                    {|/if|}
+
+                    {|foreach from=$pagesArray item="e"|}
+                        <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+                    {|/foreach|}
+
+                    {|if $urlnext|}
+                        {|if $hellip|}&hellip;{|/if|}
+                        <a href="{|$urlnext|}" class="next">{|$translate_next|} &rsaquo;</a>
+                    {|/if|}
+
+                    {|if $allowAll|}
+                        <a href="?p=all">{|$translate_allow_all|} ({|$productsCount|})</a>
+                    {|/if|}
+                </div>
+            {|/if|}
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="nb-right-sidebar" style="display: block;">
+        <div class="toggle"></div>
+        <form class="inner" action="" method="post">
+            <div class="element double">
+                {|$translate_priceplace_product_add|}
+                {|if $useCode1c|}
+                    {|$translate_priceplace_product_declare_code1c|}
+                {|else|}
+                    {|$translate_priceplace_product_declare_code|}
+                {|/if|}
+                <textarea name="codes"></textarea>
+            </div>
+
+            <div class="element double" id="id-form-delete" style="display: none;">
+                <label>
+                    <input type="checkbox" name="delete" value="" id="id-checkboxes" />
+                    {|$translate_products_list_delete_confirm|}
+                </label>
+            </div>
+
+            <div class="element">
+                <input class="ob-button" type="submit" name="ok" value="{|$translate_save|}" />
+            </div>
+            <div class="element"></div>
+        </form>
+    </div>
+{|else|}
+    <div class="shop-message-info">
+        {|$translate_no_product_list|}. &nbsp;&nbsp;<a href="/admin/shop/products/list/add/" class="ob-button">{|$translate_create_product_list|}</a>
+    </div>
+{|/if|}

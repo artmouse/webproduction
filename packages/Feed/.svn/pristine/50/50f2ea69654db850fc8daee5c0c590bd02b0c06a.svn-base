@@ -1,0 +1,12 @@
+Пакет Feed позволяет строить различные Feed-ленты: RSS, Atom, Sitemaps и т.д.
+Пакет Feed разработан на замену пакета RSS (deprecated).
+
+На данный момент реализован только RSS.
+Пример создания RSS-ленты:
+
+$rss = Feed::CreateRSS(...);
+$rss->addItem(...);
+$rss->addItem(...);
+$rss->addItem(...);
+...
+$rssString = $rss->render();

@@ -1,0 +1,139 @@
+{|if $message == "ok"|}
+    <div class="def-message-success">
+        {|$translate_message_success|}.<br />
+        {|$translate_be_published|}.
+    </div>
+{|/if|}
+
+{|if not $guestBookArray|}
+    <div class="def-message-notice">
+        {|$translate_message_notice|}
+    </div>
+{|/if|}
+
+{|if $message == "error"|}
+    {|foreach from=$errorsArray item="e"|}
+        <div class="def-message-error">
+            {|if $e == 'response'|}
+                {|$translate_message_error|}.<br />
+                {|$translate_your_feedback|}<br />
+            {|elseif $e == 'contact'|}
+                {|$translate_message_error|}.<br />
+                {|$translate_enter_name_or_login|}<br />
+            {|elseif $e == 'name'|}
+                {|$translate_message_error|}.<br />
+                {|$translate_enter_name|}<br />
+            {|/if|}
+        </div>
+    {|/foreach|}
+{|/if|}
+
+{|if $guestBookArray|}
+    <div class="ta-center">
+        <a href="javascript: void(0);" class="def-submit" onclick="popupOpen('.js-popup-review')">{|$translate_leave_reply|}</a>
+    </div>
+    <br />
+
+    <div class="def-block-faq">
+        {|foreach from=$guestBookArray item="g"|}
+            <div class="element">
+                <div class="identifier" style="background-color: {|$g.color|};"></div>
+                {|$g.response|}
+                <div class="date">
+                    {|$g.cdate|}
+                    {|if $g.name|}
+                        от {|$g.name|}
+                    {|elseif $g.login|}
+                        от {|$g.login|}
+                    {|/if|}
+                </div>
+            </div>
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<div class="ta-center">
+    <a href="javascript: void(0);" class="def-submit" onclick="popupOpen('.js-popup-review')">{|$translate_leave_reply|}</a>
+</div>
+<br />
+
+{|if $isUserAuthorized|}
+    <div id="form-order-id" class="def-block-popup js-popup-review" style="display: none;">
+        <div class="dark" onclick="popupClose('.js-popup-review');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-review');">&nbsp;</a>
+                <div class="def-section-caption">
+                    <span><strong>{|$translate_leave_reply|}</strong></span>
+                </div>
+            </div>
+            <form method="post">
+                <div class="body">
+                    <table>
+                        <tr>
+                            <td>{|$translate_review_big|}<span class="important">*</span>:</td>
+                            <td><textarea class="js-required" type="text" name="response">{|$control_response|}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td>{|$translate_order_number|}:</td>
+                            <td><input type="text" name="orderNumber" value="{|$control_orderNumber|}"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="foot">
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input class="js-form-validation def-submit" type="submit" name="guestbook" value="{|$translate_send_message|}" />
+                </div>
+            </form>
+        </div>
+    </div>
+{|else|}
+    {|if $isUnregisteredUsers|}
+        <div id="form-order-id" class="def-block-popup js-popup-review" style="display: none;">
+            <div class="dark" onclick="popupClose('.js-popup-review');"></div>
+            <div class="block-popup">
+                <div class="head">
+                    <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-review');">&nbsp;</a>
+
+                    <div class="def-section-caption">
+                        <span><strong>{|$translate_leave_reply|}</strong></span>
+                    </div>
+                </div>
+                <form method="post">
+                    <div class="body">
+                        <table>
+                            <tr>
+                                <td>{|$translate_name_small|}<span class="important">*</span>:</td>
+                                <td><input type="text" name="name" value="{|$control_name|}" /></td>
+                            </tr>
+                            <tr>
+                                <td>{|$translate_phone|}<span class="important">*</span>:</td>
+                                <td><input type="text" name="phone" value="{|$control_phone|}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Email<span class="important">*</span>:</td>
+                                <td><input type="text" name="email" value="{|$control_email|}" /></td>
+                            </tr>
+                            <tr>
+                                <td>{|$translate_review_big|}<span class="important">*</span>:</td>
+                                <td><textarea type="text" name="response">{|$control_response|}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>{|$translate_order_number|}:</td>
+                                <td><input type="text" name="orderNumber" value="{|$control_orderNumber|}"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="foot">
+                        <input type="hidden" name="ajs" class="ajs" value="1" />
+                        <input class="def-submit" type="submit" name="guestbook" value="{|$translate_send_message|}" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    {|else|}
+        <div class="os-message-info">
+            {|$translate_message_info|}.
+        </div>
+    {|/if|}
+{|/if|}

@@ -1,0 +1,269 @@
+{|if !$ajaxLoad && (not $nofilters) OR $isbrand|}
+    <aside class="left-layer">
+        {|$filters|}
+    </aside>
+{|/if|}
+
+<section class="right-layer {|if not ((not $nofilters) OR $isbrand)|}nofilter{|/if|}">
+    {|if !$ajaxLoad|}
+        {|if $pathArray|}
+            <div class="rtm-crumbs">
+                <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <a href="/" itemprop="url">
+                        <span itemprop="title">Каталог изделий</span>
+                    </a>
+                </div>
+                &rarr;
+
+                {|foreach from=$pathArray item="e" name="foo"|}
+                    {|if !$smarty.foreach.foo.last|}
+                        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="{|$e.url|}" itemprop="url" data-rel=".tab-ordered">
+                                <span itemprop="title">{|$e.name|}</span>
+                            </a>
+                        </div>
+                        &rarr;
+                    {|/if|}
+                {|/foreach|}
+
+                <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <a href="" itemprop="url">
+                        <span itemprop="title">{|$e.name|}</span>
+                    </a>
+                </div>
+            </div>
+        {|/if|}
+
+        <h2>
+            {|if !$noFilteredProducts|}
+                {|$categoryName|}
+            {|elseif $productsArray|}
+                <div class="os-message-error">
+                    <div class="caption">К сожалению по вашему запросу система не смогла найти точных совпадений.</div>
+                    Возможно эти изделия смогут Вас заинтересовать:
+                </div>
+            {|/if|}
+        </h2>
+
+        {|if $sort|}
+            <div class="rtm-sort-block">
+                <label>
+                    <input type="hidden" id="getStr" value="{|$getStr|}">
+                    <input type="hidden" id="totalUrl" value="{|$totalUrl|}">
+                    Выводить:
+                    <select name="sort" class="onpage-bottom js-onpage-bottom">
+                        <option value="ordered" {|if $sort == 'ordered'|}selected="selected" {|/if|}>{|$translate_sort_ordered|}</option>
+                        <option value="name" {|if $sort == 'name'|} selected="selected" {|/if|}>{|$translate_sort_name|}</option>
+                        <option value="price-asc" {|if $sort == 'price-asc'|} selected="selected" {|/if|}>{|$translate_sort_price_asc|}</option>
+                        <option value="price-desc" {|if $sort == 'price-desc'|} selected="selected" {|/if|}>{|$translate_sort_price_desc|}</option>
+                        <option value="viewed" {|if $sort == 'viewed'|} selected="selected" {|/if|}>{|$translate_sort_viewed|}</option>
+                        <option value="avail" {|if $sort == 'avail'|} selected="selected" {|/if|}>{|$translate_sort_avail|}</option>
+                    </select>
+                </label>
+                <label class="f-right">
+                    <input type="hidden" name="onpage" class="js-onpage-val" value="{|$control_onpage|}">
+                    Показывать по:
+                    <select name="onpage_select" class="onpage-bottom js-onpage-bottom">
+                        <option value="12" {|if $onpage_select == 12|}selected{|/if|}>12 шт.</option>
+                        <option value="18" {|if $onpage_select == 18|}selected{|/if|}>18 шт.</option>
+                        <option value="36" {|if $onpage_select == 36|}selected{|/if|}>36 шт.</option>
+                        <option value="72" {|if $onpage_select == 72|}selected{|/if|}>72 шт.</option>
+                    </select>
+                </label>
+                <div class="clear"></div>
+            </div>
+        {|/if|}
+
+        {|if count($pagesArray) > 1|}
+            <div class="rtm-paginator js-rtm-paginator">
+                <a href="{|$urlprev|}" data-rel="prev" class="prev f-left">&laquo;</a>
+                {|foreach from=$pagesArray item="e" key="key" name=foo|}
+                <a href="{|$e.url|}" data-key="{|$key|}" {|if !($e.visible || $smarty.foreach.foo.last || $smarty.foreach.foo.first)|}
+                style="display:none" {|/if|} class="{|if $e.selected|}active{|/if|}{|if !$e.always_open|} js_paginator_hidden{|/if|}">
+                {|if $smarty.foreach.foo.last|}<span class="js_stepper_dots_last" style="display: none;"> ... </span>{|/if|}
+                {|$e.name|}
+                {|if $smarty.foreach.foo.first|}<span class="js_stepper_dots_first" style="display: none;"> ... </span>{|/if|}
+                </a>
+                {|/foreach|}
+                <a href="{|$urlnext|}" data-rel="next" class="next f-right">&raquo;</a>
+            </div>
+        {|/if|}
+    {|/if|}
+
+    {|if $productsAfterFilters && !$ajaxLoad|}
+        <div class="rtm-product-list">
+            {|foreach from=$productsAfterFilters item="e"|}
+                <div class="element">
+                    <div class="item">
+                        <div class="p-name"><a href="{|$e.url|}" {|if $e.admin_red|}style="color: red"{|/if|}>{|$e.name|}</a></div>
+
+                        <a href="{|$e.url|}" class="p-image"><img src="{|$e.image|}" alt="{|$e.alt|}" title="{|$e.title|}" /></a>
+
+                        <span class="caption">За работу при обмене:</span>
+                        <table class="price-block">
+                            <tr>
+                                <td class="ta_left">
+                                    {|if $e.price == 0|}
+                                    <span class="specify">{|$translate_specify_a_price|}</span>
+                                    {|else|}
+                                    <span class="price">{|$e.price|number_format:0|}{|$e.currency|}</span><br />
+                                    {|/if|}
+                                    {|if $e.priceold AND $e.priceold != 0|}
+                                    <s class="old-price">{|$e.priceold|number_format:0|}{|$e.currency|}</s>
+                                    {|/if|}
+                                </td>
+                                <td class="ta_right" style="width: 75px">
+                                    <div class="js-shop-buy" data-productid="{|$e.id|}" data-action="exchange" {|if $e.exchangeWeight|}
+                                    data-weightid="{|$e.exchangeWeight.id|}" data-weightname="{|$e.exchangeWeight.name|}" {|/if|}>
+                                        <a href="#" class="js-shop-buy-action rtm-submit">Обмен</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <span class="caption"> За изделие при продаже:</span>
+                        <table class="price-block">
+                            <tr>
+                                <td class="ta_left">
+                                    {|if $e.price_product == 0|}
+                                    <span class="specify">{|$translate_specify_a_price|}</span>
+                                    {|else|}
+                                    <span class="price">{|$e.price_product|number_format:0|}{|$e.currency|}</span><br />
+                                    {|/if|}
+                                    {|if $e.priceproductold AND $e.priceproductold != 0|}
+                                    <s class="old-price">{|$e.priceproductold|number_format:0|}{|$e.currency|}</s>
+                                    {|/if|}
+                                </td>
+                                <td class="ta_right" style="width: 75px">
+                                    <div class="js-shop-buy" data-productid="{|$e.id|}" data-action="buy">
+                                        <a href="#" class="js-shop-buy-action rtm-submit">Купить</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="adds-features">
+                            {|$e.descriptionshort|}
+                        </div>
+                    </div>
+                </div>
+            {|/foreach|}
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+        </div>
+        <div class="os-message-error">
+            <div class="caption">Возможно эти изделия могут Вас заинтересовать:</div>
+        </div>
+    {|/if|}
+
+{|if !$ajaxLoad|}
+    <div class="js-rtm-product-list" data-id="{|$categoryid|}">
+{|/if|}
+    <div class="rtm-product-list" >
+        {|if $productsArray|}
+            {|foreach from=$productsArray item="e"|}
+                <div class="element">
+                    <div class="item">
+                        <div class="p-name"><a href="{|$e.url|}" {|if $e.admin_red|}style="color: red"{|/if|}>{|$e.name|}</a></div>
+
+                        <a href="{|$e.url|}" class="p-image"><img src="{|$e.image|}" alt="{|$e.alt|escape|}" title="{|$e.title|escape|}" /></a>
+
+                        <span class="caption">За работу при обмене:</span>
+                        <table class="price-block">
+                            <tr>
+                                <td class="ta_left">
+                                    {|if $e.price == 0|}
+                                        <span class="specify">{|$translate_specify_a_price|}</span>
+                                    {|else|}
+                                        <span class="price">{|$e.price|number_format:0|}{|$e.currency|}</span><br />
+                                    {|/if|}
+                                    {|if $e.priceold AND $e.priceold != 0|}
+                                        <s class="old-price">{|$e.priceold|number_format:0|}{|$e.currency|}</s>
+                                    {|/if|}
+                                </td>
+                                <td class="ta_right" style="width: 75px">
+                                    <div class="js-shop-buy" data-productid="{|$e.id|}" data-action="exchange" {|if $e.exchangeWeight|}
+                                     data-weightid="{|$e.exchangeWeight.id|}" data-weightname="{|$e.exchangeWeight.name|}" {|/if|}>
+                                        <a href="#" class="js-shop-buy-action rtm-submit">Обмен</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <span class="caption"> За изделие при продаже:</span>
+                        <table class="price-block">
+                            <tr>
+                                <td class="ta_left">
+                                    {|if $e.price_product == 0|}
+                                        <span class="specify">{|$translate_specify_a_price|}</span>
+                                    {|else|}
+                                        <span class="price">{|$e.price_product|number_format:0|}{|$e.currency|}</span><br />
+                                    {|/if|}
+                                    {|if $e.priceproductold AND $e.priceproductold != 0|}
+                                        <s class="old-price">{|$e.priceproductold|number_format:0|}{|$e.currency|}</s>
+                                    {|/if|}
+                                </td>
+                                <td class="ta_right" style="width: 75px">
+                                    <div class="js-shop-buy" data-productid="{|$e.id|}" data-action="buy">
+                                        <a href="#" class="js-shop-buy-action rtm-submit">Купить</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="adds-features">
+                            {|$e.descriptionshort|}
+                        </div>
+                    </div>
+                </div>
+            {|/foreach|}
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+        {|else|}
+            <div class="os-message-error">
+                <div class="caption">{|$translate_item_message_error|}.</div>
+                {|$translate_item_message_error_try|} <a href="/">{|$translate_our_store|}</a>.
+            </div>
+        {|/if|}
+        <div class="clear"></div>
+    </div>
+{|if !$ajaxLoad|}
+    </div>
+{|/if|}
+{|if !$ajaxLoad|}
+    {|if $sort|}
+        <div class="rtm-sort-block">
+            <label class="f-right">
+                Показывать по:
+                <select name="onpage_select" class="onpage-bottom js-onpage-bottom">
+                    <option value="12" {|if $onpage_select == 12|}selected{|/if|}>12 шт.</option>
+                    <option value="18" {|if $onpage_select == 18|}selected{|/if|}>18 шт.</option>
+                    <option value="36" {|if $onpage_select == 36|}selected{|/if|}>36 шт.</option>
+                    <option value="72" {|if $onpage_select == 72|}selected{|/if|}>72 шт.</option>
+                </select>
+            </label>
+            <div class="clear"></div>
+        </div>
+    {|/if|}
+
+    {|if count($pagesArray) > 1|}
+        <div class="rtm-paginator js-rtm-paginator">
+            <a href="{|$urlprev|}" data-rel="prev" class="prev f-left">&laquo;</a>
+            {|foreach from=$pagesArray item="e" key="key" name=foo|}
+            <a href="{|$e.url|}" data-key="{|$key|}" {|if !($e.visible || $smarty.foreach.foo.last || $smarty.foreach.foo.first)|}
+            style="display:none" {|/if|} class="{|if $e.selected|}active{|/if|}{|if !$e.always_open|} js_paginator_hidden{|/if|}">
+            {|if $smarty.foreach.foo.last|}<span class="js_stepper_dots_last" style="display: none;"> ... </span>{|/if|}
+            {|$e.name|}
+            {|if $smarty.foreach.foo.first|}<span class="js_stepper_dots_first" style="display: none;"> ... </span>{|/if|}
+            </a>
+            {|/foreach|}
+            <a href="{|$urlnext|}" data-rel="next"class="next f-right">&raquo;</a>
+        </div>
+    {|/if|}
+{|/if|}
+</section>
+<div class="clear"></div>
+
+<a class="rtm-scrolltop-link js-scroll-top" href="#"></a>

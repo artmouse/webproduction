@@ -1,0 +1,28 @@
+<h1>Загрузка XML файла для оприходования товара на склад</h1>
+{|if $run|}
+<div class="shop-message-info">
+    Предыдущее задание ещё не начало обрабатываться.<br>
+</div>
+{|elseif $message == 'ok'|}
+<div class="shop-message-success">
+    Задание на загрузку товаров создано.<br>
+</div>
+{|else|}
+<form action="" method="post" enctype="multipart/form-data">
+    <br>
+    {|if $invalidfile|}
+    <div class="shop-message-error">
+        Загружен некорректный файл.<br>
+    </div>
+    {|/if|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+        <tr>
+            <td><strong>XML-файл:</strong></td>
+            <td><input type="file" name="file" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input type="submit" name="upload" value="Загрузить" /></td>
+        </tr>
+    </table>
+</form>
+{|/if|}

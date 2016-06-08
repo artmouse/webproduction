@@ -1,0 +1,86 @@
+<h1>Управление глобальными настройками (settings)</h1>
+
+OneBox содержит реестр глобальных настроек (мы их называем settings).<br />
+Настройки доступны в каждом проекте по URL <a href="/admin/shop/settings/">/admin/shop/settings/</a><br />
+<br />
+Каждый модуль или проект может дописать в settings необходимые ему данные. как правило мы такую операцию называем “вынести в settings” или “вынести в настройки”.<br />
+<br />
+
+<h2>Как прочитать настройку из settings?</h2>
+
+<code><pre>
+$value = Shop::Get()->getSettingsService()->getSettingValue('my-key');
+</pre></code>
+<br />
+
+<h2>Как дописаться в settings?</h2>
+Чтобы дописаться в settings нужно выполнить такую команду:<br />
+<br />
+
+<code>
+    Shop::Get()->getSettingsService()->addSetting( $key, $name, $tabName, $description, $defaultValue = false, $type = false)
+</code>
+<br />
+
+key - имя ключа, по которому вы в будущем будете идентифицировать настройку.<br />
+name - название настройки<br />
+description - описание настройки (до 200 символов)<br />
+defaultValue - значение по умолчанию, если необходимо.<br />
+type - тип. Может быть string, text, html, checkbox или другой. Может быть не задан (тогда используется string).<br />
+<br />
+
+Реальный пример добавления настройки:<br />
+<br />
+
+<code><pre>
+Shop::Get()->getSettingsService()->addSetting(
+        'automatic-calculate-prices',
+        'Автоматический пересчет цен',
+        'Пересчет цен и наличия',
+        'Время выполнения автоматического пересчета цен',
+        false, // default value
+        'chzn-select-time'
+    );
+</pre></code>
+<br />
+
+<strong>Важно: все вызовы addSetting должны быть завернуты в mode development!</strong><br />
+<br />
+
+<code><pre>
+if (PackageLoader::Get()->getMode('development')) {
+    Shop::Get()->getSettingsService()->addSetting(
+        'automatic-calculate-prices',
+        'Автоматический пересчет цен',
+        'Пересчет цен и наличия',
+        'Время выполнения автоматического пересчета цен',
+        false, // default value
+        'chzn-select-time'
+    );
+}
+</pre></code>
+<br />
+
+<h2>Где можно посмотреть больше реальных примеров?</h2>
+См. модуль modules/product-margin/include.php
+<br />
+<br />
+
+<h2>Как управлять именами tab-ов?</h2>
+Никак :) Они создаются автоматически. Если вы в tabName напишете “ААА БББ” - то таб автоматически создастся с таким именем.
+Если ни одной опции в таком табе не будет - там удалиться сам.
+<br />
+<br />
+
+<h2>Как меняется значение по умолчанию (defaultValue)?</h2>
+При первой вставке записи вставляется defaultValue.<br />
+При последующих вызовах addSetting() значение уже не перетирается и не обновляется.
+<br />
+<br />
+
+<h2>Как удалить setting?</h2>
+Бывают ситуации, что есть какое-то старое значение, которое нужно просто удалить. Для таких случаев используйте вызов deleteSetting(). Как правило это нужно в updater/
+
+<code><pre>
+    Shop::Get()->getSettingsService()->deleteSetting($key);
+</pre></code>

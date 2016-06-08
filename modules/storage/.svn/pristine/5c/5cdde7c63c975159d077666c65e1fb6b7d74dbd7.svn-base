@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        body {
+            padding: 60px 10px 55px 107px;
+            line-height: 18px;
+        }
+        body, td, h1 {
+            font-size: 12px;
+            font-family: Arial, Verdana;
+        }
+        h1 {
+            font-size: 20px;
+            text-align: center;
+            line-height: 22px;
+        }
+        .page {
+            border-collapse: collapse;
+            border-spacing: 0;
+            color: black;
+            border: 0px;
+            font-size: 13px;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .header {
+            border: none;
+            border-collapse: collapse;
+        }
+        .header td {
+            padding: 0 10px 10px 0;
+        }
+        .document {
+            border: none;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .document td {
+            border: 1px solid black;
+            padding: 2px 3px;
+            line-height: normal;
+        }
+        .document thead td {
+            font-weight: bold;
+            background-color: #cccccc;
+            text-align: center;
+        }
+        @media print {
+           .document thead td {
+                background-color: #cccccc;
+            }
+        }
+        .document tr.total td {
+            font-weight: bold;
+            border: none;
+        }
+        .document tr.total td.border {
+            border: 1px solid black;
+        }
+        .sign {
+            border: none;
+            border-collapse: collapse;
+        }
+        .sign td {
+            padding: 5px 3px;
+            text-align: right;
+        }
+        .pdv {
+            width: 50px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+<table class="page">
+    <thead>
+        <tr>
+            <td>
+                {|if $image|}
+                    <div style="float: right">
+                        <img style="max-height: 180px; max-width: 180px" src="{|$image|}" alt=""/>
+                    </div>
+                {|/if|}
+                <table class="header">
+                    <tr valign="top">
+                        <td><u>Поставщик</u></td>
+                        <td>
+                            {|*|}<strong>{|$contractorname|}</strong><br />{|*|}
+                            {|$contractordetails|}
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td><u>Получатель</u></td>
+                        <td>
+                            {|if $clientname|}
+                                <strong>{|$clientname|}</strong>
+                                <br />
+                            {|/if|}
+                            {|if $clientphone|}
+                                {|$clientphone|}
+                                <br />
+                            {|/if|}
+                            {|if $clientemail|}
+                                {|$clientemail|}
+                                <br />
+                            {|/if|}
+                            {|if $clientaddress|}
+                                {|$clientaddress|}
+                                <br />
+                            {|/if|}
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td><u>Заказ</u></td>
+                        <td>Согласно заявки № {|$number|}</td>
+                    </tr>
+                    {|if $deliveryName|}
+                        <tr>
+                            <td><u>Доставка</u></td>
+                            <td>{|$deliveryName|}</td>
+                        </tr>
+                    {|/if|}
+                    {|if $deliveryPay|}
+                        <tr>
+                            <td><u>Оплата</u></td>
+                            <td>{|$deliveryPay|}</td>
+                        </tr>
+                    {|/if|}
+                </table>
+                <h1>Расходная накладная № {|$number|} <br /> от {|$orderdate|}</h1>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <table class="document">
+                    <thead>
+                        <tr>
+                            <td>№</td>
+                            <td>Категория</td>
+                            <td>Товар</td>
+                            <td>Ед.</td>
+                            <td width="90">Количество</td>
+                            <td width="100">Цена без НДС</td>
+                            <td width="100">Сумма без НДС</td>
+                        </tr>
+                    </thead>
+                    {|foreach from=$productsArray item="b" key="i"|}
+                        <tr>
+                            <td align="right">{|$i+1|}</td>
+                            <td>{|$b.categoryname|}</td>
+                            <td>{|$b.name|}</td>
+                            <td align="center">{|$b.unit|}</td>
+                            <td align="right">{|$b.count|}</td>
+                            <td align="right">{|$b.pricenotax|} {|$ordercurrency|}</td>
+                            <td align="right">{|$b.sumnotax|} {|$ordercurrency|}</td>
+                        </tr>
+                    {|/foreach|}
+                    <tr class="total">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align="right" class="border">{|$productsum|}</td>
+                        <td align="right">Разом:</td>
+                        <td align="right" class="border">{|$ordersumwithouttax|} {|$ordercurrency|}</td>
+                    </tr>
+                    {|if $taxsum != '0.00'|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">Всего без НДС:</td>
+                            <td align="right" class="border">{|$ordersumwithouttax|} {|$ordercurrency|}</td>
+                        </tr>
+                    {|/if|}
+                    {|if $discountsum != '0.00'|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">Скидка:</td>
+                            <td align="right" class="border">-{|$discountsum|} {|$ordercurrency|}</td>
+                        </tr>
+                    {|/if|}
+                    {|if $taxsum != '0.00'|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">НДС:</td>
+                            <td align="right" class="border">{|$taxsum|} {|$ordercurrency|}</td>
+                        </tr>
+                    {|else|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">НДС:</td>
+                            <td align="right" class="border">Без НДС</td>
+                        </tr>
+                    {|/if|}
+                    {|if $deliveryprice != '0.00'|}
+                        <tr class="total">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">Доставка:</td>
+                            <td align="right" class="border">{|$deliveryprice|} {|$ordercurrency|}</td>
+                        </tr>
+                    {|/if|}
+                    <tr class="total">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align="right">Всего{|if $taxsum != '0.00'|} з НДС:{|/if|}</td>
+                        <td align="right" class="border">{|$ordersumwithtax|} {|$ordercurrency|}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                {|*|}
+                    <br />
+                    Всего на сумму: <br />
+                    <strong>{|$ordersumtext|}</strong> <br />
+                    {|if $taxsum != '0.00'|}<span class="pdv">НДС:</span> {|$taxsum|} {|$ordercurrency|}{|/if|}
+                {|*|}
+                <br />
+                <br />
+
+                <table align="right" class="sign">
+                    <tr align="right">
+                        <td>Директор</td>
+                        <td>______________________________</td>
+                        <td>Гл.бухгалтер</td>
+                        <td>___________________________</td>
+                    </tr>
+                    <tr align="right">
+                        <td>Отгрузил(ла)</td>
+                        <td>_____________________________</td>
+                        <td>Получил(ла)</td>
+                        <td>___________________________</td>
+                    </tr>
+                </table>
+                <br />
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+</body>
+</html>

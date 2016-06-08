@@ -1,0 +1,43 @@
+<strong>UI WPP Demo (register with prefix "{|$uiprefix|}" to see it)</strong><br />
+<br />
+
+<a href="#" class="{|$uiprefix|}link">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-feed">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-add">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-delete">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-edit">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-config">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-renew">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-info">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-move">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-check">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-uncheck">link</a><br /><br />
+<a href="#" class="{|$uiprefix|}link-payment">link</a><br /><br />
+
+<br />
+
+<div class="{|$uiprefix|}icon-active">&nbsp;</div> {|$uiprefix|}icon-active<br /><br />
+<div class="{|$uiprefix|}icon-inactive">&nbsp;</div> {|$uiprefix|}icon-inactive<br /><br />
+<div class="{|$uiprefix|}icon-error">&nbsp;</div> {|$uiprefix|}icon-error<br /><br />
+
+<br />
+
+<div class="{|$uiprefix|}content">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh sit amet lorem consequat pellentesque. Etiam nibh velit, pulvinar nec ornare quis, cursus et tortor. Maecenas eget dui erat, at tristique risus. Mauris a velit id nibh elementum posuere. Nam aliquet arcu sed eros cursus gravida. Morbi arcu nisi, malesuada sit amet aliquet non, semper dictum turpis. Duis luctus placerat sollicitudin. Sed quis felis a massa fermentum consequat nec vitae velit. Mauris lacinia, tellus ac dapibus adipiscing, turpis metus accumsan mi, vitae gravida lorem felis eget tortor. Nam arcu lacus, lacinia ac ultricies non, blandit in metus. Duis nec diam a diam mollis semper. Vestibulum pretium, eros in interdum elementum, velit sem ullamcorper sem, ut faucibus urna augue sed velit. Nulla rhoncus, urna non mollis aliquet, metus diam venenatis nisi, id molestie augue mauris in est.
+</div>
+
+<div class="{|$uiprefix|}content {|$uiprefix|}rounded {|$uiprefix|}hover">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh sit amet lorem consequat pellentesque. Etiam nibh velit, pulvinar nec ornare quis, cursus et tortor. Maecenas eget dui erat, at tristique risus. Mauris a velit id nibh elementum posuere. Nam aliquet arcu sed eros cursus gravida. Morbi arcu nisi, malesuada sit amet aliquet non, semper dictum turpis. Duis luctus placerat sollicitudin. Sed quis felis a massa fermentum consequat nec vitae velit. Mauris lacinia, tellus ac dapibus adipiscing, turpis metus accumsan mi, vitae gravida lorem felis eget tortor. Nam arcu lacus, lacinia ac ultricies non, blandit in metus. Duis nec diam a diam mollis semper. Vestibulum pretium, eros in interdum elementum, velit sem ullamcorper sem, ut faucibus urna augue sed velit. Nulla rhoncus, urna non mollis aliquet, metus diam venenatis nisi, id molestie augue mauris in est.
+</div>
+
+<div class="{|$uiprefix|}content-success">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh sit amet lorem consequat pellentesque. Etiam nibh velit, pulvinar nec ornare quis, cursus et tortor. Maecenas eget dui erat, at tristique risus. Mauris a velit id nibh elementum posuere. Nam aliquet arcu sed eros cursus gravida. Morbi arcu nisi, malesuada sit amet aliquet non, semper dictum turpis. Duis luctus placerat sollicitudin. Sed quis felis a massa fermentum consequat nec vitae velit. Mauris lacinia, tellus ac dapibus adipiscing, turpis metus accumsan mi, vitae gravida lorem felis eget tortor. Nam arcu lacus, lacinia ac ultricies non, blandit in metus. Duis nec diam a diam mollis semper. Vestibulum pretium, eros in interdum elementum, velit sem ullamcorper sem, ut faucibus urna augue sed velit. Nulla rhoncus, urna non mollis aliquet, metus diam venenatis nisi, id molestie augue mauris in est.
+</div>
+
+<div class="{|$uiprefix|}content-fail">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh sit amet lorem consequat pellentesque. Etiam nibh velit, pulvinar nec ornare quis, cursus et tortor. Maecenas eget dui erat, at tristique risus. Mauris a velit id nibh elementum posuere. Nam aliquet arcu sed eros cursus gravida. Morbi arcu nisi, malesuada sit amet aliquet non, semper dictum turpis. Duis luctus placerat sollicitudin. Sed quis felis a massa fermentum consequat nec vitae velit. Mauris lacinia, tellus ac dapibus adipiscing, turpis metus accumsan mi, vitae gravida lorem felis eget tortor. Nam arcu lacus, lacinia ac ultricies non, blandit in metus. Duis nec diam a diam mollis semper. Vestibulum pretium, eros in interdum elementum, velit sem ullamcorper sem, ut faucibus urna augue sed velit. Nulla rhoncus, urna non mollis aliquet, metus diam venenatis nisi, id molestie augue mauris in est.
+</div>
+
+<div class="{|$uiprefix|}content-success {|$uiprefix|}rounded">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh sit amet lorem consequat pellentesque. Etiam nibh velit, pulvinar nec ornare quis, cursus et tortor. Maecenas eget dui erat, at tristique risus. Mauris a velit id nibh elementum posuere. Nam aliquet arcu sed eros cursus gravida. Morbi arcu nisi, malesuada sit amet aliquet non, semper dictum turpis. Duis luctus placerat sollicitudin. Sed quis felis a massa fermentum consequat nec vitae velit. Mauris lacinia, tellus ac dapibus adipiscing, turpis metus accumsan mi, vitae gravida lorem felis eget tortor. Nam arcu lacus, lacinia ac ultricies non, blandit in metus. Duis nec diam a diam mollis semper. Vestibulum pretium, eros in interdum elementum, velit sem ullamcorper sem, ut faucibus urna augue sed velit. Nulla rhoncus, urna non mollis aliquet, metus diam venenatis nisi, id molestie augue mauris in est.
+</div>

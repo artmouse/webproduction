@@ -1,0 +1,10 @@
+{|foreach from=$treeArray item="e"|}
+    {|section name=foo start=0 loop=$e.level|}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {|/section|}
+    <label>
+        <input type="checkbox" name="{|$key|}[]" value="{|$e.value|}" {|if $e.selected|} checked {|/if|} />
+        {|$e.name|}
+    </label>
+    <br />
+{|/foreach|}

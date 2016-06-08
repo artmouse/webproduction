@@ -1,0 +1,97 @@
+{|if $orderArray|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table" width="100%">
+        <thead>
+            <tr>
+                <td>{|$translate_code|}</td>
+                <td>{|$translate_product|}</td>
+                <td>{|$translate_number|}</td>
+                <td>&nbsp;</td>
+                {|if $isIncoming|}
+                    <td>{|$translate_price_purchase|}</td>
+                    <td>&nbsp;</td>
+                {|/if|}
+                <td>
+                    {|if $orderArray|}
+                        <label>
+                            <input type="checkbox" id="id-check-all" value="1" />
+                            {|$translate_delete_small|}
+                        </label>
+                    {|/if|}
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {|foreach from=$orderArray item="e" |}
+                <tr>
+                    <td>{|$e.productid|}</td>
+                    <td style="width: 150px;">
+                        {|$e.name|}
+
+                        {|if !$e.editable|}
+                            <br />
+                            ({|$translate_product_shipped|})
+                        {|/if|}
+                    </td>
+                    <td>
+                        <input name="count{|$e.id|}" value="{|$e.count|}" style="width: 80px;" {|if !$e.editable|} disabled {|/if|}/>
+                    </td>
+                    <td width="40">{|$e.unit|}</td>
+                    {|if $isIncoming|}
+                        <td align="right">
+                            <input type="text" value="{|$e.price|}" name="price{|$e.id|}" style="width: 50px;" {|if !$e.editable|} disabled {|/if|} />
+                        </td>
+                        <td>
+                            <select name="currencyid{|$e.id|}" {|if !$e.editable|} disabled {|/if|} >
+                                {|foreach from=$currencyArray item="c"|}
+                                    <option value="{|$c.id|}" {|if $c.id == $e.currencyid|} selected {|/if|}>{|$c.symbol|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                    {|/if|}
+                    <td>
+                        <label>
+                            <input type="checkbox" name="delete{|$e.id|}" value="1" class="table-checkbox" {|if !$e.editable|} disabled {|/if|} />
+                            {|$translate_delete_small|}
+                        </label>
+                    </td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+
+        {|if $isIncoming AND $orderArray|}
+            <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="right">{|$translate_in_total|}:</td>
+                    <td align="right">
+                        <strong>{|$sum|} {|$currency|}</strong>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="left" colspan="3">
+                        <input type="hidden" name="saveok" value="1" />
+                        <input type="hidden" name="orderid" value="{|$orderid|}" />
+                        <input class="ob-button" type="submit" value="{|$translate_save_changes_small|}" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tfoot>
+        {|/if|}
+
+    </table>
+    <br />
+{|else|}
+    <div class="shop-message-info">
+        {|$translate_order_add_product|}.
+    </div>
+{|/if|}

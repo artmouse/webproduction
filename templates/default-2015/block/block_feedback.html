@@ -1,0 +1,81 @@
+<div class="def-block-popup js-popup-mail-block" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-popup-mail-block');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-mail-block');">&nbsp;</a>
+            <div class="def-section-caption">
+                <span><strong>{|$translate_send_letter|}</strong></span>
+            </div>
+        </div>
+        {|if $feedbackmessage == 'ok'|}
+            <script type="text/javascript">
+            $j(function() {
+                $j('.js-popup-mail-block').toggle();
+                return false;
+            });
+
+            setTimeout(function() {
+                document.location = '.';
+            }, 3000);
+            </script>
+
+            <div class="message-success">
+                {|$translate_message_success_small|}.
+            </div>
+        {|else|}
+            {|if $feedbackArray|}
+                <div class="message-error">
+                    {|foreach from=$feedbackArray item="f"|}
+                        {|if $f == 'name'|}
+                            {|$translate_enter_name|}.<br />
+                        {|/if|}
+                        {|if $f == 'email'|}
+                            {|$translate_mail_error|}.<br />
+                        {|/if|}
+                        {|if $f == 'phone'|}
+                            {|$translate_phone_error|}.<br />
+                        {|/if|}
+                        {|if $f == 'message'|}
+                            {|$translate_text_error|}.<br />
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            {|/if|}
+            <form method="post">
+                <div class="body">
+                    <table>
+                        <tr>
+                            <td class="vtop">{|$translate_name_small|}<span class="important">*</span>:</td>
+                            <td><input class="js-required" type="text" name="fbname" id="id-fbname" value="{|$control_fbname|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_phone|}<span class="important">*</span>:</td>
+                            <td><input class="js-required js-phone-formatter" type="text" name="fbphone" id="id-fbphone" value="{|$Control_fbphone|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">E-mail<span class="important">*</span>:</td>
+                            <td><input class="js-required" type="text" name="fbemail" id="id-fbemail" value="{|$control_fbemail|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_message|}<span class="important">*</span>:</td>
+                            <td><textarea class="js-required" name="fbmessage" cols="30" rows="10">{|$control_fbmessage|}</textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="foot">
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input class="js-form-validation def-submit" type="submit" name="feedback" value="{|$translate_send|}" />
+                </div>
+            </form>
+        {|/if|}
+    </div>
+</div>
+
+{|if $feedbackmessage == "error"|}
+    <script type="text/javascript">
+        $j(function() {
+            $j('.js-popup-mail-block').toggle();
+            return false;
+        });
+    </script>
+{|/if|}

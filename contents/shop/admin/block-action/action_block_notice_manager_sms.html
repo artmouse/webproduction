@@ -1,0 +1,21 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <textarea class="js-autosize-{|$index|}" cols="40" rows="5" name="{|$index|}_text_notify_sms_admin" style="width: 100%;">{|$text_notify_sms_admin|}</textarea>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        $j('.js-autosize-{|$index|}').autosize();
+    });
+</script>

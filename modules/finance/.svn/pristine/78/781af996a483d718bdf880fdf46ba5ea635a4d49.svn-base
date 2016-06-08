@@ -1,0 +1,44 @@
+{|if $paymentArray|}
+    <div class="shop-overflow-table">
+        <table class="shop-table" width="100%">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>{|$translate_date_realization|}</td>
+                    <td>{|$translate_napravlenie|}</td>
+                    <td>{|$translate_sum|}</td>
+                    <td>{|$translate_akkaunt|}</td>
+                    <td>{|$translate_uchitivaetsya|}</td>
+                    <td>{|$translate_ord|}</td>
+                </tr>
+            </thead>
+            {|foreach from=$paymentArray item="e"|}
+                <tr>
+                    <td>
+                        <a href="{|$e.url|}">{|$e.id|}</a>
+                    </td>
+                    <td>
+                        <a href="{|$e.url|}">{|$e.pdate|}</a>
+                    </td>
+                    <td>
+                        {|if $e.amount > 0|}
+                            {|$translate_vhodyashchiy|}
+                        {|else|}
+                            {|$translate_ishodyashchiy|}
+                        {|/if|}
+                    </td>
+                    <td><strong>{|$e.amount|} {|$e.currency|}</strong></td>
+                    <td>
+                        <a href="{|$e.account.url|}">{|$e.account.name|}</a>
+                    </td>
+                    <td>{|if $e.noBalance|}-{|else|}+{|/if|}</td>
+                    <td>
+                        {|if $e.parentUrl && $e.parentName|}
+                            <a href="{|$e.parentUrl|}" data-id="{|$e.parentId|}" class="js-issue-preview">{|$e.parentName|}</a>
+                        {|/if|}
+                    </td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+{|/if|}

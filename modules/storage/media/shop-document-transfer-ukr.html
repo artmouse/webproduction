@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Накладна №{|$id|}</title>
+    {|$engine_includes|}
+    <style>
+        
+        body {
+            padding: 60px 10px 55px 107px;
+        }
+        
+        .print-table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            color: #000;
+            border: 0px;
+            font-size: 13px;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .print-table thead h1{
+            text-align: center;
+        }
+        
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            padding: 2px 4px;
+            border: 1px solid #000;
+        }
+        .table thead td{
+            font-weight: bold;
+            background-color: #CCC;
+            text-align: center;
+        }
+        .table td {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+{|section name=transfer loop=2|}
+<table class="print-table">
+    <thead>
+        <tr>
+            <td>
+                <h1>Накладна #{|$id|} від {|$date|}</h1>
+                <table class="table">
+                    <tr>
+                        <td>
+                            Зі складу: <strong>{|$storagefrom|}</strong><br />
+                            На склад: <strong>{|$storageto|}</strong><br />
+                            Видав: <strong>{|$user|}</strong><br />
+                            Клієнт: <strong>{|$client|}</strong><br />
+                            {|if $orderId || $orderName|}
+                                Заказ: <strong>{|if $orderName|}{|$orderName|}{|else|}{|$orderId|}{|/if|}</strong><br />
+                            {|/if|}
+                            Загальна кількість переміщуваного товару: <strong>{|$amount|}</strong><br />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td><strong>Код</strong></td>
+                            <td><strong>Товар</strong></td>
+                            <td align="right"><strong>Ціна</strong></td>
+                            <td align="right"><strong>Кількість</strong></td>
+                            <td width="80"><strong>Од.</strong></td>
+                            <td align="right"><strong>Сума</strong></td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {|foreach from=$transferlogArray item="b"|}
+                            <tr>
+                                <td>{|$b.productid|}</td>
+                                <td>{|$b.name|}</td>
+                                <td align="right">{|$b.price|} {|$b.currency|} {|$b.tax|}</td>
+                                <td align="right">{|$b.count|}</td>
+                                <td>{|$b.unit|}</td>
+                                <td align="right">{|$b.sum|} {|$currency|}</td>
+                            </tr>
+                        {|/foreach|}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right">Разом:</td>
+                            <td align="right"><strong>{|$sum|} {|$currency|}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br />
+                <hr />
+                <br />
+            </td>
+        </tr>
+    </tbody>
+</table>
+    {|if $productcount > 6|}
+        <div style="page-break-after: always;" ></div>
+    {|/if|}
+{|/section|}
+</body>
+</html>

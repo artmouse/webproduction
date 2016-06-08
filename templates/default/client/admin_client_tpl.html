@@ -1,0 +1,17 @@
+<div class="os-block-tabs">
+    {|if $admin|}
+        <a href="/admin/">{|$translate_administration|}</a>
+    {|/if|}
+    <a href="/client/profile/" {|if $page == 'shop-client-profile'|}class="selected"{|/if|}>{|$translate_profile_small|}</a>
+    <a href="/client/orders/" {|if $page == 'shop-client-orders' || $page == 'shop-client-orders-view'|}class="selected"{|/if|}>{|$translate_my_orders|}</a>
+    <a href="/client/products/viewed/" {|if $page == 'shop-client-products-viewed'|}class="selected"{|/if|}>{|$translate_products_viewed_small|}</a>
+    <a href="/client/products/ordered/" {|if $page == 'shop-client-products-ordered'|}class="selected"{|/if|}>{|$translate_products_ordered_small|}</a>
+    {|if $countCompare|}<a href="/compare/">{|$translate_products_compare|}</a>{|/if|}
+    {|foreach from=$moduleTabArray item="e"|}
+        <a href="{|$e.url|}" {|if $selected == $e.moduleName|} class="selected" {|/if|} >{|$e.name|}</a>
+    {|/foreach|}
+    <a href="/logout/">{|$translate_logout|}</a>
+    <div class="clear"></div>
+</div>
+
+{|$content|}

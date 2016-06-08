@@ -1,0 +1,17 @@
+{|if $issueOpenCount > 0 OR $issueClosedCount > 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">
+                <a href="{|$urlIssues|}">{|$translate_zadach|}</a>:
+            </div>
+            <div class="el-value">
+                {|if $issueOpenCount|}
+                    {|$translate_otkritih|} {|$issueOpenCount|}{|if $issueClosedCount|},{|/if|}
+                {|/if|}
+                {|if $issueClosedCount|}
+                    {|$translate_zakritih|} {|$issueClosedCount|}
+                {|/if|}
+            </div>
+        </div>
+    </div>
+{|/if|}

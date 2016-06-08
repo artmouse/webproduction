@@ -1,0 +1,64 @@
+<div class="os-block-popup" id="id-notice-of-availability-success" style="display: none;">
+    <div class="dark" onclick="popupClose('#id-notice-of-availability-success');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('#id-notice-of-availability-success');">&nbsp;</a>
+            {|$translate_when_available|}
+        </div>
+        <div class="message-success">
+            {|$translate_message_success_notice_of_availability|}.
+        </div>
+    </div>
+</div>
+
+<div class="os-block-popup" id="id-notice-of-availability" style="display: none;">
+    <div class="dark" onclick="popupClose('#id-notice-of-availability');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('#id-notice-of-availability');">&nbsp;</a>
+            {|$translate_when_available|}
+        </div>
+
+        <div class="message-error" id="id-notice-of-availability-error" style="display: none;">
+            {|$translate_send_error|}:<br/>
+            <div id="id-notice-of-availability-error-name" style="display: none;">
+                {|$translate_enter_name|}.<br />
+            </div>
+            <div id="id-notice-of-availability-error-email" style="display: none;">
+                {|$translate_mail_error|}.<br />
+            </div>
+        </div>
+
+        <form method="post">
+            <div class="body">
+                {|if $name|}
+                    <input type="hidden" name="name" id="name" value="{|$name|}"/>
+                {|/if|}
+                {|if $email|}
+                    <input type="hidden" name="email" id="email" value="{|$email|}"/>
+                {|/if|}
+                {|if !$name OR !$email|}
+                    <table>
+                        {|if !$name|}
+                            <tr>
+                                <td class="vtop">{|$translate_your_name|}<span class="important">*</span>:</td>
+                                <td><input type="text" name="name" id="name" value="{|$control_name|}" /></td>
+                            </tr>
+                        {|/if|}
+
+                        {|if !$email|}
+                            <tr>
+                                <td class="vtop">{|$translate_mail|}<span class="important">*</span>:</td>
+                                <td><input type="text" name="email"  id="email" value="{|$control_email|}" /></td>
+                            </tr>
+                        {|/if|}
+                    </table>
+                {|/if|}
+            </div>
+            <div class="foot">
+                <input type="hidden" name="productid" id="productid" value="{|$id|}"/>
+                <input class="os-submit" type="submit" name="noticeofavailability[{|$id|}]" value="{|$translate_send|}" onclick="productsNoticeOfAvailability(); return false;" />
+            </div>
+        </form>
+    </div>
+</div>

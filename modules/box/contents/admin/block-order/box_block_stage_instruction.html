@@ -1,0 +1,25 @@
+{|if $statusContent|}
+    <div class="ob-block-element">
+        <div class="ob-data-element" style="margin: 0;">
+            <a class="ob-link-dashed js-block-instruction-toggle" href="javascript:void(0);">{|$translate_instruktsiya|}</a>
+            <div class="js-block-instruction" data-workflow="{|$control_categoryid|}">
+                {|$statusContent|}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $j(function() {
+            initIssueControlForm();
+
+            cookieToInstruction();
+
+            $j('.js-block-instruction-toggle').click(function(){
+                $j('.js-block-instruction').slideToggle(300);
+
+                setTimeout("cookieFromInstruction();", 1000);
+            });
+        });
+    </script>
+{|/if|}

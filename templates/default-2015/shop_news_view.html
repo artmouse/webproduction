@@ -1,0 +1,74 @@
+<h1>{|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h1>
+{|$date|}<br />
+<br />
+
+{|* товар, привязанный к новости *|}
+{|if $id|}
+    <form method="post" id="id-order">
+        <div class="def-table-element">
+            <div class="image">
+                <a href="{|$url|}"><img src="{|$image|}" alt="{|$name|escape|}" title="{|$name|escape|}" /></a>
+            </div>
+            <div class="data">
+                {|if $rating > 0|}
+                    <div class="def-block-rating">
+                        <div class="inner" style="width: {|$rating*20|}%;"></div>
+                    </div>
+                {|/if|}
+                <a class="name" href="{|$url|}" title="{|$name|}">{|$name|}</a>
+                <div class="price-block">
+                    {|if $price == 0|}
+                        <div class="def-price-specify">
+                            {|$translate_specify_a_price|}
+                        </div>
+                    {|else|}
+                        {|if !$avail|}
+                            <div class="def-price-unavailable">
+                                {|$price|} {|$currency|}
+                                {|if ($discount && $avail && !$canMakePreorder) || ($discount && $canMakePreorder && !$avail) |}<sup>-{|$discount|}%</sup>{|/if|}
+                            </div>
+                        {|else|}
+                            <div class="def-price-available">
+                                {|$price|} {|$currency|}
+                                {|if ($discount && $avail && !$canMakePreorder) || ($discount && $canMakePreorder && !$avail) |}<sup>-{|$discount|}%</sup>{|/if|}
+                            </div>
+                        {|/if|}
+                        {|if $priceold AND $priceold > $price|}
+                            <div class="def-price-old">
+                                {|$priceold|} {|$currency|}
+                            </div>
+                        {|/if|}
+
+                        <div class="js_personal_discount_check" data-productid="{|$id|}"></div>
+                    {|/if|}
+                </div>
+
+                {|if $descriptionshort|}
+                    <div class="short-description">
+                        {|$descriptionshort|}
+                    </div>
+                {|/if|}
+
+                <div class="block-buttons">
+                    {|if $canbuy or $canMakePreorder|}
+                        <div class="button js-shop-buy" data-productid="{|$id|}">
+                            <a class="def-submit def-icon-basket js-shop-buy-action" href="#">{|$translate_buy|}</a>
+                        </div>
+                        <a class="def-submit def-icon-flash" href="javascript: void(0);" onclick="basket_order_quick('{|$id|}', '{|$name|}');">{|$translate_buy_quick|}</a>
+                    {|/if|}
+
+                    <div class="js-shop-compare" data-productid="{|$id|}">
+                        <a class="action-btn like def-icon-heart js-shop-favorite" href="javascript:void(0);" data-productid="{|$id|}" title="В желаемое"></a>
+                        <a class="action-btn compare def-icon-shuffle js-shop-compare-action" href="javascript:void(0);" title="{|$translate_shop_compare_action|}"></a>
+                        <a class="action-btn compare def-icon-shuffle active js-shop-compared"  href="/compare/" title="В сравнения" style="display: none;"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </form>
+{|/if|}
+
+{|$content|}
+
+{|$integration_disqus_news|}

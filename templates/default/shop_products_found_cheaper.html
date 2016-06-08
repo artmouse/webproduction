@@ -1,0 +1,103 @@
+<div class="os-block-popup" id="id-found-cheaper-message-success" style="display: none;">
+    <div class="dark" onclick="popupClose('#id-found-cheaper-message-success');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('#id-found-cheaper-message-success');">&nbsp;</a>
+            {|$translate_found_cheaper|} {|$e.name|}?
+            <span>{|$translate_cheaper_message|}</span>
+        </div>
+        <div class="message-success">
+            {|$translate_message_success_small|}.
+        </div>
+    </div>
+</div>
+
+<div class="os-block-popup js-block-cheaper" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-block-cheaper');"></div>
+    {|if $foundCheaperMessage !== 'ok'|}
+        <div class="block-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close" onclick="popupClose('.js-block-cheaper');">&nbsp;</a>
+                {|$translate_found_cheaper|} {|$e.name|}?
+                <span>{|$translate_cheaper_message|}</span>
+            </div>
+            {|if $foundCheaperErrorArray|}
+                <div class="message-error">
+                    {|foreach from=$foundCheaperErrorArray item="f"|}
+                        {|if $f == 'name'|}
+                            {|$translate_enter_name|}.<br />
+                        {|/if|}
+                        {|if $f == 'email'|}
+                            {|$translate_mail_error|}.<br />
+                        {|/if|}
+                        {|if $f == 'phone'|}
+                            {|$translate_phone_error|}.<br />
+                        {|/if|}
+                        {|if $f == 'where'|}
+                            {|$translate_where_error|}.<br />
+                        {|/if|}
+                        {|if $f == 'price'|}
+                            {|$translate_price_error|}.<br />
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            {|/if|}
+            
+            <form method="post">
+                <div class="body">
+                    <table>
+                        <tr>
+                            <td class="vtop">{|$translate_where|}<span class="important">*</span>:</td>
+                            <td><input class="js-required" type="text" name="where" value="{|$control_where|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_price|}<span class="important">*</span>:</td>
+                            <td><input class="js-required" type="text" name="price" value="{|$control_price|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_your_name|}<span class="important">*</span>:</td>
+                            <td><input class="js-required" type="text" name="name" value="{|$control_name|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_mail|}<span class="important">*</span>:</td>
+                            <td><input class="js-required" type="text" name="email" value="{|$control_email|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_city|}</td>
+                            <td><input type="text" name="city" value="{|$control_city|}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="vtop">{|$translate_contact_phone|}<span class="important">*</span>:</td>
+                            <td><input class="js-required js-phone-formatter" type="text" name="phone" value="{|$control_phone|}" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="foot">
+                    <input type="hidden" name="productid" value="{|$productID|}"/>
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input class="js-form-validation os-submit" type="submit" name="foundcheaper" value="{|$translate_send|}" />
+                </div>
+            </form>
+        </div>
+    {|/if|}
+</div>
+
+{|if $foundCheaperMessage == "error"|}
+    <script type="text/javascript">
+        $j(function () {
+            popupOpen('.js-block-cheaper');
+        });
+    </script>
+{|/if|}
+
+{|if $foundCheaperMessage == 'ok'|}
+    <script type="text/javascript">
+        $j(function () {
+            popupOpen('#id-found-cheaper-message-success');
+        });
+        
+        setTimeout(function() {
+            document.location = '.';
+        }, 3000);
+    </script>
+{|/if|}

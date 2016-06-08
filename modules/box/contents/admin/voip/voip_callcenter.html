@@ -1,0 +1,59 @@
+
+<script type="text/javascript">
+var config = {
+  // Replace this IP address with your Asterisk IP address
+  uri: '101@134.249.152.186',
+
+  // Replace this IP address with your Asterisk IP address,
+  // and replace the port with your Asterisk port from the http.conf file
+  ws_servers: 'wss://134.249.152.186:8089/ws',
+
+  // Replace this with the username from your sip.conf file
+  authorizationUser: '101',
+
+  // Replace this with the password from your sip.conf file
+  password: 'ier89eEr',
+
+  // HackIpInContact for Asterisk
+  //hackIpInContact: true
+};
+
+var ua = new SIP.UA(config);
+
+// Invite with audio only
+ua.invite('999',{
+  audio: true,
+  video: false
+});
+</script>
+
+<!--<script type="text/javascript">
+SIPml.init(function(e) {
+    var stack =  new SIPml.Stack({
+        realm: '134.249.152.186',
+        impi: '101',
+        impu: 'sip:101@134.249.152.186',
+        password: 'ier89eEr',
+        websocket_proxy_url: 'wss://134.249.152.186:8089/ws',
+        sip_headers: [ // optional
+                { name: 'User-Agent', value: 'HUUUUY' },
+                { name: 'Organization', value: 'HUUUUY Telecom' }
+        ],
+        events_listener: {
+            events: '*',
+            listener: function(e) {
+                console.log(e);
+                /*var callSession = stack.newSession('call-audiovideo', {
+                    //video_local: document.getElementById('video-local'), // <video id="video-local" .../>
+                    //video_remote: document.getElementById('video-remote'), // <video id="video-remote" .../>
+                    audio_remote: document.getElementById('audio-remote') // <audio id="audio-remote" .../>
+                });
+                callSession.call('9100');*/
+            }
+        }
+    });
+    stack.start();
+});
+</script>
+
+<audio id="audio-remote" />-->

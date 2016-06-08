@@ -1,0 +1,402 @@
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'notlinked'|}
+                {|$translate_order_error_not_linked|}.<br />
+            {|/if|}
+            {|if $e == 'issue-stop'|}
+                {|$translate_izmenenie_sostoyanie_zapreshcheno_poka_ne_vipolneni_vse_vnutrennie_zadachi|}.<br />
+            {|/if|}
+            {|if $e == 'saled'|}
+                {|$translate_order_error_saled|}.<br />
+            {|/if|}
+            {|if $e == 'user'|}
+                {|$translate_box_error_user|}.<br />
+            {|/if|}
+            {|if $e == 'phone'|}
+                {|$translate_order_error_phone|}.<br />
+            {|/if|}
+            {|if $e == 'email'|}
+                {|$translate_order_error_login|}.<br />
+            {|/if|}
+        {|/foreach|}
+
+        {|if $IdBusy|}
+            {|$translate_ne_udalos_pomenyat_nomer_zakaza_takoy_nomer_uzhe_ispolzuetsya|}.<br />
+        {|/if|}
+
+        {|$errorText|}
+    </div>
+{|/if|}
+
+{|if !$ajax|}
+<div class="ob-orderlist-toggle">
+    <a href="{|$urlBarcode|}" onclick="window.open('{|$urlBarcode|}'); return false;">{|$translate_shtrih_kodi|}</a>
+    <a class="js-orderlist-editable" href="#">{|$translate_redaktirovat_vse|}</a>
+</div>
+<div class="clear"></div>
+<div class="shop-overflow-table" style="margin: 0 0 20px 0;">
+{|/if|}
+    <table class="shop-table js-product-sort js-order-table" width="100%">
+        <thead>
+            <tr>
+                <th data-sorter="false">&nbsp;</th>
+                <th data-sorter="false">&nbsp</th>
+                <th width="70">{|$translate_code|}</th>
+                <th>{|$translate_produkt|}</th>
+                <th>{|$translate_price|}</th>
+                <th>{|$translate_cost|}</th>
+                <th data-sorter="false">&nbsp;</th>
+                <th data-sorter="false">&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody class="js-oders-sort" data-orderid="{|$orderid|}">
+            {|assign var=productsCount value=0|}
+            {|foreach from=$productsArray item="e"|}
+                <tr class="va_top" style="{|if $e.reserveOK|}background-color: #96cb8e;{|/if|} {|if $e.reserveOK || $e.storageCount|}background-color: #d4ffd8;{|elseif $e.supplierOrders|}background-color: #ffffd0;{|/if|}" data-productid="{|$e.productid|}">
+                    <td class="va_middle"><div class="move"></div></td>
+
+                    <td width="50">
+                        {|if $e.url|}
+                            <a href="{|$e.url|}" target="_blank">
+                                <img src="{|$e.image|}" width="50" alt="" />
+                            </a>
+                        {|else|}
+                            <img src="{|$e.image|}" width="50" alt="" />
+                        {|/if|}
+                    </td>
+                    <td>
+                        <span class="element-padding">
+                            {|if $e.url|}
+                                <a href="{|$e.url|}">{|$e.productid|}</a>
+                            {|else|}
+                                {|$e.productid|}
+                            {|/if|}
+                        </span>
+                    </td>
+                    <td width="90%">
+                        <span style="display: none;">{|$e.name|}</span>
+                        <div class="ob-data-group no-control light js-data-group">
+                            <a class="ob-link-edit" href="#"></a>
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+
+                            <div class="element">
+                                {|if $e.productid != '0'|}
+                                    <span class="element-padding">
+                                        <a class="ob-link-dashed js-product-preview-click" href="javascript:void(0);" data-id="{|$e.productid|}">{|$translate_timework_small|}</a>
+                                    </span>
+                                {|/if|}
+                                {|*|}
+                                <span class="element-padding">
+                                    <a class="ob-link-dashed" href="#">{|$translate_shtrih_kod|}</a>
+                                </span>
+                                {|*|}
+                            </div>
+
+                            <div class="element">
+                                <div class="el-value">
+                                    <div class="data-view secondary">
+                                        {|$e.categoryname|}
+                                    </div>
+                                    <div class="data-edit">
+                                        <input type="text" data-original="{|$e.categoryname|}" value="{|$e.categoryname|}" placeholder="{|$translate_single_category|}" name="category{|$e.id|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="element">
+                                <div class="el-value">
+                                    <div class="data-view">
+                                        {|$e.name|}
+                                    </div>
+                                    <div class="data-edit">
+                                        <input type="text" data-original="{|$e.name|}" value="{|$e.name|}" placeholder="{|$translate_product_name|}" name="name{|$e.id|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {|if $e.source == 'servicebusy'|}
+                                <div class="element">
+                                    <div class="el-value">
+                                        <div class="data-view">
+                                            {|$translate_from_small|} {|$e.datefrom|} {|$translate_to|} {|$e.dateto|}
+                                        </div>
+                                        <div class="data-edit">
+                                            <input type="text" name="datefrom{|$e.id|}" data-original="{|$e.datefrom|}" value="{|$e.datefrom|}" class="js-date" {|if not $canEdit|} disabled {|/if|} placeholder="{|$translate_from_small|}" style="width: 100px;" /> -
+                                            <input type="text" name="dateto{|$e.id|}" data-original="{|$e.dateto|}" value="{|$e.dateto|}" class="js-date" {|if not $canEdit|} disabled {|/if|} placeholder="{|$translate_to|}" style="width: 100px;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if $e.showSerial|}
+                                <div class="element">
+                                    <div class="el-value">
+                                        <div class="data-view">
+                                            {|$e.serial|}
+                                        </div>
+                                        <div class="data-edit">
+                                            <input type="text" data-original="{|$e.serial|}" value="{|$e.serial|}" placeholder="{|$translate_serial_number|}" name="serial{|$e.id|}" {|if not $canEdit|} disabled {|/if|} />
+                                        </div>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            <div class="element">
+                                <div class="el-value">
+                                    <div class="data-view">
+                                        {|$e.warranty|}
+                                    </div>
+                                    <div class="data-edit">
+                                        <input type="text" data-original="{|$e.warranty|}" value="{|$e.warranty|}" placeholder="{|$translate_warranty|}" name="warranty{|$e.id|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="element">
+                                <div class="el-value">
+                                    <div class="data-view">
+                                        {|$e.comment|}
+                                    </div>
+                                    <div class="data-edit">
+                                        <textarea name="comment{|$e.id|}" data-original="{|$e.comment|}" class="js-autosize" rows="1" {|if not $canEdit|}disabled{|/if|} placeholder="{|$translate_remark|}">{|$e.comment|}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="ob-data-group no-control light js-data-group">
+                            <a class="ob-link-edit" href="#"></a>
+                            <a class="ob-link-delete" href="#"></a>
+                            <a class="ob-link-accept" href="#"></a>
+
+                            <div class="element">
+                                <div class="el-value">
+                                    <div class="data-view nowrap align_right">
+                                        {|$e.price|}
+                                        {|foreach from=$currencyArray item="c"|}
+                                            {|if $c.id == $e.currencyid|}{|$c.symbol|}{|/if|}
+                                        {|/foreach|}
+                                        {|$e.taxname|}
+                                    </div>
+                                    <div class="data-edit js-price-edit">
+                                        <input class="js-price-edit-open" type="text" data-original="{|$e.price|}" value="{|$e.price|}" name="price{|$e.id|}" {|if not $canEdit|} disabled {|/if|} />
+                                        {|if !$isOutcoming|}
+                                            <div class="ob-price-sub" style="display: none;">
+                                                <div class="close js-price-edit-close">x</div>
+                                                <table>
+                                                    <tr>
+                                                        <td>{|$translate_price|}:</td>
+                                                        <td><input type="text" name="" data-original="{|$e.pricebase|}" value="{|$e.pricebase|}" class="js-price-base"/></td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{|$translate_markup|}:</td>
+                                                        <td><input type="text" name="" data-original="{|$e.margin|}" value="{|if $e.margin|}{|$e.margin|}{|/if|}" class="js-price-margin"/></td>
+                                                        <td>%</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        {|/if|}
+                                        <select data-original="{|$e.currencyid|}" name="currency{|$e.id|}" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+                                            {|foreach from=$currencyArray item="c"|}
+                                                <option value="{|$c.id|}" {|if $c.id == $e.currencyid|} selected {|/if|}>{|$c.symbol|}</option>
+                                            {|/foreach|}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="element">
+                                <div class="el-value">
+                                    <div class="data-view nowrap align_right">
+                                        {|$e.count|}
+                                        {|$e.unit|}
+                                    </div>
+                                    <div class="data-edit">
+                                        <input type="text" data-original="{|$e.count|}" value="{|$e.count|}" name="count{|$e.id|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td align="right">
+                        {|$e.sum|}&nbsp;{|$currency|}
+                    </td>
+
+                    <td>
+                        {|if $canEdit|}
+                            <a class="ob-link-delete ob-icon js-product-remove" href="#" title="{|$translate_delete_small|}"></a>
+                            <input type="checkbox" name="delete{|$e.id|}" value="1" style="display: none;" />
+                        {|else|}
+                            &nbsp;
+                        {|/if|}
+                    </td>
+
+                    <td>
+                        {|if $e.linkOrderName|}
+                            <a href="{|$e.linkOrderURL|}">{|$e.linkOrderName|}</a><br>
+                        {|/if|}
+
+                        {|if $isOutcoming|}
+                            {|if $e.storageCountArray|}
+                                <div class="js-storage-reserve-block">
+                                    {|if $e.storageLinked|}
+                                        <strong>
+                                            {|$translate_reserved|} {|$e.storageLinkedAmount|} {|$e.unit|}
+                                            (
+                                            {|foreach name="storageLinked" from=$e.storageLinked item="link"|}
+                                                {|$link.storageName|}:{|$link.amount|}
+                                                {|if !$smarty.foreach.storageLinked.last|}
+                                                    ;
+                                                {|/if|}
+                                            {|/foreach|}
+                                            )
+                                        </strong>
+                                        <a href="#" data-orderproductid="{|$e.id|}" class="js-storage-cancel-reserve" >{|$translate_otmenit|}</a>
+                                    {|/if|}
+
+                                    {|if $e.storageLinkedAmount < $e.count && $e.storageCount|}
+                                        <a href="#" data-balanceid="{|$e.storageCountArray.id|}" data-orderproductid="{|$e.id|}" class="js-storage-reserve" >{|$translate_rezervirovat|}</a>
+                                    {|/if|}
+                                </div>
+
+                                {|$translate_nalichie_na_skladah|}:
+                                <select data-original="{|$e.storageid|}" name="storage{|$e.id|}" class="js-storage-name">
+                                    {|foreach from=$e.storageCountArray item="s"|}
+                                        <option data-orderproductid="{|$e.id|}" value="{|$s.id|}" {|if $e.storageid == $s.id|}selected{|/if|}>{|$s.name|}: {|$s.count|}</option>
+                                    {|/foreach|}
+                                </select>
+                            {|/if|}
+
+                            {|if $e.supplierArray && !$e.linkOrderName|}
+                                <select data-original="{|$e.supplierid|}" class="js-select-supplier-color" name="supplier{|$e.id|}" style="width: 200px;">
+                                    <option value="0" {|if $s.id != $e.supplierid|}selected{|/if|}>{|$translate_net_postavshchika|}</option>
+                                    {|foreach from=$e.supplierArray item="s"|}
+                                        <option value="{|$s.id|}" {|if $s.workflow==0 || $s.contactId==0|}disabled{|/if|} {|if $s.id == $e.supplierid|}selected class="js-select-supplier-current"{|/if|} data-color="{|$s.color|}">
+                                        {|$s.name|} - {|$s.code|} | {|$s.price|} {|$s.currency|} | {|$s.availtext|} {|if $s.workflow==0|}{|$translate_bp_|} {|/if|}{|if $s.deliveryTime|}| {|$s.deliveryTime|} |{|/if|}{|if $s.contactId==0|} {|$translate_kontakt_|} {|/if|}
+                                        </option>
+                                    {|/foreach|}
+                                </select>
+                            {|/if|}
+
+                            {|if $e.supplierOrders|}
+                                {|$translate_zakaz_postavshchiku|}:
+                                {|foreach from=$e.supplierOrders item=supplierOrders|}
+                                    <a href="{|$supplierOrders.url|}" data-id="{|$supplierOrders.id|}" class="js-issue-preview">#{|$supplierOrders.id|}</a>
+                                {|/foreach|}
+                            {|/if|}
+                        {|else|}
+                            {|if $storageIncomingArray && $e.source != 'service' && $e.source != 'servicebusy'|}
+                                {|$translate_sklad_dlya_oprihodovaniya|}
+                                <select data-original="{|$e.storageIncoming|}" class="chzn-select" name="storageincoming{|$e.id|}" style="width: 200px;">
+                                    {|if $e.storageIncoming|}
+                                        {|foreach from=$storageIncomingArray item="s"|}
+                                            <option value="{|$s.id|}" {|if $s.id == $e.storageIncoming|}selected{|/if|}>{|$s.name|}</option>
+                                        {|/foreach|}
+                                    {|else|}
+                                        {|foreach from=$storageIncomingArray item="s"|}
+                                            <option value="{|$s.id|}" {|if $s.default|}selected{|/if|}>{|$s.name|}</option>
+                                        {|/foreach|}
+                                    {|/if|}
+                                </select>
+                            {|/if|}
+                        {|/if|}
+                    </td>
+                </tr>
+                {|assign var=productsCount value=$productsCount+$e.count|}
+            {|/foreach|}
+        </tbody>
+
+        <tfoot class="order-foot">
+            {|if $discountSum > 0 || $discountArray|}
+                <tr>
+                    <td class="align_right" colspan="5">
+                        {|$translate_discount_amount|}:
+                        {|if $discountArray|}
+                            <select name="discount" style="width: 150px;" {|if not $canEdit|}disabled{|/if|} class="chzn-select inline">
+                                <option value="">---</option>
+                                {|foreach from=$discountArray item="d"|}
+                                    <option value="{|$d.id|}" {|if $d.id == $control_discount|} selected {|/if|}>
+                                        {|$d.name|} ({|$d.value|}{|if $d.type == 'percent'|}%{|elseif $d.type == 'value'|} {|$d.currency|}{|/if|})
+                                    </option>
+                                {|/foreach|}
+                            </select>
+                        {|/if|}
+                    </td>
+                    <td class="align_right"><strong class="nowrap">{|$discountSum|number_format:2|}&nbsp;{|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            {|/if|}
+            {|if $deliveryPrice > 0|}
+                <tr>
+                    <td class="align_right" colspan="5">{|$translate_delivery|}{|if $payDelivery|} ({|$translate_ne_uchitivaetsya|}){|/if|}:</td>
+                    <td class="align_right"><strong class="nowrap">{|$deliveryPrice|number_format:2|}&nbsp;{|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            {|/if|}
+            {|if $sum|}
+                <tr>
+                    <td class="align_right" colspan="5">
+                        {|$translate_in_total|} <strong>{|$productsCount|}</strong> {|$translate_tovar_ov_|}:
+                        <select name="ordercurrencyid" {|if not $canEdit|}disabled{|/if|} class="chzn-select inline">
+                            <option value="">---</option>
+                            {|foreach from=$orderCurrencyArray item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_ordercurrencyid|} selected {|/if|}>{|$e.name|} ({|$e.rate|})</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td class="align_right"><strong class="nowrap">{|$sum|number_format:2|}&nbsp;{|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            {|/if|}
+            {|if $control_delivery|}
+                {|if $totalSum|}
+                    <tr>
+                        <td class="align_right" colspan="5">{|$translate_total_order_amount|} ({|$translate_with_delivery|}):</td>
+                        <td class="align_right"><strong class="nowrap">{|$totalSum|number_format:2|} {|$currency|}</strong></td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                {|/if|}
+            {|/if|}
+            {|if $taxSum > 0|}
+                <tr>
+                    <td class="align_right" colspan="5">{|$translate_summa_bez_nds|}:</td>
+                    <td class="align_right"><strong class="nowrap">{|$sumWithoutTax|number_format:2|} {|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="align_right" colspan="5">{|$translate_order_tax|}:</td>
+                    <td class="align_right"><strong class="nowrap">{|$taxSum|number_format:2|} {|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            {|/if|}
+            {|if $finance AND $productsArray|}
+                <tr>
+                    <td class="align_right" colspan="5">{|$translate_paid|}:</td>
+                    <td class="align_right"><strong class="nowrap">{|$paymentSum|number_format:2|}&nbsp;{|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="align_right" colspan="5">{|$translate_balance|}:</td>
+                    <td class="align_right"><strong class="nowrap" style="color: {|if $paymentBalance >= 0|}green{|else|}red{|/if|}">{|$paymentBalance|number_format:2|}&nbsp;{|$currency|}</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            {|/if|}
+        </tfoot>
+    </table>
+{|if !$ajax|}
+    <br />
+    {|if $canEdit|}
+        <input class="js-product-autocomplete-input" type="text" data-orderid="{|$orderid|}" id="id-value" name="productid" style="width: 400px; " />
+        <a href="#" id="id-product" class="ob-button">{|$translate_select_find_create_product|}...</a>
+    {|/if|}
+</div>
+{|/if|}

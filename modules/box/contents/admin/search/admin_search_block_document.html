@@ -1,0 +1,21 @@
+<div class="nb-search-result-element">
+    <div class="elements-caption">{|$translate_documents|}</div>
+    {|if !$documentArray|}
+        <div class="no-result">
+            Ничего не нашлось.
+            <span>Попробуйте еще.</span>
+        </div>
+    {|/if|}
+
+    {|foreach from=$documentArray item="document"|}
+        <div class="element no-padding">
+            <div class="data">
+                <div class="item">
+                    <a class="name" href="{|$document.url|}">{|$document.name|}</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {|/foreach|}
+</div>
+

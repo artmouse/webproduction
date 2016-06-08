@@ -1,0 +1,41 @@
+<div class="ob-event-full-wrap">
+    {|$block_event|}
+</div>
+
+<form action="" method="post">
+    <div class="ob-comment-add">
+        <textarea name="postcomment" class="js-autosize" placeholder="{|$translate_napishite_kommentariy|}..." style="margin: 0;"></textarea>
+    </div>
+
+    {|$block_comment|}
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" onclick="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_kommentariya|}...');" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+
+<div class="shop-block-popup js-edit-message-popup" style="display: none;">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a href="#" class="close" onclick="popupClose('.js-edit-message-popup');">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="head">
+            <span class="js-popup-title">{|$translate_redaktirovat_soobshchenie|}</span>
+        </div>
+        <div class="window-content window-form">
+            <div class="element">
+                <textarea class="js-autosize js-edit-comment-text" val=""></textarea>
+            </div>
+
+            <div class="ob-button-fixed">
+                <input type="button" value="" data-id="" data-action="" class="ob-button button-green js-edit-comment" />
+                <input class="ob-button button-cancel" type="button" value="{|$translate_cancel|}" onclick="popupClose('.js-edit-message-popup');"/>
+            </div>
+            <div class="ob-button-fixed-place"></div>
+        </div>
+    </div>
+</div>

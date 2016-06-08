@@ -1,0 +1,221 @@
+<h1>Как интегрировать передачу данных из 1С по заказам и пользователям?</h1>
+<br />
+<h2>Что такое интеграция?</h2>
+С этим понятием и со всеми разновидностями интеграции в нашем движке вы моежете ознакомиться перейдя по ссылке
+<a href="/doc/integration">Интеграции</a>
+<br>
+<br>
+<br>
+<h2>Зачем нужены интеграции?</h2>
+Интеграции нужны для того чтобы обмениваться данными между сторонними системами и нашим движком. Ярким примером является интеграция
+между 1C и OneBox, именно такая связка встречается чаще всего.
+<br>
+<br>
+<h2>Как сделать интеграцию между 1c и OneBox?</h2>
+Как правило, клиенты предоставляют информацию из 1с в формате XML, иногда бывает JSON . Задача розработчика состоит в том чтобы сделать забор
+данных из этого XML или JSON файла в систему OneBox. 
+<br /><br />
+<b>Как это сделать?</b>
+<br>
+<br>
+Есть несколько путей решения и они зависят от требований клиента. 
+<br>
+<ul>
+    <li>Если клиент просит забирать данные каждую минуту, то нам нужно дописаться на минутный cron. Как это сделать описано <a href="/doc/add_cron_notify">тут</a><br /></li>
+    <li>Если клиент просит забирать данные каждый час, то нам нужно дописаться на часовой cron. Как это сделать описано <a href="/doc/add_cron_notify">тут</a><br /></li>
+    <li>Если клиент просит единоразово загрузить все данные из файла XML или JSON, то мы пишем tool-скрипт который это сделает и мы не используем cron воопще. <br /></li>
+</ul>
+<br>
+<br>
+<h2>Как должен работать ваш скрипт?</h2>
+Возьмём к примеру интеграцию заказов из 1c. Как правило в исходном XML или JSON файле присутвуют много заказов в которых есть примерно такие данные: <br /><br />
+<ol>
+    <li>Клиент который заказал</li>
+    <li>Менеджер</li>
+    <li>Товары заказа</li>
+    <li>Данные самого заказа</li>
+    <li>Данные оплат</li>
+</ol>
+<br>
+Ваш скрипт должен идти по всем заказам, создавать пользователя (клиента) в системе OneBox если такового нет  и связывать его с заказом к которому он относиться,
+создавать пользователя(менеджера), если такового нет  и связывать его с заказом к которому он относиться, 
+создавать товары если их нету в системе OneBox,  и связывать их с заказом к которому они относиться, 
+добавлять сам заказ и все данные по нему, проводить оплату заказа. 
+<br><br>
+<span style="color:red;"><b>ВАЖНО!!!</b> Как правило в исходном файле передаются также id заказов, id клиента, id менеджера, id продуктов. На этот случай у нас предусмотрены поля в Базе Данных
+с именем <b>code1c</b> . 
+Для id клиентов и id менеджера в таблице users существует поле code1c, именно в это поле вам нужно писать id клиента который пришёл из 1c. <br />
+Для id продуктов в таблице shopproduct существует поле code1c, именно в это поле вам нужно писать id товара который пришёл из 1c. <br />
+Для id заказа в таблице shoporder существует поле code1c, именно в это поле вам нужно писать id заказа который пришёл из 1c. <br /></span>
+<br>
+<b>Зачем это нужно???</b>
+<br>
+Это нужно для того чтобы защитится от дублей контактов, продуктов и заказов. Простой пример: <br />
+К примеру в исходном файле с заказами один и тот же пользователь сделал 2 и более заказа, допустим это будет Вася Пупкин. 
+Не факт что ваш скрипт найдёт по имени только 1го Васю Пупкина. А так вы уже создавали такого юзера и поле code1c записали его id. То вы просто тупо добавляете проверку
+на дубликат пользователя, берём id который в исходном XML или JSON файле,  пишите  поиск пользователя по полю code1c куда подставляете id клиента или менеджера, если нашли то
+не нужно создавать нового а берём его данные, если не нашли то тогда создаём. Такой же принцып поиска по code1c у вас должен быть и по товарам и по заказам, таким
+образом вы защититесь от дублей. 
+<br />
+Так же настоятельно рекомендуентся писать в поле linkkey для заказа, запись по типу:  order-XXX (где XXX - это id заказа), и потом можна проверять по linkkey на дубликат заказа.
+
+<br>
+<br>
+<h2>Пример</h2>
+<code><pre>
+    public function import1cXml () {
+        $path =MEDIA_PATH.'/1c/orderImport';
+
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+
+        $files = scandir($path);
+        unset($files[0]);
+        unset($files[1]);
+        
+        try {
+            $workflow = WorkflowService::Get()->getWorkflowDefault('order');
+            
+        } catch (Exception $ex) {
+            $workflow = WorkflowService::Get()->getWorkflowsAll();
+            $workflow->setType('order');
+            $workflow = $workflow->getNext();
+            if (!$workflow) {
+                $workflow = WorkflowService::Get()->getWorkflowsAll();
+                $workflow->getNext();
+            }
+        }
+        
+        foreach ($files as $file) {
+            if (!substr_count($file, '.xml')) {
+                continue;
+            }
+            $xml = simplexml_load_string(file_get_contents($path.'/'.$file));
+
+            foreach ($xml as $item) {
+                $code1c = false;
+                $attributes = (Array) $item->attributes();
+                foreach ($attributes as $attr) {
+                    $code1c = $attr['num'];
+                    $vid = $attr['vid'];
+                    if ($code1c) {
+                        break;
+                    }
+                }
+
+                if (!$code1c) {
+                    continue;
+                }
+
+                // ищем клиента
+                $cliendID = false;
+                if (!$item->NameKlient) {
+                    continue;
+                } 
+                try {
+                    $users = Shop::Get()->getUserService()->getUserByCode1c($item->CodeKlient);
+                    $cliendID = $users->getId();
+                } catch (Exception $ex) {
+                    
+                }
+                if (!$cliendID) {
+                    $uName = Shop::Get()->getUserService()->getUsersAll();
+                    $uName->setName($item->NameKlient);
+                    if ($un = $uName->getNext()) {
+                        $cliendID = $un->getId();
+                    }
+                }
+                
+                if (!$cliendID) {
+                    // создаем контакт
+                    $users = Shop::Get()->getUserService()->addClient(
+                        $item->NameKlient
+                    );
+                    $users->setCode1c($item->CodeKlient);
+                    $users->update();
+                    $cliendID = $users->getId();
+                }
+                
+                $orders = Shop::Get()->getShopService()->getOrdersAll();
+                $orders->setLinkkey($code1c);
+                $orders->setUserid($cliendID);
+                try {
+                    $user = Shop::Get()->getUserService()->getUserByID($cliendID);
+                    $orders->setManagerid($user->getManagerid());
+                } catch (Exception $ex) {
+                    
+                }
+                
+                if ($orders->getNext()) {
+                    // такой заказ уже есть
+                    continue;
+                }
+                
+                $cdate = $item->Date;
+                $cdate = explode('.', $cdate);
+                $dateto = '20'.$cdate[2].'-'.$cdate[1].'-'.$cdate[0];
+                $orders->setCdate(DateTime_Object::FromString($dateto)->setFormat('Y-m-d 00:00:00')->__toString());
+                $orders->setDateto(DateTime_Object::FromString($dateto)->setFormat('Y-m-d 00:00:00')->__toString());
+                $orders->setClientname($item->NameKlient);
+                $orders->setComments($item->Osnov);
+                try {
+                    $client = Shop_UserService::Get()->getUserByID($cliendID);
+                    $orders->setClientaddress($client->getAddress());
+                    $orders->setClientemail($client->getEmail());
+                    $orders->setClientphone($client->getPhone());
+                } catch (Exception $ex) {
+                    
+                }
+                
+                $orders->setUserid($cliendID);
+                $orders->setNumber($code1c);
+                if ($vid) {
+                    $orders->setName($vid."-".$code1c);
+                }               
+                $orders->setType('order');
+                $orders->setCategoryid($workflow->getId());
+                $orders->setStatusid($workflow->getStatusDefault()->getId());
+                $currency = Shop::Get()->getCurrencyService()->getCurrencyByName('EUR');
+                $orders->setCurrencyid($currency->getId());
+                $orders->insert();
+                foreach ($item->Doclines->Docline as $product) {
+                    if (!$product->CodeNom) {
+                        continue;
+                    }
+
+                    // ищем продукт
+                    try{
+                        $boxProduct = Shop::Get()->getShopService()->getProductByCode1c($product->CodeNom);
+
+                    } catch (Exception $eproduct) {
+                        if (!$product->NameNom) {
+                            continue;
+                        }
+                        $boxProduct = Shop::Get()->getShopService()->addProduct(
+                            $product->NameNom
+                        );
+                        $boxProduct->setCode1c($product->CodeNom);
+                        $boxProduct->setPrice($product->Sum / $product->Kvo);
+                        $boxProduct->update();
+                    }
+                    try {
+                        Shop::Get()->getShopService()->addOrderProduct(
+                            $orders,
+                            $boxProduct->getId(),
+                            $product->Kvo,
+                            $product->Sum / $product->Kvo
+                        );
+                    } catch (Exception $e) {
+
+                    }
+                }
+                Shop::Get()->getShopService()->recalculateOrderSums($orders);
+            }
+        }
+
+        foreach ($files as $file) {
+            unlink($path.'/'.$file);
+        }
+    }
+</pre></code>

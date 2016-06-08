@@ -1,0 +1,6 @@
+{|if $orderID|}
+    <a href="{|$orderURL|}" class="js-issue-preview" data-id="{|$orderID|}">Заказ {|$orderName|} #{|$orderID|}</a> 
+{|/if|}
+{|if $userID|}
+    <a href="{|$userURL|}" class="js-contact-preview" data-id="{|$userID|}">{|$userName|}</a>
+{|/if|}

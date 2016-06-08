@@ -1,0 +1,934 @@
+<input type="hidden" id="productPage" value="{|$productID|}">
+
+<div class="def-block-crumbs">
+    {|if $pathArray|}
+        <div class="item def-icon-home" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="/" itemprop="url">
+                <span itemprop="title">{|$storeTitle|}</span>
+            </a>
+        </div>
+    {|/if|}
+    {|foreach from=$pathArray item="e"|}
+        <div class="item def-icon-angle-right" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="{|$e.url|}" itemprop="url">
+                <span itemprop="title">{|$e.name|}</span>
+            </a>
+        </div>
+    {|/foreach|}
+    <div class="item def-icon-angle-right" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="{|$url|}" itemprop="url">
+            <span itemprop="title">{|$name|}</span>
+        </a>
+    </div>
+</div>
+
+
+{|if $message == "commentok"|}
+    <div class="def-message-success">
+        {|$translate_testimonials_success|}.
+    </div>
+{|/if|}
+
+{|if $message == "commenterror"|}
+    <div class="def-message-error">
+        {|$translate_testimonials_error|}.
+    </div>
+{|/if|}
+
+<div class="def-product-view" itemscope itemtype="http://schema.org/Product">
+    {|if $imagesArray|}
+        <div class="product-images">
+
+            <div class="def-block-slick-wrap">
+                <div class="def-block-slick-slider def-product-gallery js-gallery-product">
+                    {|foreach from=$imagesArray item="e" key=k|}
+                        <div>
+                            <a class="js-zoom-to zoom-item" href="javascript:void(0);" style="display: block; position: relative; width: 460px; height: 460px;">
+                                <img src="{|$e.originalUrl|}"  alt="{|$name|escape|}" title="{|$name|escape|}" data-src="{|$e.originalUrl|}" itemprop="image" />
+                            </a>
+
+                            <a class="colorbox full-size-image def-icon-search" href="{|$e.originalUrl|}" title="{|$name|escape|}"></a>
+
+                            {|if $iconImage|}
+                                <div class="icon-block-image">
+                                    {|if $iconURL|}
+                                        <a href="{|$iconURL|}"><img src="{|$iconImage|}" alt="{|$iconName|escape|}" title="{|$iconName|escape|}" /></a>
+                                    {|else|}
+                                        <img src="{|$iconImage|}" alt="{|$iconName|escape|}" title="{|$iconName|escape|}" />
+                                    {|/if|}
+                                </div>
+                            {|/if|}
+                        </div>
+                    {|/foreach|}
+                </div>
+            </div>
+
+            {|if count($imagesArray) > 1|}
+                <div class="def-block-slick-wrap js-section-slider-wrap">
+                    <div class="def-block-slick-slider js-section-slider-for-gallery">
+                        {|foreach from=$imagesArray item="e" key=k|}
+                            <div>
+                                <a class="gallery-item-thumb" href="javascript:void(0);">
+                                    <img src="{|$e.cropUrl|}" alt=""/>
+                                </a>
+                            </div>
+                        {|/foreach|}
+                    </div>
+
+                    <div class="slider-prev def-icon-angle-left"></div>
+                    <div class="slider-next def-icon-angle-right"></div>
+                </div>
+            {|/if|}
+        </div>
+    {|/if|}
+
+    <div class="def-product-data {|if !$imagesArray|}noimg{|/if|}">
+        <h1 itemprop="name">{|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h1>
+        {|if $brand || $model|}
+            <div class="block-brand">
+                {|if $brand|}
+                    {|$translate_brand|}:
+                    <a href="{|$brand.url|}" itemprop="brand">
+                        {|$brand.name|}
+                        {|if $brand.image|}
+                            <img itemprop="logo" src="{|$brand.image|}" alt="{|$brand.name|escape|}" title="{|$brand.name|escape|}" />
+                        {|/if|}
+                    </a>
+                    <br />
+                {|/if|}
+
+                {|if $model|}
+                    {|$translate_model|}: <span itemprop="model">{|$model|}</span>
+                    <br />
+                {|/if|}
+            </div>
+        {|/if|}
+
+        {|if $code || $barcode|}
+            <div class="block-codes">
+                {|if $code|}
+                    {|$translate_item_code|}: <span itemprop="mpn">{|$code|}</span><br />
+                {|/if|}
+                {|if $barcode|}
+                    {|$translate_item_barcode|}: <span itemprop="gtin13">{|$barcode|}</span><br />
+                {|/if|}
+            </div>
+        {|/if|}
+
+        <div class="review-toolbar">
+            {|if $rating > 0|}
+                <div class="def-block-rating" itemscope itemtype="http://data-vocabulary.org/Review-aggregate">
+                    <div class="inner" itemprop="rating" itemscope itemtype="http://data-vocabulary.org/Rating" style="width: {|$rating*20|}%;">
+                        <em itemprop="average">{|$rating|}</em>
+                        <em itemprop="best">5</em>
+                        <em itemprop="count">{|$ratingCount|}</em>
+                    </div>
+                </div>
+            {|/if|}
+
+            {|if $commentsArray || $allowcomment|}
+                <a href="#">{|$commentsArray|@count|} отзыв(ов)</a>
+                <span>|</span>
+                <a href="javascript: void(0);" onclick="$j('.js-tab-review').click(); popupOpen('.js-popup-comment-block');">{|$translate_reviews_of_the_store_add_simple|}</a>
+            {|/if|}
+        </div>
+
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <form method="post" id="id-order">
+                <div class="avail-block">
+                    {|if $avail|}
+                        {|if $availtext|}
+                            <div class="avail-text" itemprop="availability">{|$availtext|}</div>
+                        {|else|}
+                            <div class="avail-text">в наличии</div>
+                        {|/if|}
+                    {|else|}
+                        {|if $availtext|}
+                            <div class="avail-text" itemprop="availability">{|$availtext|}</div>
+                        {|else|}
+                            <div class="avail-text">нет в наличии</div>
+                        {|/if|}
+                    {|/if|}
+                </div>
+                <div class="price-block">
+                    {|if $price == 0|}
+                        <div class="def-price-specify " itemprop="priceSpecification">{|$translate_specify_a_price|}</div>
+                        <input type="hidden" id="canAddMarkup" value="">
+                    {|else|}
+                        {|if !$avail|}
+                            <div class="def-price-unavailable">
+                                <span itemprop="price" id="priceSpan">{|$price|}</span>
+                                <span itemprop="priceCurrency">{|$currency|}</span>
+                                {|if ($discount && $avail && !$canMakePreorder) || ($discount && $canMakePreorder && !$avail)  |}
+                                    <sup>-{|$discount|}%</sup>
+                                    <input type="hidden" id="dataDiscount" value="{|$discount|}">
+                                {|/if|}
+                            </div>
+                        {|else|}
+                            <div class="def-price-available">
+                                <span itemprop="price" id="priceSpan">{|$price|}</span>
+                                <span itemprop="priceCurrency">{|$currency|}</span>
+                                {|if ($discount && $avail && !$canMakePreorder) || ($discount && $canMakePreorder && !$avail)  |}
+                                    <sup>-{|$discount|}%</sup>
+                                    <input type="hidden" id="dataDiscount" value="{|$discount|}">
+                                {|/if|}
+                            </div>
+                        {|/if|}
+
+                        {|if $priceold AND $priceold > $price|}
+                            <div class="def-price-old">
+                                <s>{|$priceold|} {|$currency|}</s>
+                            </div>
+                        {|/if|}
+
+                        <div class="js_personal_discount_check" data-productid="{|$id|}"></div>
+
+                        <input type="hidden" id="canAddMarkup" value="{|$price|}">
+                    {|/if|}
+                </div>
+
+                {|if $share|}
+                    <div class="share-block">
+                        <div class="head">{|$translate_action|}!</div>
+                        {|$share|}
+                    </div>
+                {|/if|}
+
+                {|if $descriptionshort|}
+                    <div class="short-description-block" itemprop="description">{|$descriptionshort|}</div>
+                {|/if|}
+
+                <div class="buy-block">
+                    {|if $canbuy or $canMakePreorder|}
+                        <div class="count js-count-control">
+                            <input class="js-shop-buy-count" name="count" type="text" value="{|$count|}"/>
+                            <a class="plus" href="javascript:void(0);"> + </a>
+                            <a class="minus" href="javascript:void(0);"> - </a>
+                        </div>
+                    {|/if|}
+
+                    <div class="buttons-block">
+                        {|if $canbuy or $canMakePreorder|}
+                            {|* кнопка покупки *|}
+                            <div class="js-shop-buy" data-productid="{|$id|}">
+                                <a class="def-submit def-icon-basket js-shop-buy-action" href="#">В корзину</a>
+                            </div>
+
+                            <a class="def-submit def-icon-basket" href="javascript: void(0);" onclick="basket_order_quick('{|$productID|}', '{|$nameQuick|}');">{|$translate_buy_quick|}</a>
+                        {|/if|}
+
+                        <div class="js-shop-compare" data-productid="{|$id|}">
+                            <a class="action-btn like def-icon-heart js-shop-favorite" href="javascript:void(0);" data-productid="{|$id|}" title="В желаемое"></a>
+                            <a class="action-btn compare def-icon-shuffle js-shop-compare-action" href="javascript:void(0);" title="{|$translate_shop_compare_action|}"></a>
+                            <a class="action-btn compare def-icon-shuffle active js-shop-compared" href="/compare/" title="{|$translate_compared|}" style="display: none;"></a>
+                        </div>
+                    </div>
+                </div>
+
+                {|if $seriesArray|@count > 1|}
+                    Модельный ряд:
+                    <div class="def-options-list">
+                        <div class="opt-element">
+                            <select class="js-cute-select" id="js-go-to-model">
+                                <option value="" selected>---</option>
+                                {|foreach from=$seriesArray item="e"|}
+                                    <option value="{|$e.url|}">{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+                    </div>
+
+                    <script>
+                        $j(function(){
+                            // bind change event to select, and go to selected model
+                            $j('#js-go-to-model').bind('change', function () {
+                                var url = $j(this).val();
+                                if (url) {
+                                    window.location = url;
+                                }
+                                return false;
+                            });
+                        });
+                    </script>
+                {|/if|}
+
+                {|if $optionArray|}
+                    {|$translate_order_options|}:
+                    <div class="def-options-list double">
+                        {|foreach from=$optionArray item="e"|}
+                            <div class="opt-element">
+                                <select class="js-cute-select js-shop-buy-option" name="option-{|$e.id|}" data-optionid="{|$e.id|}">
+                                    <option value="">{|$translate_select_the|} {|$e.name|}</option>
+                                    {|foreach from=$e.valueArray item="v"|}
+                                        <option value="{|$v[0]|escape|}">{|$v[0]|}</option>
+                                    {|/foreach|}
+                                </select>
+                                {|foreach from=$e.valueArray item="v"|}
+                                    <input type="hidden" id="option{|$e.id|}hidden{|$v[2]|}" value="{|$v[1]|}"/>
+                                {|/foreach|}
+                            </div>
+                        {|/foreach|}
+                    </div>
+                {|/if|}
+
+                {|if $siteurl|}
+                    <a href="{|$siteurl|}">{|$translate_site_url|}</a>
+                {|/if|}
+            </form>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="def-block-product-description">
+        <div class="side-block">
+            {|if $sameModelProductArray|}
+                <div class="def-section-caption">
+                    <h3> <strong>Популярные товары</strong> </h3>
+                </div>
+
+                <div class="def-recomended-list">
+                    {|foreach from=$sameModelProductArray item="r"|}
+                        <div class="def-recomended-element">
+                            <div class="recomended-wrap">
+                                <div class="block-image">
+                                    <a href="{|$r.url|}" target="_blank">
+                                        <img src="{|$r.image|}" alt="{|$r.name|}" title="{|$r.name|}">
+                                    </a>
+                                </div>
+                                <div class="block-name">
+                                    <a href="{|$r.url|}" target="_blank">{|$r.name|}</a>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="block-button">
+                                    {|if $r.price > 0|}
+                                        <div class="os-price-available">
+                                            <span itemprop="price">{|$r.price|}</span>
+                                            <span itemprop="priceCurrency">{|$currency|}</span>
+                                        </div>
+                                    {|else|}
+                                        <div class="os-price-specify" itemprop="priceSpecification">{|$translate_specify_a_price|}</div>
+                                    {|/if|}
+                                </div>
+                            </div>
+                        </div>
+                    {|/foreach|}
+                </div>
+            {|/if|}
+
+            <div class="def-section-caption">
+                <h3><strong>Популярные товары</strong></h3>
+            </div>
+
+            <div class="def-block-carousel-wrap js-side-carousel-wrap">
+                <div class="def-block-slick-carousel vertical-list js-side-carousel">
+                    <div>
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite raceHasem nite raceHasem nite raceHasem nite raceHasem nite raceHasem nite raceHasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="def-carousel-list-item">
+                            <div class="image">
+                                <a href="#">
+                                    <img src="/_images/temp/002.png" alt=""/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <div class="def-block-rating">
+                                    <div class="inner-value" style="width: 30%;"></div>
+                                </div>
+                                <a class="name" href="#">Hasem nite race</a>
+                                <div class="price-block">
+                                    <div class="def-price-available">$1,210.00</div>
+                                    <div class="def-price-old"><s>$1,444</s></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-prev def-icon-angle-left"></div>
+                <div class="slider-next def-icon-angle-right"></div>
+            </div>
+        </div>
+
+        <div class="main-block">
+            <div class="inner">
+                {|if $supplierArray || $storageArray|}
+                    {|if $storageArray|}
+                        <table class="def-table">
+                            <thead>
+                            <tr>
+                                <td>{|$translate_storage|}</td>
+                                <td>{|$translate_arrival_date|}</td>
+                                <td>{|$translate_price_in_stock|}</td>
+                                <td>{|$translate_number|}</td>
+                            </tr>
+                            </thead>
+                            {|foreach from=$storageArray item="s"|}
+                                <tr>
+                                    <td>{|$s.name|}</td>
+                                    <td>{|$s.cdate|}</td>
+                                    <td>{|$s.price|} {|$s.currency|}</td>
+                                    <td>{|$s.count|}</td>
+                                </tr>
+                            {|/foreach|}
+                        </table>
+                        <br />
+                    {|/if|}
+
+                    {|if $supplierArray|}
+                        <table  class="def-table">
+                            <thead>
+                            <tr>
+                                <td>{|$translate_supplier|}</td>
+                                <td>{|$translate_supplier_code|}</td>
+                                <td>{|$translate_supplier_price|}</td>
+                                <td>{|$translate_supplier_avail|}</td>
+                            </tr>
+                            </thead>
+                            {|foreach from=$supplierArray item="e" key="index"|}
+                                <tr>
+                                    <td> {|$e.supplierName|}</td>
+                                    <td>{|$e.supplierCode|}</td>
+                                    <td align="right">{|$e.supplierPrice|}</td>
+                                    <td>
+                                        {|if $e.supplierAvail|}
+                                            В наличии
+                                            {|$e.supplierDate|}
+                                        {|else|}
+                                            Нет в наличии
+                                        {|/if|}
+                                    </td>
+                                </tr>
+                            {|/foreach|}
+                        </table>
+                        <br />
+                    {|/if|}
+                {|/if|}
+
+                <div class="def-block-tabs">
+                    <div class="tabs-controls">
+                        {|if $description || $width || $length || $height || $weight |}
+                            <a class="tab-item js-tab" href="javascript:void(0);" data-rel="description-block">{|$translate_item_info|}</a>
+                        {|/if|}
+                        {|if $videoArray|}
+                            <a class="tab-item js-tab" href="javascript:void(0);" data-rel="video-block">{|$translate_video|}</a>
+                        {|/if|}
+                        {|if $characteristicsArray OR $characteristics|}
+                            <a class="tab-item js-tab" href="javascript:void(0);" data-rel="features-block">{|$translate_features|}</a>
+                        {|/if|}
+                        {|if $seriesArray|@count > 1|}
+                            <a class="tab-item js-tab" href="javascript:void(0);" data-rel="series-block">{|$translate_model_line|}</a>
+                        {|/if|}
+                        {|if $commentIntegration|}
+                            <a class="tab-item js-tab" href="javascript:void(0);" data-rel="comments-block">{|$translate_many_comments|}</a>
+                        {|/if|}
+                        {|if $commentsArray || $allowcomment|}
+                            <a class="tab-item js-tab js-tab-review" href="javascript:void(0);" data-rel="feedback-block">{|$translate_comments|}{|if $commentsArray|}: {|$commentsArray|@count|}{|/if|}</a>
+                        {|/if|}
+                        {|if $productnewsArray|}
+                            <a class="tab-item js-tab" href="javascript:void(0);" data-rel="block-news">{|$translate_news_simple|}</a>
+                        {|/if|}
+
+                        {|if $urledit|}
+                            <a class="tab-item" href="{|$urledit|}" target="_blank">{|$translate_edit|}</a>
+                        {|/if|}
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="tabs-content">
+                        {|if $description || $width || $length || $height || $weight |}
+                            <div class="section js-description-block">
+                                <h2 >{|$translate_item_info|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                {|$description|}
+                                {|*параметры товара (длина, ширина, высота, вес)*|}
+                                {|if $width!=0|}
+                                    <br/>{|$translate_width|}: <span itemprop="width">{|$width|}</span>
+                                {|/if|}
+                                {|if $height!=0|}
+                                    <br/>{|$translate_height|}: <span itemprop="height">{|$height|}</span>
+                                {|/if|}
+                                {|if $length!=0|}
+                                    <br/>{|$translate_length|}: {|$length|}
+                                {|/if|}
+                                {|if $weight!=0|}
+                                    <br/>{|$translate_weight|}: <span itemprop="weight">{|$weight|}</span>
+                                {|/if|}
+                            </div>
+                        {|/if|}
+
+                        {|if $videoArray|}
+                            <div class="section js-video-block" style="display: none;">
+                                <h2>{|$translate_video|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                {|foreach from=$videoArray item=v|}
+                                    {|$v|} <br />
+                                {|/foreach|}
+                            </div>
+                        {|/if|}
+
+                        {|if $characteristicsArray OR $characteristics|}
+                            <div class="section js-features-block" style="display: none;">
+                                <h2>{|$translate_features|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                {|if $characteristicsArray|}
+                                    <table class="def-table">
+                                        <thead>
+                                        <tr>
+                                            <td>{|$translate_properties|}</td>
+                                            <td>{|$translate_features|}</td>
+                                        </tr>
+                                        </thead>
+                                        {|foreach from=$characteristicsArray item="e" key="index"|}
+                                            <tr>
+                                                <td>{|$index|}</td>
+                                                <td>
+                                                    {|foreach from=$e item="i" key="k"|}
+                                                        {|if $i.characteristicColor|}
+                                                            <div style="background-color: {|$i.characteristicColor|}; display: inline-block; width: 30px;">
+                                                                &nbsp;
+                                                            </div>
+                                                        {|/if|}
+                                                        {|if $k > 0|},&nbsp;{|/if|}
+                                                        {|if $i.characteristicInfo|}
+                                                            <a href="{|$i.characteristicInfo.url|}" title="Все {|$i.characteristicInfo.title|}">{|$i.characteristicValue|}</a>
+                                                        {|else|}
+                                                            {|$i.characteristicValue|}
+                                                        {|/if|}
+                                                    {|/foreach|}
+                                                </td>
+                                            </tr>
+                                        {|/foreach|}
+                                    </table>
+                                    {|if $characteristics_message|}
+                                        <br />{|$characteristics_message|}
+                                    {|/if|}
+                                {|else|}
+                                    {|$characteristics|}
+                                {|/if|}
+                            </div>
+                        {|/if|}
+
+                        {|if $seriesArray|@count > 1|}
+                            <div class="section js-series-block" style="display: none;">
+                                <h2>{|$translate_model_line|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                <div class="def-table-overflow">
+                                    <table class="def-table">
+                                        <thead>
+                                        <tr>
+                                            <td colspan="2">{|$translate_title_short|}</td>
+                                            {|foreach from=$filterNameArray item="e"|}
+                                                <td>{|$e|}</td>
+                                            {|/foreach|}
+                                        </tr>
+                                        </thead>
+
+                                        {|foreach from=$seriesArray item="e"|}
+                                            <tr>
+                                                <td>
+                                                    <a href="{|$e.url|}">{|$e.name|}</a>
+                                                </td>
+                                                <td>
+                                                    <div class="block-price">
+                                                        {|if $e.price == 0|}
+                                                            <div class="def-price-specify " itemprop="priceSpecification">{|$translate_specify_a_price|}</div>
+                                                        {|else|}
+                                                            {|if !$e.avail|}
+                                                                <div class="def-price-unavailable">
+                                                                    <span id="priceSpan">{|$e.price|}</span> {|$currency|}
+                                                                </div>
+                                                            {|else|}
+                                                                <div class="def-price-available">
+                                                                    <span id="priceSpan">{|$e.price|}</span> {|$currency|}
+                                                                </div>
+                                                            {|/if|}
+                                                        {|/if|}
+                                                    </div>
+                                                </td>
+                                                {|foreach from=$filterNameArray item="filterName" key="filterID"|}
+                                                    <td>{|$filterValueArray[$filterID][$e.id]|}</td>
+                                                {|/foreach|}
+                                            </tr>
+                                        {|/foreach|}
+                                    </table>
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        {|if $commentIntegration|}
+                            <div class="section js-comments-block" style="display: none;">
+                                <h2>{|$translate_many_comments|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                {|$commentIntegration|}
+                            </div>
+                        {|/if|}
+
+                        <div class="section js-feedback-block" style="display: none;">
+                            <h2>{|$translate_comments|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                            <div class="def-feedback-list">
+                                {|if $commentsArray|}
+                                    {|foreach from=$commentsArray item="e"|}
+                                        <div class="element" itemscope itemtype="http://schema.org/Review">
+                                            {|if !$e.rating == '0'|}
+                                                <div class="def-block-rating" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                                                    <div class="inner-value" style="width: {|$e.rating*20|}%;">
+                                                        <meta itemprop="worstRating" content = "0"/>
+                                                        <em itemprop="ratingValue">{|$e.rating|}</em>
+                                                        <em itemprop="bestRating">5</em>
+                                                    </div>
+                                                </div>
+                                            {|/if|}
+
+                                            <span itemprop="reviewBody">{|$e.content|}</span><br />
+
+                                            {|if $e.plus|}
+                                                <strong class="good-side">{|$translate_plus|}:</strong> {|$e.plus|}<br />
+                                            {|/if|}
+
+                                            {|if $e.minus|}
+                                                <strong class="bad-side">{|$translate_minus|}:</strong> {|$e.minus|}<br />
+                                            {|/if|}
+
+                                            {|if $e.imagecrop|}
+                                                <a href="{|$e.image|}" class="colorbox"><img src="{|$e.imagecrop|}"></a>
+                                                <br />
+                                            {|/if|}
+                                            {|if $e.answer|}
+                                                <div class="adminanswer">
+                                                    <br />
+                                                    <strong>{|$translate_answer_administration|}:</strong>
+                                                    <br />
+                                                    {|$e.answer|}
+                                                </div>
+                                            {|/if|}
+                                            <div class="info">
+                                                <span itemprop="datePublished" content="{|$e.datetime|}">{|$e.datetime|}</span>
+                                                 <span itemprop="author">
+                                                    {|$translate_from_small|} {|$e.name|}
+                                                 </span>
+                                                о <span itemprop="itemReviewed">{|$name|}</span>
+                                            </div>
+                                        </div>
+                                    {|/foreach|}
+                                    <br />
+                                {|else|}
+                                    <div class="element">
+                                        <strong style="color:#808080">{|$translate_nocomments_message|}</strong>
+                                    </div>
+                                    <br />
+                                {|/if|}
+                                <a href="javascript: void(0);" class="def-submit" onclick="popupOpen('.js-popup-comment-block');">{|$translate_reviews_of_the_store_add_simple|}</a>
+
+                                {|if $allowcomment|}
+                                    <div class="def-block-popup js-popup-comment-block" style="display: none;">
+                                        <div class="dark" onclick="popupClose('.js-popup-comment-block');"></div>
+                                        <div class="block-popup">
+                                            <div class="head">
+                                                <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-comment-block');">&nbsp;</a>
+                                                <div class="def-section-caption">
+                                                    <h3><strong>{|$translate_write_a_review|}</strong></h3>
+                                                </div>
+                                            </div>
+                                            <form method="post" enctype="multipart/form-data">
+                                                <div class="body">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="vtop">Отзыв<span class="important">*</span>:</td>
+                                                            <td><textarea class="js-required" name="postcomment"></textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="vtop">{|$translate_plus|}:</td>
+                                                            <td><textarea name="postplus"></textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="vtop">{|$translate_minus|}:</td>
+                                                            <td><textarea name="postminus"></textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{|$translate_rating|}</td>
+                                                            <td>
+                                                                <div class="def-block-rating">
+                                                                    <div class="inner-value"></div>
+                                                                    <div class="rating-values js-block-rating">
+                                                                        <span data-count="1"></span>
+                                                                        <span data-count="2"></span>
+                                                                        <span data-count="3"></span>
+                                                                        <span data-count="4"></span>
+                                                                        <span data-count="5"></span>
+                                                                    </div>
+                                                                    <input name="commentrating" type="hidden" value="" />
+                                                                    <div class="text js-rating-clear"></div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                {|$translate_upload_image|}
+                                                            </td>
+                                                            <td>
+                                                                <input type="file" name="upload_image" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="foot">
+                                                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                                                    <input class="js-form-validation def-submit" type="submit" value="{|$translate_send|}" name="submitcomment" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {|else|}
+                                    {|$translate_rating_add_message|}
+                                    <a href="/registration/">{|$translate_sing_up|}</a>
+                                    {|$translate_or|}
+                                    <a href="/client/orders/">{|$translate_authorize|}</a>.
+                                {|/if|}
+                            </div>
+                        </div>
+
+                        {|if $productnewsArray|}
+                            <div class="section js-block-news" style="display: none;">
+                                <h2>{|$translate_news_simple|}</h2>
+                                <div class="def-block-news">
+                                    {|foreach from=$productnewsArray item="e"|}
+                                        <div class="element">
+                                            <a href="{|$e.url|}">{|$e.name|}</a>
+                                            <span>{|$e.date|}</span>
+                                        </div>
+                                    {|/foreach|}
+                                </div>
+                            </div>
+                        {|/if|}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|foreach from=$listsArray item="e"|}
+    <div class="def-section-caption">
+        <h3> <strong>{|$e.name|}</strong></h3>
+    </div>
+    {|$e.html|}
+{|/foreach|}
+
+{|if $tagArray|}
+    {|$translate_also|}:
+    {|foreach from=$tagArray item="e"|}
+        <a href="{|$e.url|}">{|$e.name|}</a>
+    {|/foreach|}
+    <br />
+    <br />
+{|/if|}
+
+{|$seocontent|}

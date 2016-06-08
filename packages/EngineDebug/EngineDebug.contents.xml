@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine>
+
+<content id="EngineDebug">
+<url>/EngineDebug/{key}/</url>
+<title>EngineDebug</title>
+<filehtml>EngineDebug_Content.html</filehtml>
+<filecss>EngineDebug_Content.css</filecss>
+<filejs>EngineDebug_Content.js</filejs>
+<filephp>EngineDebug_Content.class.php</filephp>
+<fileclass>EngineDebug_Content</fileclass>
+<moveto>wpp-tpl-global</moveto>
+<moveas>content</moveas>
+<compress>no</compress>
+</content>
+
+</engine>

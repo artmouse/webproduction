@@ -1,0 +1,54 @@
+{|if $productsArray|@count > 2|}
+    <div class="os-product-carousel">
+        <div class="inner">
+            <div class="line" data-auto="{|$autoplay|}">
+                <ul>
+                    {|foreach from=$productsArray item="p"|}
+                        <li>
+                            <div class="image">
+                                <a href="{|$p.url|}"><img src="{|$p.image|}" alt="{|$p.name|escape|}" title="{|$p.name|escape|}" /></a>
+                            </div>
+                            <div class="name">
+                                <a href="{|$p.url|}" title="{|$p.name|}">{|$p.name|}</a>
+                            </div>
+                            <div class="block-price">
+                                {|if $p.price == 0|}
+                                    <div class="os-price-specify">{|$translate_specify_a_price|}</div>
+                                {|else|}
+                                    {|if !$p.avail|}
+                                        <div class="os-price-unavailable">{|$p.price|} {|$p.currency|}</div>
+                                    {|else|}
+                                        <div class="os-price-available">{|$p.price|} {|$p.currency|}</div>
+                                    {|/if|}
+                                {|/if|}
+                            </div>
+
+                            <div class="avail">
+                                {|if $p.avail|}
+                                    {|if $p.availtext|}
+                                        <div class="os-available">{|$p.availtext|}</div>
+                                    {|else|}
+                                        <div class="os-available">{|$translate_in_stock|}</div>
+                                    {|/if|}
+                                    <div class="button">
+                                        <div class="js-shop-buy" data-productid="{|$p.id|}">
+                                            <a href="#" class="os-submit green js-shop-buy-action">{|$translate_buy|}</a>
+                                        </div>
+                                        <a class="os-submit small light" href="javascript: void(0);" onclick="basket_order_quick('{|$p.id|}', '{|$p.name|}');">{|$translate_buy_quick|}</a>
+                                    </div>
+                                {|else|}
+                                    {|if $p.availtext|}
+                                        <div class="os-unavailable">{|$p.availtext|}</div>
+                                    {|else|}
+                                        <div class="os-unavailable">{|$translate_out_of_stock|}</div>
+                                    {|/if|}
+                                {|/if|}
+                            </div>
+                        </li>
+                    {|/foreach|}
+                </ul>
+            </div>
+        </div>
+        <a href="#" class="next">&nbsp;</a>
+    </div>
+{|/if|}

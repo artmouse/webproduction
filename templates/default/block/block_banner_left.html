@@ -1,0 +1,30 @@
+{|if $bannerLeftArray|}
+    <div class="os-columnbanner-carousel">
+        {|if count($bannerRightArray) > 1|}
+            <div class="line">
+                <ul>
+                    {|foreach from=$bannerLeftArray item="b"|}
+                    <li>
+                        <a href="{|$b.url|}" class="item" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                        <img src="{|$b.image|}" width="220" height="250" alt="{|$b.name|}" title="{|$b.name|}"/>
+                        </a>
+                    </li>
+                    {|/foreach|}
+                </ul>
+            </div>
+        {|else|}
+            {|foreach from=$bannerLeftArray item="b"|}
+                <a href="{|$b.url|}" class="item" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                <img src="{|$b.image|}" width="220" height="250" alt="{|$b.name|}" title="{|$b.name|}"/>
+                </a>
+            {|/foreach|}
+        {|/if|}
+
+        {|if count($bannerLeftArray) > 1|}
+            <div class="control">
+                <div class="prev">&lt;</div>
+                <div class="next">&gt;</div>
+            </div>
+        {|/if|}
+    </div>
+{|/if|}

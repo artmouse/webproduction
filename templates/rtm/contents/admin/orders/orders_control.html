@@ -1,0 +1,1335 @@
+{|$block_menu|}
+
+{|if $message == 'ok' OR $arg_message == 'ok'|}
+<div class="shop-message-success">
+    {|$translate_order_update_success|}.
+</div>
+{|/if|}
+
+{|if $message == 'error'|}
+<div class="shop-message-error">
+    {|$translate_box_message_error|}.<br />
+
+    {|foreach from=$errorsArray item="e"|}
+    {|if $e == 'notlinked'|}
+    {|$translate_order_error_not_linked|}.<br />
+    {|/if|}
+    {|if $e == 'saled'|}
+    {|$translate_order_error_saled|}.<br />
+    {|/if|}
+    {|if $e == 'user'|}
+    {|$translate_box_error_user|}.<br />
+    {|/if|}
+    {|if $e == 'phone'|}
+    {|$translate_order_error_phone|}.<br />
+    {|/if|}
+    {|if $e == 'email'|}
+    {|$translate_order_error_login|}.<br />
+    {|/if|}
+    {|/foreach|}
+</div>
+{|/if|}
+
+{|if not $canEdit|}
+<div class="shop-message-info">
+    {|$translate_order_cant_edit_mess|}.
+</div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+<div class="ob-order-content">
+<div class="order-head">
+    {|if $control_number|}
+    <div class="tag number">#{|$control_number|}</div>
+    {|/if|}
+    <!--<div class="tag">Компания</div>-->
+    <h1>
+        {|if $control_name|}
+        {|$control_name|}
+        {|else|}
+        {|$orderName|}
+        {|/if|}
+    </h1>
+    {|if !$isWatcher|}
+    <a class="ob-link-follow" href="{|$urlWatch|}">Следить</a>
+    {|else|}
+    <a class="ob-link-follow no" href="{|$urlWatch|}">Не следить</a>
+    {|/if|}
+    {|if $parentIssueName|}
+    <div class="parent-issue">
+        Задача <a href="{|$parentIssueURL|}">{|$parentIssueName|}</a>
+    </div>
+    {|/if|}
+    <div class="clear"></div>
+    <!--<div class="date">{|$control_cdate|}</div>-->
+</div>
+
+{|if $orderComment|}
+<div class="ob-data-element js-data-element">
+    <div class="data-view">
+        <div class="el-value" style="font-size: 18px;">
+            {|$orderComment|}
+            <a class="ob-icon-edit" href="#"></a>
+        </div>
+    </div>
+    <div class="data-edit">
+        <a class="ob-icon-delete" href="#"></a>
+        <a class="ob-icon-accept" href="#"></a>
+        <textarea name="comments" style="height: 150px;" id="js-text-comment-edit">{|$control_comments|}</textarea>
+    </div>
+</div>
+<br />
+{|/if|}
+
+<div class="ob-details-block" {|if $arg_hidedetails|} style="display: none;" {|/if|}>
+<div class="wrap">
+<div class="part">
+    {|if $box|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Номер:</div>
+            <div class="el-value">
+                {|$control_number|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="number"
+                   value="{|$control_number|}" {|if not $canEdit|} disabled {|/if|} />
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $box|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Имя:</div>
+            <div class="el-value">
+                {|$control_name|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="name" value="{|$control_name|}" {|if not $canEdit|} disabled {|/if|} />
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $projectArray|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Проект:</div>
+            <div class="el-value">
+                {|$projectName|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <select name="projectid" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+            {|foreach from=$projectArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_projectid|} selected {|/if|}>
+            {|section name=foo start=0 loop=$e.level|}
+            &nbsp;&nbsp;&nbsp;
+            {|/section|}
+            {|$e.name|}
+            </option>
+            {|/foreach|}
+            </select>
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $workflowName|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Бизнес-процесс:</div>
+            <div class="el-value">
+                {|$workflowName|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            {|if $workflowArray|}
+            <select name="categoryid" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+            {|foreach from=$workflowArray item="e"|}
+            {|if !$e.hidden|}
+            <option value="{|$e.id|}" {|if $e.id == $control_categoryid|} selected {|/if|}>{|$e.name|}</option>
+            {|/if|}
+            {|/foreach|}
+            </select>
+            {|/if|}
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $statusArray|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Этап:</div>
+            <div class="el-value">
+                {|$statusName|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <select id="js-statusid" name="status" class="chzn-select">
+                {|foreach from=$statusArray item="e"|}
+                <option value="{|$e.id|}" {|if $e.id == $control_status|} selected {|/if|}>{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+        </div>
+    </div>
+    {|/if|}
+</div>
+
+<div class="part">
+
+<div class="ob-data-element js-data-element">
+    <div class="data-view">
+        <div class="el-caption">{|if $control_direction|}Поставщик{|else|}Клиент{|/if|}:</div>
+        <div class="el-value">
+            {|if $clientName|}
+            <a href="{|$clientURL|}" class="js-contact-preview"
+               data-id="{|$clientID|}">{|$clientName|}</a>
+            {|/if|}
+            <a class="ob-icon-edit" href="#"></a>
+        </div>
+    </div>
+    <div class="data-edit" style="padding-right: 70px;">
+        <a class="ob-icon-delete" href="#"></a>
+        <a class="ob-icon-accept" href="#"></a>
+        {|if $box|}
+        {|if $canEdit|}
+        <a href="#" class="ob-icon-editmore js-user-edit-button"
+           title="Редактировать карточку клиента только для этого заказа"></a>
+        {|/if|}
+        {|/if|}
+        {|*|}<a href="#" id="id-user" class="ob-button">Клиент</a>{|*|}
+        <input type="text" id="id-user-name" value="{|$client|}" placeholder="{|$clientName|}"/>
+        <input type="hidden" name="changeuser" id="id-user-value"/>
+    </div>
+</div>
+<div class="js-user-edit">
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_fio|}:</div>
+            <div class="el-value"><input type="text" name="clientname" value="{|$control_clientname|}"/>
+            </div>
+        </div>
+    </div>
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">Email:</div>
+            <div class="el-value"><input type="text" name="clientemail" value="{|$control_clientemail|}"/>
+            </div>
+        </div>
+    </div>
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_phone|}:</div>
+            <div class="el-value"><input type="text" name="clientphone" value="{|$control_clientphone|}"
+                                         class="js-phone-formatter"/></div>
+        </div>
+    </div>
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_contacts|}:</div>
+            <div class="el-value"><input type="text" name="clientcontacts"
+                                         value="{|$control_clientcontacts|}"/></div>
+        </div>
+    </div>
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_clientaddress|}:</div>
+            <div class="el-value"><textarea name="clientaddress"
+                                            class="js-autosize small">{|$control_clientaddress|}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption"></div>
+            <div class="el-value">
+                <label>
+                    <input type="checkbox" name="updateUserInfo" value="1"/>
+                    {|$translate_update_user_card|}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+{|if !$box|}
+<div class="js-user-view">
+    {|if $control_clientname|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_fio|}:</div>
+            <div class="el-value">{|$control_clientname|}</div>
+        </div>
+    </div>
+    {|/if|}
+    {|if $control_clientemail|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">Email:</div>
+            <div class="el-value">{|$control_clientemail|}</div>
+        </div>
+    </div>
+    {|/if|}
+    {|if $control_clientphone|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_phone|}:</div>
+            <div class="el-value">{|$control_clientphone|}</div>
+        </div>
+    </div>
+    {|/if|}
+    {|if $control_clientcontacts|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_contacts|}:</div>
+            <div class="el-value">{|$control_clientcontacts|}</div>
+        </div>
+    </div>
+    {|/if|}
+    {|if $control_clientaddress|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_clientaddress|}:</div>
+            <div class="el-value">{|$control_clientaddress|}</div>
+        </div>
+    </div>
+    {|/if|}
+</div>
+{|/if|}
+
+{|if $orderCompanyOnly|}
+<div class="ob-data-element js-data-element">
+    <div class="data-view">
+        <div class="el-caption">{|if $control_direction|}Менеджер поставщика{|else|}Менеджер клиента{|/if|}:
+        </div>
+        <div class="el-value">
+            {|if $clientManagerName|}
+            <a href="{|$clientManagerURL|}" class="js-contact-preview"
+               data-id="{|$clientManagerID|}">{|$clientManagerName|}</a>
+            {|/if|}
+            <a class="ob-icon-edit" href="#"></a>
+        </div>
+    </div>
+    <div class="data-edit">
+        <a class="ob-icon-delete" href="#"></a>
+        <a class="ob-icon-accept" href="#"></a>
+        {|*|}<a href="#" id="id-clientmanager" class="ob-button">Менеджер</a>{|*|}
+        <input type="text" id="id-clientmanager-name" value="{|$clientManagerName|}"/>
+        <input type="hidden" name="changeclientmanager" id="id-clientmanager-value"/>
+    </div>
+</div>
+{|/if|}
+
+{|if not $isIssue|}
+<div class="ob-data-element js-data-element">
+    <div class="data-view">
+        <div class="el-caption" style="vertical-align: middle;">
+            <div class="shop-icon-{|if $control_direction == 1|}out{|else|}in{|/if|}" title="Входящий"
+                 style="margin: 0 auto;"></div>
+        </div>
+        <div class="el-value">
+            Тип заказа:<br/>
+            {|if $control_direction == 0|}Входящий заказ от клиента{|/if|}
+            {|if $control_direction == 1|}Исходящий заказ поставщику{|/if|}
+            <a class="ob-icon-edit" href="#"></a>
+        </div>
+    </div>
+    <div class="data-edit">
+        <a class="ob-icon-delete" href="#"></a>
+        <a class="ob-icon-accept" href="#"></a>
+        <select name="direction" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+        <option value="0" {|if $control_direction == 0|} selected {|/if|}>От клиента (входящий)</option>
+        <option value="1" {|if $control_direction == 1|} selected {|/if|}>Поставщику (исходящий)
+        </option>
+        </select>
+    </div>
+</div>
+{|/if|}
+
+{|if not $isIssue AND $contractorArray|}
+<div class="ob-data-element js-data-element">
+    <div class="data-view">
+        <div class="el-caption">{|$translate_contractor|}:</div>
+        <div class="el-value">
+            {|$contractorName|}
+            <a class="ob-icon-edit" href="#"></a>
+        </div>
+    </div>
+    <div class="data-edit">
+        <a class="ob-icon-delete" href="#"></a>
+        <a class="ob-icon-accept" href="#"></a>
+        <select name="contractor" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+        <option value="">---</option>
+        {|foreach from=$contractorArray item="d"|}
+        <option value="{|$d.id|}" {|if $d.id == $control_contractorid|} selected {|/if|}>{|$d.name|}</option>
+        {|/foreach|}
+        </select>
+    </div>
+</div>
+{|/if|}
+
+<div class="ob-data-element js-data-element">
+    <div class="data-view">
+        <div class="el-caption">Ответственный:</div>
+        <div class="el-value">
+            {|if $managerName|}
+            <a href="{|$managerURL|}" class="js-contact-preview"
+               data-id="{|$managerID|}">{|$managerName|}</a>
+            {|/if|}
+            <a class="ob-icon-edit" href="#"></a>
+        </div>
+    </div>
+    <div class="data-edit">
+        <a class="ob-icon-delete" href="#"></a>
+        <a class="ob-icon-accept" href="#"></a>
+        <select name="manager" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+        <option value="">---</option>
+        {|foreach from=$managerArray item="e"|}
+        <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+        {|/foreach|}
+        </select>
+    </div>
+</div>
+</div>
+
+<div class="part">
+    {|if $authorName|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">Автор:</div>
+            <div class="el-value">
+                <a href="{|$authorURL|}" class="js-contact-preview"
+                   data-id="{|$authorID|}">{|$authorName|}</a>
+            </div>
+        </div>
+    </div>
+    {|/if|}
+
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Создана:</div>
+            <div class="el-value">
+                {|$control_cdate|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="cdate" value="{|$control_cdate|}"
+                   class="js-datetime" {|if not $canEdit|} disabled {|/if|} />
+        </div>
+    </div>
+
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_run_up|}:</div>
+            <div class="el-value">
+                {|$control_dateto|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="dateto" value="{|$control_dateto|}"
+                   class="js-datetime" {|if not $canEdit|} disabled {|/if|} />
+        </div>
+    </div>
+
+    {|if $box|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Родительская задача:</div>
+            <div class="el-value">
+                {|$control_parentid|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="parentid"
+                   value="{|$control_parentid|}" {|if not $canEdit|} disabled {|/if|} placeholder="номер"/>
+        </div>
+    </div>
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Оценка времени:</div>
+            <div class="el-value">
+                {|$control_estimatetime|} ч.
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="estimatetime"
+                   value="{|$control_estimatetime|}" {|if not $canEdit|} disabled {|/if|}
+            placeholder="в часах"/>
+        </div>
+    </div>
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Оценка бюджета:</div>
+            <div class="el-value">
+                {|$control_estimatemoney|} {|$currency|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="estimatemoney"
+                   value="{|$control_estimatemoney|}" {|if not $canEdit|} disabled {|/if|}
+            placeholder="{|$currency|}"/>
+        </div>
+    </div>
+    {|/if|}
+
+    {|if not $isIssue|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_invoice_delivery|}:</div>
+            <div class="el-value">
+                {|$control_deliveryNote|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <input type="text" name="deliveryNote"
+                   value="{|$control_deliveryNote|}" {|if not $canEdit|} disabled {|/if|} />
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $sourceArray|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Источник:</div>
+            <div class="el-value">
+                {|$sourceName|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <select name="sourceid" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+            <option value="">---</option>
+            {|foreach from=$sourceArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_sourceid|} selected {|/if|}>{|$e.name|}</option>
+            {|/foreach|}
+            </select>
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $deliveryArray|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Доставка заказа:</div>
+            <div class="el-value">
+                {|foreach from=$deliveryArray item="d"|}
+                {|if $d.id == $control_delivery|}{|$d.name|} {|$d.price|} {|$currency|}{|/if|}
+                {|/foreach|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <select name="delivery" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+            <option value="">---</option>
+            {|foreach from=$deliveryArray item="d"|}
+            <option value="{|$d.id|}" {|if $d.id == $control_delivery|} selected {|/if|}>{|$d.name|} {|$d.price|} {|$currency|}</option>
+            {|/foreach|}
+            </select>
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $paymentArray|}
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption">Оплаты заказа:</div>
+            <div class="el-value">
+                {|foreach from=$paymentArray item="d"|}
+                {|if $d.id == $control_payment|}
+                {|$d.name|}
+                {|/if|}
+                {|/foreach|}
+                <a class="ob-icon-edit" href="#"></a>
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-icon-delete" href="#"></a>
+            <a class="ob-icon-accept" href="#"></a>
+            <select name="payment" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+            <option value="">---</option>
+            {|foreach from=$paymentArray item="d"|}
+            <option value="{|$d.id|}" {|if $d.id == $control_payment|} selected {|/if|}>{|$d.name|}</option>
+            {|/foreach|}
+            </select>
+        </div>
+    </div>
+    {|/if|}
+
+    {|if $clientactivitydate|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">Дата последней коммуникации с клиентом:</div>
+            <div class="el-value">
+                <span style="color:{|$clientactivitydateColor|};">{|$clientactivitydate|}</span>
+            </div>
+        </div>
+    </div>
+    {|/if|}
+</div>
+</div>
+
+{|if $customFieldArray|}
+<div class="wrap add-fields-list">{|foreach from=$customFieldArray item="e" key="key"|}{|if $e.value|}<!-- форматирование блока не трогать! нужно для проверки-->
+    <div class="part">
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$e.name|}:</div>
+                <div class="el-value">
+                    {|if $e.type == 'bool'|}
+                    {|if $e.value|}
+                    Да
+                    {|else|}
+                    Нет
+                    {|/if|}
+                    {|else|}
+                    {|$e.value|}
+                    {|/if|}
+                </div>
+            </div>
+        </div>
+    </div>
+    {|/if|}{|/foreach|}</div><!-- форматирование блока не трогать! нужно для проверки-->
+{|/if|}
+</div>
+<br />
+
+{|if $box AND $position_y_max > 0 AND $statusArray|}
+<table class="layer-table">
+    <tr valign="top">
+        {|if $subIssueArray OR $subIssuePreviewArray|}
+        <td width="300">
+            <h2>Подзадачи</h2>
+            <ul>
+                {|foreach from=$subIssueArray item="e"|}
+                <li style="margin-left: {|$e.level*20|}px">
+                    <input type="checkbox" disabled {|if $e.closed|} checked {|/if|} />
+                    <a href="{|$e.url|}">{|$e.name|}</a>
+                    {|if $e.managerName|}
+                    {|$e.managerName|}
+                    {|/if|}
+                    <br />
+                    <br />
+                </li>
+                {|/foreach|}
+            </ul>
+        </td>
+        {|/if|}
+        <td>
+            {|* "canvas" для расстановки элементов *|}
+            <div class="onebox-workflow-layout" style="height: {|$position_y_max|}px;">
+                {|foreach from=$statusArray item='e'|}
+                <div id="js-wfe-{|$e.id|}"
+                     data-id="{|$e.id|}"
+                     class="onebox-workflow-element
+                                            {|if $e.statusAllow|}onebox-workflow-element-allow{|/if|}
+                                            {|if $e.id == $control_status|}onebox-workflow-element-current{|/if|}"
+                     style="left: {|$e.positionx|}px; top: {|$e.positiony|}px; width: {|$e.width|}px; height: {|$e.height|}px; {|if $e.colour|} background-color: {|$e.colour|}; {|/if|}">
+                    {|$e.name|}
+                    {|*|}
+                    <div class="status">
+                        {|if $e.statusDone|}
+                        <span class="done" title="выполнено"></span>
+                        {|elseif $e.statusAllow|}
+                        <span class="selectable" title="можно выбрать этап"></span>
+                        {|else|}
+                        <span class="disabled" title="нельзя выбрать этап"></span>
+                        {|/if|}
+                        {|if not $e.statusDone AND $e.statusTerm|}
+                        <span class="overdue" title="просрочен"></span>
+                        {|/if|}
+                    </div>
+                    {|*|}
+                </div>
+                {|/foreach|}
+                <div class="clear"></div>
+            </div>
+        </td>
+
+        <td width="20">&nbsp;</td>
+
+        <td width="300">
+            <div class="js-workflow-info">
+
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+
+<script type="text/javascript">
+    $j(function() {
+        jsPlumb.importDefaults({
+            DragOptions : { cursor: "pointer", zIndex: 2000 },
+            HoverClass: "connector-hover"
+        });
+
+        var stateMachineConnector = {
+            connector: "StateMachine",
+            paintStyle: {
+                lineWidth: 2,
+                strokeStyle: "#888888"
+            },
+            hoverPaintStyle:{strokeStyle:"#ff0000"},
+            endpoint:"Blank",
+            anchor:"Continuous",
+            overlays:[ ["PlainArrow", {location: 1, width: 5, length: 5} ]]
+        };
+
+        var stateMachineConnectorAllow = {
+            connector: "StateMachine",
+            paintStyle: {
+                lineWidth: 3,
+                strokeStyle: "green"
+            },
+            hoverPaintStyle:{strokeStyle:"#ff0000"},
+            endpoint:"Blank",
+            anchor:"Continuous",
+            overlays:[ ["PlainArrow", {location: 1, width: 10, length: 10} ]]
+        };
+
+        {|foreach from=$statusArray item='e1'|}
+        {|foreach from=$statusArray item='e2'|}
+        {|if $changeArray[$e1.id][$e2.id]|}
+            jsPlumb.connect({
+                source: "js-wfe-{|$e1.id|}",
+                target: "js-wfe-{|$e2.id|}"
+            }, stateMachineConnector);
+            {|/if|}
+            {|/foreach|}
+            {|/foreach|}
+
+            $j('.onebox-workflow-element-allow').click(function (e) {
+                var statusID = $j(e.target).data('id');
+                $j('#js-statusid').val(statusID);
+                $j('#js-statusid').change();
+
+                // загружаем информацию по данному этапу
+                box_workflow_info({|$orderid|}, statusID, $j('.js-workflow-info'));
+        });
+
+        // информация об этапе по умолчанию
+        box_workflow_info({|$orderid|}, $j('#js-statusid').val(), $j('.js-workflow-info'));
+
+    $j('#js-statusid').change(function (e) {
+        var statusID = $j('#js-statusid').val();
+
+        // убираем все current-классы
+        $j('.onebox-workflow-element-current').removeClass('onebox-workflow-element-current');
+
+        // добавляем current class
+        $j('#js-wfe-'+statusID).addClass('onebox-workflow-element-current');
+    });
+    });
+</script>
+{|/if|}
+
+{|if not $isIssue|}
+<div class="shop-overflow-table">
+<table class="shop-table" width="100%">
+<thead>
+<tr>
+    <td>&nbsp;</td>
+    <td>{|$translate_code_small|}</td>
+    <td>{|$translate_single_category|}</td>
+    <td>&nbsp;</td>
+    <td>{|$translate_product_name|}</td>
+    <td>От</td>
+    <td>До</td>
+    <td colspan="2">{|$translate_price|}</td>
+    <td>{|$translate_number|}</td>
+    <td>&nbsp;</td>
+    <td>{|$translate_cost|}</td>
+    <td>&nbsp;</td>
+    <td>{|$translate_serial_number|}</td>
+    <td>Гарантия</td>
+    <td>{|$translate_remark|}</td>
+    <td>{|$translate_supplier_status|}</td>
+</tr>
+</thead>
+
+<tbody class="js-oders-sort">
+{|foreach from=$productsArray item="e"|}
+<tr>
+    <td><div class="move"></div></td>
+    <td><a href="{|$e.url|}" >{|$e.productid|}</a></td>
+    <td><input type="text" value="{|$e.categoryname|}" name="category{|$e.id|}" style="width: 170px;" {|if not $canEdit|} disabled {|/if|} /></td>
+    {|if $e.image|}
+    <td>
+        <a href="{|$e.url|}" class="shop-smimage-preview" target="_blank"><img  src="{|$e.image|}"/></a>
+    </td>
+    {|else|}
+    <td>&nbsp;</td>
+    {|/if|}
+    <td>
+        <input type="text" value="{|$e.name|}" name="name{|$e.id|}" style="width: 320px;{|if !$e.avail|} color: red;{|/if|}"
+        {|if not $canEdit|} disabled {|/if|} />
+    </td>
+    {|if $e.source == 'servicebusy'|}
+    <td><input type="text" name="datefrom{|$e.id|}" value="{|$e.datefrom|}" class="js-date" style="width: 70px;" {|if not $canEdit|} disabled {|/if|} /></td>
+    <td><input type="text" name="dateto{|$e.id|}" value="{|$e.dateto|}" class="js-date" style="width: 70px;" {|if not $canEdit|} disabled {|/if|} /></td>
+    {|else|}
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    {|/if|}
+    <td>
+        <input type="text" value="{|$e.price|}" name="price{|$e.id|}" style="width: 70px;" {|if not $canEdit|} disabled {|/if|} />
+    </td>
+    <td>
+        <select name="currency{|$e.id|}" {|if not $canEdit|}disabled{|/if|} class="chzn-select" style="width: 60px;">
+        {|foreach from=$currencyArray item="c"|}
+        <option value="{|$c.id|}" {|if $c.id == $e.currencyid|} selected {|/if|}>{|$c.symbol|}</option>
+        {|/foreach|}
+        </select>
+
+        {|$e.taxname|}
+    </td>
+    <td>
+        <input type="text" value="{|$e.count|}" name="count{|$e.id|}" style="width: 70px;" {|if not $canEdit|} disabled {|/if|} />
+    </td>
+    <td>
+        {|$e.unit|}
+    </td>
+    <td align="right">
+        {|$e.sum|}&nbsp;{|$currency|}
+    </td>
+    <td>
+        <label class="nowrap">
+            <input type="checkbox" name="delete{|$e.id|}" value="1" {|if not $canEdit|} disabled {|/if|} />
+            {|$translate_delete_small|}
+        </label>
+    </td>
+
+    <td><input type="text" value="{|$e.serial|}" name="serial{|$e.id|}" style="width: 100px;" {|if not $canEdit|} disabled {|/if|} /></td>
+
+    <td><input type="text" value="{|$e.warranty|}" name="warranty{|$e.id|}" style="width: 100px;" {|if not $canEdit|} disabled {|/if|} /></td>
+
+    <td>
+        <textarea name="comment{|$e.id|}" class="js-autosize" rows="1" style="overflow: hidden;" {|if not $canEdit|}disabled{|/if|} >{|$e.comment|}</textarea>
+    </td>
+
+    <td>
+        {|if $e.linkOrderName|}
+        <a href="{|$e.linkOrderURL|}">{|$e.linkOrderName|}</a>
+        {|/if|}
+
+        {|foreach from=$e.storageCountArray item="s"|}
+        На складе {|$s.name|}: {|$s.count|}<br />
+        {|/foreach|}
+
+        {|if $productStatusArray|}
+        <select name="status{|$e.id|}">
+            <option value="0">---</option>
+            {|foreach from=$productStatusArray item="s"|}
+            <option value="{|$s.id|}" {|if $s.id == $e.statusid|} selected {|/if|}>{|$s.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+
+        {|if $e.supplierArray|}
+        <select name="supplier{|$e.id|}">
+            {|foreach from=$e.supplierArray item="s"|}
+            <option value="{|$s.id|}" {|if $s.id == $e.supplierid|} selected {|/if|}>{|$s.name|} - {|$s.code|} | {|$s.price|} {|$s.currency|} | {|$s.availtext|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        {|/if|}
+        {|/if|}
+    </td>
+</tr>
+{|/foreach|}
+</tbody>
+
+<tfoot>
+<tr>
+    {|if $discountSum > 0|}
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_discount_amount|}:</td>
+    <td align="right"><strong class="nowrap">{|$discountSum|number_format:2|}&nbsp;{|$currency|}</strong></td>
+    <td colspan="2">
+        {|if $discountArray|}
+        <select name="discount" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+        <option value="">---</option>
+        {|foreach from=$discountArray item="d"|}
+        <option value="{|$d.id|}" {|if $d.id == $control_discount|} selected {|/if|}>
+        {|$d.name|} ({|$d.value|}{|if $d.type == 'percent'|}%{|elseif $d.type == 'value'|} {|$d.currency|}{|/if|})
+        </option>
+        {|/foreach|}
+        </select>
+        {|/if|}
+        {|/if|}
+    </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|if $deliveryPrice > 0|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_delivery|}:</td>
+    <td align="right"><strong class="nowrap">{|$deliveryPrice|number_format:2|}&nbsp;{|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|if $totalSum > 0|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_in_total|}:</td>
+    <td align="right"><strong class="nowrap">{|$totalSum|number_format:2|}&nbsp;{|$currency|}</strong></td>
+    <td colspan="2">
+        <select name="ordercurrencyid" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+        <option value="">---</option>
+        {|foreach from=$orderCurrencyArray item="e"|}
+        <option value="{|$e.id|}" {|if $e.id == $control_ordercurrencyid|} selected {|/if|}>{|$e.name|} ({|$e.rate|})</option>
+        {|/foreach|}
+        </select>
+    </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|if $control_delivery|}
+{|*|}
+{|if $sum > 0|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_total_order_amount|}<br />({|$translate_without_delivery|}):</td>
+    <td align="right"><strong class="nowrap">{|$sum|number_format:2|} {|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|*|}
+{|if $totalSum > 0|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_total_order_amount|}<br />({|$translate_with_delivery|}):</td>
+    <td align="right"><strong class="nowrap">{|$totalSum|number_format:2|} {|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|/if|}
+{|*|}
+{|if $profit > 0 AND $profit != $totalSum|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_order_profit|}:</td>
+    <td align="right"><strong class="nowrap">{|$profit|number_format:2|} {|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|*|}
+{|if $paymentBlock AND $paymentSum > 0|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">
+        {|$translate_paid|}:
+        <br />
+        <a href="/admin/shop/cash/payments/?filter1_key=linkkey&filter1_value=order-{|$orderid|}" target="_blank">{|$translate_view_all_payments|}</a>
+    </td>
+    <td align="right"><strong class="nowrap">{|$paymentSum|number_format:2|} {|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|if $taxSum > 0|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">Сумма без НДС:</td>
+    <td align="right"><strong class="nowrap">{|$sumWithoutTax|number_format:2|} {|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_order_tax|}:</td>
+    <td align="right"><strong class="nowrap">{|$taxSum|number_format:2|} {|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|if $finance AND $productsArray|}
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_paid|}:</td>
+    <td align="right"><strong class="nowrap">{|$paymentSum|number_format:2|}&nbsp;{|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="3">{|$translate_balance|}:</td>
+    <td align="right"><strong class="nowrap" style="color: {|if $paymentBalance >= 0|}green{|else|}red{|/if|}">{|$paymentBalance|number_format:2|}&nbsp;{|$currency|}</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+{|/if|}
+{|if $canEdit|}
+<tr valign="bottom">
+    <td colspan="17">
+        <input type="hidden" name="addproduct" id="id-value" />
+        <input type="text" id="id-name"  style="width: 400px;" />
+        <a href="#" id="id-product" class="ob-button">{|$translate_select_find_create_product|}...</a>
+        <a href="#" id="id-product-clear" class="ob-button">{|$translate_clear|}</a>
+        <input type="text" name="addproductcount" value="{|$control_addproductcount|}" style="width: 70px;" />
+    </td>
+</tr>
+{|/if|}
+</tfoot>
+</table>
+</div>
+<br />
+{|/if|}
+
+{|if $fileArray|}
+<h2>Файлы</h2>
+<div class="ob-files-block">
+    {|foreach from=$fileArray item="e"|}
+    <div class="element">
+        <div class="date">14.06.2014</div>
+        <div class="size">305,5  Кб</div>
+        <div class="control">
+            <a class="ob-icon-clear" href="{|$e.urlDelete|}" onclick="return confirm('Удалить?');" title="Удалить"></a>
+            <a class="ob-icon-download" href="{|$e.url|}" title="Скачать" download=""></a>
+        </div>
+        <a href="{|$e.url|}">{|$e.name|}</a>
+        ({|$e.username|})
+
+    </div>
+    {|/foreach|}
+</div>
+<br />
+{|/if|}
+
+{|$block_comment|}
+
+<table class="layer-table">
+    <tr valign="top">
+        {|if $box|}
+        <td width="400">
+            {|$block_checklist|}
+        </td>
+        <td width="20"></td>
+        {|/if|}
+        <td>
+            <div class="ob-comment-add">
+                <div class="comment-caption">{|$translate_message_to_order_add|}</div>
+                <textarea name="postcomment" class="js-autosize js-usertextcomplete" placeholder="Сообщение"></textarea>
+                {|if $box|}
+                {|if $clientEmail|}
+                <div class="client-notify">
+                    <label>
+                        <input type="checkbox" name="sendclientemail" value="1" />
+                        Отправить комментарий клиенту на email <strong>{|$clientEmail|}</strong> с темой
+                    </label>
+                    <input type="text" name="sendclientemailsubject" value="{|$control_name|}" style="width: 100%; margin: 5px 0 0 0;" />
+                </div>
+                {|/if|}
+
+                {|if $clientSMSArray|}
+                <div class="client-notify">
+                    <label>
+                        <input type="checkbox" name="sendclientsms" value="1" />
+                        Отправить комментарий клиенту по SMS
+                    </label>
+                    <select name="sendclientsmsphone">
+                        {|foreach from=$clientSMSArray item="e"|}
+                        <option value="{|$e|}">{|$e|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+                {|/if|}
+
+                <div class="attach">
+                    Приложить файлы:
+                    <input type="file" name="file[]" multiple />
+                </div>
+                {|/if|}
+
+                {|if $watcherArray|}
+                <div class="client-notify">
+                    Получат уведомления:
+                    {|foreach from=$watcherArray item="e"|}
+                    <a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.name|}</a>
+                    {|/foreach|}
+                </div>
+                {|/if|}
+            </div>
+        </td>
+    </tr>
+</table>
+
+{|$block_notify|}
+</div>
+
+<input type="hidden" name="ok" value="1" />
+
+<div class="shop-right-sidebar full" style="display: block;">
+    <div class="toggle">&nbsp;</div>
+    {|if $customFieldArray|}
+    <div class="add-fields-list">
+        {|foreach from=$customFieldArray item="e" key="key"|}
+        {|if $e.type == 'text'|}
+        <div class="add-field">
+            <div class="caption">{|$e.name|}:</div>
+            <textarea name="custom_{|$key|}">{|$e.value|}</textarea>
+        </div>
+        {|elseif $e.type == 'string'|}
+        <div class="add-field">
+            <div class="caption">{|$e.name|}</div>
+            <input type="text" name="custom_{|$key|}" value="{|$e.value|}" />
+        </div>
+        {|elseif $e.type == 'date'|}
+        <div class="add-field">
+            <div class="caption">{|$e.name|}</div>
+            <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-date" />
+        </div>
+        {|elseif $e.type == 'int'|}
+        <div class="add-field">
+            <div class="caption">{|$e.name|}</div>
+            <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-int" />
+        </div>
+        {|elseif $e.type == 'float'|}
+        <div class="add-field">
+            <div class="caption">{|$e.name|}</div>
+            <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-float" />
+        </div>
+        {|elseif $e.type == 'bool'|}
+        <div class="add-field">
+            <label>
+                <input type="checkbox" name="custom_{|$key|}" value="1" {|if $e.value|} checked {|/if|} />
+                {|$e.name|}
+            </label>
+        </div>
+        {|/if|}
+        {|/foreach|}
+        <div class="clear"></div>
+    </div>
+    {|/if|}
+</div>
+
+{|if $canEdit|}
+<div class="shop-popup-block js-edit-message-popup" style="display: none;">
+    <div class="dark">&nbsp;</div>
+    <div class="popupblock">
+        <a href="#" class="close" onclick="$j('.js-edit-message-popup').fadeToggle(); return false;"></a>
+        <div class="shop-tabs">
+            <span id="js-popup-title">Редактировать сообщение</span>
+        </div>
+        <div class="window-content window-form" style="max-height: auto;">
+            <div class="element">
+                <textarea id="js-edit-comment-text" style="max-height: 400px;" val=""></textarea>
+            </div>
+            <input type="button" id="js-edit-comment" value="" data-id="" data-action="" class="ob-button button-green" />
+            <input class="ob-button button-cancel" type="button" value="{|$translate_cancel|}" onclick="$j('.js-edit-message-popup').hide(); return false;"/>
+        </div>
+    </div>
+</div>
+
+<textarea name="" id="js-text-order-data" rows="20" style="width: 100%; display: none;" >
+    Код&#9&#9Категория&#9&#9Наименование&#9&#9&#9&#9Цена&#9&#9Количество&#9&#9Серийный номер&#9&#9Гарантия&#9&#9&#9Примичание&#9&#9Статус у поставщика
+    {|foreach from = $productsArray item = "e"|}
+    {|$e.id|} &#9&#9 {|$e.categoryname|} &#9&#9&#9 {|$e.name|} &#9&#9&#9&#9 {|$e.price|} &#9&#9&#9 {|$e.count|} &#9&#9&#9 {|$e.serial|} &#9&#9&#9&#9&#9 {|$e.warranty|} &#9&#9&#9 {|$e.comment|}
+    {|/foreach|}
+</textarea>
+
+<div class="ob-button-fixed">
+    <input type="submit" value="Сохранить" class="ob-button button-green" />
+
+    {|if not $isIssue|}
+    <a class="ob-button" href="./printing/">{|$translate_print|}</a>
+    <input class="ob-button" type="button" name="name" onclick="$j('#js-text-order-popup').fadeToggle();" value="Текст заказа" />
+    {|/if|}
+
+    {|if $block_notify|}
+    <a class="ob-button button-red" href="#" onclick="$j('.js-notify-message').fadeToggle(); return false;">Уведомления: {|$block_notify|@count|}</a>
+    {|/if|}
+</div>
+<div class="ob-button-fixed-place"></div>
+{|/if|}
+
+<div class="shop-popup-block" id="js-text-order-popup" style="display: none;">
+    <div class="dark">&nbsp;</div>
+    <div class="popupblock">
+        <a href="#" class="close" onclick="$j('#js-text-order-popup').fadeToggle();"></a>
+        <div class="shop-tabs">
+            <span>Текст заказа</span>
+        </div>
+        <div class="window-content">
+            <div class="fake-textarea" contenteditable>
+                <table style="width: 100%; border-spacing: 2px; table-layout: fixed">
+                    <tr>
+                        <td class="va-top">1020</td>
+                        <td class="va-top">Product name</td>
+                        <td class="va-top">1 - 10 USD x 10 шт</td>
+                        <td class="va-top">100 USD</td>
+                    </tr>
+                    <tr>
+                        <td class="va-top">1020</td>
+                        <td class="va-top">Product name</td>
+                        <td class="va-top">1 - 10 USD x 10 шт</td>
+                        <td class="va-top">100 USD</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="va-top">Доставка 10 USD</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="va-top">Скидка XXX</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="va-top">Итого: 310 USD</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div style="display: none;" class="js-company-order-only">{|$orderCompanyOnly|}</div>

@@ -1,0 +1,85 @@
+<div class="double">
+    <div class="form-element">
+        <div class="element-caption">{|$translate_single_category|}</div>
+        <select class="chzn-select-tree" id="js-product-category">
+            <option value="0">---</option>
+            {|foreach from=$categoryArray item="e"|}
+                <option value="{|$e.id|}" data-level="{|$e.level|}">
+                    {|$e.name|}
+                </option>
+            {|/foreach|}
+        </select>
+    </div>
+
+    <div class="form-element">
+        <div class="element-caption">{|$translate_product_list|}</div>
+        <table class="layer-table">
+            <tr>
+                <td style="width: 80%;"><input id="js-product-name-input" class="productsearch-field" type="text" style="width: 100%;" autofocus></td>
+                <td class="separator"></td>
+                <td><a class="ob-button product-find" href="#">{|$translate_main_search|}</a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear"></div>
+    <div id="js-category-filter"></div>
+</div>
+
+<div class="form-element" id="js-product-div"></div>
+
+
+<script>
+    $j(function () {
+        $j('#js-product-category').change(function () {
+            $j.get('/admin/order/add/product/list/category/filter/', {
+                categoryId:  $j('#js-product-category').val()
+            }, function(data) {
+                $j('#js-category-filter').empty();
+                $j('#js-category-filter').append(data);
+            });
+        });
+
+        $j('.product-find').click(function () {
+            createForm();
+        });
+
+        $j('#js-product-name-input').keypress(function (event) {
+            if (event.which == '13') {
+                createForm();
+                event.preventDefault();
+
+            }
+        });
+
+        $j(document).on('keypress', '.js-filter', function (event) {
+            if (event.which == '13') {
+                createForm();
+                event.preventDefault();
+            }
+        });
+
+    });
+
+    function createForm() {
+        var arr = {};
+        var arr2 = {};
+        for (var i = 1; i <= 10; i++) {
+            var elem = $j('.js-filter-value-'+i);
+            if (elem.length) {
+                arr[elem.data('id')] = elem.val().trim();
+                arr2[elem.data('id')] = i;
+            }
+        }
+
+        $j.get('/issue/add/products/list/', {
+            name: $j('#js-product-name-input').val(),
+            categoryId:  $j('#js-product-category').val(),
+            workflowId:  $j('#js-workflow').val(),
+            filter: arr,
+            filterSort: arr2
+        }, function(data) {
+            $j('#js-product-div').empty();
+            $j('#js-product-div').append(data);
+        });
+    }
+</script>

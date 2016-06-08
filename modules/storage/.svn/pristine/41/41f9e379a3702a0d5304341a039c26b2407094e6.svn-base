@@ -1,0 +1,177 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/motionlog/" >{|$translate_motion_log|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_storage_log|}: {|$type|} {|if $isReturn|}({|$translate_return_small|}){|/if|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_message_success_update|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'user'|}
+                {|$translate_permission_denied|}<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<h2>{|$translate_storage_log|}: {|$type|} {|if $isReturn|}({|$translate_return_small|}){|/if|}</h2>
+<div class="ob-block-details">
+    <div class="flex-wrap">
+        <form action="" method="post" class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_date_realization|}:
+                </div>
+                <div class="el-value">
+                    {|$date|}
+                    <a class="ob-link-edit" href="#"></a>
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#" onclick="$j('.js-change-date').click();"></a>
+                <input type="text" name="date" value="{|$date|}"/>
+            </div>
+
+            <input type="submit" class="js-change-date" name="dateok" value="{|$translate_save|}"
+                   style="display: none;"/>
+        </form>
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_where_from|}:
+                </div>
+                <div class="el-value">
+                    <a href="{|$storagenamefromURL|}">{|$storagenamefrom|}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_where_to|}:
+                </div>
+                <div class="el-value">
+                    <a href="{|$storagenametoURL|}">{|$storagenameto|}</a>
+                </div>
+            </div>
+        </div>
+
+        {|if $contractor|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_contractor|}:
+                    </div>
+                    <div class="el-value">
+                        {|$contractor|}
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        {|if $username|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_operator|}:
+                    </div>
+                    <div class="el-value">
+                        <a href="{|$userURL|}" class="js-contact-preview" data-id="{|$userID|}">{|$username|}</a>
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        {|if $orderid|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_ord|}:
+                    </div>
+                    <div class="el-value">
+                        <a href="{|$orderURL|}" class="js-issue-preview" data-id="{|$orderid|}">#{|$orderid|}</a>
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        {|if $client|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_client_small|}:
+                    </div>
+                    <div class="el-value">
+                        {|$client|}
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_sum|}:
+                </div>
+                <div class="el-value">
+                    {|$sum|number_format:2|} {|$currency|}
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-element">
+            {|if $isReturnAllowed|}
+                <a href="{|$urlReturn|}" class="ob-button">{|$translate_return_do|}</a>
+            {|/if|}
+
+            {|if $urlReturnTransaction|}
+                <a href="{|$urlReturnTransaction|}" class="ob-button">{|$type|}</a>
+            {|/if|}
+
+            {|if $isDeleteAllowed|}
+                <a href="{|$urlDeleteTransaction|}" class="ob-button">{|$translate_delete|}</a>
+            {|/if|}
+        </div>
+
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+    </div>
+</div>
+
+{|if $table|}
+    {|$table|}
+{|/if|}
+
+{|if $tableTarget|}
+    <h1>{|$translate_many_products|}</h1>
+
+    {|$tableTarget|}
+{|/if|}
+
+{|if $tableMaterial|}
+    <h1>{|$translate_material|}</h1>
+
+    {|$tableMaterial|}
+{|/if|}
+
+{|if $block_documents|}
+    <div>
+        <br />
+        {|$block_documents|}
+    </div>
+{|/if|}

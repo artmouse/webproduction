@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        {|$engine_includes|}
+
+        <style type="text/css">
+            body, table, td {
+                font-family: 'Trebuchet MS', Arial;
+                font-size: 12px;
+                text-decoration: none;
+                margin: 0;
+                padding: 0;
+                color: #000000;
+            }
+            body {
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+            <td width="48%">
+                <div style="background-color: #eaeaea; padding: 10px; border-radius: 5px;">
+                    {|if $logo|}
+                        <img src="{|$logo|}" width="100" style="float: left; margin-right: 10px;" />
+                    {|/if|}
+
+                    "{|$shopName|}"<br />
+                    {|if $companyAddress|}
+                        Адреса:  {|$companyAddress|}<br />
+                    {|/if|}
+                    {|if $shopPhone|}
+                        Телефон:  {|$shopPhone|}<br />
+                    {|/if|}
+                    {|$shopUrl|}
+
+                    <div style="clear: both; line-height: 1px;">&nbsp;</div>
+                </div>
+
+                <h1>Квитанція #{|$id|}</h1>
+                <strong>{|$name|}</strong><br />
+                Категорія: {|$category|}<br />
+                <strong>Завдання:</strong>
+                {|$content|}<br />
+
+                Модель: {|$model|}<br />
+                Серійний номер: {|$serial|}<br />
+                Стан: {|$state|}<br />
+                Оціночна вартість послуг: {|$estimate|}<br />
+
+                <hr />
+
+                <strong>Клієнт:</strong><br />
+                П.І.Б.: {|$client.name|}<br />
+                Телефон: {|$client.phone|}<br />
+                E-mail: {|$client.email|}<br />
+
+                <hr />
+
+                Завдання поступила в сервіс: {|$cdate|}<br />
+                Орієнтовна дата готовності: {|$edate|}<br />
+
+                <br />
+                <br />
+
+                <div style="font-size: 12px;">
+                    Постачальник залишає за собою право зняти обладнання з гарантійного обслуговування при виявленні стороннього втручання, наявності механічних пошкоджень або інших порушень експлуатаційних правил. Постачальник не несе відповідальності за збереження інформації на носіях (ЖМД). У випадку втрати даного документа, видача виробу відбувається при наявності паспорта особи, яка здала виріб, з письмової заяви через два тижні з моменту пред'явлення заяви. Якщо власник не з'явився за виробом протягом чотирьох місяців, то приймальник знімає з себе відповідність за зберігання виробу.<br />
+                </div>
+                <br />
+                <br />
+
+                Підпис власника _________________________________
+                <br />
+                <br />
+                <br />
+
+                Підпис приймальника _________________________________
+                <br />
+                <br />
+                <br />
+            </td>
+
+            <td width="50">&nbsp;</td>
+
+            <td>
+                <div style="background-color: #eaeaea; padding: 10px; border-radius: 5px;">
+                    {|if $logo|}
+                    <img src="{|$logo|}" width="100" style="float: left; margin-right: 10px;" />
+                    {|/if|}
+
+                    "{|$shopName|}"<br />
+                    {|if $companyAddress|}
+                    Адреса:  {|$companyAddress|}<br />
+                    {|/if|}
+                    {|if $shopPhone|}
+                    Телефон:  {|$shopPhone|}<br />
+                    {|/if|}
+                    {|$shopUrl|}
+
+                    <div style="clear: both; line-height: 1px;">&nbsp;</div>
+                </div>
+
+                <h1>Квитанція #{|$id|}</h1>
+                <strong>{|$name|}</strong><br />
+                Категорія: {|$category|}<br />
+                <strong>Завдання:</strong>
+                {|$content|}<br />
+
+                Модель: {|$model|}<br />
+                Серійний номер: {|$serial|}<br />
+                Стан: {|$state|}<br />
+                Оціночна вартість послуг: {|$estimate|}<br />
+
+                <hr />
+
+                <strong>Клієнт:</strong><br />
+                П.І.Б.: {|$client.name|}<br />
+                Телефон: {|$client.phone|}<br />
+                E-mail: {|$client.email|}<br />
+
+                <hr />
+
+                Завдання поступила в сервіс: {|$cdate|}<br />
+                Орієнтовна дата готовності: {|$edate|}<br />
+
+                <br />
+                <br />
+
+                <div style="font-size: 12px;">
+                    Постачальник залишає за собою право зняти обладнання з гарантійного обслуговування при виявленні стороннього втручання, наявності механічних пошкоджень або інших порушень експлуатаційних правил. Постачальник не несе відповідальності за збереження інформації на носіях (ЖМД). У випадку втрати даного документа, видача виробу відбувається при наявності паспорта особи, яка здала виріб, з письмової заяви через два тижні з моменту пред'явлення заяви. Якщо власник не з'явився за виробом протягом чотирьох місяців, то приймальник знімає з себе відповідність за зберігання виробу.<br />
+                </div>
+                <br />
+                <br />
+
+                Підпис власника _________________________________
+                <br />
+                <br />
+                <br />
+
+                Підпис приймальника _________________________________
+                <br />
+                <br />
+                <br />
+            </td>
+        </tr>
+    </table>
+    </body>
+</html>

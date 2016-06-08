@@ -1,0 +1,74 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/structure/" class="selected">{|$translate_struktura|}</a></div>
+        <div class="tab-element"><a href="/admin/role/">{|$translate_nastroyka_roley|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="nb-block-tabs js-slide-tabs js-structure-tabs">
+    <div class="tab-element"><a class="selected" href="#" data-tab="js-block-structure">{|$translate_struktura|}</a></div>
+    <div class="tab-element"><a href="#" data-tab="js-block-list">{|$translate_spisok|}</a></div>
+    <span class="hover"></span>
+    <div class="clear"></div>
+</div>
+
+<div class="js-block-structure">
+
+    <div class="shop-overflow-table">
+        <ul class="ob-block-company-structure js-block-company-structure">
+            {|$block_structure|}
+        </ul>
+    </div>
+
+</div>
+
+<div class="js-block-list" style="display: none;">
+    <table class="shop-table js-sortable" width="100%">
+        <thead>
+            <tr>
+                <th>{|$translate_name_last|}</th>
+                <th>{|$translate_name_small|}</th>
+                <th>{|$translate_name_middle|}</th>
+                <th>{|$translate_post|}</th>
+                <th>{|$translate_phone|}</th>
+                <th>E-mail</th>
+                <th>{|$translate_protsessi|}</th>
+            </tr>
+        </thead>
+        <tbody class="js-structure-sort">
+            {|foreach from=$employerArray item="e"|}
+                <tr>
+                    <td><a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.namelast|}</a></td>
+                    <td><a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.namefirst|}</a></td>
+                    <td><a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.namemiddle|}</a></td>
+                    <td>
+                        {|foreach from=$e.roleArray item="r"|}
+                            {|$r|}
+                            <br />
+                        {|/foreach|}
+                    </td>
+                    <td>
+                        {|foreach from=$e.phoneArray item="p"|}
+                            <a href="#" class="ob-link-dashed js-call-originate" data-phone="{|$p|}">{|$p|}</a>
+                            <br />
+                        {|/foreach|}
+                    </td>
+                    <td>
+                        {|foreach from=$e.emailArray item="p"|}
+                            <a href="#" class="ob-link-dashed js-email-write" data-email="{|$p|}">{|$p|}</a>
+                            <br />
+                        {|/foreach|}
+                    </td>
+                    <td>
+                        {|foreach from=$e.workflowArray item="r"|}
+                            {|$r|}
+                            <br />
+                        {|/foreach|}
+                    </td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+    </table>
+</div>

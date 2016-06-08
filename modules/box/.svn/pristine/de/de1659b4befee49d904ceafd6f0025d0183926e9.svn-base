@@ -1,0 +1,31 @@
+<h1>
+    Иконки вертикального меню
+</h1>
+
+<br>
+<img src="/modules/box/docs/media/glossary/12.png">
+<br>
+<br>
+
+<p>
+    Для того, чтобы в меню Box отображалась кастомная иконка модуля, необходимо в
+    <strong>include.php</strong> модуля прописать класс иконки.
+</p>
+<br/>
+
+<code>
+    <pre>
+Shop_ModuleLoader::Get()->registerTopMenuItem(
+    Shop::Get()->getTranslateService()->getTranslateSecure('translate_inventory_management'),
+    Engine::GetLinkMaker()->makeURLByContentID('shop-admin-storage-balance'),
+    'storage',
+    'box-ficon-box',
+    $menuArray
+);</pre>
+</code>
+<br/>
+
+<p>
+    где <strong>box-ficon-box</strong> - это класс иконки описанный в Box.
+</p>
+<br/>

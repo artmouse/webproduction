@@ -1,0 +1,69 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/workflow/">&lsaquo; {|$translate_biznes_protsessi|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflow/{|$categoryid|}/">{|$translate_workflow|} {|$categoryName|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/" class="selected">{|$translate_etap|} {|$name|}</a></div>
+        {|if $box|}
+            <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/interface/">{|$translate_interfeys|}</a></div>
+        {|/if|}
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/action/new/">{|$translate_motion|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $edit_ok|}
+    <div class="shop-message-success">
+        {|$translate_dannie_etapa_uspeshno_sohraneni|}.
+    </div>
+{|/if|}
+
+<h1>{|$translate_nastroyki_etapa|}</h1>
+<br />
+<form id="js-form" action="" method="post">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_nazvanie_etapa|}</div>
+                    <input type="text" name="name" value="{|$control_name|}" />
+                </div>
+
+                {|if $box|}
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_opisanie_etapa|}</div>
+                        <textarea name="description" class="js-autosize" rows="3">{|$control_description|}</textarea>
+                    </div>
+                {|/if|}
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_tsvet|}</div>
+                    <input type="text" class="js-color" name="colour" value="{|$control_colour|}"/>
+                </div>
+
+                {|if $box|}
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_forma|}</div>
+                        <select name="processorform" class="chzn-select">
+                            <option value="0">---</option>
+                            {|foreach from=$processorFormArray key="key" item="name"|}
+                                <option value="{|$key|}" {|if $key == $control_processorform|} selected {|/if|}>{|$name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">Smart-{|$translate_obrabotchik|}</div>
+                        <input type="text" name="smart" value="{|$control_smart|}" />
+                    </div>
+                {|/if|}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="send_edit" value="{|$translate_save|}" class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

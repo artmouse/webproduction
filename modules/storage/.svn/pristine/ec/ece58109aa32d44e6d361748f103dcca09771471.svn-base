@@ -1,0 +1,52 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        Продукты успешно добавлены.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        Произошла ошибка при загрузке файла.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e.file|}
+                Файл не выбран.
+            {|/if|}
+            {|if $e.noProduct|}
+                В прайсе должна быть одна из колонок(productid, productname).
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+
+<div class="ob-block-element">
+    <h1>Добавить продукты в корзину из XLS-файла:</h1>
+    <form action="" method="POST" enctype="multipart/form-data" class="js-storage-basket-add-form ob-block-form">
+        <table>
+            <tr>
+                <td>Файл:</td>
+                <td><input type="file" name="file" /></td>
+            </tr>
+            <tr>
+                <td>{|$translate_file_encoding|}:</td>
+                <td>
+                    <label>
+                        <input type="radio" name="encoding" value="utf-8" {|if !$control_encoding || $control_encoding == 'utf-8'|}checked{|/if|} />
+                        UTF-8
+                    </label>
+
+                    <label>
+                        <input type="radio" name="encoding" value="windows-1251" {|if $control_encoding == 'windows-1251'|}checked{|/if|} />
+                        Windows-1251 (Cyrillic)
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="ob-button" type="submit" name="import_file" value="Загрузить продукты"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<br />

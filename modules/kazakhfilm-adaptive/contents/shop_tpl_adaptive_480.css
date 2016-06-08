@@ -1,0 +1,276 @@
+@media(max-width: 479px) {
+    body {
+        background: url("/templates/kazakhfilm-adaptive/_images/body-bg-tille.png") -135px 0 repeat;
+        text-decoration: none;
+        min-width: inherit;
+    }
+
+    .inner{
+        min-width: inherit;
+        max-width: inherit;
+        width: 100%;
+    }
+
+    .content-wrap {
+        margin: 5px 0;
+    }
+
+    nav a {
+        width: 100%;
+        background-color: rgba(163, 163, 163, 0.20);
+        margin: 4px auto;
+        line-height: 35px;
+        border-radius: 15px;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background-color: rgba(163, 163, 163, 0.70);
+    }
+
+    nav a:hover:before, nav a.active:before {
+        height: 0;
+    }
+
+    .bx-wrapper .bx-controls-direction a {
+        display: none;
+    }
+
+    .kf-slider-block .description {
+        display: none;
+    }
+
+    .kf-index-info {
+        text-align: justify;
+        margin: 5px 0;
+    }
+
+    .kf-index-info h1,
+    .kf-index-info h2 {
+        font-size: 18px;
+    }
+
+    .kz-prefooter-block .contacts{
+        margin-bottom: 15px;
+    }
+
+    .kz-prefooter-block .backcall{
+        margin-top: 15px;
+    }
+
+    .page-footer{
+        height: 71px;
+    }
+
+    .page-buffer {
+        height:  71px;
+    }
+
+    .developers-block {
+        width: 166px;
+        font-weight: bold;
+    }
+    .developers-block a{
+        font-weight: bold;
+    }
+
+
+    .page-footer .counters {
+        margin-top: 10px;
+    }
+
+    .page-footer .counters{
+        width: 80px;
+        float: left;
+    }
+
+    .page-footer .counters img{
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+
+    .kzh-room-preview-block{
+        margin: 0 0 50px 0;
+    }
+
+    .room-preview-images .fancy-bg {
+        padding: 0;
+        background: none;
+    }
+
+    .room-preview-images .fancy-bg img{
+        display: block;
+        width: 100%;
+        margin: 0;
+        max-height: inherit;
+    }
+
+    .room-preview-images {
+        float: none;
+        width: 280px;
+        margin: 0 auto;
+    }
+
+    .room-preview-additional-img{
+        padding: 0;
+        margin: 15px -5px 0 0
+    }
+
+    .room-preview-additional-img a{
+        padding: 0;
+        margin: 0 5px 15px 0;
+        background: transparent;
+    }
+
+    .room-preview-description{
+        width: 100%;
+        float: none;
+    }
+
+    .room-preview-description-text {
+        text-align: justify;
+    }
+
+    .room-futures-block {
+        text-align: center;
+    }
+
+    .room-futures-block ul {
+        float: none;
+        display: block;
+        text-align: left;
+        width: 270px;
+        margin: 0 0 20px 10px;
+    }
+
+    .room-preview-price-block {
+        width: auto;
+    }
+
+    .room-preview-price {
+        display: block;
+        width: 280px;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    .booking-button-block {
+        margin: 0 auto;
+        width: 280px;
+        float: none;
+        text-align: center;
+    }
+
+    .booking-button-block .booking-notice {
+        display: inline-block;
+        width: 280px;
+        text-align: center;
+        padding: 10px 0 0 0;
+    }
+
+
+    .kzh-modal{
+        padding: 5px;
+        position: absolute;
+        left: 5px;
+        z-index: 1002;
+        margin-left: 0 !important;
+    }
+
+    .kzh-booking-form{
+        width: 280px;
+    }
+
+    /*.kzh-booking-form label {*/
+        /*margin: 0 !important;*/
+    /*}*/
+
+    .kzh-booking-form .long {
+        width: 265px;
+    }
+
+    .kzh-booking-form  .sbHolder {
+        width: 275px;
+    }
+
+    .kzh-booking-form  .sbOptions {
+        width: 275px;
+    }
+
+    .kzh-booking-form textarea {
+        width: 265px;
+    }
+
+    .kzh-booking-form  .kzh-btn-default {
+        margin-bottom: 15px;
+    }
+
+    .callusModal .kzh-modal {
+        width: 280px;
+    }
+
+    .kzh-callus-form input[type=text] {
+        width: 256px;
+        height: 43px;
+        line-height: 43px;
+        font-size: 20px;
+    }
+
+    .feedbackModal .kzh-modal {
+        width: 280px;
+    }
+
+    .feedbackModal textarea {
+        width: 265px;
+    }
+
+    .feedbackModal  input[type=text] {
+        width: 263px;
+    }
+
+    .contacts-big-map-caption {
+        display: none;
+    }
+
+    .contacts-big-map-block{
+        width: 300px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .map-from-yandex {
+        width: 300px;
+        height: 300px;
+    }
+
+    #sh_button {
+        display: none !important;
+    }
+
+    .ks-block-transfer-form {
+        margin-top: -5px;
+        height: auto;
+        padding: 20px 5px;
+    }
+
+    .ks-block-transfer-form input[type=text]{
+        width: 100%;
+    }
+
+    .ks-block-transfer-features .inner {
+        display: block;
+    }
+
+
+    .ks-block-transfer-features .cell {
+        display: block;
+        padding: 0 0 20px 0;
+    }
+
+    .ks-block-transfer-pricelist .tiled {
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+}

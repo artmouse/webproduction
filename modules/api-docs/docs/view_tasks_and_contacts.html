@@ -1,0 +1,262 @@
+<h1>Способы отображения задач и контактов в OneBox</h1>
+В системе OneBox есть возможность менять способ отображения задач и контактов, а так же дописывать свои способы отображения.
+<br />
+<br />
+<h2>Что такое способы отображения задач?</h2>
+Способы отображения задач это то как вы хотите просмотреть список задач, в каком виде. На данный момент в нашем OneBox уже есть 8 способов отображения задач.
+<br />
+<ul>
+    <li><a href="/doc/view_calendar">Календарем</a></li>
+    <li><a href="/doc/view_list">Списком</a></li>
+    <li><a href="/doc/view_chart_gannt">Диаграммой Гантта</a></li>
+    <li><a href="/doc/view_vortex">Воронкой</a></li>
+    <li><a href="/doc/view_status">Статусами</a></li>
+    <li><a href="/doc/view_levels">Статистикой этапов</a></li>
+    <li><a href="/doc/view_mind_map">Mind map</a></li>
+    <li><a href="/doc/view_on_map">На карте</a></li>
+</ul>
+<br />
+<h2>Что такое способы отображения контактов?</h2>
+Способы отображения контактов это то как вы хотите просмотреть список контактов, в каком виде их отобразить. На данный момент в нашем OneBox уже есть 3 способа отображения контактов.
+<br />
+<ul>
+    <li>Плиткой <br /><img src="/modules/api-docs/docs/_images/users_plitka.png" alt="" /><br /><br /></li>
+    <li>Списком <br /><img src="/modules/api-docs/docs/_images/users_list.png" alt="" /><br /><br /></li>
+    <li>На карте <br /><img src="/modules/api-docs/docs/_images/users_maps.png" alt="" /><br /><br /></li>
+</ul>
+<br />
+
+Модули могут дописывать свои способы отображения списка заказов (задач) и списка контактов.
+<br />
+<br />
+<h2>Как же добавить новый способ отображения?</h2>
+Для этого нужно вызвать метод:
+<code><pre>
+Shop_ModuleLoader::Get()->registerOrderViewMode($name, $contentID, $modeName)
+Shop_ModuleLoader::Get()->registerUserViewMode($name, $contentID, $modeName)
+</pre></code>
+<br />
+<ul>
+    <li>name - название нового способа отображаения.</li>
+    <li>contentID - id контента по которому вы будете идентифицировать новый способ отображения.</li>
+    <li>modeName - имя способа отображения которое мы сможем отлавливать в php скрипте.</li>
+</ul>
+<br />
+Пример добавления нового способа отображения заказов(задач):
+<code><pre>
+Shop_ModuleLoader::Get()->registerOrderViewMode(
+    'Статусами',
+    'issue-status-index',
+    'status'
+);
+</pre></code>
+
+<br />
+Пример добавления нового способа отображения контактов:
+<code><pre>
+Shop_ModuleLoader::Get()->registerUserViewMode(
+    'На карте',
+    'contact-mode-maps',
+    'maps'
+);
+</pre></code>
+<br />
+<h2>Как написать новый способ отображения заказов?</h2>
+<br />
+Для того чтобы написать новый способ отображения, вам нужно выполнить 3 действия:
+<ol>
+    <li>Добавить новый способ отображения через метод registerOrderViewMode(...)</li>
+    <li>Зарегистрировать новый контент (contendID), при помощи метода registerContent(...)</li>
+    <li>Написать обработчик нового способа отображения.</li>
+</ol>
+
+<h2>Пример добавления нового способа отображения задач:</h2>
+<br/>
+<ol>
+    <li>
+        Для этого воспользуемся методом: <br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerOrderViewMode(
+    'Статистикой этапов (PERT)',
+    'funnel-index',
+    'stage'
+);
+</pre></code>
+<br/>
+    </li>
+    <li>
+        Регистрируем новый контент <br />
+<code><pre>
+Engine::GetContentDataSource()->registerContent(
+    'funnel-index',
+    array(
+        'title' => 'Funnel',
+        'url' => '/admin/funnel/',
+        'filehtml' => dirname(__FILE__).'/mode/funnel/funnel_index.html',
+        'filephp' => dirname(__FILE__).'/mode/funnel/funnel_index.php',
+        'moveto' => 'shop-admin-tpl',
+        'moveas' => 'content',
+        'level' => '2',
+    ),
+    'override'
+);
+</pre></code> <br />
+    </li>
+    
+    <li>
+        Пишем обработчик нового способа отображения:
+        <br />
+<code><pre>
+class funnel_index extends Engine_Class {
+
+    /**
+     * @return ShopOrder
+     */
+    private function _getIssues() {
+        return $this->getValue('issue');
+    }
+
+    public function process() {
+        PackageLoader::Get()->registerJSFile('/_js/jsPlumb.js');
+
+        $issues = $this->_getIssues();
+        $issues->setLimit(0, 0);
+        $issues->unsetField('dateclosed');
+
+        // все категории, в которых состоят задачи
+        $workflowArray = array();
+        while ($issue = $issues->getNext()) {
+            try {
+                $category = $issue->getCategory();
+                $issueStatus = $issue->getStatus();
+
+                if (isset($workflowArray[$category->getId()])) {
+                    $workflowArray[$category->getId()]['statusArray'][$issueStatus->getId()]['issueCount']++;
+                    continue;
+                }
+
+                // статусы на основе категории
+                $statusArray = array();
+
+                $position_y_max = 0;
+
+                $status = $category->getStatuses();
+                while ($s = $status->getNext()) {
+                    $statusArray[$s->getId()] = array(
+                    'id' => $s->getId(),
+                    'name' => $s->getName(),
+                    'colour' => $s->getColour(),
+                    'positionx' => $s->getX(),
+                    'positiony' => $s->getY(),
+                    'width' => $s->getWidth(),
+                    'height' => $s->getHeight() + 15, // поправка на полоску с иконками
+                    'statusAllow' => !$s->getOnlyauto(),
+                    'issueCount' => ($issueStatus->getId() == $s->getId())?1:0
+                    );
+
+                    // максимальная высота workflow'a
+                    if ($position_y_max < $s->getY() + $s->getHeight()) {
+                        $position_y_max = $s->getY() + $s->getHeight();
+                    }
+                }
+
+                if ($position_y_max > 0) {
+                    $position_y_max += 50;
+                }
+                $this->setValue('position_y_max', $position_y_max);
+
+                $changeArray = array();
+                $changes = new XShopOrderStatusChange();
+                $changes->setCategoryid($category->getId());
+                while ($x = $changes->getNext()) {
+                    if ($x->getElementfromid() == $x->getElementtoid()) {
+                        continue;
+                    }
+                    $changeArray[$x->getElementfromid()][$x->getElementtoid()] = 1;
+                }
+
+                $workflowArray[$category->getId()] = array(
+                'name' => $category->makeName(),
+                'statusArray' => $statusArray,
+                'changeArray' => $changeArray
+                );
+
+            } catch (Exception $wfEx) {
+
+            }
+        }
+
+        $this->setValue('workflowArray', $workflowArray);
+        $this->setValue('url', Engine_URLParser::Get()->getMatchURL());
+    }
+
+}
+</pre></code>
+        <br />
+    </li>
+</ol>
+<br />
+
+<h2>Пример добавления нового способа контактов задач:</h2>
+<br/>
+<ol>
+    <li>
+        Для этого воспользуемся методом: <br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerUserViewMode(
+    'На карте',
+    'contact-mode-maps',
+    'maps'
+);
+</pre></code>
+<br/>
+    </li>
+    <li>
+        Регистрируем новый контент <br />
+<code><pre>
+Engine::GetContentDataSource()->registerContent(
+    'contact-mode-maps',
+    array(
+        'filehtml' => dirname(__FILE__).'/contact/mode/contact_list_mode_maps.html',
+        'filephp' => dirname(__FILE__).'/contact/mode/contact_list_mode_maps.php',
+    ),
+    'override'
+);
+</pre></code> <br />
+    </li>
+    
+    <li>
+        Пишем обработчик нового способа отображения:
+        <br />
+<code><pre>
+class contact_list_mode_maps extends Engine_Class {
+
+    public function process() {
+        PackageLoader::Get()->registerJSFile('//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU');
+        PackageLoader::Get()->registerJSFile('/_js/yandex.maps.api.js');
+        $adressArrray = array();
+        $users = $this->_getUsers();
+        $users->setLimit($this->getArgumentSecure('page') * 100, 100);
+        $users->filterAddress('', '!=');
+        while ($x = $users->getNext()) {
+            $adressArrray[] = $x->getAddress();
+            $usersName[] = $x->getName();
+        }
+        $this->setValue('addressArray', json_encode($adressArrray));
+        $this->setValue('usersName', json_encode($usersName));  
+    }
+   
+    private function _getUsers() {
+        return $this->getValue('datasource')->getSQLObject();
+    }
+}
+</pre></code>
+<br />
+    </li>
+</ol>
+
+<br />
+<h2>Где можно посмотреть больше реальных примеров?</h2>
+См. модуль modules/box/include.php
+<br />
+<br />

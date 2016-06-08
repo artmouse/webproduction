@@ -1,0 +1,42 @@
+{|if $subcategoriesArray|}
+    <div class="os-category-list">
+        {|foreach from=$subcategoriesArray item="e"|}
+            <div class="os-category-element">
+                <div class="head">
+                    <h2>
+                        {|$e.name|}
+                        {|if !$e.childsArray|}
+                            {|if $e.productCount|}
+                                ({|$e.productCount|})
+                            {|/if|}
+                        {|/if|}
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="image">
+                        {|if $e.image|}
+                            <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|}" title="{|$e.name|}" /></a>
+                        {|else|}
+                            <a href="{|$e.url|}"><img src="/media/shop/stub.jpg" alt="{|$e.name|}" title="{|$e.name|}" /></a>
+                        {|/if|}
+                    </div>
+
+                    <div class="list">
+                        {|foreach from=$e.childsArray item="s"|}
+                                <a href="{|$s.url|}" >{|$s.name|}</a>{|if $s.productCount|}<span class="count">({|$s.productCount|})</span>{|/if|}<br />
+                        {|/foreach|}
+
+                        {|if $e.shortdesc|}
+                            {|$e.shortdesc|}
+                        {|/if|}
+                    </div>
+                </div>
+            </div>
+        {|/foreach|}
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+    </div>
+{|/if|}

@@ -1,0 +1,121 @@
+{|$menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_data_error|}.<br />
+        {|foreach from=$errorsArray item="e"|}
+            {|$e|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $suppliersCount|}
+    {|$translate_svetlo_sinim_tsvetom_videlen_tekushchiy_postavshchik_tovara|}.<br />
+    {|$translate_esli_ni_odna_stroka_ne_videlena_znachit_postavshchik_dlya_etogo_tovara_eshche_ne_vibran|}.<br />
+    {|$translate_esli_vi_otredaktiruete_dannie_v_etoy_tablitse_sistema_ne_prinimaet_izmeneniya_mgnovenno_i_ne_izmenit_postavshchika_srazu|}.<br />
+    {|$translate_izmenenie_postavshchika_tseni_zakupki_tseni_prodazhi_proishodit_tolko_posle|} <a href="/admin/shop/marginrule/">{|$translate_perescheta_tsen|}</a>.<br />
+    <br />
+
+    <form action="" method="post">
+        <div class="shop-overflow-table">
+            <table class="shop-table light">
+                <thead>
+                    <tr>
+                        <td>{|$translate_supplier|}</td>
+                        <td>{|$translate_supplier_code|}</td>
+                        <td style="width: 85px;">{|$translate_supplier_price|}</td>
+                        <td>&nbsp;</td>
+                        <td style="width: 85px;">{|$translate_minimalnaya_roznitsa|}</td>
+                        <td>&nbsp;</td>
+                        <td>{|$translate_rrts|}</td>
+                        <td>&nbsp;</td>
+                        <td style="width: 85px;">{|$translate_skidka_postavshchika|} %</td>
+                        <td>{|$translate_availability|}</td>
+                        <td>{|$translate_supplier_avail|}</td>
+                        <td>&nbsp;</td>
+                        <td>{|$translate_comment|}</td>
+                        <td>{|$translate_delivery_time|}</td>
+                    </tr>
+                </thead>
+                {|foreach from=$valueArray item="e" key="index"|}
+                    <tr {|if $e.current|}class="row-selected"{|/if|}>
+                        <td>
+                            <select name="supplier{|$index|}id" class="chzn-select-supplier" style="width: 220px;">
+                                <option value="0">---</option>
+                                {|foreach from=$supplierArray item="s"|}
+                                    <option data-id="{|$s.contactId|}" data-url="{|$s.url|}" value="{|$s.id|}" {|if $s.id == $e.supplierID|} class ="js-current-supplier" selected {|/if|}>
+                                        {|$s.name|}
+                                    </option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                        <td><input type="text" name="supplier{|$index|}code" value="{|$e.supplierCode|}" style="width: 120px;"/></td>
+                        <td><input type="text" name="supplier{|$index|}price" value="{|$e.supplierPrice|}" style="width: 85px;"/></td>
+                        <td>
+                            <select name="supplier{|$index|}currencyid" class="chzn-select">
+                                {|foreach from=$currencyArray item="s"|}
+                                    <option value="{|$s.id|}" {|if $s.id == $e.supplierCurrencyID|} selected {|/if|}>{|$s.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                        <td><input type="text" name="supplier{|$index|}minretail" value="{|$e.supplierMinretail|}" style="width: 85px;"/></td>
+                        <td>
+                            <select name="supplier{|$index|}minretail_cur_id" class="chzn-select">
+                                {|foreach from=$currencyArray item="s"|}
+                                    <option value="{|$s.id|}" {|if $s.id == $e.supplierMinretail_cur_id|} selected {|/if|}>{|$s.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                        <td><input type="text" name="supplier{|$index|}recommretail" value="{|$e.supplierRecommretail|}" style="width: 85px;"/></td>
+                        <td>
+                            <select name="supplier{|$index|}recommretail_cur_id" class="chzn-select">
+                                {|foreach from=$currencyArray item="s"|}
+                                    <option value="{|$s.id|}" {|if $s.id == $e.supplierRecommretail_cur_id|} selected {|/if|}>{|$s.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="supplier{|$index|}discount" value="{|$e.supplierDiscount|}" style="width: 85px;"/>
+                        </td>
+                        <td class="align_center">
+                            <input type="checkbox" value="1" name="supplier{|$index|}avail" {|if $e.supplierAvail|} checked="" {|/if|} />
+                        </td>
+                        <td>
+                            <input type="text" name="supplier{|$index|}availtext" value="{|$e.supplierAvailText|}" style="width: 155px;"/>
+                        </td>
+                        <td>
+                            {|$e.supplierDate|}
+                            &nbsp;
+                        </td>
+                        <td>
+                            <input type="text" name="supplier{|$index|}comment" value="{|$e.supplierComment|}" style="width: 155px;"/>
+                        </td>
+                        <td>
+                            <span style="width:115px;">{|$e.deliveryTime|}</span>
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </table>
+            <br />
+            <br />
+        </div>
+
+        <div class="ob-button-fixed">
+            <input type="button" onclick="document.location='/admin/shop/products/'" name="ok" value="&lsaquo; {|$translate_product_list_run|}" class="ob-button" />
+            <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+            <a href="/product/{|$productid|}/" target="_blank">{|$translate_review|}</a>
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    </form>
+{|else|}
+    <div class="shop-message-error">
+        {|$translate_eshche_ne_dobavlen_ni_odin_postavshchik_|} <br />
+        {|$translate_dlya_dobavleniya_postavshchika_pereydite_v_razdel_upravleniya_postavshchikami|}: <a class="ob-button js-preview" href="/admin/shop/supplier/">{|$translate_suppliers|}</a>
+    </div>
+{|/if|}

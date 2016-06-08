@@ -1,0 +1,457 @@
+{|$block_menu|}
+
+{|if $message == 'ok' OR $arg_message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_order_update_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'notlinked'|}
+                {|$translate_order_error_not_linked|}.<br />
+            {|/if|}
+            {|if $e == 'issue-stop'|}
+                {|$translate_izmenenie_sostoyanie_zapreshcheno_poka_ne_vipolneni_vse_vnutrennie_zadachi|}.<br />
+            {|/if|}
+            {|if $e == 'saled'|}
+                {|$translate_order_error_saled|}.<br />
+            {|/if|}
+            {|if $e == 'user'|}
+                {|$translate_box_error_user|}.<br />
+            {|/if|}
+            {|if $e == 'phone'|}
+                {|$translate_order_error_phone|}.<br />
+            {|/if|}
+            {|if $e == 'email'|}
+                {|$translate_order_error_login|}.<br />
+            {|/if|}
+        {|/foreach|}
+
+        {|if $IdBusy|}
+            {|$translate_ne_udalos_pomenyat_nomer_zakaza_takoy_nomer_uzhe_ispolzuetsya|}.<br />
+        {|/if|}
+
+        {|$errorText|}
+    </div>
+{|/if|}
+
+{|if not $canEdit|}
+    <div class="shop-message-info">
+        {|$translate_order_cant_edit_mess|}.
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="ob-grid-default">
+        <div class="main-layer">
+            <div class="double">
+                <div class="block-zone">
+                    {|$block_statistics|}
+                </div>
+                <div class="block-zone">
+                    {|$block_managers|}
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="block-zone">
+                {|$block_processorform|}
+                {|$block_comment|}
+                {|if $comments|}
+                    <div class="ob-block-comments">
+                        <div class="comment-item">
+                            <div class="avatar nb-block-avatar" style="background-image: url('/media/shop/stub-man.jpg');"></div>
+                            <div class="identifier" style="background-color: red;"></div>
+                            <div class="chead">
+                                {|$translate_remark|}:
+                            </div>
+                            <div class="cbody">
+                                {|$comments|}
+                            </div>
+                        </div>
+                    </div>
+                {|/if|}
+            </div>
+        </div>
+        <div class="aside-layer">
+            <div class="block-zone">
+                {|if $subIssueArray|}
+                    <div class="ob-block-element wrapped">
+                        <div class="block-caption">{|$translate_struktura|}</div>
+                        {|foreach from=$subIssueArray item="e"|}
+                            <a class="shop-activity-preview js-issue-preview {|if $e.closed|}hidden{|/if|}" data-id="{|$e.id|}" href="{|$e.url|}" style="margin-left: {|math equation="x*20" x=$e.level|}px;">
+                        <span class="activity-head">
+                            <span class="{|if $e.closed|}ob-icon-done{|elseif $e.fire|}ob-icon-overdue{|else|}ob-icon-list{|/if|} type-icon"></span>
+                            {|if $e.dateto || $e.managerName|}
+                                {|if $e.dateto|}<span class="date fl-r">{|$e.dateto|}</span>{|/if|}
+                                <span class="name">{|if $e.managerName|}{|$e.managerName|}{|else|}{|$translate_net_otvetstvennogo|}{|/if|}</span>
+                            {|/if|}
+                            <span class="clear"></span>
+                            <span class="subject">{|$e.name|}</span>
+                        </span>
+                            </a>
+                        {|/foreach|}
+                    </div>
+                {|/if|}
+
+                <div class="ob-block-details">
+                    <div class="flex-wrap">
+                        <div class="ob-data-element js-data-element">
+                            <div class="data-view">
+                                <div class="el-caption">{|$translate_contact|}:</div>
+                                <div class="el-value">
+                                    {|if $clientName|}
+                                        <a href="{|if $clientURL|}{|$clientURL|}{|else|}#{|/if|}" class="js-contact-preview"
+                                           data-id="{|$clientID|}">{|$clientName|}</a>
+                                    {|/if|}
+                                    <a class="ob-link-edit" href="#"></a>
+                                </div>
+                            </div>
+                            <div class="data-edit" style="padding-right: 70px;">
+                                <a class="ob-link-delete" href="#"></a>
+                                <a class="ob-link-accept" href="#"></a>
+                                {|if !$oneclickEnable AND $canEdit|}
+                                    <a href="#" class="ob-link-editmore js-user-edit-button"
+                                       title="{|$translate_redaktirovat_kartochku_klienta_tolko_dlya_etogo_zakaza|}">
+                                    </a>
+                                {|/if|}
+                                <input type="text" id="id-user-name" value="{|$client|}" placeholder="{|$clientName|}"/>
+                                <input type="hidden" name="changeuser" id="id-user-value"/>
+                            </div>
+                        </div>
+                        {|if $oneclickEnable|}
+                            <div class="js-user-view">
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_fio|}:</div>
+                                        <div class="el-value">
+                                            {|$control_clientname|}
+                                            <a class="ob-link-edit" onclick="$j('#update_user_card').show();" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="text" name="clientname"
+                                               value="{|$control_clientname|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">Email:</div>
+                                        <div class="el-value">
+                                            {|$control_clientemail|}
+                                            <a class="ob-link-edit" onclick="$j('#update_user_card').show();" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="text" name="clientemail"
+                                               value="{|$control_clientemail|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_phone|}:</div>
+                                        <div class="el-value">
+                                            {|$control_clientphone|}
+                                            <a class="ob-link-edit" onclick="$j('#update_user_card').show();" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="text" name="clientphone"
+                                               value="{|$control_clientphone|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_clientaddress|}:</div>
+                                        <div class="el-value">
+                                            {|$control_clientaddress|}
+                                            <a class="ob-link-edit" onclick="$j('#update_user_card').show();" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit js-data-element">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="text" name="clientaddress"
+                                               value="{|$control_clientaddress|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        {|if $orderClientCompany|}
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|if $control_direction|}{|$translate_menedzher_postavshchika|}{|else|}{|$translate_menedzher_klienta|}{|/if|}:
+                                    </div>
+                                    <div class="el-value">
+                                        {|if $clientManagerName|}
+                                            <a href="{|if $clientManagerURL|}{|$clientManagerURL|}{|else|}#{|/if|}"
+                                               class="js-contact-preview"
+                                               data-id="{|$clientManagerID|}">{|$clientManagerName|}</a>
+                                        {|/if|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <input type="text" id="id-clientmanager-name" value=""
+                                           placeholder="{|$clientManagerName|}" {|if not $canEdit|}disabled{|/if|}/>
+                                    <input type="hidden" name="changeclientmanager" id="id-clientmanager-value"/>
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        {|foreach from=$customFieldArray key="keyc" item="c"|}
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$c.name|}:</div>
+                                    <div class="el-value">
+                                        {|$c.value|}
+                                    </div>
+                                </div>
+                            </div>
+                        {|/foreach|}
+
+                        <div class="ob-data-element js-data-element">
+                            <div class="data-view">
+                                <div class="el-caption">{|$translate_sum|}:</div>
+                                <div class="el-value">
+                                    {|$sum|number_format:2|} {|$currency|}
+                                </div>
+                            </div>
+                        </div>
+
+                        {|if $finance|}
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_paid|}:</div>
+                                    <div class="el-value">
+                                        {|$paymentSum|number_format:2|} {|$currency|}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_balance|}:</div>
+                                    <div class="el-value">
+                                        {|if $paymentBalance|number_format:2 < 0|}
+                                            <span class="important">{|$paymentBalance|number_format:2|} {|$currency|}</span>
+                                        {|else|}
+                                            <span class="good">{|$paymentBalance|number_format:2|} {|$currency|}</span>
+                                        {|/if|}
+                                    </div>
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        <div class="ob-data-element js-data-element">
+                            <div class="data-view">
+                                <div class="el-caption">{|$translate_responsible|}:</div>
+                                <div class="el-value">
+                                    {|if $managerName|}
+                                        <a href="{|if $managerURL|}{|$managerURL|}{|else|}#{|/if|}"
+                                           class="js-contact-preview"
+                                           data-id="{|$managerID|}">{|$managerName|}</a>
+                                    {|/if|}
+                                    <a class="ob-link-edit" href="#"></a>
+                                </div>
+                            </div>
+                            <div class="data-edit">
+                                <a class="ob-link-delete" href="#"></a>
+                                <a class="ob-link-accept" href="#"></a>
+                                <select name="manager" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+                                    <option value="">---</option>
+                                    {|foreach from=$managerArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ob-data-empty"></div>
+                        <div class="ob-data-empty"></div>
+                        <div class="ob-data-empty"></div>
+                    </div>
+                </div>
+
+                <div class="ob-block-details" style="background-color: {|if $statusColor|}{|$statusColor|}{|else|}#ebebeb{|/if|};">
+                    <div class="flex-wrap">
+                        <div class="ob-data-element js-data-element">
+                            <div class="data-view">
+                                <div class="el-caption">{|$translate_order_status_ind|}:</div>
+                                <div class="el-value">
+                                    {|$statusName|}
+
+                                    {|if $allClosed|}
+                                        <div class="status ok"></div>
+                                    {|/if|}
+                                    {|if $statusNextArray|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    {|/if|}
+                                </div>
+                            </div>
+                            <div class="data-edit">
+                                <a class="ob-link-delete" href="#"></a>
+                                <a class="ob-link-accept" href="#"></a>
+                                <select id="js-statusid" {|if not $canEdit|}disabled{|/if|} name="status"
+                                        class="chzn-select">
+                                    {|foreach from=$statusNextArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_status|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ob-data-element js-data-element">
+                            <div class="data-view">
+                                <div class="el-caption">{|$translate_krayniy_srok_etapa|}:</div>
+                                <div class="el-value">
+                                    {|$control_termEmployer|}
+                                    {|if $fireIssueStatus|}
+                                        <div class="ob-icon-overdue"></div>
+                                    {|/if|}
+
+                                    <a class="ob-link-edit" href="#"></a>
+                                </div>
+                            </div>
+                            <div class="data-edit">
+                                <a class="ob-link-delete" href="#"></a>
+                                <a class="ob-link-accept" href="#"></a>
+                                <input class="js-datetime" name="termEmployer" value="{|$control_termEmployer|}"
+                                       {|if not $canEdit|}disabled{|/if|}>
+                            </div>
+                        </div>
+
+                        <div class="ob-data-element js-data-element">
+                            <div class="data-view">
+                                <div class="el-caption">{|$translate_otvetstvenniy_etapa|}:</div>
+                                <div class="el-value">
+                                    {|if $managerNameEmployer|}
+                                        <a href="{|$managerUrlEmployer|}" class="js-contact-preview"
+                                           data-id="{|$managerIdEmployer|}">
+                                            {|$managerNameEmployer|}
+                                        </a>
+                                    {|/if|}
+                                    {|if $managerArray|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    {|/if|}
+                                </div>
+                            </div>
+                            <div class="data-edit">
+                                <a class="ob-link-delete" href="#"></a>
+                                <a class="ob-link-accept" href="#"></a>
+                                <select name="managerEmployer" class="chzn-select" {|if not $canEdit|}disabled{|/if|}>
+                                    <option value="">---</option>
+                                    {|foreach from=$managerArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_managerEmployer|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+                        </div>
+
+                        {|if $workflowName|}
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_workflow|}:</div>
+                                    <div class="el-value">
+                                        {|$workflowName|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    {|if $workflowArray|}
+                                        <select name="categoryid" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+                                            {|foreach from=$workflowArray item="e"|}
+                                                <option value="{|$e.id|}" {|if $e.id == $control_categoryid|} selected {|/if|}>{|$e.name|}</option>
+                                            {|/foreach|}
+                                        </select>
+                                    {|/if|}
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        <div class="ob-data-empty"></div>
+                        <div class="ob-data-empty"></div>
+                        <div class="ob-data-empty"></div>
+                    </div>
+                </div>
+
+                {|if $productsArray|}
+                    <div class="ob-block-element wrapped">
+                        <div class="block-caption">{|$translate_many_products|}</div>
+                        <table class="shop-table" width="100%">
+                            {|foreach from=$productsArray item="p"|}
+                                <tr>
+                                    <td width="80%"><a data-id="{|$p.productid|}" class="js-product-preview" href="{|$p.productUrl|}">{|$p.name|}</a></td>
+                                    <td class="nowrap align_right">{|$p.count|} {|$p.unit|}</td>
+                                    <td class="nowrap align_right">{|$p.price|} {|$p.currencySym|}</td>
+                                </tr>
+                            {|/foreach|}
+                            <tfoot>
+                            {|if $discountSum|}
+                                <tr>
+                                    <td class="align_right" colspan="2">{|$translate_discount|}:</td>
+                                    <td class="nowrap align_right"><strong>{|$discountSum|string_format:"%.2f"|} {|$p.currencySym|}</strong></td>
+                                </tr>
+                            {|/if|}
+                            <tr>
+                                <td class="align_right" colspan="2">{|$translate_in_total|} <strong>{|$countProductAll|}</strong> {|$translate_tovar_ov_|}:</td>
+                                <td class="nowrap align_right"><strong>{|$allSum|string_format:"%.2f"|} {|$p.currencySym|}</strong></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                {|/if|}
+
+                {|if $fileArray|}
+                    <div class="ob-block-element wrapped">
+                        <div class="block-caption">{|$translate_fayli|}</div>
+                        <div class="ob-block-files">
+                            {|foreach from=$fileArray item="e"|}
+                                <div class="file-element">
+
+                                    <div class="size">{|$e.size|}</div>
+                                    <div class="control">
+                                        <a class="ob-link-clear" href="{|$e.urlDelete|}" onclick="return confirm('{|$translate_delete|}?');" title="{|$translate_delete|}"></a>
+                                        <a class="ob-link-download" href="{|$e.url|}" title="{|$translate_download|}" download=""></a>
+                                    </div>
+                                    <a href="{|$e.url|}">{|$e.name|}</a>
+                                    ({|$e.username|})
+                                    <div class="date">{|$e.cdate|}</div>
+                                </div>
+                            {|/foreach|}
+                        </div>
+                    </div>
+                {|/if|}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    {|if $canEdit|}
+        <div class="ob-button-fixed">
+            <input type="hidden" name="ok" value="1" />
+            <input type="submit" value="{|$translate_save|}" class="ob-button button-green js-clear-localstorage" onclick="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_proekta|}.');" />
+
+            <input type="hidden" name="status_menu" value="" id="js-issue-input-statusid" />
+            {|foreach from=$statusNext2Array item="e"|}
+                <input type="submit" value="{|$e.name|}" class="ob-button" data-id="{|$e.id|}"
+                   onclick="$j('#js-issue-input-statusid').val($j(this).data('id')); shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_zadachi|}.');"
+                {|if $e.colour|}style="background-color: {|$e.colour|}; color: #000000 !important;"{|/if|} />
+            {|/foreach|}
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    {|/if|}
+</form>

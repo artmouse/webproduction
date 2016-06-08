@@ -1,0 +1,68 @@
+{|foreach from=$workflowArray item="w"|}
+    <h1>{|$w.name|}</h1>
+
+    <div class="onebox-workflow-layout" style="height: 350px;">
+        {|foreach from=$w.statusArray item="e"|}
+            <div id="js-wfe-{|$e.id|}" class="onebox-workflow-element" data-id={|$e.id|}
+            style="left: {|$e.positionx|}px; top: {|$e.positiony|}px; width: {|$e.width|}px; height: {|$e.height|}px; {|if $e.colour|} background-color: {|$e.colour|}; {|/if|}">
+                <span class="inner">{|$e.name|}: {|$e.issueCount|}</span>
+            </div>
+        {|/foreach|}
+    </div>
+    <br />
+{|/foreach|}
+
+<script type="text/javascript">
+$j(function() {
+    jsPlumb.importDefaults({
+        DragOptions : { cursor: "pointer", zIndex: 2000 },
+        HoverClass: "connector-hover"
+    });
+
+    var stateMachineConnector = {
+        connector: "StateMachine",
+        paintStyle: {
+            lineWidth: 2,
+            strokeStyle: "#888888"
+        },
+        hoverPaintStyle:{strokeStyle:"#ff0000"},
+        endpoint:"Blank",
+        anchor:"Continuous",
+        overlays:[ ["PlainArrow", {location: 1, width: 5, length: 5} ]]
+    };
+
+    var stateMachineConnectorAllow = {
+        connector: "StateMachine",
+        paintStyle: {
+            lineWidth: 3,
+            strokeStyle: "green"
+        },
+        hoverPaintStyle:{strokeStyle:"#ff0000"},
+        endpoint:"Blank",
+        anchor:"Continuous",
+        overlays:[ ["PlainArrow", {location: 1, width: 10, length: 10} ]]
+    };
+
+    {|foreach from=$workflowArray item="e"|}
+        {|foreach from=$e.statusArray item='e1'|}
+            {|foreach from=$e.statusArray item='e2'|}
+                {|if $e.changeArray[$e1.id][$e2.id]|}
+                    jsPlumb.connect({
+                        source: "js-wfe-{|$e1.id|}",
+                        target: "js-wfe-{|$e2.id|}"
+                    }, stateMachineConnector);
+                {|/if|}
+            {|/foreach|}
+        {|/foreach|}
+    {|/foreach|}
+
+    $j('.onebox-workflow-element').click(function (e) {
+        var statusID = $j(e.target).data('id');
+        var url = $j('#url').val();
+        window.open(url+'?statusid[]='+statusID, '_blank');
+    });
+
+});
+</script>
+
+<input type="hidden" id="url" value="{|$url|}">

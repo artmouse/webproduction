@@ -1,0 +1,25 @@
+{|if $companyArray|}
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">
+            <a class="ob-link-add ob-link-dashed fl-r" style="margin-top: 4px;" href="/admin/shop/users/add/?company={|$company|}">{|$translate_dobavit_personu|}</a>
+            {|$translate_sotrudniki_kompanii|}
+        </div>
+        <div class="shop-overflow-table">
+            <table class="shop-table" width="100%">
+                {|foreach from=$companyArray item="e"|}
+                    <tr>
+                        <td width="40px;">
+                            <a href="{|$e.url|}" class="avatar nb-block-avatar js-contact-preview" data-id="{|$e.id|}" style="background-image: url('{|$e.image|}');"></a>
+                        </td>
+                        <td><a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.namelast|} {|$e.nameshort|} {|$e.namemiddle|}</a></td>
+                        <td width="20px;">{|$e.post|}</td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        </div>
+    </div>
+{|else|}
+    <div class="ob-block-element">
+        <a class="ob-link-add ob-link-dashed" href="/admin/shop/users/add/?company={|$company|}">{|$translate_dobavit_personu|}</a>
+    </div>
+{|/if|}

@@ -1,0 +1,16 @@
+<div class="def-block-carousel-wrap js-carousel-slider-wrap">
+    <div class="def-block-slick-carousel js-carousel-slider">
+        {|foreach from=$brandArray item="e"|}
+            <div class="ta-center">
+                <a class="def-brand-image" href="{|$e.url|}">
+                    <span>
+                        <img src="{|$e.image|}" alt="{|$e.name|}" />
+                    </span>
+                </a>
+            </div>
+        {|/foreach|}
+    </div>
+
+    <div class="slider-prev def-icon-angle-left"></div>
+    <div class="slider-next def-icon-angle-right"></div>
+</div>

@@ -1,0 +1,34 @@
+{|$block_banner_top|}
+
+{|if $seoh1|}
+    <h1 class="title">{|$seoh1|} {|$pathAdditionalH1|}</h1>
+{|elseif $categoryName|}
+    <h1 class="title">{|$categoryName|} {|$pathAdditionalH1|}</h1>
+{|/if|}
+
+{|if $description|}
+    <div class="os-category-description">
+        {|if $image|}
+            <img src="{|$image|}" alt="{|$categoryName|}" title="{|$categoryName|}" />
+        {|/if|}
+
+        <div class="os-editor-content js-ckEditor-container">
+            {|$description|}
+        </div>
+
+        <div class="clear"></div>
+    </div>
+{|/if|}
+
+{|$items|}
+
+{|if $tagArray|}
+    {|$translate_also|}:
+    {|foreach from=$tagArray item="e"|}
+        <a href="{|$e.url|}">{|$e.name|}</a>
+    {|/foreach|}
+    <br />
+    <br />
+{|/if|}
+
+{|$seocontent|}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|$title|}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="{|$shopname|}" />
+    <meta name="viewport" content="width=device-width" />
+    {|*|}<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />{|*|}
+    {|if $shopName|}<meta name="dcterms.rightsHolder" content="{|$shopName|}" />{|/if|}
+
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+
+    {|$engine_includes|}
+    <script type="text/javascript" src="/_js/jquery.parallax.js"></script>
+    <script type="text/javascript" src="/contents/shop/admin/old-browser.js"></script>
+</head>
+<body>
+    {|$content|}
+</body>
+</html>

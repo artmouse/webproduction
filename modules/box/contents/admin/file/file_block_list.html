@@ -1,0 +1,55 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="filtername" value="{|$control_filtername|}" placeholder="{|$translate_filename|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterlinkname" value="{|$control_filterlinkname|}" placeholder="{|$translate_privyazka|}" class="js-files-order-autocomplete" />
+                <input type="hidden" name="filterlink" value="{|$control_filterlink|}"" class="js-files-order-autocomplete-value" />
+            </div>
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_author|}</div>
+                    <select name="filterauthorid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_filterauthorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdatefrom" value="{|$control_filtercdatefrom|}" placeholder="{|$translate_data_zagruzki_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdateto" value="{|$control_filtercdateto|}" placeholder="{|$translate_data_zagruzki_do|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterid" value="{|$control_filterid|}" placeholder="ID" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filtertype" value="{|$control_filtertype|}" placeholder="{|$translate_type_shot|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" />
+
+            <div class="clear"></div>
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|$table|}
+        <div class="js-table-footer"></div>
+    </div>
+</div>
+<div class="clear"></div>

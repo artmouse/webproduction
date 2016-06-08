@@ -1,0 +1,59 @@
+<div class="shop-block-popup">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a href="javascript:void(0);" class="close" onclick="window.history.back();" title="Назад">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="head">
+            <div class="logo">
+                {|if $branding|}
+                    <img src="{|$logo|}" alt="">
+                {|else|}
+                    <img src="/_images/admin/logo.svg" alt="">
+                {|/if|}
+            </div>
+        </div>
+        <div class="window-form">
+            <div class="important">{|$translate_error_login_password|}.</div>
+            <form method="post">
+                <div class="element">
+                    <div class="el-caption">{|$translate_login_small|}</div>
+                    <div class="el-value"><input type="text" name="auth_login" value="{|$control_auth_login|}" /></div>
+                </div>
+                <div class="element">
+                    <div class="el-caption">{|$translate_password_small|}</div>
+                    <div class="el-value"><input type="password" name="auth_password" value="{|$control_auth_password|}" /></div>
+                </div>
+                <input class="ob-button" type="submit" name="logok" value="{|$translate_sign_in|}" />
+            </form>
+        </div>
+        <div class="links">
+            <a href="/doc/">Техническая документация OneBox</a>
+        </div>
+    </div>
+</div>
+
+<div class="parallax-bg-01"></div>
+<div class="parallax-bg-02"></div>
+<div class="parallax-bg-03"></div>
+<div class="parallax-bg-04"></div>
+<div class="parallax-bg-05"></div>
+<div class="parallax-bg-06"></div>
+<div class="parallax-bg-07"></div>
+
+<script type="text/javascript">
+    $j('.parallax-bg-01').parallax({xparallax: '40px'},{yparallax: '40px'});
+    $j('.parallax-bg-02').parallax({xparallax: '80px'},{yparallax: '80px'});
+    $j('.parallax-bg-03').parallax({xparallax: '160px'},{yparallax: '160px'});
+    $j('.parallax-bg-04').parallax({xparallax: '80px'},{yparallax: '120px'});
+    $j('.parallax-bg-05').parallax({xparallax: '160px'},{yparallax: '200px'});
+    $j('.parallax-bg-06').parallax({xparallax: '80px'},{yparallax: '200px'});
+    $j('.parallax-bg-07').parallax({xparallax: '160px'},{yparallax: '200px'});
+    $j('input[type="text"]').focus();
+
+    if ((pgwBrowser.os.group == 'Android') || (pgwBrowser.os.group == 'Windows Phone') || (pgwBrowser.os.group == 'iOS') || (pgwBrowser.os.group == 'BlackBerry')) {
+        $j('.parallax-bg-01, .parallax-bg-02, .parallax-bg-03, .parallax-bg-04, .parallax-bg-05, .parallax-bg-06, .parallax-bg-07, .os-popup-block .dark').hide();
+    }
+</script>

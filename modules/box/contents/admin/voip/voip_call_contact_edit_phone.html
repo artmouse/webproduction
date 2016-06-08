@@ -1,0 +1,48 @@
+<a href="{|$url|}" class="js-contact-preview" data-id="{|$contactID|}" style="font-size: 20px;">{|$name|}</a>
+<br />
+
+{|if $managerName|}
+{|$translate_manager|}: <a href="{|$managerURL|}" class="js-contact-preview" data-id="{|$managerID|}">{|$managerName|}</a>
+<br />
+{|/if|}
+
+{|if $orderArray|}
+{|$translate_poslednie_zakazi|}:<br />
+{|foreach from=$orderArray item="e"|}
+<a href="{|$e.url|}">{|$e.name|}</a>
+&mdash;
+{|$e.sum|} {|$e.currency|}
+&mdash;
+{|$e.status|}
+<br />
+{|/foreach|}
+<br />
+{|/if|}
+
+{|if $tags|}
+{|$translate_tags|}: {|$tags|}
+<br />
+{|/if|}
+
+<br />
+<br />
+
+{|*|}
+<h2>{|$translate_nachat_biznes_protsess|}</h2>
+{|foreach from=$workflowArray item="e"|}
+<a href="{|$e.url|}" style="font-size: 18px;" class="js-workflow-start">{|$e.name|}</a><br />
+{|/foreach|}
+{|*|}
+
+<script type="text/javascript">
+    $j(function () {
+        $j('.js-workflow-start').click(function (event) {
+            var $target = $j(event.target);
+            var comment = $j('#js-call-comment').val().trim();
+
+            if (comment != '') {
+                $target.attr('href', $target.attr('href')+'&content='+encodeURIComponent(comment));
+            }
+        });
+    });
+</script>

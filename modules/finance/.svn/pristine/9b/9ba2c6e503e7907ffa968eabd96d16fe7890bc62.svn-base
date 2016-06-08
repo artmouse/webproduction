@@ -1,0 +1,458 @@
+{|if $message_block_probation == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_payment_add_error|}.<br />
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'probationAmount'|}
+                {|$translate_vvedite_summu_platezha|}.
+            {|/if|}
+            {|if $e == 'probationDate'|}
+                {|$translate_vvedite_datu_platezha|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $message_block_payment == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_payment_add_error|}.<br />
+
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'sum'|}
+                {|$translate_nevernaya_summa_platezha|}.
+            {|/if|}
+            {|if $e == 'accountDirectionRate'|}
+                {|$translate_neverno_ukazan_kurs|}.
+            {|/if|}
+            {|if $e == 'account'|}
+                {|$translate_neverno_ukazan_akkaunt|}.
+            {|/if|}
+            {|if $e == 'permission'|}
+                {|$translate_net_dostupa_k_ukazannomu_akkauntu|}.
+            {|/if|}
+            {|if $e == 'category'|}
+                {|$translate_neverno_vibrana_kategoriya_platezha|}.
+            {|/if|}
+            {|if $e == 'invoice'|}
+                {|$translate_ukazanniy_schet_ne_nayden|}.
+            {|/if|}
+            {|if $e == 'client'|}
+                {|$translate_invoice_error_client|}.
+            {|/if|}
+            {|if $e == 'accountDirection'|}
+                {|$translate_ne_vibran_akkaunt_s_kotorogo_na_kotoriy_osushchestvlyaetsya_platezh|}.
+            {|/if|}
+            {|if $e == 'direction'|}
+                {|$translate_nevernoe_napravlenie_platezha|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<div class="ob-paymentcontrollayer-left">
+    <div class="ob-block-caption">
+        {|if $accountArray|}
+            <a class="ob-link-add ob-link-dashed ob-link-floated" href="#"  onclick="popupOpen('.js-addpayment-new');">{|$translate_sozdat_platezh|}</a>
+        {|/if|}
+        <h2>{|$translate_payments|}</h2>
+    </div>
+
+    <div class="ob-block-details">
+        <div class="flex-wrap">
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_sum|}:</div>
+                    <div class="el-value">{|$sum|} {|$currency|}</div>
+                </div>
+            </div>
+
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_paid|}:</div>
+                    <div class="el-value">{|$sumPaid|} {|$currency|}</div>
+                </div>
+            </div>
+
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_balance|}:</div>
+                    <div class="el-value">{|$sumBalance|} {|$currency|}</div>
+                </div>
+            </div>
+
+            {|if $contractorArray|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_contractor|}:</div>
+                    <div class="el-value">
+                        {|$contractorName|}
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#" name="ok"></a>
+                    <select name="contractor" {|if not $canEdit|}disabled{|/if|} class="chzn-select">
+                    <option value="">---</option>
+                    {|foreach from=$contractorArray item="d"|}
+                        <option value="{|$d.id|}" {|if $d.id == $control_contractorid|} selected {|/if|}>{|$d.name|}</option>
+                    {|/foreach|}
+                    </select>
+                </div>
+            </div>
+            <!-- hidden field for sending argument to finance_payment_block.php-->
+            <input type="hidden" name="contractorsend" value="1" style="display: none;">
+            {|/if|}
+
+            <div class="ob-data-empty"></div>
+            <div class="ob-data-empty"></div>
+            <div class="ob-data-empty"></div>
+        </div>
+    </div>
+
+    {|if $paymentArray || $paymentChildArray|}
+        <div class="shop-overflow-table">
+            <table class="shop-table" width="100%">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>{|$translate_date_realization|}</td>
+                        <td>{|$translate_napravlenie|}</td>
+                        <td>{|$translate_sum|}</td>
+                        <td>{|$translate_akkaunt|}</td>
+                        <td>{|$translate_uchitivaetsya|}</td>
+                        <td>{|$translate_sozdal|}</td>
+                        <td>{|$translate_ord|}</td>
+                    </tr>
+                </thead>
+                {|foreach from=$paymentArray item="e"|}
+                    <tr>
+                        <td>
+                            <a href="{|$e.url|}">{|$e.id|}</a>
+                        </td>
+                        <td>
+                            <a href="{|$e.url|}">{|$e.pdate|}</a>
+                        </td>
+                        <td>
+                            {|if $e.amount > 0|}
+                                {|$translate_vhodyashchiy|}
+                            {|else|}
+                                {|$translate_ishodyashchiy|}
+                            {|/if|}
+                        </td>
+                        <td><strong>{|$e.amount|} {|$e.currency|}</strong></td>
+                        <td>
+                            <a href="{|$e.account.url|}">{|$e.account.name|}</a>
+                        </td>
+                        <td>{|if $e.noBalance|}-{|else|}+{|/if|}</td>
+                        <td>
+                            <a href="{|$e.userUrl|}" class="js-contact-preview" data-id="{|$e.userId|}">{|$e.userName|}</a>
+                        </td>
+                        <td>
+                            <a href="{|$e.parentUrl|}" data-id="{|$e.parentId|}" class="js-issue-preview">#{|$e.parentId|} {|if $e.parentName|}- {|$e.parentName|}{|/if|}</a>
+                        </td>
+                    </tr>
+                {|/foreach|}
+
+                {|foreach from=$paymentChildArray item="paymentChild"|}
+                    <tr>
+                        <td>
+                            <a href="{|$paymentChild.url|}">{|$paymentChild.id|}</a>
+                        </td>
+                        <td>
+                            <a href="{|$paymentChild.url|}">{|$paymentChild.pdate|}</a>
+                        </td>
+                        <td>
+                            {|if $paymentChild.amount > 0|}
+                                {|$translate_vhodyashchiy|}
+                            {|else|}
+                                {|$translate_ishodyashchiy|}
+                            {|/if|}
+                        </td>
+                        <td><strong>{|$paymentChild.amount|} {|$paymentChild.currency|}</strong></td>
+                        <td>
+                            <a href="{|$paymentChild.account.url|}">{|$paymentChild.account.name|}</a>
+                        </td>
+                        <td>{|if $paymentChild.noBalance|}-{|else|}+{|/if|}</td>
+                        <td>
+                            <a href="{|$paymentChild.userUrl|}" class="js-contact-preview" data-id="{|$paymentChild.userId|}">{|$paymentChild.userName|}</a>
+                        </td>
+                        <td>
+                            <a href="{|$paymentChild.parentUrl|}" data-id="{|$paymentChild.parentId|}" class="js-issue-preview">#{|$paymentChild.parentId|} {|if $paymentChild.parentName|}- {|$paymentChild.parentName|}{|/if|}</a>
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        </div>
+    {|else|}
+        {|if $accountArray|}
+            <div class="shop-message-light">
+                {|$translate_platezhey_poka_net|}. {|$translate_nazhmite|} <a class=" ob-link-dashed" href="#" onclick="popupOpen('.js-addpayment-new');">{|$translate_dobavit_platezh|}</a>.
+            </div>
+        {|else|}
+            <div class="shop-message-light">
+                {|$translate_nelzya_sozdat_platezh|}. {|$translate_net_aktivnih_koshelkov|}.
+                <br>
+                <a href="/admin/shop/finance/account/">{|$translate_spisok_koshelkov|}.</a>
+                <br>
+                <a href="/admin/shop/finance/account/add/">{|$translate_dobavit_koshelek|}.</a>
+            </div>
+        {|/if|}
+    {|/if|}
+
+    {|if $accountArray|}
+        <div class="shop-block-popup js-addpayment-new" style="display: none;">
+            <div class="dark"></div>
+            <div class="popupblock">
+                <a href="#" class="close" onclick="popupClose('.js-addpayment-new');">
+                    <svg viewBox="0 0 16 16">
+                        <use xlink:href="#icon-close"></use>
+                    </svg>
+                </a>
+                <div class="head">{|$translate_sozdat_platezh|}</div>
+                <div class="window-content window-form">
+                    <form action="" method="post">
+                        <div class="element">
+                            <div class="el-caption">{|$translate_account|}</div>
+                            <div class="el-value">
+                                <select class="chzn-select" name="accountid">
+                                    {|foreach from=$accountArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_accountid|}selected{|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="element">
+                            <div class="el-caption">&nbsp;</div>
+                            <div class="el-value">
+                                <label>
+                                    <input class="js-virtual-confirm" type="checkbox" name="noBalance" value="1">
+                                    {|$translate_ne_uchitivat_platezh_v_balanse|}
+                                </label>
+                            </div>
+                        </div>
+
+                        {|if $invoiceArray|}
+                            <div class="element">
+                                <div class="el-caption">{|$translate_schet_invoys_|}</div>
+                                <div class="el-value">
+                                    <select class="chzn-select" name="invoiceid">
+                                        <option value="">---</option>
+                                        {|foreach from=$invoiceArray item="e"|}
+                                            <option value="{|$e.id|}"
+                                                    {|if $e.id == $control_invoiceid|}selected{|/if|}>{|$e.name|}</option>
+                                        {|/foreach|}
+                                    </select>
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        <div class="element">
+                            <div class="el-caption">{|$translate_amount|}</div>
+                            <div class="el-value">
+                                <input type="text" name="amount" value="{|$control_amount|}" />
+                                ({|$translate_account_curency_small|})
+                            </div>
+                        </div>
+
+                        <div class="element">
+                            <div class="el-caption">{|$translate_type_shot|}</div>
+                            <div class="el-value">
+                                <select class="chzn-select" name="paymentdirection">
+                                    <option value="fromclient">{|$translate_ot_kontakta_vhodyashchiy_|}</option>
+                                    <option value="toclient">{|$translate_kontaktu_ishodyashchiy_|}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="element">
+                            <div class="el-caption">{|$translate_payment_date_simple|}</div>
+                            <div class="el-value"><input class="js-date" type="text" name="pdate" value="{|$control_pdate|}" /></div>
+                        </div>
+
+                        <div class="element">
+                            <textarea name="comment" style="width: 100%; height: 100px;" placeholder="{|$translate_comment|}">{|$control_comment|}</textarea>
+                        </div>
+
+                        <div class="element">
+                            <div class="el-caption">{|$translate_payment_category|}</div>
+                            <div class="el-value">
+                                <select class="chzn-select" name="paymentcategoryid">
+                                    <option value="">---</option>
+                                    {|foreach from=$categoryArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_paymentcategoryid|}selected{|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="element">
+                            <a href="#" class="ob-link-dashed" onclick="$j('.js-banking').toggle(); return false;">{|$translate_banking_details|}</a>
+                            {|$translate_optionally|}
+                        </div>
+
+                        <div class="element js-banking" style="display: none;">
+                            <div class="el-caption">{|$translate_reference_code|}</div>
+                            <div class="el-value"><input type="text" name="code" value="{|$control_code|}" /></div>
+                        </div>
+
+                        <div class="element js-banking" style="display: none;">
+                            <textarea name="bankdetail" style="width: 100%; height: 100px;" placeholder="{|$translate_banking_details|}">{|$control_bankdetail|}</textarea>
+                        </div>
+
+                        <div class="element">
+                            <div class="el-caption">{|$translate_file|} {|$translate_optionally|}</div>
+                            <div class="el-value">
+                                <input type="file" name="file"/>
+
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+
+                        <input class="ob-button button-green" type="submit" name="paymentadd" value="{|$translate_payment_add|}"/>
+                        <input class="ob-button button-cancel" type="button" name="" value="{|$translate_cancel|}" onclick="popupClose('.js-addpayment-new');" />
+                        <br />
+                        <br />
+                    </form>
+                </div>
+            </div>
+        </div>
+    {|/if|}
+</div>
+
+<div class="ob-paymentcontrollayer-right">
+    <div class="ob-block-caption">
+        <a class="ob-link-add ob-link-dashed ob-link-floated" href="#" onclick="popupOpen('.js-addpayment-expected');">{|$translate_dobavit_ozhidaemiy_platezh|}</a>
+        <h2>{|$translate_ozhidaemie_platezhi|}</h2>
+    </div>
+
+    {|if $probationArray || $probationChildArray|}
+        <form action="" method="post">
+            <div class="shop-overflow-table">
+                <table class="shop-table" width="100%">
+                    <thead>
+                        <tr>
+                            <td>{|$translate_date|}</td>
+                            <td>Получен</td>
+                            <td align="right">{|$translate_sum|}</td>
+                            <td>{|$translate_type_shot|}</td>
+                            <td>{|$translate_task|}</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </thead>
+                    {|foreach from=$probationArray item="p" key="date"|}
+                        <tr>
+                            <td>{|$p.date|}</td>
+                            <td>
+                                <input data-id="{|$p.id|}" class="js-probation-payment" type="checkbox" value="1" {|if $p.received|}checked{|/if|}>
+                            </td>
+                            <td align="right">
+                                {|$p.sum|round:2|}
+                                {|$p.currency|}
+                            </td>
+                            <td>{|if $p.sum<0|}{|$translate_ishodyashchiy|}{|else|}{|$translate_vhodyashchiy|}{|/if|}</td>
+                            <td>
+                                <a href="{|$p.parentUrl|}" data-id="{|$p.parentId|}" class="js-issue-preview">#{|$p.parentId|} {|if $p.parentName|}- {|$p.parentName|}{|/if|}</a>
+                            </td>
+                            <td>
+                                <a class="ob-link-delete" href="javascript:void(0);" onclick="$j('#probationDelete').val({|$p.id|}); $j('#probationDelete').click();" title="{|$translate_delete_small|}"></a>
+                            </td>
+                        </tr>
+                    {|/foreach|}
+
+                    {|foreach from=$probationChildArray item="p" key="date"|}
+                    <tr>
+                        <td>{|$p.date|}</td>
+                        <td align="right">
+                            {|$p.sum|round:2|}
+                            {|$p.currency|}
+                        </td>
+                        <td>{|if $p.sum<0|}{|$translate_ishodyashchiy|}{|else|}{|$translate_vhodyashchiy|}{|/if|}</td>
+                        <td>
+                            <a href="{|$p.parentUrl|}" data-id="{|$p.parentId|}" class="js-issue-preview">#{|$p.parentId|} {|if $p.parentName|}- {|$p.parentName|}{|/if|}</a>
+                        </td>
+                        <td>
+                            <a class="ob-link-delete" href="javascript:void(0);" onclick="$j('#probationDelete').val({|$p.id|}); $j('#probationDelete').click();" title="{|$translate_delete_small|}"></a>
+                        </td>
+                    </tr>
+                    {|/foreach|}
+                </table>
+            </div>
+            <input id="probationDelete" type="submit" name="probationDelete" value="" style="display: none;">
+        </form>
+    {|else|}
+        <div class="shop-message-light">
+            {|$translate_ozhidaemih_platezhey_poka_net|}. <br />
+            {|$translate_nazhmite|} <a class=" ob-link-dashed" href="#" onclick="popupOpen('.js-addpayment-expected');">{|$translate_dobavit_ozhidaemiy_platezh|}</a>.
+        </div>
+    {|/if|}
+
+    <div class="shop-block-popup js-addpayment-expected" style="display: none;">
+        <div class="dark"></div>
+        <div class="popupblock">
+            <a href="#" class="close" onclick="popupClose('.js-addpayment-expected');">
+                <svg viewBox="0 0 16 16">
+                    <use xlink:href="#icon-close"></use>
+                </svg>
+            </a>
+            <div class="head">{|$translate_dobavit_ozhidaemiy_platezh|}</div>
+            <div class="window-content window-form">
+                <form action="" method="post">
+                    <div class="element">
+                        <div class="el-caption">{|$translate_sum|}</div>
+                        <div class="el-value">
+                            <input type="text" name="amountprobation" value="{|$control_amountprobation|}" style="width: 250px;" />
+                            {|if $currencyArray|}
+                                <select class="chzn-select inline" name="currency" style="width: 120px;">
+                                    {|foreach from=$currencyArray item="c" key="key"|}
+                                        <option value="{|$c.id|}">{|$c.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            {|/if|}
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="el-caption">{|$translate_type_shot|}</div>
+                        <div class="el-value">
+                            <select class="chzn-select" name="probationpaymentdirection">
+                                <option value="fromclient">{|$translate_ot_kontakta_vhodyashchiy_|}</option>
+                                <option value="toclient">{|$translate_kontaktu_ishodyashchiy_|}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="el-caption">{|$translate_payment_date_simple|}</div>
+                        <div class="el-value"><input class="js-date" type="text" name="date" value="{|$control_date|}" /></div>
+                    </div>
+                    <div class="element">
+                        <div class="el-caption">{|$translate_legal_entity|}</div>
+                        <div class="el-value">
+                            <select name="contractorid" class="chzn-select">
+                                {|foreach from=$contractorArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="el-caption">{|$translate_account|}</div>
+                        <div class="el-value">
+                            <select name="accountid" class="chzn-select">
+                                {|foreach from=$accountArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_accountid|} selected {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+
+                    <input class="ob-button button-green" type="submit" name="probationadd" value="{|$translate_dobavit_ozhidaemiy_platezh|}" />
+                    <input class="ob-button button-cancel" type="button" name="" value="{|$translate_cancel|}" onclick="popupClose('.js-addpayment-expected');" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>

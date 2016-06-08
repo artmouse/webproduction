@@ -1,0 +1,62 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element">
+            <a href="/admin/shop/storage/orders/{|$ordertype|}/" >
+                {|if $ordertype == 'incoming'|}
+                    {|$translate_orders_incoming|}
+                {|elseif $ordertype == 'transfer'|}
+                    {|$translate_orders_transfer|}
+                {|elseif $ordertype == 'production'|}
+                    {|$translate_orders_production|}
+                {|/if|}
+            </a>
+        </div>
+        <div class="tab-element"><a href="/admin/shop/storage/order/{|$orderid|}/edit/">{|$translate_ord|} #{|$orderid|}</a></div>
+        <div class="tab-element">
+            {|if !$isshipped|}
+                <a href="/admin/shop/storage/order/{|$orderid|}/to{|$ordertype|}/">
+                    {|if $ordertype == 'incoming'|}
+                        {|$translate_incoming_do|}
+                    {|elseif $ordertype == 'transfer'|}
+                        {|$translate_order_to_transfer|}
+                    {|elseif $ordertype == 'production'|}
+                        {|$translate_order_to_production|}
+                    {|/if|}
+                </a>
+            {|/if|}
+        </div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_order_delete_success|}.<br />
+        <a href="/admin/shop/storage/orders/{|$ordertype|}/">{|$translate_order_list|}</a>
+    </div>
+    
+    <script type="text/javascript">
+    document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_delete_error|}.
+    </div>
+{|/if|}
+
+{|if $message != 'ok'|}
+    <div class="ob-block-element">
+        <form action="" method="post">
+            {|$translate_order_confirm|}
+            <strong>#{|$orderid|}</strong>?
+            <br />
+            <br />
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='/admin/shop/storage/orders/transfer/';" />
+        </form>
+    </div>
+{|/if|}

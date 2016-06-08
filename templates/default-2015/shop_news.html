@@ -1,0 +1,25 @@
+<div class="def-section-caption">
+    <h3><strong>{|$translate_site_news|}</strong></h3>
+</div>
+
+{|if $newsArray|}
+    <div class="def-block-news">
+        {|foreach from=$newsArray item="e"|}
+            <div class="element">
+                {|if $e.image|}
+                    <div class="image"><img src="{|$e.image|}" alt="" /></div>
+                {|/if|}
+                <div class="text {|if !$e.image|}no-image{|/if|}">
+                    <a href="{|$e.url|}">{|$e.name|}</a>
+                    <div class="date">{|$e.date|}</div>
+                    {|$e.contentPreview|}
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+    </div>
+{|else|}
+    <div class="def-message-notice">
+        {|$translate_no_news|}.
+    </div>
+{|/if|}

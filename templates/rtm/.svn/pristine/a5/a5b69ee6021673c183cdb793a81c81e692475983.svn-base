@@ -1,0 +1,107 @@
+<div class="rtm-navigation">
+    <div class="inner">
+        <ul class="navi js-navi">
+            {|foreach from=$textpageArray item="e1" key="key"|}
+                <li {|if $e1.selected|}class="selected"{|/if|}>
+                    <a class="main" href="{|$e1.url|}">{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</a>
+                    <a class="device-main" href="#">{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</a>
+                    {|if $e1.childArray|}
+                        <ul class="sub sub-devices">
+                            <li class="devices"><a href="{|$e1.url|}">{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</a></li>
+                            {|foreach from=$e1.childArray item="e2"|}
+                                <li><a href="{|$e2.url|}">{|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}</a></li>
+                            {|/foreach|}
+                        </ul>
+                    {|/if|}
+                </li>
+
+                {|if $key < 1|}
+                    <li {|if $contentID == 'index'|}class="selected"{|/if|}>
+                        <a class="main" href="/">Интернет магазин</a>
+                        <a class="device-main" href="#">Интернет магазин</a>
+                        {|if $mainCategoryArray|}
+                            <ul class="sub sub-devices">
+                                {|foreach from=$mainCategoryArray item="e"|}
+                                    <li><a href="{|$e.url|}">{|$e.name|}</a></li>
+                                {|/foreach|}
+                            </ul>
+                        {|/if|}
+                    </li>
+                {|/if|}
+            {|/foreach|}
+            <li {|if $contentID == 'shop-contacts'|}class="selected"{|/if|}><a href="{|$main|}/kontakty">Контакты</a></li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="rtm-popup-block js-popup-register-block" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-popup-register-block');">&nbsp;</div>
+    <div class="popup-block register-block">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-register-block');">&nbsp;</a>
+            Регистрация
+        </div>
+        {|if $messageRegistration == 'ok'|}
+            <div class="os-message-success">
+                {|$registration_good_message|}
+            </div>
+        {|else|}
+            {|if $errorsArray|}
+                <div class="os-message-error">
+                    {|$translate_registration_error|}:
+                    <br />
+                    {|foreach from=$errorsArray item="e"|}
+                        {|if $e == 'login'|}
+                            {|$translate_order_error_login|}. {|$translate_order_error_login_must_be|}.<br />
+                        {|/if|}
+                        {|if $e == 'login-exists'|}
+                            {|$translate_login_already_exists|}.<br />
+                        {|/if|}
+                        {|if $e == 'password'|}
+                            {|$translate_profile_error_password_must_be|}.<br />
+                        {|/if|}
+                        {|if $e == 'email'|}
+                            {|$translate_profile_error_mail|}.<br />
+                        {|/if|}
+                        {|if $e == 'email-exists'|}
+                            {|$translate_profile_error_mail_exists|}.<br />
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            {|/if|}
+            <form method="post">
+                <div class="body">
+                    <input class="rtm-check-fill05" type="text" name="login" value="{|$control_login|}" placeholder="Логин"/><br /><br />
+                    <input class="rtm-check-fill05" type="password" name="password" value="{|$control_password|}" placeholder="Пароль"/><br /><br />
+                    <input class="rtm-check-fill05" type="password" name="password2" value="{|$control_password2|}" placeholder="Повторите пароль"/><br /><br />
+                    <input class="rtm-check-fill05" type="text" name="email" value="{|$control_email|}" placeholder="E-mail" /><br /> <br />
+                    <input class="js-phone-formatter rtm-check-fill05"  type="text" placeholder="Номер телефона" name="phone" value="{|$control_phone|}" /><br /><br />
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <span class="descript-small">
+                        Введенная Вами информация будет использоваться только для связи с
+                        Вами и не может быть передана третьим лицам.
+                    </span>
+                </div>
+                <div class="foot">
+                    <input type="submit" name="registration" value="Регистрация" class="rtm-submit rtm-submit-fill05" />
+                    <div class="clear">&nbsp;</div>
+                    <br />
+                    <span class="descript-small ta_left">
+                       Подтверждая регистрацию, я даю согласие на использование моих персональных данных на
+                        законных основаниях (согласно Закона Украины «О защите персональных данных»).
+                    </span>
+                </div>
+            </form>
+        {|/if|}
+    </div>
+</div>
+
+
+
+{|if $messageRegistration|}
+    <script type="text/javascript">
+        $j('.js-popup-register-block').show();
+    </script>
+{|/if|}

@@ -1,0 +1,3 @@
+# every minute
+*/30   *   *   *   *   /usr/bin/php -d memory_limit=500M -f [wwwpath]modules/box/cron/cron-imap.php > /dev/null 2>&1
+*      *   *   *   *   /usr/bin/php -d memory_limit=500M -f [wwwpath]modules/box/cron/cron-ami.php > /dev/null 2>&1

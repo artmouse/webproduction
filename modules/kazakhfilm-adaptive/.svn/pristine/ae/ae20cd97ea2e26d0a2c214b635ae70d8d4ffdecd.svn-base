@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine>
+    <content id="shop-tpl" register="extend">
+        <filecssremove/>
+        <filejsremove/>
+        <filehtml>shop_tpl.html</filehtml>
+        <filephp>shop_tpl.php</filephp>
+        <filejs>shop_tpl.js</filejs>
+        <filecss>shop_tpl.css</filecss>
+        <filecss>shop_tpl_adaptive_960.css</filecss>
+        <filecss>shop_tpl_adaptive_640.css</filecss>
+        <filecss>shop_tpl_adaptive_480.css</filecss>
+    </content>
+
+    <content id="block-menu-textpage" register="extend">
+        <filehtml>block/block_menu_textpage.html</filehtml>
+        <filephp>block/block_menu_textpage.php</filephp>
+    </content>
+
+    <content id="block-callback" register="extend">
+        <filehtml>block/block_callback.html</filehtml>
+        <filephp>block/block_callback.php</filephp>
+    </content>
+
+    <content id="block-feedback" register="extend">
+        <filehtml>block/block_feedback.html</filehtml>
+        <filephp>block/block_feedback.php</filephp>
+    </content>
+
+    <content id="block-banner-top" register="extend">
+        <filehtml>block/block_banner_top.html</filehtml>
+        <filephp>block/block_banner_top.php</filephp>
+    </content>
+
+    <content id="index" register="extend">
+        <filehtml>shop_index.html</filehtml>
+        <filephp>shop_index.php</filephp>
+        <moveto>shop-tpl</moveto>
+    </content>
+
+    <content id="shop-page" register="extend">
+        <filehtml>shop_page.html</filehtml>
+        <moveto>shop-tpl</moveto>
+    </content>
+
+    <content id="kzh-contacts">
+        <url>/contacts/</url>
+        <filehtml>kzh_contacts.html</filehtml>
+        <filephp>kzh_contacts.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="kzh-transfer">
+        <url>/transfer/</url>
+        <filehtml>kzh_transfer.html</filehtml>
+        <filephp>kzh_transfer.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="shop-guestbook" register="extend">
+        <filehtml>shop_guestbook.html</filehtml>
+        <filephp>shop_guestbook.php</filephp>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="booking">
+        <url>/booking/</url>
+        <title>Номера и цены</title>
+        <filehtml>booking.html</filehtml>
+        <filephp>booking.php</filephp>
+        <filejs>booking.js</filejs>
+        <moveto>shop-tpl</moveto>
+        <moveas>content</moveas>
+    </content>
+
+    <content id="temp-index">
+        <url>/temp-index/</url>
+        <title>Main page</title>
+        <filehtml>temp_index.html</filehtml>
+    </content>
+
+    <content id="how-get">
+        <url>/how-get/</url>
+        <title>Как добраться</title>
+        <filehtml>how_get.html</filehtml>
+    </content>
+
+    <content id="shop-admin-products" register="extend">
+        <filephp>admin/products_index.php</filephp>
+    </content>
+
+    <content id="shop-admin-orders" register="extend">
+        <filephp>admin/orders_index.php</filephp>
+    </content>
+
+    <content id="shop-admin-guestbook" register="extend">
+        <filephp>admin/guestbook_index.php</filephp>
+    </content>
+
+    <content id="block-kazakh-order">
+        <filehtml>block/block_kazakh_order.html</filehtml>
+        <filephp>block/block_kazakh_order.php</filephp>
+        <filejs>block/block_kazakh_order.js</filejs>
+    </content>
+
+    <content id="shop-admin-currency" register="extend">
+        <filephp>admin/currency/currency_index.php</filephp>
+        <filehtml>admin/currency/currency_index.html</filehtml>
+    </content>
+
+</engine>

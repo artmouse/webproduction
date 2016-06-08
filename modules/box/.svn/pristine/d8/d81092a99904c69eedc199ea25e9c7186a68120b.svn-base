@@ -1,0 +1,20 @@
+<div id="contentJsonAddress" style="display:none;">{|$addressArray|}</div> 
+<div id="map" style="width: 100%; height: 700px"></div>
+
+{|if count($pagesArray.pagesArray) > 1|}
+    <div class="ob-block-stepper">
+        {|if $pagesArray.urlprev|}
+            <a href="{|$pagesArray.urlprev|}" class="prev">&lsaquo; {|$translate_back|}</a>
+            {|if $pagesArray.hellip|}&hellip;{|/if|}
+        {|/if|}
+
+        {|foreach from=$pagesArray.pagesArray item="e"|}
+            <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+        {|/foreach|}
+
+        {|if $pagesArray.urlnext|}
+            {|if $pagesArray.hellip|}&hellip;{|/if|}
+            <a href="{|$pagesArray.urlnext|}" class="next">{|$translate_next|} &rsaquo;</a>
+        {|/if|}
+    </div>
+{|/if|}

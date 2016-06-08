@@ -1,0 +1,27 @@
+<div class="os-crumbs">
+    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url">
+            <span itemprop="title">{|$translate_main|}</span>
+        </a>
+    </div>
+    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="{|$currentURL|}" itemprop="url">
+            <span itemprop="title">{|$name|}</span>
+        </a>
+    </div>
+</div>
+
+{|if $content|}
+    <div class="os-editor-content js-ckEditor-container">
+        {|$content|}
+    </div>
+{|/if|}
+
+{|if $urledit|}
+    <a href="{|$urledit|}" class="os-link-edit">{|$translate_edit|}</a>
+{|/if|}
+
+
+{|$logiccontent|}
+
+{|$seocontent|}

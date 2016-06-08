@@ -1,0 +1,140 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/incoming/" class="selected">{|$translate_incoming_products|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="js-storage-message-div"></div>
+
+{|if $messageprocess == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_incoming_message_ok|}.
+    </div>
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $messageinfo == 'noincoming'|}
+    <div class="shop-message-error">
+        {|$translate_incoming_message_no_products|}.
+    </div>
+{|/if|}
+
+{|if $messageprocess == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_incoming_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e.product|}
+                <strong>{|$translate_product|} {|$e.product|}</strong>:
+            {|/if|}
+            {|if $e.error == 'storagename'|}
+                {|$translate_incoming_error_storagename|}.<br />
+            {|/if|}
+            {|if $e.error == 'supplier'|}
+                {|$translate_incoming_error_vendor|}.<br />
+            {|/if|}
+            {|if $e.error == 'permission'|}
+                {|$translate_storage_error_permission|}<br />
+            {|/if|}
+            {|if $e.error == 'shipped'|}
+                {|$translate_incoming_error_shipped|}.<br />
+            {|/if|}
+            {|if $e.error == 'product'|}
+                {|$translate_box_error_product|}.<br />
+            {|/if|}
+            {|if $e.error == 'count'|}
+                {|$translate_box_error_amount|}.<br />
+            {|/if|}
+            {|if $e.error == 'price'|}
+                {|$translate_incoming_error_price|}.<br />
+            {|/if|}
+            {|if $e.error == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.<br />
+            {|/if|}
+            {|if $e.error == 'serial'|}
+                {|$translate_incoming_error_serial|}.<br />
+            {|/if|}
+            {|if $e.error == 'currency'|}
+                {|$translate_incoming_error_currency|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messageprocess != 'ok'|}
+    {|$block_table|}
+
+    {|$block_form|}
+
+    {|$block_import|}
+
+    {|if not $suppliersArray|}
+        <div class="shop-message-error">
+            {|$translate_incoming_todo|} <a href="/admin/shop/storage/settings/vendors/">{|$translate_incoming_settings_vendors|}</a>.
+        </div>
+    {|/if|}
+
+    {|if not $storagesArray|}
+        <div class="shop-message-error">
+            {|$translate_incoming_todo|} <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>.
+        </div>
+    {|/if|}
+
+    {|if $suppliersArray AND $storagesArray|}
+        <div class="ob-block-element">
+            <h1>{|$translate_incoming_do|}:</h1>
+
+            <form class="ob-block-form" action="" method="post" id="form2">
+                <table>
+                    <tr>
+                        <td>{|$translate_vendor|}:</td>
+                        <td>
+                            <select class="chzn-select"  name="supplierid">
+                                {|foreach from=$suppliersArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_supplierid|} selected {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_incoming_warehouse|}:</td>
+                        <td>
+                            <select class="chzn-select" name="storagenameid">
+                                {|foreach from=$storagesArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_storagenameid|} selected {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_incoming_date|}:</td>
+                        <td><input type="text" name="date" value="{|$control_date|}" /></td>
+                    </tr>
+                    <tr>
+                        <td>{|$translate_contractor|}:</td>
+                        <td>
+                            <select class="chzn-select" name="contractorid">
+                                {|foreach from=$contractorArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="process" value="1" />
+                            <input class="ob-button" type="button" id="js-button-process" value="{|$translate_incoming_post|}" onclick="if (confirm('{|$translate_incoming_post_confirm|}')) $j('#form2').submit(); else return false; " />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    {|/if|}
+{|/if|}

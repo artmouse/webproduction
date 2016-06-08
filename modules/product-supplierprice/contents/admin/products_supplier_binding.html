@@ -1,0 +1,78 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/products/">&lsaquo; {|$translate_many_products|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/products/supplier/import/">{|$translate_download_the_price_list_provider|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/products/supplier/import/history">История загрузки прайсов</a></div>
+        {|*|}<div class="tab-element"><a class="selected" href="">Связывание товаров</a></div>{|*|}
+        <div class="clear"></div>
+    </div>
+</div>
+{|if $load|}
+    <div class="shop-message-info">
+        {|$translate_wait_we_recognize_price|}.
+    </div>
+    <script>
+    function fresh() {
+        location.reload();
+    }
+    setInterval("fresh()",60000);
+    </script>
+{|elseif $process|}
+    <div class="shop-message-info">
+        {|$translate_loading_goods_please_wait|}.
+    </div>
+{|else|}
+    <strong>
+        {|$translate_results_download_price_lists_from_suppliers|}: {|$suppliersNameString|}.
+    </strong>
+
+    <div class="supplier-products-container">
+        <div style=" width: 80%; float: left ">
+            {|$table|}
+        </div>
+        <div style="margin-left: 81%;">
+            {|$translate_search_from_products|}<br/>
+            <form method="get" class="js-filter-product-form">
+                <input name="name" type="text" style="width: 55%">
+                <input type="button"  value="{|$translate_search|}" name="search" class="js-filter-product-search ob-button button-green">
+                <br/><br />
+                {|foreach from=$filtersArray item="e" key="key"|}
+                    {|$e.name|}
+                    <select name="custom_filter_{|$key|}" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$e.values item="i"|}
+                            <option value="{|$i.id|}">{|$i.value|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br/>
+                {|/foreach|}
+            </form>
+            <div class="block-produts-search" style="height: 550px; overflow-y: auto">
+            </div>
+            <div">
+                <form method="post" action="">
+                    <input type="hidden" class="js-id-products" name="moveids" />
+                    <input type="submit"  value="В черный список" name="blackList" class="ob-button">
+                    <input type="submit"  value="{|$translate_delete|}" name="delete" class="ob-button">
+                    <br />
+                    <br />
+                    <label>
+                        <input type="checkbox" value="1" name="createnew">
+                        {|$translate_create_new_products|}
+                     </label>
+                     <br/>
+                    <input type="submit"  value="Импортировать все товары" name="importAll" class="ob-button button-green">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $j('.supplier-products-container .js-droppable').droppable({
+            activeClass: "droppable",
+            hoverClass: "droppable-hover"
+        });
+
+    </script>
+{|/if|}
+

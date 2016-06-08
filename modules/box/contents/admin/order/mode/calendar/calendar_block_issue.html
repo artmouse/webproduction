@@ -1,0 +1,27 @@
+<a class="day-element {|if $order.statusName|}stage-workflow-element{|/if|} {|if $order.closed|}complete{|/if|}"
+data-type="{|if $order.project|}project{|elseif $order.statusName OR $order.colour|}workflow{|else|}issue{|/if|}"
+data-id="{|$order.id|}" data-employerid="{|$order.employerId|}" data-statusid="{|$order.statusId|}"
+{|if $order.colour|}style="background-color: {|$order.colour|};"{|/if|} {|if $order.isOrder|}data-isorder="1"{|/if|}
+href="javascript:void(0);" onclick="smart_popup_open('{|$order.id|}');">
+    {|if $order.time|}<span class="time">{|$order.time|}</span>{|/if|}
+    {|$order.nameClear|}
+    <span class="clear"></span>
+
+    <span class="icons">
+        {|if $order.fireIssue|}
+            <span class="ob-icon-overdue"></span>
+        {|/if|}
+        {|if $order.allClosed|}
+            <span class="ob-icon-done"></span>
+        {|/if|}
+        {|if $e.new|}
+            <span class="ob-icon-new"></span>
+        {|/if|}
+    </span>
+    {|if $order.projectName|}<span style="font-size: 10px; color: grey;">{|$translate_proekt|}: {|$order.projectName|}</span>{|/if|}
+    <span class="description">{|$order.description|}</span>
+    {|if $order.statusName|}
+        <span class="status-name">{|$order.statusName|}</span>
+    {|/if|}
+    <span class="clear"></span>
+</a>

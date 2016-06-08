@@ -1,0 +1,126 @@
+{|if $block_menu|}
+    {|$block_menu|}
+{|else|}
+    <div class="nb-top-nav-place js-top-nav-buffer"></div>
+    <div class="nb-top-nav js-top-nav">
+        <div class="nb-block-tabs">
+            <div class="tab-element"><a href="/admin/issue/">&lsaquo; {|$acl_issue|}</a></div>
+            {|foreach from=$parentArray item="e"|}
+                <div class="tab-element"><a href="{|$e.url|}">{|$e.name|}</a></div>
+            {|/foreach|}
+            <div class="tab-element"><a href="{|$url|}" class="selected">{|$name|}</a></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $message == 'ok' OR $arg_message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_order_update_success|}.
+    </div>
+{|/if|}
+
+{|if not $canEdit|}
+    <div class="shop-message-info">
+        {|$translate_order_cant_edit_mess|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'issue-stop'|}
+                {|$translate_izmenenie_sostoyanie_zapreshcheno_poka_ne_vipolneni_vse_vnutrennie_zadachi|}.<br />
+            {|/if|}
+        {|/foreach|}
+
+        {|$errorText|}
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    {|*|}
+    <div class="ob-grid-default">
+        <div class="main-layer">
+            <div class="inner-layer">
+                <div class="block-zone">
+                    <div class="temp-content"></div>
+                </div>
+
+                <div class="double">
+                    <div class="block-zone">
+                        <div class="temp-content"></div>
+                    </div>
+
+                    <div class="block-zone">
+                        <div class="temp-content"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="block-zone">
+                    <div class="temp-content"></div>
+                </div>
+            </div>
+        </div>
+        <div class="aside-layer">
+            <div class="block-zone">
+                <div class="temp-content" style="min-height: 340px;"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    {|*|}
+
+    <div class="ob-grid-default">
+        <div class="main-layer">
+            <div class="block-zone">
+                {|$block_info|}
+
+                {|$block_processorform|}
+
+                {|$block_comment|}
+            </div>
+        </div>
+        <div class="aside-layer">
+            <div class="block-zone">
+                {|if $subIssueArray|}
+                    <div class="ob-block-element wrapped">
+                        <div class="block-caption">{|$translate_struktura|}</div>
+                        {|foreach from=$subIssueArray item="e"|}
+                            <a class="shop-activity-preview js-issue-preview {|if $e.closed|}hidden{|/if|} {|if $e.id == $orderId|}selected{|/if|}" data-id="{|$e.id|}" href="{|$e.url|}" style="margin-left: {|math equation="x*20" x=$e.level|}px;">
+                        <span class="activity-head">
+                            <span class="{|if $e.closed|}ob-icon-done{|elseif $e.fire|}ob-icon-overdue{|else|}ob-icon-list{|/if|} type-icon"></span>
+                            {|if $e.dateto || $e.managerName|}
+                                {|if $e.dateto|}<span class="date fl-r">{|$e.dateto|}</span>{|/if|}
+                                <span class="name">{|if $e.managerName|}{|$e.managerName|}{|else|}{|$translate_net_otvetstvennogo|}{|/if|}</span>
+                            {|/if|}
+                            <span class="clear"></span>
+                            <span class="subject">{|$e.name|}</span>
+                        </span>
+                            </a>
+                        {|/foreach|}
+                    </div>
+                {|/if|}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    {|if $canEdit|}
+        <div class="ob-button-fixed">
+            <input type="hidden" name="ok" value="1" />
+            <input type="submit" value="{|$translate_save|}" class="ob-button button-green js-clear-localstorage" onclick="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_zadachi|}.');" />
+
+            <input type="hidden" name="statusid" value="" id="js-issue-input-statusid" />
+            {|foreach from=$statusNextArray item="e"|}
+                <input type="submit" value="{|$e.name|}" class="ob-button" data-id="{|$e.id|}"
+                    onclick="$j('#js-issue-input-statusid').val($j(this).data('id')); shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_zadachi|}.');"
+                    {|if $e.colour|}style="background-color: {|$e.colour|}; color: #000000 !important;"{|/if|} />
+            {|/foreach|}
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    {|/if|}
+</form>

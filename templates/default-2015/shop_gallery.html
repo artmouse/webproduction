@@ -1,0 +1,21 @@
+<div class="os-gallery-list">
+    {|foreach from=$albums item="a"|}
+        <h3>{|$a|}</h3>
+        {|foreach from=$galleryArray item="e"|}
+        {|if $a == $e.album|}
+            <div class="os-gallery-item">
+                <div class="image">
+                    <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|escape|}" /></a>
+                </div>
+                <div class="name">
+                    <a href="{|$e.url|}">{|$e.name|}</a>
+                </div>
+            </div>
+        {|/if|}
+        {|/foreach|}
+    {|/foreach|}
+
+    <div class="os-gallery-empty"></div>
+    <div class="os-gallery-empty"></div>
+    <div class="os-gallery-empty"></div>
+</div>

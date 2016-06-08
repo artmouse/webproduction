@@ -1,0 +1,94 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/news/">&lsaquo; {|$translate_news|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_news_edit|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <strong>{|$translate_title_header|}</strong><br />
+    <input type="text" name="name" value="" style="width: 80%; ">
+    <br />
+    <br />
+
+    <strong>{|$translate_short_contents|}</strong><br />
+    <textarea class="js-editor" name="contentpreview"  style="width: 100%; height: 100px;" id="id-contentpreview"></textarea>
+    <br />
+    <br />
+
+    <strong>{|$translate_contents|}</strong><br />
+    <textarea class="js-editor" name="content"  style="width: 100%; height: 300px;" id="id-content"></textarea>
+    <br />
+    <br />
+
+    <strong>{|$translate_picture|}</strong><br />
+    <input type="file" name="image" />
+    <br />
+    <br />
+
+    <strong>{|$translate_hidden|}</strong><br />
+    <input type="checkbox" name="hidden" value="1" />
+    <br />
+    <br />
+
+    <strong>{|$translate_set_up|}</strong><br />
+    <input type="text" name="cdate" class="js-date" value="" style="width: 150px;">
+    <br />
+    <br />
+
+    <strong>{|$translate_article_about_this_product|}</strong> ({|$translate_start_typing_the_name_of_the_product|})<br />
+    <input type="text" name="addproduct" value="" id="id-addproduct"/>
+    <br />
+    <br />
+
+    <strong>{|$translate_the_article_refers_to_the_category_of|}</strong><br />
+    <select class="chzn-select" name="category" style="width: 300px;">
+        <option value="0">---</option>
+        {|foreach from=$categoryArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_category|} selected {|/if|}>
+                {|section name=foo start=0 loop=$e.level|}
+                    &nbsp;&nbsp;&nbsp;
+                {|/section|}
+                {|$e.name|}
+                ({|$e.id|})
+                {|if $e.hidden|}
+                    - {|$translate_hidden1_small|}
+                {|/if|}
+            </option>
+        {|/foreach|}
+    </select>
+    <br />
+
+    <strong>{|$translate_the_article_refers_to_the_brand|}</strong><br />
+    <select class="chzn-select" name="brand" style="width: 300px;">
+        <option value="0">---</option>
+        {|foreach from=$brandsArray item="e"|}
+            <option value="{|$e.id|}" {|if $control_brand == $e.id|} selected {|/if|}>{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+
+    <strong>SEO {|$translate_heading|} (title)</strong><br />
+    <input type="text" name="seotitle" value="{|$control_seotitle|}" style="width: 80%; ">
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_description_small|} (description)</strong><br />
+    <textarea name="seodescription" style="width: 100%; height: 100px;">{|$control_seodescription|}</textarea>
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_seo_content|} (content)</strong><br />
+    <textarea class="js-editor" name="seocontent" style="width: 100%; height: 100px;" id="id-seocontent"></textarea>
+    <br />
+    <br />
+
+    <strong>SEO {|$translate_seo_kaewords|} (keywords)</strong><br />
+    <textarea name="seokeywords" style="width: 100%; height: 100px;">{|$control_seokeywords|}</textarea>
+    <br />
+    <br />
+
+    <input class="ob-button" type="submit" name="formsInsert" value="{|$translate_news_add|}">
+</form>

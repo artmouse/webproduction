@@ -1,0 +1,25 @@
+<ul class="cl-category-menu js-toggle-cat-menu">
+    {|foreach from=$categoryArray item="e1" key="key"|}
+        {|if $key < 6|}
+            <li>
+                <a href="{|$e1.url|}"><span>{|$e1.name|}</span></a>
+                {|if $e1.childsArray|}
+                    <ul class="dropdown-menu">
+                        {|foreach from=$e1.childsArray item="e2" key="keye2"|}
+                            <li class="element">
+                                <a href="{|$e2.url|}">{|$e2.name|}</a>
+                            </li>
+                        {|/foreach|}
+                    </ul>
+                {|/if|}
+            </li>
+        {|/if|}
+    {|/foreach|}
+    <li class="top-level-link">
+        <a href="/contact">Contact</a>
+    </li>
+    <li class="top-level-link">
+        <a  href="/sale/">Sale</a>
+        <!--<div class="sales">Sale</div>-->
+    </li>
+</ul>

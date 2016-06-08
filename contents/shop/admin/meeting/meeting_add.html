@@ -1,0 +1,90 @@
+{|if $value == 'clear'|}
+    {|assign var=control_date value=""|}
+    {|assign var=toArray value=""|}
+    {|assign var=control_location value=""|}
+    {|assign var=control_content value=""|}
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_vstrecha_uspeshno_sozdana_i_dobavlena_v_sobitiya|}.<br />
+        {|$translate_mi_napomnim_vam_o_ney_zaranee|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_oshibka_sozdaniya_vstrechi_data_i_uchastniki_obyazatelni_k_zapolneniyu|}.
+    </div>
+{|/if|}
+
+{|if $urlredirect|}
+    <script type="text/javascript">
+       document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+<h1>{|$translate_dobavit_vstrechu|}</h1>
+<br />
+<form action="" method="post">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_korotkoe_opisanie_vstrechi|}?</div>
+                    <textarea name="content" class="js-autosize" rows="5">{|$control_content|}</textarea>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_data_i_vremya_vstrechi|}</div>
+                    <input type="text" name="date" value="{|$control_date|}" class="js-datetime" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_mesto_provedeniya_vstrechi|}</div>
+                    <input type="text" name="location" value="{|$control_location|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_kto_initsiator_vstrechi|}?</div>
+                    <select name="from" class="chzn-select">
+                        {|foreach from=$contactArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_from|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_spisok_uchastnikov_vstrechi|}?</div>
+                    <input type="hidden" name="to" value="{|$control_clientid|}" id="js-user-filter-autocomplete-client" style="width: 100%;" />
+                    <script type="text/javascript">
+                        $j(function () {
+                            var tags = [
+                                {|foreach from=$usertoArray item="p" name="foreach1"|}
+                                {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                                {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                                {|/foreach|}
+                            ];
+
+                            $j("#js-user-filter-autocomplete-client").select2('data', tags);
+                        });
+                    </script>
+                </div>
+
+                <div class="form-element">
+                    <label>
+                        <input type="checkbox" name="send" value="1" />
+                        {|$translate_otpravit_priglashenie_po_email_vsem_uchastnikam|}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+        <input type="submit" name="okClear" value="{|$translate_save_plus_add|}" class="ob-button" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

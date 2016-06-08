@@ -1,0 +1,45 @@
+<a class="user-avatar nb-block-avatar js-contact-preview" style="background-image: url('{|$avatar|}')" href="{|$url|}"></a>
+<div class="user-name">
+    <a href="{|$url|}" class="js-contact-preview" data-id="{|$contactID|}">{|$name|}</a>
+</div>
+
+{|if $managerName|}
+    <div class="option-element">
+        {|$translate_manager|}:
+        <a href="{|$managerURL|}" class="js-contact-preview" data-id="{|$managerID|}">{|$managerName|}</a>
+    </div>
+{|/if|}
+
+{|if $orderArray|}
+    <div class="option-element">
+        {|$translate_poslednie_zakazi|}:<br />
+        {|foreach from=$orderArray item="e"|}
+            <a href="{|$e.url|}">{|$e.name|}</a>
+            &mdash;
+            {|$e.sum|} {|$e.currency|}
+            &mdash;
+            {|$e.status|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $tags|}
+    <div class="option-element">
+        {|$translate_tags|}:
+        {|$tags|}
+    </div>
+{|/if|}
+
+<script type="text/javascript">
+    $j(function () {
+        $j('.js-workflow-start').click(function (event) {
+            var $target = $j(event.target);
+            var comment = $j('#js-call-comment').val().trim();
+
+            if (comment != '') {
+                $target.attr('href', $target.attr('href')+'&content='+encodeURIComponent(comment));
+            }
+        });
+    });
+</script>

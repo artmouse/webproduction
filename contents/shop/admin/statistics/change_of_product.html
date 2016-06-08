@@ -1,0 +1,70 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_date_to|}" />
+            </div>
+
+            {|if $userArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_user_small|}</div>
+                    <select name="userid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$userArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_userid == $e.id|} selected {|/if|}>{|$e.namefull|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$reportname|}</h1>
+
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>productid</td>
+                    <td>productname</td>
+                    <td>producturl</td>
+                    <td>description</td>
+                    <td>image</td>
+                    <td>lastordered</td>
+                    <td>name</td>
+                    <td>ordered</td>
+                </tr>
+            </thead>
+            {|foreach from=$changeArray item="product" key="productID"|}
+                <tr>
+                    <td>
+                        <a href="{|$product.producturl|}" data-id="{|$product.productid|}" class="js-product-preview">{|$product.productid|}</a>
+                    </td>
+                    <td>{|$product.productname|}</td>
+                    <td>{|$product.producturl|}</td>
+                    <td>{|$product.description|}</td>
+                    <td>{|$product.image|}</td>
+                    <td>{|$product.lastordered|}</td>
+                    <td>{|$product.name|}</td>
+                    <td>{|$product.ordered|}</td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

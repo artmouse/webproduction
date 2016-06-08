@@ -1,0 +1,275 @@
+{|if $message == 'success'|}
+    <div class="shop-message-success">
+        {|$translate_data_saved|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'sum'|}
+                {|$translate_nevernaya_summa_platezha|}.
+            {|/if|}
+            {|if $e == 'accountDirectionRate'|}
+                {|$translate_neverno_ukazan_kurs|}.
+            {|/if|}
+            {|if $e == 'account'|}
+                {|$translate_neverno_ukazan_akkaunt|}.
+            {|/if|}
+            {|if $e == 'permission'|}
+                {|$translate_net_dostupa_k_akkauntu|}.
+            {|/if|}
+            {|if $e == 'category'|}
+                {|$translate_neverno_vibrana_kategoriya_platezha|}.
+            {|/if|}
+            {|if $e == 'invoice'|}
+                {|$translate_ukazanniy_schet_ne_nayden|}.
+            {|/if|}
+            {|if $e == 'client'|}
+                {|$translate_invoice_error_client|}.
+            {|/if|}
+            {|if $e == 'accountDirection'|}
+                {|$translate_ne_vibran_akkaunt_s_kotorogo_na_kotoriy_osushchestvlyaetsya_platezh|}.
+            {|/if|}
+            {|if $e == 'direction'|}
+                {|$translate_nevernoe_napravlenie_platezha|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <h1>{|$translate_payment_edit|} #{|$id|}</h1>
+    <br />
+
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_account|}</div>
+                    <select class="chzn-select" name="accountid">
+                        {|foreach from=$accountArray key="k" item="account"|}
+                            <option value="0" disabled >{|$k|}</option>
+                            {|foreach from=$account item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_accountid|}selected{|/if|}>&nbsp;&nbsp;&nbsp;{|$e.name|}</option>
+                            {|/foreach|}
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <label>
+                        <input type="checkbox" name="noBalance" value="1" {|if $control_noBalance|}checked{|/if|}>{|$translate_ne_uchitivat_platezh_v_balanse|}
+                    </label>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_amount|}  <span>({|$translate_account_curency_small|})</span></div>
+                    <input type="text" name="amount" value="{|$control_amount|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_rate|}</div>
+                    <input type="text" name="currencyrate" value="{|$control_currencyrate|}" placeholder="{|$translate_automatically|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_type_shot|}</div>
+                    <select name="direction" class="chzn-select js-direction">
+                        {|if $isTransfer|}
+                            <option value="fromaccount" {|if $control_direction == 'fromaccount'|} selected {|/if|}>{|$translate_account_from|}</option>
+                            <option value="toaccount" {|if $control_direction == 'toaccount'|} selected {|/if|}>{|$translate_account_to|}</option>
+                        {|else|}
+                            <option value="fromclient" {|if $control_direction == 'fromclient'|} selected {|/if|}>{|$translate_client_from|}</option>
+                            <option value="toclient" {|if $control_direction == 'toclient'|} selected {|/if|}>{|$translate_client_to|}</option>
+                        {|/if|}
+                    </select>
+                </div>
+
+                <div class="js-client-container">
+                    {|if not $isTransfer|}
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_client_small|}</div>
+                            <table class="layer-table">
+                                <tr>
+                                    <td><input type="text" name="client" id="js-client-name" value="{|$client|}" /></td>
+                                    <td class="separator"></td>
+                                    <td style="width: 150px;">
+                                        <input type="hidden" name="clientid" id="js-client-value" value="{|$control_clientid|}" />
+                                        <a href="#" id="js-client" class="ob-button" style="width: 150px;">{|$translate_change_contact|}</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <script type="text/javascript">
+                                $j(function () {
+                                    var query = '';
+                                    $j('#js-client-name').autocomplete({
+                                        delay: 500,
+                                        source: function( request, response ) {
+                                            query = request.term;
+                                            $j.ajax({
+                                                url: "/admin/shop/users/ajax/autocomplete/select2/",
+                                                dataType: "json",
+                                                data:{
+                                                    name: request.term
+                                                },
+                                                success: function( data ) {
+                                                    if (data==null) response(null);
+                                                    response( $j.map( data, function( item ) {
+                                                        name = item.name;
+                                                        return {
+                                                            id: item.id,
+                                                            label: name,
+                                                            value: name
+                                                        }
+                                                    }));
+                                                }
+                                            });
+                                        },
+                                        select: function (event, ui) {
+                                            $j('#js-client-value').val(ui.item.id);
+                                        },
+                                        minLength:3
+                                    }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                        ul.removeClass().addClass("ob-autocomplete");
+                                        var inner_html = '<span>'+item.label+'</span>';
+                                        if (item.id === 0) {
+                                            inner_html = '<span class="ob-link-add ob-link-dashed">'+item.label+'</span>';
+                                            return $j( "<li onclick='addUserPaymentControlInSelectWindow(\""+query+"\")'></li>" )
+                                                    .data( "item.autocomplete", item )
+                                                    .append(inner_html)
+                                                    .appendTo( ul );
+                                        } else {
+                                            return $j( "<li></li>" )
+                                                    .data( "item.autocomplete", item )
+                                                    .append(inner_html)
+                                                    .appendTo( ul );
+                                        }
+                                    };
+
+                                    $j('#js-client').click(function(e){
+                                        selectwindow_init('w2', 'js-client-name', 'js-client-value', {
+                                            usersearch: true,
+                                            useradd: true
+                                        });
+                                        e.preventDefault();
+                                    });
+
+                                });
+
+                                function addUserPaymentControlInSelectWindow (name) {
+                                    selectwindow_init('w2', 'js-client-name', 'js-client-value', {
+                                        usersearch: true,
+                                        useradd: true,
+                                        selectedTab:1,
+                                        userAddDefault:name
+                                    });
+                                }
+                            </script>
+                        </div>
+                    {|else|}
+                        <div class="double">
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_invoice_small|}</div>
+                                <select class="chzn-select" name="accountdirectionid">
+                                    {|foreach from=$accountArray key="k" item="account"|}
+                                        <option value="0" disabled>{|$k|}</option>
+                                        {|foreach from=$account item="e"|}
+                                            <option value="{|$e.id|}" {|if $e.id == $control_accountid|}selected{|/if|}>
+                                                &nbsp;&nbsp;&nbsp;{|$e.name|}</option>
+                                        {|/foreach|}
+                                    {|/foreach|}
+                                </select>
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_rate|}</div>
+                                <input type="text" name="accountrate" value="{|$control_accountrate|}"
+                                       placeholder="{|$translate_automatically|}"/>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    {|/if|}
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_payment_category|}</div>
+                    <select class="chzn-select" name="categoryid">
+                        <option value="">---</option>
+                        {|foreach from=$categoryArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_categoryid|}selected{|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                {|if $canEditLinkOrder|}
+                    <div class="double">
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_privyazka_k_zakazu|}</div>
+                            <input type="text" name="linkkeyorder" value="{|$control_linkkeyorder|}"/>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_summa_v_valyute_zakaza|}</div>
+                            <input type="text" name="orderamountbase" value="{|$control_orderamountbase|}"/>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                {|/if|}
+            </div>
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_payment_date|}</div>
+                    <input class="js-date" type="text" name="pdate" value="{|$control_pdate|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_comment|}</div>
+                    <textarea name="comment" style="height: 100px;">{|$control_comment|}</textarea>
+                </div>
+
+                <div class="form-element">
+                    <a class="ob-link-dashed" href="javascript:void(0);" onclick="$j('.js-bank-details').toggle();">{|$translate_banking_details|}</a>
+
+                </div>
+
+                <div class="js-bank-details" style="display: none;">
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_reference_code|}</div>
+                        <input type="text" name="code" value="{|$control_code|}" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_banking_details|}</div>
+                        <textarea name="bankdetail" style="height: 100px;">{|$control_bankdetail|}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_file|}  <span>{|$translate_optionally|}</span></div>
+                    {|if $fileURL|}
+                        <a href="{|$fileURL|}" >{|$fileName|}</a>
+                        <label><input type="checkbox" value="1" name="deletefile" />{|$translate_delete_small|}</label>
+                        <br />
+                        <br />
+                        {|$translate_zamenit_na_fayl|} {|$translate_optionally|}<br />
+                    {|/if|}
+
+                    <input type="file" name="file"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input class="ob-button button-green" type="submit" name="ok" value="{|$translate_payment_save|}">
+
+        {|if $canDelete|}
+            <input class="ob-button" type="submit" name="delete" value="{|$translate_payment_delete|}" onclick="return confirm('{|$translate_payment_delete_confirm|}?');">
+        {|/if|}
+    </div>
+</form>

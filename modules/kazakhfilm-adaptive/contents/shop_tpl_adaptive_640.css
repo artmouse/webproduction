@@ -1,0 +1,262 @@
+@media(max-width: 641px) {
+    body {
+        background: url("/templates/kazakhfilm-adaptive/_images/body-bg-tille.png") -135px 0 repeat;
+        text-decoration: none;
+        min-width: inherit;
+    }
+
+    .inner{
+        min-width: inherit;
+        max-width: inherit;
+        width: auto;
+    }
+
+    .page-footer{
+        height: 43px;
+    }
+
+    .page-buffer {
+        height:  43px;
+    }
+
+    header {
+        height: auto;
+        padding-bottom: 24px;
+        text-align: center;
+    }
+
+    header .logo  {
+        float: none;
+        display: block;
+        width: 269px;
+        height: 82px;
+        margin: 0 auto 40px;
+        padding: 10px 0 0 0;
+    }
+
+    header .phones {
+        display: block;
+        float: none;
+        width: 100%;
+        margin: 10px 0 0 0;
+        position: inherit;
+        top: 0;
+        text-align: center;
+    }
+
+    header .phones-mobile {
+        font-size: 30px;
+        margin-top: 20px;
+        line-height: 33px;
+        max-height: inherit;
+    }
+
+    header .phones-mobile a{
+        line-height: 33px;
+        font-size: 30px;
+    }
+
+    header .phones span.watsapp {
+        background-image: url("/templates/kazakhfilm-adaptive/_images/icon-whatsapp-24.png");
+    }
+
+    header .phones span.viber {
+        background-image: url("/templates/kazakhfilm-adaptive/_images/icon-viber-24.png");
+    }
+
+    nav {
+        float: none;
+        text-align: center;
+        width: 100%;
+        margin: 20px 0 10px 0;
+    }
+
+    nav a {
+        width: 320px;
+        float: none;
+        background-color: rgba(163, 163, 163, 0.20);
+        margin: 4px auto;
+        line-height: 35px;
+        border-radius: 15px;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background-color: rgba(163, 163, 163, 0.70);
+    }
+
+    nav a:hover:before, nav a.active:before {
+        height: 0;
+    }
+
+    nav a.book{
+        background-repeat: repeat-x;
+        padding: 0;
+        margin: 20px auto;
+    }
+
+
+    .ks-services-block .element{
+        margin-top: 12px;
+    }
+
+    .kz-prefooter-block .contacts{
+        width: 285px;
+        font-size: 30px;
+        line-height: 33px;
+        max-height: inherit;
+    }
+
+    .kz-prefooter-block .backcall{
+        margin-top: 6px;
+    }
+
+    .kz-prefooter-block .contacts a{
+        font-size: 19px;
+    }
+
+    .kz-prefooter-block .skype{
+        font-size: 20px;
+    }
+
+
+    .kz-prefooter-block .adress {
+        display: block;
+        width: 100%;
+        font-size: 28px;
+        margin-top: 16px;
+    }
+
+    .kzh-room-preview-block{
+        margin: 0 0 60px 0;
+    }
+
+
+    .room-preview-images {
+        float: none;
+        margin: 0 auto;
+    }
+
+    .room-preview-description{
+        width: 100%;
+        float: none;
+    }
+
+    .room-futures-block {
+        text-align: center;
+    }
+
+    .room-futures-block ul {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .room-preview-price-block {
+        width: 450px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .room-preview-price {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    .booking-button-block {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .kzh-modal{
+        padding: 5px;
+        position: absolute;
+        left: 5px;
+        z-index: 1002;
+        margin-left: 0 !important;
+    }
+
+    .kzh-modal label {
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    .kzh-booking-form{
+        width: 450px;
+    }
+
+    .kzh-booking-form label {
+        margin-left: 0 !important;
+    }
+
+    .kzh-booking-form .long {
+        width: 435px;
+    }
+
+    .kzh-booking-form  .sbHolder {
+        width: 315px;
+    }
+
+    .kzh-booking-form  .sbOptions {
+        width: 315px;
+    }
+
+    .kzh-booking-form textarea {
+        width: 434px;
+    }
+
+    .kzh-booking-form  .kzh-btn-default {
+        margin-bottom: 15px;
+    }
+
+    .callusModal .kzh-modal {
+        width: 450px;
+    }
+
+    .kzh-callus-form input[type=text] {
+        width: 424px;
+        height: 43px;
+        line-height: 43px;
+        font-size: 20px;
+    }
+
+    .feedbackModal .kzh-modal {
+        width: 450px;
+    }
+
+    .feedbackModal textarea {
+        width: 435px;
+    }
+
+    .feedbackModal  input[type=text] {
+        width: 434px;
+    }
+
+    .kzh-modal  .kzh-btn-default {
+        margin-bottom: 15px;
+    }
+
+    .contacts-big-map-caption {
+        display: none;
+    }
+
+    .contacts-big-map-block{
+        width: 460px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .map-from-yandex {
+        width: 460px;
+        height: 460px;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+}

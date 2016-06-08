@@ -1,0 +1,27 @@
+.supplier-product-element {
+    cursor: pointer;
+    padding: 8px 0 8px 26px;
+    border-bottom: 1px solid #b3b3b0;
+}
+.supplier-product-element span {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    padding: 0 0 0 20px;
+    width: 30%;
+}
+
+.supplier-product-element span:first-child {
+    width: 10%;
+    padding: 0;
+}
+
+.droppable-hover {
+    height: 100px;
+    border-left: 5px solid #32ff9b;
+}
+
+.supplier-product-element span.full-width {
+    width: 60%;
+}
+

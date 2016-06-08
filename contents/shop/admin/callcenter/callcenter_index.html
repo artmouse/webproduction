@@ -1,0 +1,18 @@
+<div class="js-callcenter-container"></div>
+
+<script type="text/javascript">
+$j(function () {
+    _callcenter_reload();
+});
+
+function _callcenter_reload() {
+    $j.ajax({
+        url: '/admin/shop/callcenter/ajax/',
+        success: function (html) {
+            $j('.js-callcenter-container').html(html);
+        }
+    });
+
+    setTimeout(_callcenter_reload, 3000);
+}
+</script>

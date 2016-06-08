@@ -1,0 +1,82 @@
+{|if $productsArray|}
+    <div class="def-table-list">
+        {|foreach from=$productsArray item="e"|}
+            <div class="def-table-element">
+                <div class="image">
+                    {|if $e.iconImage|}
+                        <img src="{|$e.iconImage|}" alt="{|$e.iconName|escape|}" title="{|$e.iconName|escape|}" class="icon-image" />
+                    {|/if|}
+                    <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|escape|}" title="{|$e.name|escape|}" /></a>
+                </div>
+                <div class="data">
+                    {|if $e.rating > 0|}
+                        <div class="def-block-rating">
+                            <div class="inner-value" style="width: {|$rating*20|}%;"></div>
+                        </div>
+                    {|/if|}
+
+                    <a class="name" href="{|$e.url|}" title="{|$e.name|}">{|$e.name|}</a>
+                    <div class="price-block">
+                        {|if $e.price == 0|}
+                            <div class="def-price-specify">{|$translate_specify_a_price|}</div>
+                        {|else|}
+                            {|if !$e.avail|}
+                                <div class="def-price-unavailable">
+                                    {|$e.price|} {|$e.currency|}
+                                    {|if ($e.discount && $e.avail && !$e.canMakePreorder) || ($e.discount && $e.canMakePreorder && !$e.avail) |}<sup class="discount">-{|$e.discount|}%</sup>{|/if|}
+                                </div>
+                            {|else|}
+                                <div class="def-price-available">
+                                    {|$e.price|} {|$e.currency|}
+                                    {|if ($e.discount && $e.avail && !$e.canMakePreorder) || ($e.discount && $e.canMakePreorder && !$e.avail) |}<sup>-{|$e.discount|}%</sup>{|/if|}
+                                </div>
+                            {|/if|}
+                            {|if $e.priceold AND $e.priceold > $e.price|}
+                                <div class="def-price-old"><s>{|$e.priceold|} {|$e.currency|}</s></div>
+                            {|/if|}
+
+                            <div class="js_personal_discount_check" data-productid="{|$e.id|}"></div>
+
+                        {|/if|}
+                    </div>
+
+                    {|if $e.descriptionshort|}
+                        <div class="short-description">
+                            {|$e.descriptionshort|}
+                        </div>
+                    {|/if|}
+
+                    <div class="block-buttons">
+                        {|if $e.canbuy or $e.canMakePreorder|}
+                            <div class="js-shop-buy" data-productid="{|$e.id|}">
+                                <a class="def-submit def-icon-basket js-shop-buy-action" href="javascript:void(0);">{|$translate_buy|}</a>
+                            </div>
+                            <a class="def-submit def-icon-basket" href="javascript: void(0);" onclick="basket_order_quick('{|$e.id|}', '{|$e.nameQuick|}');">{|$translate_buy_quick|}</a>
+                        {|/if|}
+
+                        <div class="js-shop-compare" data-productid="{|$e.id|}">
+                            <a class="action-btn like def-icon-heart js-shop-favorite" data-productid="{|$e.id|}" href="javascript:void(0);" title="В желаемое"></a>
+                            <a class="action-btn compare def-icon-shuffle js-shop-compare-action" data-productid="{|$e.id|}" href="javascript:void(0);" title="{|$translate_shop_compare_action|}"></a>
+                            <a class="action-btn compare def-icon-shuffle active js-shop-compared" href="/compare/" title="{|$translate_compared|}" style="display: none;"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+    </div>
+{|else|}
+    <div class="def-message-error">
+        <div class="caption">{|$translate_noproducts_message|}.</div>
+        {|$translate_managers_will_help|}. <br /><br />
+        {|if $phone1|}
+            {|$phone1|}&nbsp;&nbsp;{|$phone2|} <br />
+        {|/if|}
+        {|if $phone3|}
+            {|$phone3|}&nbsp;&nbsp;{|$phone4|} <br /><br />
+        {|else|}
+            <br />
+        {|/if|}
+        <a class="os-link-dashed" href="javascript:void(0);" onclick="popupOpen('.js-popup-mail-block');">{|$translate_what_you_need|}</a><br />
+    </div>
+{|/if|}

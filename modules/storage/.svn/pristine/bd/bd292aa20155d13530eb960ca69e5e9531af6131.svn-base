@@ -1,0 +1,16 @@
+{|foreach from=$productArray item=e name="foo"|}
+    <tr class="js-product-id" id="id-product-table-tr-{|$smarty.foreach.foo.index|}">
+        <td>
+            <a href="#">
+                #{|$e.id|} - {|$e.name|}
+            </a>
+            <input type="hidden" name="id" value="{|$e.id|}" />
+            <input type="hidden" name="name" value="{|$e.name|}" />
+        </td>
+        <td>
+            {|foreach from=$e.targetArray item=t|}
+                #{|$t.id|} - {|$t.name|} ({|$t.amount|} {|$t.unit|})<br />
+            {|/foreach|}
+        </td>
+    </tr>
+{|/foreach|}

@@ -1,0 +1,19 @@
+{|if $fileArray|}
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">{|$translate_fayli|}</div>
+        <div class="ob-block-files">
+            {|foreach from=$fileArray item="e"|}
+                <div class="file-element">
+                    <div class="size">{|$e.size|}</div>
+                    <div class="control">
+                        <a class="ob-link-clear" href="{|$e.urlDelete|}" onclick="return confirm('{|$translate_delete|}?');" title="{|$translate_delete|}"></a>
+                        <a class="ob-link-download" href="{|$e.url|}" title="{|$translate_download|}" download=""></a>
+                    </div>
+                    <a href="{|$e.url|}">{|$e.name|}</a>
+                    ({|$e.username|})
+                    <div class="date">{|$e.cdate|}</div>
+                </div>
+            {|/foreach|}
+        </div>
+    </div>
+{|/if|}

@@ -1,0 +1,198 @@
+
+@media(max-width: 980px) {
+    body {
+        background: url("/templates/kazakhfilm-adaptive/_images/body-bg-tille.png") -135px 0 repeat;
+        text-decoration: none;
+        min-width: inherit;
+    }
+
+    .inner{
+        min-width: inherit;
+        max-width: inherit;
+        width: auto;
+        margin: 0 auto;
+    }
+
+    header {
+        height: auto;
+        padding-bottom: 24px;
+        text-align: center;
+    }
+
+    header .logo  {
+        float: none;
+        display: inline-block;
+        margin: 10px 70px 0 0;
+    }
+
+    header .phones {
+        display: inline-block;
+        float: none;
+        width: 202px;
+        margin: 10px 0 0 70px;
+        position: relative;
+        top: -20px;
+    }
+
+    nav {
+        float: none;
+        text-align: center;
+        width: 100%;
+        margin: 30px 0 10px 0;
+    }
+
+    nav a {
+        margin: 0 0 0 6px;
+        display: inline-block;
+        float: none;
+    }
+
+    .ks-services-block {
+        margin: 0;
+        display: block;
+        text-align: center;
+    }
+
+
+    .ks-services-block .element{
+        margin-top: 12px;
+        float: none;
+        display: inline-block;
+    }
+
+    .ks-services-block .element span.text {
+        font-size: 18px;
+    }
+
+    .kz-prefooter-block {
+        background: url("/templates/kazakhfilm-adaptive/_images/brown-tille-bg.png");
+        padding: 25px 0;
+    }
+
+    .kz-prefooter-block .insider {
+        text-align: center;
+    }
+
+    .kz-prefooter-block .contacts {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+        margin-top: -5px;
+    }
+
+    .kz-prefooter-block .adress {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .kz-prefooter-block .adress br{
+        display: none;
+    }
+
+    .kz-prefooter-block .backcall {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+
+
+
+    .kz-prefooter-block .button {
+        width: 190px;
+        height: 90px;
+        cursor: pointer;
+        background: url("/templates/kazakhfilm-adaptive/_images/backcall-bg.png");
+        font-size: 16px;
+        color: #f8f1a7;
+        text-transform: uppercase;
+        padding: 15px 10px 0 81px;
+    }
+
+    .kz-prefooter-block .button span {
+        display: block;
+        font-size: 30px;
+        font-family: 'cd-normal',Georgia, 'Open Sans', Arial, serif;
+    }
+
+    .kz-prefooter-block .button:hover {
+        opacity: 0.8;
+    }
+
+    .kzh-room-preview-block {
+        margin: 0 0 30px 0;
+    }
+
+    .room-preview-images {
+        float: none;
+        margin: 0 auto;
+    }
+
+    .room-preview-description{
+        width: 100%;
+        float: none;
+    }
+
+    .room-futures-block {
+        text-align: center;
+    }
+
+    .room-futures-block ul {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .room-preview-price-block {
+        width: 500px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .room-preview-price {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    .booking-button-block {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .kzh-modal{
+        padding: 10px;
+        position: absolute;
+        left: 5px;
+        z-index: 1002;
+        margin-left: 0 !important;
+    }
+
+    .kzh-booking-form{
+        width: 500px;
+    }
+    .kzh-booking-form  .kzh-btn-default {
+        margin-bottom: 15px;
+    }
+
+    .contacts-big-map-caption {
+        display: none;
+    }
+
+    .contacts-big-map-block{
+        width: 560px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .map-from-yandex {
+        width: 560px;
+        height: 560px;
+    }
+
+}

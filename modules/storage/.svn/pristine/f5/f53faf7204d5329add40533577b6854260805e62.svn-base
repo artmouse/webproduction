@@ -1,0 +1,42 @@
+{|$menu|}
+
+
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">{|$translate_passport_edit_success|}.</div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">{|$translate_passport_edit_error|}.</div>
+{|/if|}
+
+<h1>Паспорт продукта</h1>
+<div id="js-message-div"></div>
+
+<div>
+    <input id="js-passport-id" type="hidden" value="{|$id|}">
+    <input id="js-product-id" type="hidden" value="{|$productid|}">
+    Продукт: <strong>{|$productName|}</strong>
+    <br>
+    Количество: <input id="js-product-count" type="text" value="{|$productCount|}">
+    <br>
+    <br>
+    <input type="submit" value="Сохранить изменения" class="ob-button js-save-target">
+    <br>
+    <br>
+</div>
+
+<h1>{|$translate_material|}</h1>
+<form action="" method="post" id="id-passport-materials">
+    {|$materialTable|}
+</form>
+
+<br />
+
+<div class="shop-block">
+    <a href="#" onclick="$j('#js-add-block-material').toggle(); return false;" style="display: block; font-size: 18px;">{|$translate_material_add|}</a>
+
+    <div id="js-add-block-material" style="display: none;">
+        {|$addFormMaterial|}
+    </div>
+</div>

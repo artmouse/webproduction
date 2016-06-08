@@ -1,0 +1,345 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="." method="get">
+            <h1>{|$translate_statistics_orders|}</h1>
+
+            <div class="element align_right">
+                <input type="text" name="dateFrom" value="{|$control_dateFrom|}" class="js-date" placeholder="{|$translate_filter_date|}" />
+            </div>
+
+            <div class="element align_right">
+                <input type="text" name="dateTo" value="{|$control_dateTo|}" class="js-date" placeholder="{|$translate_to|}" />
+            </div>
+
+            <div class="element">
+                <label>
+                    <input type="checkbox" name="noincremental" value="1" {|if $control_noincremental|} checked {|/if|} />
+                    {|$translate_pokazivat_dannie_bez_nakaplivaniya|}
+                </label>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_gruppirovat|}</div>
+                <select name="groupby" class="chzn-select">
+                    <option value="hour" {|if $control_groupby == 'hour'|} selected {|/if|}>{|$translate_chas|}</option>
+                    <option value="day" {|if $control_groupby == 'day'|} selected {|/if|}>{|$translate_day|}</option>
+                    <option value="month" {|if $control_groupby == 'month'|} selected {|/if|}>{|$translate_month|}</option>
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_manager|}</div>
+                <select name="managerid" class="chzn-select">
+                    <option value="0">---</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" name="ok" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $notifyArray|}include-preview{|/if|} {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $box AND $userArray|}
+            {|foreach from=$userArray item="e" key="index"|}
+                <div class="shop-useractivity-element">
+                    <div class="image nb-block-avatar" style="background-image: url('{|$e.image|}');">
+                        {|*|}<div class="success">{|$e.notifypercent|}%</div>{|*|}
+                    </div>
+                    <div class="info">
+                        <a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.name|}</a> ({|$e.ip|})<br />
+                        <br />
+                        <div>
+                            <div class="part">
+                                {|$translate_posledniy_vhod|}:<br />
+                                {|$e.sdate|}<br />
+                                {|if $e.today|}
+                                    <span class="good">{|$translate_segodnya_zahodil|}</span>
+                                {|else|}
+                                    <span class="bad">{|$translate_segodnya_ne_zahodil|}</span>
+                                {|/if|}
+                                <br />
+                                <br />
+                                {|$translate_poslednee_deystvie|}: {|$e.adatePhonetic|} <br />
+                            </div>
+                            <div class="part">
+                                {|$translate_last_activity|} <br />
+                                {|$e.adate|}<br />
+                                {|if $e.diff <= 1|}
+                                    <span class="good">{|$translate_nedavno_rabotal|}.</span>
+                                {|else|}
+                                    <span class="bad">{|$translate_ne_rabotal_bolee_chasa|}.</span>
+                                {|/if|}
+                                <br />
+                                <br />
+                                <!--<strong class="summ">1500 {|$translate_uah|}.</strong>-->
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            {|/foreach|}
+        {|/if|}
+
+        {|if $isOrderImported|}
+            {|if $totalOrder || $totalSum|}
+                <div class="ob-block-element" style="font-size: 20px;">
+                    {|$translate_s|} {|$control_dateFrom|} {|$translate_for|} {|$control_dateTo|} {|$translate_oformleno_novih_zakazov|}: {|$totalOrder|}
+                    {|$translate_to_the_tune_of|} {|$totalSum|number_format:2|} {|$totalCurrency|}
+                </div>
+            {|else|}
+                <div class="ob-block-element" style="font-size: 20px;">
+                    {|$translate_for_the_selected_period_of_time_there_is_no_data|}
+                </div>
+            {|/if|}
+    
+            <h2>{|$translate_zakazi_v_kolichestvah|}</h2>
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-order" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+    
+            <h2>{|$translate_zakazi_v_dengah|}</h2>
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-ordersum" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+    
+            <h2>{|$translate_naibolee_prodavaemie_tovari|}</h2>
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-goodsstat" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+        {|/if|}
+
+        {|if $isFinanceImported|}
+            <h2>{|$translate_payments|}</h2>
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-finance" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+        {|/if|}
+
+        {|if $box|}
+            <h2>{|$translate_sobitiya|}</h2>
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-event" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+        {|/if|}
+
+        {|if $isContactImported|}
+            <h2>{|$translate_contacts|}</h2>
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-client" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+        {|/if|}
+
+        <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+
+        {|if $reportArray|}
+
+        {|if $isOrderImported|}
+        google.setOnLoadCallback(function () {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{|$translate_date|}');
+            data.addColumn('number', '{|$translate_sozdano_zakazov|}');
+            data.addColumn('number', '{|$translate_obnovleno_zakazov|}');
+            {|foreach from=$statusArray item=status|}
+            data.addColumn('number', '{|$status|}');
+            {|/foreach|}
+            data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].orderCreated+0|}, {|$reportArray[$date].orderUpdated+0|}, {|foreach from=$statusArray key=statusID item=status|}{|$reportArray[$date].orderStatus[$statusID]+0|},{|/foreach|}],
+            {|/foreach|}
+            ]);
+
+            var options = {
+                height: 300,
+                animation: {duration: 1, easing: 'out'},
+                fontSize: 11,
+                //colors: ['blue'],
+                chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('js-chart-order'));
+            chart.draw(data, options);
+        });
+
+        google.setOnLoadCallback(function () {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{|$translate_date|}');
+            data.addColumn('number', '{|$translate_sozdano_zakazov|}');
+            data.addColumn('number', '{|$translate_obnovleno_zakazov|}');
+            {|foreach from=$statusArray item=status|}
+            data.addColumn('number', '{|$status|}');
+            {|/foreach|}
+            data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].orderCreatedSum+0|}, {|$reportArray[$date].orderUpdatedSum+0|}, {|foreach from=$statusArray key=statusID item=status|}{|$reportArray[$date].orderStatusSum[$statusID]+0|},{|/foreach|}],
+            {|/foreach|}
+            ]);
+
+            var options = {
+                height: 300,
+                animation: {duration: 1, easing: 'out'},
+                fontSize: 11,
+                //colors: ['blue'],
+                chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('js-chart-ordersum'));
+            chart.draw(data, options);
+        });
+
+        google.setOnLoadCallback(function () {
+            var data = google.visualization.arrayToDataTable([
+            ['Stat', '{|$translate_statistika_tovarov|}']
+            {|foreach from=$productStatArray key=keyss item=foo |}
+            ,['{|$keyss|}',{|$foo|}]
+            {|/foreach|}
+            ]);
+
+            var options = {
+                width: 700,
+                height:400,
+                fontSize: 11,
+                chartArea: {
+                    left: 150,
+                    right: 50,
+                    top: 50,
+                    bottom: 0
+                }
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('js-chart-goodsstat'));
+            chart.draw(data, options);
+        });
+
+        {|/if|}
+
+        {|if $isFinanceImported|}
+        google.setOnLoadCallback(function () {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{|$translate_date|}');
+            data.addColumn('number', '{|$translate_platezhi_vhodyashchie|}');
+            data.addColumn('number', '{|$translate_platezhi_ishodyashchie|}');
+            data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].paymentInSum+0|}, {|$reportArray[$date].paymentOutSum+0|}],
+            {|/foreach|}
+            ]);
+
+            var options = {
+                height: 300,
+                animation: {duration: 1, easing: 'out'},
+                fontSize: 11,
+                //colors: ['blue'],
+                chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('js-chart-finance'));
+            chart.draw(data, options);
+        });
+
+        {|/if|}
+
+        google.setOnLoadCallback(function () {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{|$translate_date|}');
+            data.addColumn('number', 'Email {|$translate_vhodyashchie|}');
+            data.addColumn('number', 'Email {|$translate_ishodyashchie|}');
+            data.addColumn('number', 'Email {|$translate_vnutreniie|}');
+            data.addColumn('number', '{|$translate_zvonki_vhodyashchie|}');
+            data.addColumn('number', '{|$translate_zvonki_ishodyashchie|}');
+            data.addColumn('number', '{|$translate_zvonki_vnutreniie|}');
+            data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].eventEmailIn+0|}, {|$reportArray[$date].eventEmailOut+0|}, {|$reportArray[$date].eventEmailOur+0|}, {|$reportArray[$date].eventCallIn+0|}, {|$reportArray[$date].eventCallOut+0|}, {|$reportArray[$date].eventCallOur+0|}],
+            {|/foreach|}
+            ]);
+
+            var options = {
+                height: 300,
+                animation: {duration: 1, easing: 'out'},
+                fontSize: 11,
+                //colors: ['blue'],
+                chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('js-chart-event'));
+            chart.draw(data, options);
+        });
+
+        {|if $isContactImported|}
+        google.setOnLoadCallback(function () {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{|$translate_date|}');
+            data.addColumn('number', '{|$translate_kontakti_sozdani|}');
+            data.addColumn('number', '{|$translate_kontakti_obnovleni|}');
+            data.addRows([
+            {|foreach from=$dateArray item=date|}
+            ['{|$date|}', {|$reportArray[$date].clientCreated+0|}, {|$reportArray[$date].clientUpdated+0|}],
+            {|/foreach|}
+            ]);
+
+            var options = {
+                height: 300,
+                animation: {duration: 1, easing: 'out'},
+                fontSize: 11,
+                //colors: ['blue'],
+                chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('js-chart-client'));
+            chart.draw(data, options);
+        });
+        {|/if|}
+        {|/if|}
+        </script>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

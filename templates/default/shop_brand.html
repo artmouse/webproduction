@@ -1,0 +1,24 @@
+{|$block_banner_top|}
+
+<h1 class="title">{|$brandname|} {|$pathAdditionalH1|}</h1>
+
+<div class="os-category-description">
+    {|if $image|}
+
+        <img src="{|$image|}" alt="{|$categoryName|}" title="{|$categoryName|}" />
+
+    {|/if|}
+
+    <div class="os-editor-content js-ckEditor-container">
+        {|$description|}
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+{|$items|}
+
+{|if $seoh1|}<h2>{|$seoh1|}</h2>{|/if|}
+
+{|$seocontent|}

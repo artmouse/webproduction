@@ -1,0 +1,77 @@
+<section class="js-section">
+    <div class="section-inner">
+        {|$block_timework|}
+
+        {|$block_position_template_top|}
+
+        {|$content|}
+
+        {|$block_position_template_bottom|}
+
+        {|$block_banner_bottom|}
+
+        {|$block_position_template_column_top|}
+    </div>
+</section>
+
+<aside class="right-layer js-aside-right">
+    {|$block_banner_right|}
+
+    {|if $integration_google_adsence_right|}
+        <div class="os-block-adsense-right">
+            <!--adsense right place-->
+            {|$integration_google_adsence_right|}
+        </div>
+    {|/if|}
+
+    {|$block_currency|}
+
+    {|$block_compare|}
+
+    {|$block_mymanager|}
+
+    {|if $productSelected|}
+        {|if $delivery OR $warranty OR $payment|}
+            <div class="os-block-caption"><h3>{|$translate_information|}</h3></div>
+            <div class="os-block-productinfo">
+                {|if $delivery|}
+                    <div class="element">
+                        <h3>{|$translate_delivery|}</h3>
+                        {|$delivery|}
+                    </div>
+                {|/if|}
+
+                {|if $warranty|}
+                    <div class="element">
+                        <h3>{|$translate_warranty|}</h3>
+                        {|$warranty|}
+                    </div>
+                {|/if|}
+
+                {|if $payment|}
+                    <div class="element">
+                        <h3>{|$translate_payment|}</h3>
+                        {|$payment|}
+                    </div>
+                {|/if|}
+            </div>
+        {|/if|}
+    {|/if|}
+
+    {|$block_position_template_column_middle|}
+
+    {|$block_news|}
+
+    {|$block_subscribe|}
+
+    {|$block_faq|}
+
+    {|$block_guestbook|}
+
+    {|$block_quiz|}
+
+    {|$block_facebook|}
+
+    {|$block_position_template_column_bottom|}
+</aside>
+<div class="clear"></div>

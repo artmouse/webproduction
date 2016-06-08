@@ -1,0 +1,475 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/products/">&lsaquo; {|$translate_many_products|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_download_the_price_list_provider|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/products/supplier/import/history">История загрузки прайсов</a></div>
+        {|*|}<div class="tab-element"><a href="/admin/shop/products/supplier/binding/">Связывание товаров</a></div>{|*|}
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $process|}
+    <div class="shop-message-info">
+        {|$translate_loading_goods_please_wait|}.
+    </div>
+    <script>
+        function fresh() {
+            location.reload();
+        }
+        setInterval("fresh()",60000);
+    </script>
+{|else|}
+{|if $priceLoadArray|}
+    <h2>Прайсы ожидающие загрузки:</h2><br />
+    <div class="shop-overflow-table">
+        <table width="30%" class="shop-table">
+            <thead>
+            <tr>
+                <td>Поставщик</td>
+                <td>Прайс</td>
+            </tr>
+            </thead>
+            {|foreach from=$priceLoadArray item="e"|}
+                <tr>
+                    <td>{|$e.supplierName|}</td>
+                    <td>{|$e.priceFileName|}</td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_suppliers_of_imported_successfully|}
+    </div>
+{|/if|}
+
+{|if $message == 'cronImportSuccess'|}
+    <div class="shop-message-success">
+        Задача на импорт создана.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_error_in_importing_suppliers|}<br />
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'file'|}
+                {|$translate_error_file|}.
+            {|elseif $e == 'supplier'|}
+                {|$translate_error_supplier|}.
+            {|elseif $e == 'currency'|}
+                {|$translate_error_currency|}.
+            {|elseif $e == 'column'|}
+                {|$translate_error_column|}.
+            {|elseif $e == 'type'|}
+                {|$translate_error_file_type|}.
+            {|elseif $e == 'noresult'|}
+                {|$translate_error_price_no_result|}.
+            {|elseif $e == 'xlsxOnlyCron'|}
+                {|$translate_xlsx_format_processed_only_background|}.
+            {|elseif $e == 'xls2csv'|}
+                {|$translate_error_converting_file_xlsx|}.    
+            {|/if|}
+            <br />
+        {|foreachelse|}
+            {|$translate_error_file_format|}.
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $resultArray|}
+    <h1>Убедитесь в валидности прайса и нажмите "Подтвердить импорт"</h1>
+    <form action="" method="post">
+        <div class="shop-overflow-table">
+            <table width="100%" class="shop-table">
+                <thead>
+                    <tr>
+                        <td>Код поставщика</td>
+                        <td>Название поставщика</td>
+                        <td>Найденный продукт</td>
+                        <td>Совпадение</td>
+                        <td>Новая цена </td>
+                        <td>Старая цена</td>
+                        <td>Минимальная розница</td>
+                        <td>Рекоммендуемая розница</td>
+                        <td>Новое наличие</td>
+                        <td>Старое наличие</td>
+                        <td>Комментарий</td>
+                        <td>{|$translate_discount|}</td>
+                        <td>{|$translate_date_last_update|}</td>
+                    </tr>
+                </thead>
+
+                {|foreach from=$resultArray item="e"|}
+                    <tr {|if $e.oldprice > $e.price |}
+                            style="background-color: #3CB371"
+                            {|else|} {|if ($e.oldprice < $e.price) && $e.productid|}
+                            style="background-color: #FA8072"
+                            {|/if|}
+                        {|/if|}>
+                        <td>
+                            {|$e.code|}
+                            <input type="hidden" name="articul-{|$e.code|}" value="{|$e.articul|escape|}" />
+                            <input type="hidden" name="code-{|$e.code|}" value="{|$e.code|escape|}" />
+                        </td>
+                        <td>{|$e.name|}</td>
+                        <td>
+                             <input type="text" name="productincorrect-{|$e.code|}" data-name="{|$e.name|}" value="" style="display: none;" />
+                            {|if $e.productname|}
+                                <input type="text" data-code="{|$e.code|}" name="productid-{|$e.code|}" value="{|$e.productid|}" class="js-code-input" style="display: none;" />
+                                {|$e.productname|}
+
+                                {|if not $importCron|}
+                                    <a href="#" class="ob-link-dashed js-code-error" data-code="{|$e.code|}">Неверно</a>
+                                {|/if|}
+                            {|else|}
+                                <input type="text" data-code="{|$e.code|}" name="productid-{|$e.code|}" value="" class="js-code-input" />
+                            {|/if|}
+
+                            <input type="hidden" name="name-{|$e.code|}" value="{|$e.name|escape|}" />
+                        </td>
+                        <td>
+                            {|$e.reason|}
+                        </td>
+                        <td class="nowrap">
+                            <input type="text" style="width: 100px;" name="price-{|$e.code|}" value="{|$e.price|}" />
+                            <input type="hidden" style="width: 100px;" name="currency-{|$e.code|}" value="{|$e.currencyid|}" />
+                            {|$e.currencyname|}
+                        </td>
+                        <td class="nowrap">
+                            {|if $e.oldprice|}
+                                {|$e.oldprice|} {|$e.oldcurrency|}
+                            {|else|}
+                                -
+                            {|/if|}
+                        </td>
+                        <td class="nowrap">
+                            <input type="text" style="width: 100px;" name="minretail-{|$e.code|}" value="{|$e.minretail|}" />
+                            {|$currencyminretailname|}
+                        </td>
+                        <td class="nowrap">
+                            <input type="text" style="width: 100px;" name="recommretail-{|$e.code|}" value="{|$e.recommretail|}" />
+                            {|$currencyrecommretailname|}
+                        </td>
+
+                        <td>
+                            <input type="text" style="width: 100px;" name="avail-{|$e.code|}" value="{|$e.avail|}" />
+                        </td>
+                        <td>
+                            {|if $e.oldavail|}
+                                {|$e.oldavail|}
+                            {|else|}
+                                &nbsp;
+                            {|/if|}
+                        </td>
+                        <td>
+                            <input type="text" style="width: 100px;" name="comment-{|$e.code|}" value="{|$e.comment|}" />
+                        </td>
+                        <td>
+                            <input type="text" style="width: 100px;" name="discount-{|$e.code|}" value="{|$e.discount|}" />
+                        </td>
+                        <td>
+                            {|if $e.olddate|}
+                                {|$e.olddate|}
+                            {|else|}
+                                &nbsp;
+                            {|/if|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        </div>
+
+        <input type="hidden" name="supplierid" value="{|$supplierid|}">
+        <input type="hidden" name="currencyid" value="{|$currencyid|}">
+        <input type="hidden" name="currencyminretailid" value="{|$currencyminretailid|}">
+        <input type="hidden" name="currencyrecommretailid" value="{|$currencyrecommretailid|}">
+        <input type="hidden" name="isarticul" value="{|$isarticul|}">
+        <input type="hidden" name="findNotAvail" value="{|$findNotAvail|}">
+        <input type="hidden" name="dateUpload" value="{|$dateUpload|}">
+        <input type="hidden" name="onlyRetail" value="{|$onlyRetail|}">
+        <input type="hidden" name="removeMinretail" value="{|$removeMinretail|}">
+        <input type="hidden" name="removeRecommretail" value="{|$removeRecommretail|}">
+        <input type="hidden" name="datelifeto" value="{|$datelifeto|}">
+        <input type="hidden" name="processedLists" value="{|$processedLists|}">
+
+        <div class="ob-button-fixed">
+            <input class="ob-button button-green" type="submit" name="processCroneImport" value="Подтвердить импорт в фоне" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    </form>
+{|elseif $message != 'ok'|}
+    {|if $supplierArray|}
+        <form method="post" enctype="multipart/form-data">
+            <div class="ob-block-doubleform js-add-issue-droppable-zone">
+                <div class="wrap">
+                    <div class="left-column">
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_select_supplier|} <span class="important">*</span></div>
+                            <select id="supplierId" name="supplierid" class="chzn-select" onchange="loadImportConfig()">
+                                <option value="0">---</option>
+                                {|foreach from=$supplierArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_supplierid|}selected{|/if|} >{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+
+                        <div class="form-element js-change-list">
+                            <div class="element-caption">{|$translate_file_type|} <span class="important">*</span></div>
+                            <label class="nowrap">
+                                <input class="js-csv-default" type="radio" name="type" value="csv-default" {|if $control_type == 'csv-default'|}checked{|/if|} />
+                                CSV {|$translate_separated_by_semicolons|}
+                            </label>
+
+                            <label class="nowrap">
+                                <input class="js-csv-comma" type="radio" name="type" value="csv-comma" {|if $control_type == 'csv-comma'|}checked{|/if|}/>
+                                CSV {|$translate_separated_by_commas|}
+                            </label>
+
+                            <label class="nowrap">
+                                <input class="js-csv-tab" type="radio" name="type" value="csv-tab" {|if $control_type == 'csv-tab'|}checked{|/if|}/>
+                                CSV {|$translate_separated_by_tabs|}
+                            </label>
+
+                            <label class="nowrap">
+                                <input class="js-xls" type="radio" name="type" value="xls" {|if !$control_type || $control_type == 'xls'|}checked{|/if|}/>
+                                XLS
+                            </label>
+
+                            <label class="nowrap">
+                                <input class="js-xlsx" type="radio" name="type" value="xlsx" {|if $control_type == 'xlsx'|}checked{|/if|}/>
+                                XLSX
+                            </label>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_file|} <span class="important">*</span></div>
+                            <input class="js-price-file" type="file" name="file" />
+                        </div>
+
+                        <div class="js-prev-container"></div>
+
+                        <div class="form-element">
+                            <a class="ob-link-dashed" href="javascript:void(0);" onclick="$j('.js-config-block').slideToggle();">Тонкие настройки</a>
+                        </div>
+                        <div class="js-config-block" style="display: none;">
+
+                             <span>
+                                Для полей код поставщика, комментарий, название продукта, артикул, наличие Вы можете указать значения колонок через запятую.<br />
+                                При импорте значения будут склеены.
+                             </span>
+                            <br />
+                            <br />
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_column_number_code_provider|} <span class="important">*</span></div>
+                                <input class="js-columncode" type="text" name="columncode" value="{|$control_columncode|}" />
+                            </div>
+
+                            <div class="form-element">
+                                <label class="nowrap">
+                                    <input class="js-issearchcode" type="checkbox" name="issearchcode" value="1" {|if $control_issearchcode|}checked{|/if|} />
+                                    Искать совпадения по коду от поставщика.
+                                </label>
+                                <br />
+
+                                <label class="nowrap">
+                                    <input class="js-issearchcodethis" type="checkbox" name="issearchcodethis" value="1" {|if $control_issearchcodethis|}checked{|/if|}/>
+                                    Учитывать только поставщика чей прайс загружаем.
+                                </label>
+                                <br />
+
+                                <label class="nowrap">
+                                    <input class="js-issearchcodemd5" type="checkbox" name="issearchcodemd5" value="1" {|if $control_issearchcodemd5|}checked{|/if|}/>
+                                    В качестве кода используется колонка с названием
+                                </label>
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_column_number_product_name|} <span class="important">*</span></div>
+                                <input class="js-columnname" type="text" name="columnname" value="{|$control_columnname|}" />
+                            </div>
+
+                        <div class="form-element">
+                            <label>
+                                <input checked  class="js-issearchname" type="checkbox" name="issearchname" value="1" {|if $control_issearchname|}checked{|/if|}/>
+                                Искать совпадения по названию товара.
+                            </label>
+                            <br />
+                        </div>
+
+                            <div class="form-element">
+                                Точность <input class="js-nameprecision" type="text" name="issearchnameprecision" value="{|$control_issearchnameprecision|}" style="width: 50px;" /> %
+                                <span class="light">(по умолчанию 100%, но меньше 50% быть не может)</span>
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_column_number_supplier_prices|} <span class="important">*</span></div>
+                                <input class="js-columnprice" type="text" name="columnprice" value="{|$control_columnprice|}" />
+                            </div>
+
+                            <div class="form-element">
+                                <label>
+                                    <input  class="js-notimportemptyprice" type="checkbox" name="notimportemptyprice" value="1" {|if $control_notimportemptyprice|}checked{|/if|}/>
+                                    Не импортировать товары с пустой или нулевой ценой.
+                                </label>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_column_number_availability|}</div>
+                                <input class="js-columnavail" type="text" name="columnavail" value="{|$control_columnavail|}" />
+                            </div>
+
+                            <div class="form-element">
+                                <label>
+                                    <input  class="js-notimportemptyavail" type="checkbox" name="notimportemptyavail" value="1" {|if $control_notimportemptyavail|}checked{|/if|}/>
+                                    Не импортировать товары с пустым или нулевым наличием
+                                </label>
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_column_number_comment|}</div>
+                                <input class="js-columncomment" type="text" name="columncomment" value="{|$control_columncomment|}" />
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">Номер колонки с артикулом товара</div>
+                                <input class="js-columnarticul" type="text" name="columnarticul" value="{|$control_columnarticul|}" />
+                            </div>
+
+                            <div class="form-element">
+                                <label>
+                                    <input class="js-issearcharticul" type="checkbox" name="issearcharticul" value="1" {|if $control_issearcharticul|}checked{|/if|}/>
+                                    Искать совпадения по Артикулу (Модели).
+                                </label>
+                            </div>
+                            <div class="form-element">
+                                <div class="element-caption">Минимальная розничная цена</div>
+                                <input class="js-columnminretail" type="text" name="columnminretail" value="{|$control_columnminretail|}" style="width: 150px;" />
+
+                                <select  name="currencyminretail" class="chzn-select inline js-currencyminretail">
+                                    <option value="0">---</option>
+                                    {|foreach from=$currencyArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_currencyminretail|}selected{|/if|} >{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+
+                            <div class="form-element">
+                                <label>
+                                    <input class="js-removeminretail" type="checkbox" name="removeMinretail" value="1" {|if $control_removeMinretail|}checked{|/if|}/>
+                                    Очистить поле минимальной розницы у загружаемых товаров.
+                                </label>
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">Рекомендуемая розничная цена</div>
+                                <input class="js-columnrecommretail" type="text" name="columnrecommretail" value="{|$control_columnrecommretail|}" style="width: 150px;" />
+
+                                <select name="currencyrecommretail" class="chzn-select inline js-currencyrecommretail">
+                                    <option value="0">---</option>
+                                    {|foreach from=$currencyArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_currencyrecommretail|}selected{|/if|} >{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+
+                            <div class="form-element">
+                                <label>
+                                    <input class="js-removerecommretail" type="checkbox" name="removeRecommretail" value="1" {|if $control_removeRecommretail|}checked{|/if|}/>
+                                    Очистить поле рекомендуемой розницы у загружаемых товаров.
+                                </label>
+                            </div>
+
+                            <div class="form-element">
+                                <label>
+                                    <input class="js-onlyretail" type="checkbox" name="onlyRetail" value="1" {|if $control_onlyRetail|}checked{|/if|}/>
+                                    Импортировать только РРЦ и МРЦ
+                                </label>
+                                <br />
+                                <span class="light">Будут ипортированы только поля РРЦ и Мин-цены. Остальные поля будут проигнорированы. Номера колонок с кодом и названием продукта - обязательны,так как используются для поиска товаров.</span>
+                            </div>
+
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_column_number_discount|}</div>
+                                <input class="js-columndiscount" type="text" name="columndiscount" value="{|$control_columndiscount|}" />
+                            </div>
+                            
+
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_limit_time_to_life_product|}</div>
+                                <input type="text" name="datelifeto" value="{|$control_datelifeto|}" class="js-date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="js-lists" {|if !(!$control_type || $control_type == 'xls') OR !(!$control_type || $control_type == 'xlsx')|}style="display: none;"{|/if|}>
+                            <div class="form-element">
+                                <div class="element-caption">{|$translate_for_xls_xlsx_files_specify_commaseparated_lists_processed|}</div>
+                                <input class="js-processedLists" type="text" name="processedLists"
+                                       value="{|$control_processedLists|}"/>
+                                <span class="light">{|$translate_to_handle_all_sheets_leave_the_field_blank|}.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_select_a_currency_provider|} <span class="important">*</span></div>
+                            <select   name="currencysupplierid" class="chzn-select js-suppliercurrency">
+                                <option value="0">---</option>
+                                {|foreach from=$currencyArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_currencysupplierid|}selected{|/if|} >{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_file_encoding|} <span class="important">*</span></div>
+                            <label>
+                                <input class="js-utf-8"  type="radio" name="encoding" value="utf-8" {|if !$control_encoding || $control_encoding == 'utf-8'|}checked{|/if|} />
+                                UTF-8
+                            </label>
+
+                            <label>
+                                <input class="js-windows-1251" type="radio" name="encoding" value="windows-1251" {|if $control_encoding == 'windows-1251'|}checked{|/if|} />
+                                Windows-1251 (Cyrillic)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="shop-overflow-table">
+                {|$statusTable|}
+            </div>
+
+            <div class="ob-button-fixed">
+                <a class="ob-button button-green" href="/admin/shop/products/supplier/binding/">{|$translate_start_load|}</a>
+                <input type="submit" name="ok" value="Загрузить следующий прайс" class="ob-button button-green" />
+            </div>
+            <div class="ob-button-fixed-place"></div>
+        </form>
+    {|else|}
+        <div class="shop-message-error">
+            Еще не добавлен ни один поставщик! <br />
+            Для добавления поставщика перейдите в раздел управления поставщиками: <a class="ob-button js-preview" href="/admin/shop/supplier/">Поставщики</a>
+        </div>
+        {|/if|}
+    {|/if|}
+{|/if|}
+
+<form class="js-down-submit" action="#" style="display: none;">
+    <input type="hidden" name="priceid" class="js-input-id-download"value="">
+</form>
+
+<script>
+    $j('.js-preventdefault').on('click', function(e){
+        e.preventDefault();
+
+        $j('.js-input-id-download').val($j(this).data("id"));
+        $j('.js-down-submit').submit();
+    });
+</script>

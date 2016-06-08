@@ -1,0 +1,104 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/users/mailing/">{|$translate_users_mailing|} Email</a></div>
+        <div class="tab-element"><a href="/admin/shop/users/smsmailing/" class="selected">{|$translate_users_mailing|} SMS</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h1>{|$translate_users_mailing|} SMS</h1>
+<br />
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_mailing_error|}.<br />
+        ({|$translate_mailing_error_why|})
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_mailing_success|} ({|$cnt|}).
+    </div>
+    {|if $sendsArray|}
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>{|$translate_phone|}</td>
+                    <td>{|$translate_otpravleno|}</td>
+                </tr>
+            </thead>
+            {|foreach from=$sendsArray item="user"|}
+                <tr>
+                    <td><a href="{|$user.url|}">{|$user.id|}</a></td>
+                    <td>{|$user.phone|}</td>
+                    <td>
+                        {|if $user.send|}
+                            {|$translate_yes|}
+                        {|else|}
+                            {|$translate_no|}
+                        {|/if|}
+                    </td>
+                </tr>
+            {|/foreach|}
+        </table>
+    {|/if|}
+{|/if|}
+
+{|if $false|}
+    {|$translate_integratsiya_s_turbosms_ne_nastroena|}.<br />
+    {|$translate_nastroyka_akkaunta_v_magazine_|} <a href="/admin/shop/settings/{|$translate_integratsii|}/">{|$translate_pereyti|}</a><br />
+    {|$translate_sayt_servisa_turbosms_|} <a href="http://turbosms.ua/">{|$translate_pereyti|}</a><br />
+{|else|}
+    {|if $errorAuth|}
+        {|$translate_oshibka_avtorizatsii|}. {|$translate_proverte_dannie_dlya_integratsii|}.<br /><br />
+    {|elseif $balance|}
+        <form name="form" id="myform" method="post" action="" >
+            <div class="ob-block-doubleform">
+                <div class="wrap">
+                    <div class="left-column">
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_text_of_letter|}</div>
+                            <textarea name="text" style="height: 100px;" id="id-text">{|$control_text|}</textarea>
+                        </div>
+                        <input type="hidden" name="arrUserId" value="{|$arrUserId|}">
+                        <input type="submit" name="ok" value="{|$translate_send|}" onclick="return confirm('{|$translate_send_confirm|}? ({|$translate_send_confirm_warning|})');" class="ob-button button-green" />
+                    </div>
+                    <div class="right-column">
+                        {|$translate_ostalos_kreditov|}: {|$balance|}
+                        <a href="http://turbosms.ua/"> {|$translate_popolnit_schet|}</a>
+                        <br /><br />
+                        {|if $userCount|}
+                            {|$translate_polzovateley_s_telefonom|}: {|$userCount|}<br />
+                            {|$translate_polzovateley_podpisannih_na_rassilku|}: {|$disCount|}
+                        {|/if|}
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="nb-right-sidebar">
+            <div class="toggle"></div>
+
+            <div class="inner">
+                <div class="element double">
+                    <a href="#" name='checkall' onclick='checkedAll();'>{|$translate_check_all_small|}</a> /
+                    <a href="#" name='checkall' onclick='uncheckedAll();'>{|$translate_uncheck_small|}</a>
+                </div>
+
+                <div class="element">
+                    {|$translate_find_user|}
+                    <input type="text" name="" placeholder="" id="id_search_user"/>
+                </div>
+
+                <div class="element">
+                    {|$translate_find_by_tag|}
+                    <input type="text" name="" placeholder="" id="id_search_tags">
+                </div>
+                <div class="element"></div>
+            </div>
+        </div>
+    {|/if|}
+{|/if|}

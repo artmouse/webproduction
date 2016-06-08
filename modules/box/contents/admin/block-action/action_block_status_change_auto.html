@@ -1,0 +1,29 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <select name="{|$index|}_autonextstatusid" class="{|$index|}-chzn-select" style="width: 100%;">
+            <option value="">&nbsp;</option>
+            {|foreach from=$statusArray item="s"|}
+                <option value="{|$s.id|}" {|if $s.id == $autonextstatusid|} selected {|/if|}>
+                    {|$s.name|}
+                </option>
+            {|/foreach|}
+        </select>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        // chzn
+        $j('.{|$index|}-chzn-select').select2();
+    });
+</script>

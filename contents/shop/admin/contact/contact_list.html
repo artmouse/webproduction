@@ -1,0 +1,364 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel js-layer-filter">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_viewing_mode|}</div>
+                <select name="mode" class="chzn-select">
+                    <option value="" {|if $control_mode == ''|} selected {|/if|}>{|$translate_plitkoy|}</option>
+                    {|foreach from=$moduleViewModeArray item="e"|}
+                        <option value="{|$e.modeName|}" {|if $control_mode == $e.modeName|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            {|if $newGroupArray[0]|}
+                <div class="element">
+                    <div class="ob-block-tree js-block-tree">
+                        <ul>
+                            <li><a href=".">{|$translate_contacts_all|}</a></li>
+                            <li>
+                                <a href="./?groupid=0">{|$translate_no_category|}</a>
+                                {|if $notGroup|}({|$userFilterCount|}){|/if|}
+                            </li>
+                            {|foreach from=$newGroupArray[0] item="g1"|}
+                                <li>
+                                    <a href="{|$g1.url|}" {|if $g1.selected|}class="selected"{|/if|}>{|$g1.name|}</a>
+                                    {|if $g1.count|}({|$g1.count|}){|/if|}
+                                    {|if $newGroupArray[$g1.id]|}
+                                        <span class="expand"></span>
+                                        <ul style="display: none;">
+                                            {|foreach from=$newGroupArray[$g1.id] item="g2"|}
+                                                <li>
+                                                    <a href="{|$g2.url|}" {|if $g2.selected|}class="selected"{|/if|}>{|$g2.name|}</a>
+                                                    {|if $g2.count|}({|$g2.count|}){|/if|}
+                                                </li>
+                                            {|/foreach|}
+                                        </ul>
+                                    {|/if|}
+                                </li>
+                            {|/foreach|}
+                        </ul>
+                    </div>
+
+                    {|* скрытый input на случай если группа выбрана *|}
+                    {|if $arg_groupid|}
+                        <input type="hidden" name="groupid" value="{|$arg_groupid|}" />
+                    {|/if|}
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <input type="text" name="filternamelast" value="{|$control_filternamelast|}" placeholder="{|$translate_name_last|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filtername" value="{|$control_filtername|}" placeholder="{|$translate_name_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filternamemiddle" value="{|$control_filternamemiddle|}" placeholder="{|$translate_name_middle|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filtercompany" value="{|$control_filtercompany|}" class="help-hint-filter-login" placeholder="{|$translate_user_company|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filteremail" value="{|$control_filteremail|}" class="help-hint-filter-email" placeholder="Email" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterphone" value="{|$control_filterphone|}" class="help-hint-filter-login" placeholder="{|$translate_user_phone|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filteraddress" value="{|$control_filteraddress|}" class="help-hint-filter-login" placeholder="{|$translate_address_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterlogin" value="{|$control_filterlogin|}" class="help-hint-filter-login" placeholder="{|$translate_login_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filtertags" value="{|$control_filtertags|}" class="help-hint-filter-login" placeholder="{|$translate_tags|}" />
+            </div>
+
+            {|if $contractorsArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="filtercontractorid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$contractorsArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_filtercontractorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_manager|}</div>
+                    <select name="filtermanagerid" class="chzn-select">
+                        <option value="" {|if !$control_filtermanagerid|} selected  {|/if|}>---</option>
+                        {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_filtermanagerid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            
+            {|if $creatorArray|}
+                <div class="element">
+                    {|$translate_sozdatel|}:
+                    <select name="filtercreatorid" class="chzn-select">
+                        <option value="" {|if !$control_filtercreatorid|} selected  {|/if|}>---</option>
+                        {|foreach from=$creatorArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_filtercreatorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            
+
+            <div class="element">
+                {|$translate_users_not_in|}:
+                <select name="notordertype" class="chzn-select">
+                    <option value="" >---</option>
+                    {|foreach from=$workflowTypeArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_notordertype == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+               </select>
+            </div>
+
+
+            {|if $sourceArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kanal|}</div>
+                    <select name="filtersourceid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$sourceArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_filtersourceid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $discountArray|}
+                <div class="element">
+                    {|$translate_discounts|}:
+                    <select name="filterdiscountid" class="chzn-select">
+                        <option value="">{|$all|}</option>
+                        {|foreach from=$discountArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_filterdiscountid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <input type="text" name="filterpost" value="{|$control_filterpost|}" class="help-hint-filter-login" placeholder="{|$translate_spacialization|}/{|$translate_post|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_user_typesex|}</div>
+                <select name="filtertypesex" class="chzn-select js-contact-type">
+                    <option value="">---</option>
+                    <option value="man"   {|if "man" == $typesexValue|} selected {|/if|}>{|$translate_user_man|}</option>
+                    <option value="woman"  {|if "woman" == $typesexValue|} selected {|/if|}>{|$translate_user_woman|}</option>
+                    <option value="contact"  {|if "contact" == $typesexValue|} selected {|/if|}>{|$translate_contact_small|}</option>
+                    <option value="company" {|if "company" == $typesexValue|} selected {|/if|}>{|$translate_company_little|}</option>
+                    <option value="employer" {|if "employer" == $typesexValue|} selected {|/if|}>Сотрудник</option>
+                    <option value="no_data" {|if "no_data" == $typesexValue|} selected {|/if|}>{|$translate_no_sex|}</option>
+                </select>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox"  {|if $control_filter_show_employer|}checked{|/if|} name="filter_show_employer" value="1" />
+                    {|$translate_pokazivat_sotrudnikov_i_moi_kompanii|}
+                </label>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_user_access|}</div>
+                <select name="filterlevel" class="chzn-select">
+                    <option value="" {|if !$control_filterlevel|} selected  {|/if|}>---</option>
+                    <option value="0" {|if $control_filterlevel == "0"|} selected  {|/if|}>{|$translate_user_access_ban|}</option>
+                    <option value="1" {|if $control_filterlevel == "1"|} selected  {|/if|}>{|$translate_user_access_user|}</option>
+                    <option value="2" {|if $control_filterlevel == "2"|} selected  {|/if|}>{|$translate_user_access_manager|}</option>
+                    <option value="3" {|if $control_filterlevel == "3"|} selected  {|/if|}>{|$translate_user_access_admin|}</option>
+                </select>
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdatefrom" value="{|$control_filtercdatefrom|}" placeholder="{|$translate_user_datereg|} {|$translate_from_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdateto" value="{|$control_filtercdateto|}" placeholder="{|$translate_user_datereg|} {|$translate_to|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filteradatefrom" value="{|$control_filteradatefrom|}" placeholder="{|$translate_user_dateacvite|} {|$translate_from_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filteradateto" value="{|$control_filteradateto|}" placeholder="{|$translate_user_dateacvite|} {|$translate_to|}" />
+            </div>
+
+            {|foreach from=$filterCustomArray item="e"|}
+                <div class="element">
+                    {|if $e.type == 'string' OR $e.type == 'text' OR $e.type == 'int' OR $e.type == 'float'|}
+                        <input type="text" name="filtercustom{|$e.key|}" value="{|$e.value|}" placeholder="{|$e.name|}" />
+                    {|elseif $e.type == 'date'|}
+                        <input type="text" name="filtercustom{|$e.key|}" value="{|$e.value|}" placeholder="{|$e.name|}" class="js-date" />
+                    {|elseif $e.type == 'datetime'|}
+                        <input type="text" name="filtercustom{|$e.key|}" value="{|$e.value|}" placeholder="{|$e.name|}" class="js-datetime" />
+                    {|elseif $e.type == 'bool'|}
+                        <label>
+                            <input type="checkbox"  {|if $e.value|}checked{|/if|} name="filtercustom{|$e.key|}" value="1" />
+                            {|$e.name|}
+                        </label>
+                    {|/if|}
+                </div>
+            {|/foreach|}
+            
+            <input type="hidden" value="{|$control_page|}" name="page"/>
+
+            <input class="ob-button button-orange help-hint-filter-submit" type="submit" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list content-layer js-layer-result {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $groupName|}
+            <h1>{|$groupName|}</h1>
+            {|if $groupDescription|}
+                {|$groupDescription|}<br />
+            {|/if|}
+            <br />
+        {|/if|}
+
+        {|$table|}
+        {|if $userFilterCount|}
+            <div class="ob-block-details">
+                <form id="massSend" action="mailing/" method="post">
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption static">{|$translate_kolichestvo_kontaktov|}:</div>
+                            <div class="el-value">
+                                {|$userFilterCount|}
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="arrUserId" value="{|$arrUserId|}">
+                    <input class="ob-button" id="sendAll" type="submit" name="sendAll" value="{|$translate_users_mailing|}" />
+                    {|if $canSMS|}
+                        <input class="ob-button" type="submit" name="sendAllSms" value="{|$translate_users_mailing|} SMS" onclick="$j('#massSend').attr('action', 'smsmailing/');" />
+                    {|/if|}
+                </form>
+            </div>
+
+            <form action="" method="post">
+                <div class="ob-data-element">
+                    <div class="data-add">
+                        <div class="el-caption static">{|$translate_pomestit_v_proekt|}:</div>
+                        <div class="el-value">
+                            <input type="hidden" name="arrUserId" value="{|$arrUserId|}">
+                            <input class="js-project-autocomplete-input" type="text" name="massAddOrderId" placeholder="{|$translate_nomer_zadachi|}" style="width: 300px;"/>
+                            <input class="ob-button" type="submit" name="addTooOrderMass" value="{|$translate_pomestit|}" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+{|if !$isProjectContacts|}
+    <div class="nb-right-sidebar single disable">
+        <div class="toggle"></div>
+
+        <form class="inner" action="" method="post">
+            <input type="hidden" id="id-user" name="moveids" />
+            <div class="element">
+                <label>
+                    <input class="js-checkbox-toggle" type="checkbox" name="">
+                    {|$translate_check_all_small|}
+                </label>
+            </div>
+
+            <div class="element">
+                {|$translate_dobavit_v_gruppu|}:
+                <select class="chzn-select-tree" name="addgroup">
+                    <option value="0">---</option>
+                    {|foreach from=$groupArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_addgroup|} selected {|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                {|$translate_ubrat_iz_gruppi|}:
+                <select class="chzn-select-tree" name="removegroup">
+                    <option value="0">---</option>
+                    {|foreach from=$groupArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_removegroup|} selected {|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            {|if $isOrderImported|}
+                <div class="element">
+                    {|$translate_dobavit_kontakti_v_zadachu|}:
+                    <input type="hidden" name="arrUserId" value="{|$arrUserId|}">
+                    <input class="js-project-autocomplete-input" type="text" id="orderId" name="orderId" placeholder="{|$translate_nomer_zadachi|}" />
+                </div>
+            {|/if|}
+
+            <div class="element">
+                {|$translate_user_sign_change|}:
+                <select class="chzn-select" name="changesubscibe">
+                    <option value="-1">---</option>
+                    <option value="0">{|$translate_user_sign_nosign|}</option>
+                    <option value="1">{|$translate_user_sign_sign|}</option>
+                </select>
+            </div>
+            <div class="element">
+                {|$translate_user_manager_add|}:
+                <select class="chzn-select" name="manager" class="chzn-select">
+                    <option value="-1" selected>---</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}">{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <label>
+                    <input type="checkbox" value="1" name="join">
+                    {|$translate_join|}
+                </label>
+            </div>
+            <div class="element">
+                <label>
+                    <input type="checkbox" value="1" name="delete">
+                    {|$translate_delete|}
+                </label>
+            </div>
+
+            <div class="element">
+                <input class="ob-button" type="submit" name="change" value="{|$translate_save|}" onclick="return confirm('{|$translate_button_comfirm_change_data|}');" />
+            </div>
+            <div class="element">
+                <input class="ob-button" id="sendSelected" type="submit" name="sendSelected" value="{|$translate_users_mailing|}" />
+            </div>
+        </form>
+    </div>
+{|/if|}

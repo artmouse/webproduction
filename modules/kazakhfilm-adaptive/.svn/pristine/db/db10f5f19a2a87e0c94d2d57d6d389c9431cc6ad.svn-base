@@ -1,0 +1,30 @@
+{|if $bannerArray|}
+    <div class="kf-slider-block">
+        <div class="line">
+            <ul>
+                {|foreach from=$bannerArray item="b"|}
+                    <li>
+                        <a href="{|$b.url|}" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                            <img src="{|$b.image|}" alt="" />
+                            <span class="description">
+                                <span class="description-content">
+                                    <strong>{|$b.name|}</strong>
+                                    {|$b.comment|}
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                {|/foreach|}
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $j(function() {
+                $j('.kf-slider-block .line>ul').bxSlider({
+                    pager:false,
+                    slideMargin: 0,
+                    auto: true
+                });
+            });
+        </script>
+    </div>
+{|/if|}

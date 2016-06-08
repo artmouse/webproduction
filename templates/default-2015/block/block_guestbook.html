@@ -1,0 +1,23 @@
+{|if $response and $guestbookArray|}
+    <div class="def-section-caption">
+        <h3><strong>{|$translate_testimonials|}</strong></h3>
+    </div>
+
+    <div class="def-block-last-news">
+        {|foreach from=$guestbookArray item="e"|}
+            <div class="element">
+                <a class="def-icon-angle-double-right" href="/{|$gurl|}/">{|$e.response|}</a>
+                <span class="date">
+                    {|$e.date|}
+                    {|if $e.name|}
+                        {|$translate_from_small|}
+                        {|$e.name|}
+                    {|elseif $e.login|}
+                        {|$translate_from_small|}
+                        {|$e.login|}
+                    {|/if|}
+                </span>
+            </div>
+        {|/foreach|}
+    </div>
+{|/if|}

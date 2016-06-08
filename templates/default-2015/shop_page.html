@@ -1,0 +1,26 @@
+<h1>{|$name|}</h1>
+
+<div class="def-block-crumbs">
+    <div class="item def-icon-home" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url">
+            <span itemprop="title">{|$translate_main|}</span>
+        </a>
+    </div>
+    <div class="item def-icon-angle-right" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="{|$currentURL|}" itemprop="url">
+            <span itemprop="title">{|$name|}</span>
+        </a>
+    </div>
+</div>
+
+{|if $content|}
+    {|$content|}
+{|/if|}
+
+{|if $urledit|}
+    <a href="{|$urledit|}">{|$translate_edit|}</a>
+{|/if|}
+
+{|$logiccontent|}
+
+{|$seocontent|}

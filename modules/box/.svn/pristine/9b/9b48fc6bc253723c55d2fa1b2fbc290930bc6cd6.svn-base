@@ -1,0 +1,83 @@
+{|$block_menu|}
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="post" >
+            <div class="element">
+                <input type="text" class="js-date" name="datefrom" value="{|$control_datefrom|}" placeholder="{|$translate_date_from|}"  />
+            </div>
+            <div class="element">
+                <input type="text" class="js-date" name="dateto" value="{|$control_dateto|}" placeholder="{|$translate_date_to|}" />
+                <div class="clear"></div>
+            </div>
+
+            <div class="element">
+                {|$translate_sgrupirovat|}:
+                <select name="group" class="chzn-select">
+                    <option value="">---</option>
+                    <option value="day" {|if $control_group == 'day'|}selected{|/if|}>{|$translate_den|}</option>
+                    <option value="week"{|if $control_group == 'week'|}selected{|/if|}>{|$translate_nedelya|}</option>
+                    <option value="month"{|if $control_group == 'month'|}selected{|/if|}>{|$translate_mesyats|}</option>
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="rebuild" value="{|$translate_filter|}"  />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+
+        {|foreach from=$kpiArray item="kpiName" key="kpiID"|}
+            <h2>{|$kpiName|}</h2>
+
+            <div class="shop-overflow-table">
+                <div class="shop-block-graph">
+                    <div id="js-chart-{|$kpiID|}" class="graph-block" style="display: block;"></div>
+                </div>
+            </div>
+            <br />
+        {|/foreach|}
+
+        <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+
+            var options = {
+                height: 300,
+                animation: {duration: 1, easing: 'out'},
+                fontSize: 11,
+                legend: { position: 'none' },
+                chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                },
+                seriesType: "bars",
+                series: {1: {type: "line"}, 2: {type: "line"}}
+            };
+
+            {|foreach from=$kpiArray item="kpiName" key="kpiID"|}
+                google.setOnLoadCallback(function () {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', '{|$translate_date|}');
+                    data.addColumn('number', '{|$translate_fakt|} {|$kpiName|}');
+                    data.addColumn('number', '{|$translate_plan|} {|$kpiName|}');
+                    data.addColumn('number', '{|$translate_plan_seychas|} {|$kpiName|}');
+                    data.addRows([
+                        {|foreach from=$dateArray item=date|}
+                            ['{|$date|}', {|$reportArray[$kpiID][$date].fact+0|}, {|$reportArray[$kpiID][$date].plan+0|}, {|$kpiFactArray[$kpiID]+0|}],
+                        {|/foreach|}
+                    ]);
+
+                var chart = new google.visualization.ComboChart(document.getElementById('js-chart-{|$kpiID|}'));
+                chart.draw(data, options);
+                });
+
+            {|/foreach|}
+        </script>
+    </div>
+</div>
+<div class="clear"></div>

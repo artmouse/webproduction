@@ -1,0 +1,409 @@
+<h1>Что такое действия статуса и как их добавлять</h1>
+
+Действия статуса - это определенная логика, которая срабатывает, когда заказ перешел или находится в данном статусе.<br />
+<br />
+Действия состоят из блоков. Блок представляет собой обычный контент, состоящий из php и html файла.
+<br>
+Все блоки хранятся в таблице БД XShopOrderStatusActionBlock(name, contentID, description).
+<br>
+Блоки добавляются через метод  WorkflowStatusLoader::Get()->addBlock(name, contentID, description);
+<br>
+Данные каждого блока, для конкретного статуса, сохраняются в таблицу XShopOrderStatusActionBlockStructure(contentID, statusID, sort, data).
+<br>
+Контенты в шопе хранятся по пути: \contents\shop\admin\workflow\actionblock\
+<br>
+<br />
+<h2>Как добавить действие?</h2>
+<br />
+Что бы добавить новое действие, надо сделать всего 2 вещи: Создать контент и добавить действие в БД.
+<br>
+<br>
+
+<h3>1. Создаем контент, состоящий из php и html файла. В php будет содержатся логика. В html вид действия, которое будет отображаться в настройке действий статуса.</h3>
+<br />
+<code>
+    <pre>
+        Engine::GetContentDataSource()->registerContent(
+            'box-order-status-action-block-role',
+            array(
+                'filehtml' => dirname(__FILE__).'/admin/workflow/actionblock/action_block_role.html',
+                'filephp' => dirname(__FILE__).'/admin/workflow/actionblock/action_block_role.php',
+            ),
+            'override'
+        );
+    </pre>
+</code>
+<br />
+<br />
+<br />
+
+
+<h3>2. Добавить блок-контент в Базу данных</h3>
+<br />
+<p>
+    Блок добавляется методом WorkflowStatusLoader::Get()->addBlock.
+    <br>
+    Первый параметр - Название блока.
+    <br>
+    Второй параметр - ContentID блока, созданного в пункте 1.
+    <br>
+    Третий параметр - описание блока.
+    <br>
+</p>
+
+<strong>Добавление обязательно завернуть в development.</strong>
+<br>
+<code>
+    <pre>
+        if (PackageLoader::Get()->getMode('development')) {
+
+            WorkflowStatusLoader::Get()->addBlock(
+                'Указать ответственную роль',
+                'box-order-status-action-block-role'
+            );
+        }
+    </pre>
+</code>
+<br />
+<br />
+<br />
+
+<h2>Что должно содержаться в контентах?</h2>
+<br />
+<br />
+<h3>1. Содержание файла html.</h3>
+Каждый html файл должен содержать такие строки
+<br />
+<br />
+
+<img src="/modules/api-docs/docs/_images/status_action_1.png">
+<br />
+<br />
+В каждый блок приходят такие smarty переменные:<br>
+
+<ul>
+    <li>
+        $index - Номер сортировки в списке действий. По сути является уникальным идентификатором, который необходимо вставлять в каждый аттрибут name, что бы исключить возможность двух контентов с одинаковыми именами элементов формы.
+    </li>
+    <li>
+        $contentID - ID контента
+    </li>
+    <li>
+        $blockName - Имя блока, указанный в методе WorkflowStatusLoader::Get()->addBlock
+    </li>
+    <li>
+        $description - Описание блока, указанный в методе WorkflowStatusLoader::Get()->addBlock
+    </li>
+    <li>
+        $data - Содержит сохраненные данные
+    </li>
+</ul>
+<br />
+        Пример файла содержащий select
+        <br>
+        <br>
+<img src="/modules/api-docs/docs/_images/status_action_2.png">
+<br />
+<br />
+
+
+<h3>2. Содержание файла php.</h3>
+<br>
+Методы в php файле можно разделить на 4 группы:
+<ul>
+    <li>
+        Метод отображения html файла
+    </li>
+    <li>
+        Методы сохранения/удаления данных
+    </li>
+    <li>
+        Методы получения объектов
+    </li>
+    <li>
+        Методы логики(обработки событий)
+    </li>
+</ul>
+
+<h4>2.1 Метод отображения html файла</h4>
+Это метод process. В этом методе мы получаем нужные данные и выводим через smarty. По сути как обычный контент.
+<br>
+Через метод $this->getValue('data');  Получаем сохраненные ранее данные.
+<br>
+Пример кода, выводящего в html список статусов:
+
+<code>
+    <pre>
+         public function process() {
+            $status = $this->_getStatus();
+
+            $statuses = Shop::Get()->getShopService()->getStatusAll();
+            $statuses->setCategoryid($status->getCategoryid());
+            $statuses->addWhere('id', $status->getId(), '<>');
+            $statusArray = array();
+            while ($s = $statuses->getNext()) {
+                $statusArray[] = array(
+                    'id' => $s->getId(),
+                    'name' => $s->getName()
+                );
+            }
+            $this->setValue('statusArray', $statusArray);
+
+            $this->setValue('autonextstatusid', $this->getValue('data'));
+        }
+    </pre>
+</code>
+<br>
+<br>
+<h4>2.2 Методы сохранения/удаления данных</h4>
+<br>
+        Метод processData сохраняет данные, введенные пользователем в html.
+        <br>
+        Для этого используется метод WorkflowStatusLoader::Get()->addBlockData.
+        <br>
+<code>
+    <pre>
+     public function processData() {
+        $index = $this->getValue('index');
+
+        WorkflowStatusLoader::Get()->addBlockData(
+            $this->_getStatus(),
+            $this->getContentID(),
+            $index,
+            $this->getArgumentSecure($index.'_autonextstatusid')
+        );
+    }
+    </pre>
+</code>
+        <br>
+        Первые 3 параметра всегда стандартные(Объект статуса, contentID, index).
+        <br>
+        4-й параметр - это наши данные, которые надо сохранить.
+        <br>
+        <br>
+        Если сохранить надо не простой тип(string, int, ...), а массив/объект/..., то используется json_encode
+
+
+<code>
+    <pre>
+     public function processData() {
+        $index = $this->getValue('index');
+
+        $subWorkflowName = $this->getArgument($index.'_subName');
+        $subWorkflowID = $this->getArgument($index.'_subworkflowId');
+        $subWorkflowDate = $this->getArgument($index.'_subDate');
+        $subWorkflowDescription = $this->getArgument($index.'_subDescription');
+
+        // для новой таблицы
+        $blockDataArray = array(
+            'id' => $subWorkflowID,
+            'name' => $subWorkflowName,
+            'date' => $subWorkflowDate,
+            'description' => $subWorkflowDescription,
+        );
+
+
+        WorkflowStatusLoader::Get()->addBlockData(
+            $this->_getStatus(),
+            $this->getContentID(),
+            $index,
+            json_encode($blockDataArray)
+        );
+     }
+    </pre>
+</code>
+
+        <br>
+        <br>
+        В этом случаи, в методе process данные нужно будет расшифровать перед использование.
+<code>
+    <pre>
+     public function process() {
+        $data = json_decode($this->getValue('data'));
+
+        $this->setValue('subworkflowId', $data->id);
+        $this->setValue('subName', $data->name);
+        $this->setValue('subDate', $data->date);
+        $this->setValue('subDescription', $data->description);
+        // список workflow
+        $workflow = Shop::Get()->getShopService()->getOrderCategoryAll();
+        $a = array();
+        while ($x = $workflow->getNext()) {
+            $a[$x->getId()] = $x->makeName();
+        }
+        $this->setValue('workflowArray', $a);
+    }
+    </pre>
+</code>
+        <br>
+        <br>
+
+        Бывают моменты, когда данные нужно сохранить не только в таблицу XShopOrderStatusActionBlockStructure но и непосредственно в статус ShopOrderStatus
+        <br>
+<code>
+    <pre>
+     public function processData() {
+        $index = $this->getValue('index');
+
+        WorkflowStatusLoader::Get()->addBlockData(
+            $this->_getStatus(),
+            $this->getContentID(),
+            $index,
+            $this->getArgumentSecure($index.'_roleid')
+        );
+
+        $status = $this->_getStatus();
+        $status->setRoleid($this->getArgumentSecure($index.'_roleid'));
+        $status->update();
+    }
+    </pre>
+</code>
+        <br>
+        <br>
+        Тогда надо прописать и метод, который будет удалять данные из статуса, если блок уберут из списка действий.
+        <br>
+<code>
+    <pre>
+    public function processDataDelete() {
+        $status = $this->_getStatus();
+        $status->setRoleid(0);
+        $status->update();
+    }
+    </pre>
+</code>
+        <br>
+        <br>
+<h4>2.3 Методы получения объектов</h4>
+В каждом контенте можно получить текущий статус. На выходе получим объект ShopOrderStatus.
+        <br>
+
+<br>
+<code>
+    <pre>
+         $this->getValue('status');
+    </pre>
+</code>
+<br>
+<br>
++ Объекты которые передает ваше событие.
+<br>
+<br>
+<br>
+
+<h4>2.4 Методы логики(обработки событий)</h4>
+Логика действия записывается в метод, который будет вызыватся после определенного события(Часовой крон, Изменение заказа, Изменение статуса, ...).
+<br>
+Для этого достаточно написать метод с нужным названием, и система сама вызовет метод при таком событии.
+        <br>
+        Список поддерживаемых действий и названий методов для них:
+
+
+        <table width="50%;">
+            <thead>
+                <tr>
+                    <td style="border: 1px solid black"><strong>Название события</strong></td>
+                    <td style="border: 1px solid black"><strong>Код события</strong></td>
+                    <td style="border: 1px solid black"><strong>Название метода</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid black">Часовой крон</td>
+                    <td style="border: 1px solid black">afterCronHour</td>
+                    <td style="border: 1px solid black">processCronHour</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black">Дневной крон</td>
+                    <td style="border: 1px solid black">afterCronDay</td>
+                    <td style="border: 1px solid black">processCronDay</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black">Изменение статуса заказа</td>
+                    <td style="border: 1px solid black">shopOrderStatusUpdateAfter</td>
+                    <td style="border: 1px solid black">processStatus</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black">После добавления заказа</td>
+                    <td style="border: 1px solid black">shopOrderAddAfter</td>
+                    <td style="border: 1px solid black">processOrderAddAfter</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black">Перед удаленим заказа</td>
+                    <td style="border: 1px solid black">shopOrderDeleteBefore</td>
+                    <td style="border: 1px solid black">processOrderDeleteBefore</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black">Перед удаление продукта из заказа</td>
+                    <td style="border: 1px solid black">shopOrderProductDeleteBefore</td>
+                    <td style="border: 1px solid black">processOrderProductDeleteBefore</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black">После редактирования заказа</td>
+                    <td style="border: 1px solid black">shopOrderEditAfter</td>
+                    <td style="border: 1px solid black">processOrderEditAfter</td>
+                </tr>
+            </tbody>
+        </table>
+<br>
+<br>
+        Пример кода: вызов после смены статуса
+<br>
+<br>
+
+<code>
+    <pre>
+    public function processStatus(Events_Event $event) {
+        $status = $this->_getStatus();
+        $order = $this->_getOrder($event);
+        $user = $this->_getUser($event);
+
+        $data = json_decode($this->getValue('data'));
+
+        try {
+            $workflow = Shop::Get()->getShopService()->getOrderCategoryByID(
+                $data->nextworkflowid
+            );
+
+            $order->setCategoryid($workflow->getId());
+            $order->setOutcoming($workflow->getOutcoming());
+            $order->update();
+
+            $statusID = $data->nextstatusid;
+            if (!$statusID) {
+                $statusID = $workflow->getStatusDefault()->getId();
+            }
+
+            Shop::Get()->getShopService()->updateOrderStatus($user, $order, $statusID);
+        } catch (Exception $es) {
+
+        }
+    }
+    </pre>
+</code>
+<br>
+<br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+

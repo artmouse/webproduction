@@ -1,0 +1,94 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/motionlog/" {|if !$type|}class="selected"{|/if|}>Журнал</a> </div>
+        <div class="tab-element">
+            {|if $type|}
+                <a href="/admin/shop/storage/motionlog/{|$type|}/" class="selected">
+                    {|if $type == 'incoming'|}
+                        {|$translate_motion_log_incoming|}
+                    {|elseif $type == 'transfer'|}
+                        {|$translate_motion_log_transfer|}
+                    {|elseif $type == 'sale'|}
+                        {|$translate_motion_log_sale|}
+                    {|elseif $type == 'production'|}
+                        {|$translate_motion_log_production|}
+                    {|elseif $type == 'outcoming'|}
+                        Журнал списаний
+                    {|/if|}
+                </a>
+            {|/if|}
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">Показывать</div>
+                <select name="type" class="chzn-select">
+                    <option value="0" {|if !$control_type|} selected {|/if|}>Все операции</option>
+                    <option value="incoming" {|if $control_type == "incoming"|} selected {|/if|}>Оприходование</option>
+                    <option value="sale" {|if $control_type == "sale"|} selected {|/if|}>Продажа</option>
+                    <option value="transfer" {|if $control_type == "transfer"|} selected {|/if|}>Перемещение</option>
+                    <option value="production" {|if $control_type == "production"|} selected {|/if|}>Производство</option>
+                    <option value="outcoming" {|if $control_type == "outcoming"|} selected {|/if|}>Списание</option>
+                </select>
+            </div>
+
+            <div class="element">
+                {|$translate_date|} {|$translate_with|}
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-datepicker" />
+            </div>
+
+            <div class="element">
+                {|$translate_date|} {|$translate_for|}
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-datepicker" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_storage_from|}</div>
+                <select name="storagenamefromid[]" multiple class="chzn-select">
+                    {|foreach from=$storagenamefromArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $storagenamefromid)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_storage_to|}</div>
+                <select name="storagenametoid[]" multiple class="chzn-select">
+                    {|foreach from=$storagenametoArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $storagenametoid)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            {|if $type == 'sale'|}
+                <div class="element">
+                    <input type="text" name="orderid" value="{|$control_orderid|}" placeholder="Номер заказа" />
+                </div>
+            {|/if|}
+            <script type="text/javascript">
+                $j(function () {
+                    $j('.js-datepicker').datepicker({
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+            </script>
+            <input type="submit" name="ok" value="{|$translate_filter|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div class="shop-overflow-table">
+            {|$table|}
+        </div>
+    </div>
+</div>
+<div class="clear"></div>

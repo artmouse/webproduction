@@ -1,0 +1,120 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/coupon/">&lsaquo; {|$translate_coupon|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_coupon_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_save_success|}.<br>
+
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_error|}.
+        <br />
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'amount'|}
+                {|$translate_vvedite_summu|}.<br />
+            {|/if|}
+            {|if $e == 'count'|}
+                {|$translate_vvedite_kolichestvo|}.<br />
+            {|/if|}
+            {|if $e == 'code'|}
+                {|$translate_kod_vveden_neverno|}.<br />
+            {|/if|}
+            {|if $e == '100percent'|}
+                {|$translate_nelzya_previshat_znachenie_bolee_100|}%.<br />
+            {|/if|}
+            {|if $e == 'minus'|}
+                {|$translate_vvedite_polozhitelnoe_chislo|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form class="ob-block-form" action="" method="post"  enctype="multipart/form-data">
+    <table>
+        {|if $codeStr|}
+            <tr>
+                <td colspan="3">
+                    <textarea class="js-autosize" cols="25" rows="10" style="width: 100%; height: 20px;">{|$codeStr|}</textarea>
+                </td>
+            </tr>
+        {|/if|}
+        {|if $edit|}
+            <tr>
+                <td>{|$translate_promo_coupon_code|}</td>
+                <td><input type="text" name="code" value="{|$control_code|}" class="promo js-coupon-formatter" /></td>
+                <td></td>
+            </tr>
+        {|/if|}
+        <tr>
+            <td>{|$translate_amount|}</td>
+            <td>
+                <input type="text" name="amount" value="{|$control_amount|}" style="width: 196px;" />
+                <select name="currency" style="width: 100px;">
+                    {|foreach from=$currencyArray item="e"|}
+                    <option value="{|$e.id|}" {|if $currencyid==$e.id|}selected{|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </td>
+            <td>
+                {|if !$edit|}
+                    <input type="submit" name="ok" value="{|$translate_coupon_add|}" class="ob-button button-green" />
+                {|/if|}
+            </td>
+        </tr>
+        {|if $edit|}
+            <tr>
+                <td>{|$translate_order_number|}</td>
+                <td><input type="text" name="orderId" value="{|$control_orderId|}" style="width: 100px;" /></td>
+                <td></td>
+            </tr>
+        {|/if|}
+        {|if $edit|}
+            <tr>
+                <td>{|$translate_ispolzovat|}</td>
+                <td>
+                    <label>
+                        <input type="checkbox" name="used" value="1" {|if $used|}checked{|/if|}/>
+                    </label>
+                </td>
+                <td></td>
+            </tr>
+        {|/if|}
+        {|if !$edit|}
+            <tr>
+                <td>{|$translate_number|}</td>
+                <td><input type="text" name="count" value="{|$control_count|}" /></td>
+                <td></td>
+            </tr>
+        {|/if|}
+        <tr>
+            <td>{|$translate_comment|}</td>
+            <td><input type="text" name="comment" value="{|$control_comment|}" /></td>
+            <td></td>
+        </tr>
+        <tr>
+                <td>{|$translate_otpravleno|}</td>
+                <td>
+                    <label>
+                        <input type="checkbox" name="send" value="1" {|if $control_send|}checked{|/if|}  />
+                    </label>
+                </td>
+                <td></td>
+            </tr>
+    </table>
+
+    {|if $edit|}
+        <div class="ob-button-fixed">
+            <input type="submit" name="edit" value="{|$translate_coupon_edit|}" class="ob-button button-green" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    {|/if|}
+</form>

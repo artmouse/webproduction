@@ -1,0 +1,30 @@
+{|if $brandArray|@count > 4|}
+    <div class="os-brand-carousel">
+        <a href="#" class="prev">&nbsp;</a>
+        <a href="#" class="next">&nbsp;</a>
+        <div class="line">
+            <ul>
+                {|foreach from=$brandArray item="e"|}
+                    <li><a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|}" /></a></li>
+                {|/foreach|}
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $j(function() {
+            //brand carousel init
+            $j('.os-brand-carousel .line').jCarouselLite({
+                visible: 13,
+                auto: false,
+                timeout: 5000,
+                speed: 500,
+                pause: false,
+                btnPrev: '.os-brand-carousel .prev',
+                btnNext: '.os-brand-carousel .next'
+            });
+
+            // фикс для маленького кол-ва слайдов
+            $j('.os-brand-carousel .next').click();
+        });
+    </script>
+{|/if|}

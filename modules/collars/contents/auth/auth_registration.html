@@ -1,0 +1,93 @@
+<div class="cl-crumbs">
+    <div>
+        <a href="/">{|$translate_main|}</a>
+    </div>
+    <div>
+        <a href="#">{|$translate_user_registration|}</a>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="os-message-success">
+        {|$registration_good_message|}
+    </div>
+    <script>
+        $j(function(){
+            setTimeout("document.location.href='{|$linkclientprofile|}'", 5);
+        });
+    </script>
+{|/if|}
+
+{|if $message == 'activate'|}
+    <div class="os-message-success">
+        {|$translate_user_registrate_success|}. {|$translate_account_activate|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="os-message-error">
+        {|$translate_registration_error|}:
+        <br />
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'login'|}
+                {|$translate_order_error_login|}. {|$translate_order_error_login_must_be|}.<br />
+            {|/if|}
+            {|if $e == 'login-exists'|}
+                {|$translate_login_already_exists|}.<br />
+            {|/if|}
+            {|if $e == 'easy-password'|}
+                {|$translate_profile_error_password_must_be|}.<br />
+            {|/if|}
+            {|if $e == 'password'|}
+                {|$translate_profile_error_password|}.<br />
+            {|/if|}
+            {|if $e == 'email'|}
+                {|$translate_profile_error_mail|}.<br />
+            {|/if|}
+            {|if $e == 'email-exists'|}
+                {|$translate_profile_error_mail_exists|}.<br />
+            {|/if|}
+            {|if $e == 'phone-exists'|}
+                {|$translate_already_registered_phone|}.<br />
+            {|/if|}
+            {|if $e == 'parentid'|}
+                {|$translate_registration_error_parent|}.<br />
+            {|/if|}
+            {|if $e == 'bdate'|}
+                {|$translate_profile_error_bdate|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $message != 'ok' AND $message != 'activate'|}
+    <div class="cl-block-form block-width">
+        <form method="post">
+            <div class="form-element">
+                <div class="descript">{|$translate_password_small|}<span class="important">*</span>:</div>
+                <input type="password" name="password" value="{|$control_password|}" /><br />
+                <span class="light">({|$translate_password_must_be|})</span>
+            </div>
+
+            <div class="form-element">
+                <div class="descript">E-mail<span class="important">*</span>:</div>
+                <input type="text" name="email" value="{|$control_email|}" /><br />
+                <span class="light">({|$translate_at_example|}: example@example.ua)</span>
+
+            </div>
+
+            <div class="form-element">
+                <label>
+                    <input type="checkbox" checked name="zakon" value="1" />
+                    <span class="light">{|$used_user_info|}</span>
+                </label>
+            </div>
+
+            <div class="form-element">
+                <input type="submit" name="ok" value="{|$translate_sing_up_small|}" class="cl-button green" />
+                <input type="hidden" name="ajs" class="ajs" value="1" />
+            </div>
+
+        </form>
+    </div>
+{|/if|}

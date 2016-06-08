@@ -1,0 +1,8 @@
+<div class="shop-tabs fixed">
+    <a href="/admin/main_text/" class="selected">Текст на главную</a>
+    <a href="/admin/main_text/add/" class="selected">Добавить</a>
+    <div class="clear">&nbsp;</div>
+</div>
+<div class="shop-tabs-place">&nbsp;</div>
+
+{|$table|}

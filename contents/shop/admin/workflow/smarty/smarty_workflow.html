@@ -1,0 +1,213 @@
+<div class="shop-block-popup js-smart-simple-popup">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a href="javascript:void(0);" class="close" onclick="return popupClose('.js-smart-simple-popup');">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="window-content window-form">
+            <form class="js-smart-popup-form-{|$orderID|}">
+                {|$block_info|}
+
+                {|$block_processorform|}
+
+                {|$block_comment|}
+
+                <a class="ob-link-dashed js-next-issue-link" href="#">{|$translate_sleduyushchaya_zadacha|}</a><br />
+                <br />
+                <div class="js-next-issue-block" style="display: none;">
+                    <div class="element">
+                        <div class="el-caption">{|$translate_name_small|}<span class="important">*</span></div>
+                        <div class="el-value">
+                            <input type="text" name="nextname" class="js-smart-next-name">
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="el-caption">{|$translate_date|}</div>
+                        <div class="el-value">
+                            <input type="text" name="nextdate" class="js-datetime js-smart-next-dateto">
+                        </div>
+                    </div>
+                    <div class="element">
+                        <textarea name="nextdescription" cols="10" rows="3" class="js-smart-next-description" placeholder="{|$translate_description|}"></textarea>
+                    </div>
+                </div>
+
+                {|if $nextStatusArray|}
+                    <div class="element">
+                        {|foreach from=$nextStatusArray item="s"|}
+                            {|if $s.selected|}
+                                <label>
+                                    <input class="js-smart-status-{|$orderID|}" type="radio" name="smart-status" value="0" style="display: none;">
+                                    <span class="js-green-color selected"  style="color: red;">{|$s.name|}</span>
+                                </label>
+                            {|/if|}
+                        {|/foreach|}
+                        {|foreach from=$nextStatusArray item="s"|}
+                            {|if !$s.selected|}
+                                <label>
+                                    <input class="js-smart-status-{|$orderID|}" type="radio" name="smart-status" value="{|$s.id|}" style="display: none;">
+                                    <span class="js-green-color ob-link-dashed">{|$s.name|}</span>
+                                </label>
+                            {|/if|}
+                        {|/foreach|}
+                    </div>
+                {|/if|}
+                <div class="ob-button-fixed">
+                    <input type="hidden" name="id" value="{|$orderID|}" />
+                    <input type="hidden" name="ok" value="1" />
+                    <input type="submit" class="ob-button button-green js-nodbl-click" value="{|$translate_save|}" />
+
+                    <input type="hidden" name="statusid" value="" id="js-issue-input-statusid" />
+                    {|foreach from=$statusNextArray item="e"|}
+                        <input type="submit" value="{|$e.name|}" class="ob-button" data-id="{|$e.id|}"
+                               onclick="$j('#js-issue-input-statusid').val($j(this).data('id'));"
+                               {|if $e.colour|}style="background-color: {|$e.colour|}; color: #000000 !important;"{|/if|} />
+                    {|/foreach|}
+                    <input type="button" class="ob-button button-cancel" onclick="return popupClose('.js-smart-simple-popup');" value="{|$translate_cancel|}" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $j('.js-smart-popup-form-{|$orderID|}').submit(function(event) {
+        event.preventDefault();
+        smart_issue_close('{|$orderID|}', '.js-smart-simple-popup');
+    });
+
+    dataGroupInit('.js-smart-simple-popup');
+    initIssueControlForm();
+    initCommentBlock();
+
+    // выбор времени
+    $j('.js-datetime').each(function (i, e) {
+        var $e = $j(e);
+        var format = $e.data('dateformat');
+        if (!format) {
+            format = 'yy-mm-dd';
+        }
+
+        $e.datetimepicker({
+            dateFormat: format,
+            changeMonth: true,
+            changeYear: true,
+            //showButtonPanel: false,
+            timeText: '{|$translate_time|}',
+            hourText: '{|$translate_chas|}',
+            minuteText: '{|$translate_minuta|}'
+        });
+    });
+
+    // next issue toggle
+    $j('.js-next-issue-link').click(function(){
+        $j('.js-next-issue-block').slideToggle(300);
+        setTimeout("cookieFromNextIssue();", 1000);
+        return false;
+    });
+
+    $j(function () {
+        $j(".js-green-color").click(function () {
+            $j(".js-green-color:not(.selected)").css('color', '');
+            if (!$j(this).hasClass('selected')) {
+                $j(this).css('color', 'green');
+            }
+        });
+    });
+
+    // next issue cookie
+    cookieToNextIssue();
+
+    function cookieFromNextIssue(){
+        var ch = [];
+        if ($j('.js-next-issue-block').is(":visible")){
+            ch.push(true);
+        }
+
+        $j.cookie("nextIssueCookie", ch.join(','));
+    }
+
+    function cookieToNextIssue() {
+        if ($j.cookie("nextIssueCookie") == null) {
+            return;
+        }
+        var chMap = $j.cookie("nextIssueCookie");
+        if (chMap) {
+            $j('.js-next-issue-block').show();
+        }
+    }
+
+    // проверка на повторную отправку формы
+    $j('.js-nodbl-click').click(function(){
+        if ($j(this).hasClass('js-noclick')) {
+            return false;
+        }
+        $j(this).addClass('js-noclick');
+    });
+
+    // slide tabs
+    $j(function() {
+        if ($j('.js-slide-tabs').length) {
+            $j('.js-slide-tabs a').click(function(){
+                $j(this).closest('.js-slide-tabs').find('a').removeClass('selected');
+                $j(this).addClass('selected');
+                jsSlidePosition(this);
+                return false;
+            });
+
+            setTimeout(function(){
+                $j('.js-slide-tabs').each(function(){
+                    jsSlidePosition($j(this).find('.selected'));
+                });
+            }, 500);
+        }
+    });
+
+    // comments image toggle
+    $j('.js-toggle-image').click(function(){
+        var $img = $j(this).next().find('img');
+
+        if (!$img.attr('src')) {
+            var src = $img.attr('data-src');
+            $img.attr('src', src);
+            $j(this).next().slideToggle();
+        } else {
+            $j(this).next().slideToggle();
+        }
+    });
+
+    // select
+    $j('select.chzn-select').select2();
+
+    $j('select.chzn-select-tree').select2({
+        formatResult: chznResultTree
+    });
+
+    // инициализация просмотра картинок в комментариях
+    if ($j('.js-colorbox-preview').length) {
+        $j('.js-colorbox-preview').colorbox({
+            rel:'gal',
+            maxWidth: '95%',
+            maxHeight: '95%',
+            current: false,
+            photo: true
+        });
+    }
+
+    initIssueControlForm();
+
+    cookieToInstruction();
+
+    $j('.js-block-instruction-toggle').click(function(){
+        $j('.js-block-instruction').slideToggle(300);
+
+        setTimeout("cookieFromInstruction();", 1000);
+    });
+
+    // проверка на заполненные поля в попапах
+    $j('.shop-block-popup input, .shop-block-popup select, .shop-block-popup textarea').on('change', function(){
+        $j(this).closest('.shop-block-popup').addClass('js-changed');
+    });
+</script>

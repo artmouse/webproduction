@@ -1,0 +1,188 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/motionlog/" >{|$translate_motion_log|}</a></div>
+        <div class="tab-element"><a href="{|$urlMotion|}" >{|$translate_storage_log|}: {|$type|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_return|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_data_saved|}.
+    </div>
+    
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_return_message_error|}.<br />
+
+        {|foreach from=$errorArray item="e"|}
+            {|if $e.error == 'user'|}
+                {|$translate_storage_error_permission|}<br />
+            {|/if|}          
+            {|if $e.product|}
+                <strong>{|$translate_product|} {|$e.product|}</strong>:
+            {|/if|}
+            {|if $e.error == 'lack'|}
+                {|$translate_storage_error_lack|}.
+            {|/if|}
+            {|if $e.error == 'amount'|}
+                {|$translate_box_error_amount|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $message == 'noreturn'|}
+    <div class="shop-message-error">
+        {|$translate_return_denied|}.<br />
+    </div>
+{|/if|}
+
+<h2>{|$translate_storage_log|}: {|$type|}: {|$translate_return|}</h2>
+<div class="ob-block-details">
+    <div class="flex-wrap">
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_date_realization|}:
+                </div>
+                <div class="el-value">
+                    {|$date|}
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_where_from|}:
+                </div>
+                <div class="el-value">
+                    <a href="{|$storagenamefromURL|}">{|$storagenamefrom|}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_where_to|}:
+                </div>
+                <div class="el-value">
+                    <a href="{|$storagenametoURL|}">{|$storagenameto|}</a>
+                </div>
+            </div>
+        </div>
+
+        {|if $username|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_operator|}:
+                    </div>
+                    <div class="el-value">
+                        {|$username|}
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        {|if $orderid|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_ord|}:
+                    </div>
+                    <div class="el-value">
+                        <a href="{|$orderURL|}">#{|$orderid|}</a>
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        {|if $client|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_client_small|}:
+                    </div>
+                    <div class="el-value">
+                        {|$client|}
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_sum|}:
+                </div>
+                <div class="el-value">
+                    {|$sum|number_format:2|} {|$currency|}
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+    </div>
+</div>
+
+{|if $table|}
+    <h1>{|$translate_return_done|}</h1>    
+    {|$table|}
+{|/if|}
+
+{|if $storageArray && $message != 'noreturn'|}
+    <h1>{|$translate_return_do|}</h1>
+
+    <form action="" method="post" id="form2" >
+        <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_item_code|}</td>
+                    <td>{|$translate_product|}</td>
+                    <td>{|$translate_price_purchase|}</td>
+                    <td>{|$translate_number|}</td>
+                    <td>{|$translate_return_amount_done|}</td>
+                    <td>{|$translate_return_amount|}</td>
+                </tr>
+            </thead>
+    
+            <tbody>
+                {|foreach from=$storageArray item="e" |}
+                    <tr>
+                        <td>{|$e.productid|}</td>
+                        <td style="width: 150px;">
+                            {|$e.name|}
+                            {|if $e.serial|}<br />({|$e.serial|}){|/if|}
+                        </td>
+                        <td>{|$e.price|} {|$currency|}</td>
+                        <td>{|$e.amount|} {|$e.unit|}</td>
+                        <td>{|$e.amount_returned|} {|$e.unit|}</td>
+                        <td>
+                            <input name="amount{|$e.id|}" value="{|$e.amount_toreturn|}" style="width: 80px;" {|if !$e.amount_toreturn|} disabled {|/if|}/>
+                            {|$e.unit|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </tbody>
+        </table>
+    
+        <br />
+        <input type="hidden" name="ok" value="1" />
+        <input class="ob-button" type="button" value="{|$translate_return_post|}" onclick="if (confirm('{|$translate_return_confirm|}?')) $j('#form2').submit(); else return false; " />
+    </form>
+{|/if|}

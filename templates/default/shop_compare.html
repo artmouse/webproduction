@@ -1,0 +1,97 @@
+<h1 class="title">{|if $seoh1|} {|$seoh1|} {|else|} {|$translate_products_compare|} {|/if|}</h1>
+
+
+{|if $productArray|}
+    <div class="os-compare-list">
+        {|if $warning=="ok"|}
+            <div class="os-message-error">{|$translate_for_comparison_add_more_products|}</div>
+        {|/if|}
+        <table class="os-compare-table">
+            <thead>
+                <tr>
+                    <td rowspan="2"><span class="wrapper"></span></td>
+                    {|foreach from=$productArray key="productID" item="product"|}
+                        <td class="vtop id-{|$productID|}">
+                            <a href="javascript: deleteComplae({|$productID|});" class="remove" title="{|$translate_remove_from_comparison|}">&nbsp;</a><br />
+                            <a href="{|$product.url|}" class="name">{|$product.name|}</a>
+                        </td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    {|foreach from=$productArray key="productID" item="product"|}
+                        <td class="id-{|$productID|}">
+                            <a href="{|$product.url|}"><img src="{|$product.image|}" width="100" /></a>
+                        </td>
+                    {|/foreach|}
+                </tr>
+            </thead>
+            {|foreach from=$fieldArray key="fieldID" item="fieldName"|}
+                <tr>
+                    <td>{|$fieldName|}</td>
+                    {|foreach from=$productArray key="productID" item="product"|}
+                        <td class="id-{|$productID|}">
+                            {|$valueArray[$productID][$fieldID]|}
+                        </td>
+                    {|/foreach|}
+                </tr>
+            {|/foreach|}
+
+            <tr>
+                <td>{|$translate_availability|}</td>
+                {|foreach from=$productArray key="productID" item="product"|}
+                    <td class="ta-center id-{|$productID|}">
+                        {|if $product.availtext|}
+                            {|if $product.avail|}
+                                <div class="os-available">{|$product.availtext|}</div>
+                            {|else|}
+                                <div class="os-unavailable">{|$product.availtext|}</div>
+                            {|/if|}
+                        {|else|}
+                            {|if $product.avail|}
+                                <div class="os-available">{|$translate_in_stock|}</div>
+                            {|else|}
+                                <div class="os-unavailable">{|$translate_out_of_stock|}</div>
+                            {|/if|}
+                        {|/if|}
+                    </td>
+                {|/foreach|}
+            </tr>
+            
+            <tr>
+                <td>{|$translate_price|}</td>
+                {|foreach from=$productArray key="productID" item="product"|}
+                    <td class="ta-center id-{|$productID|}">
+                        {|if $product.price|}
+                            {|if $product.avail|}
+                                <div class="os-price-available">{|$product.price|number_format:2|} {|$currency|}</div>
+                            {|else|}
+                                <div class="os-price-unavailable">{|$product.price|number_format:2|} {|$currency|}</div>
+                            {|/if|}
+                        {|else|}
+                            <div class="os-price-specify">{|$translate_specify_a_price|}</div>
+                        {|/if|}
+                    </td>
+                {|/foreach|}
+            </tr>
+
+            <tr>
+                <td>&nbsp;</td>
+                {|foreach from=$productArray key="productID" item="product"|}
+                    <td class="ta-center id-{|$productID|}">
+                        {|if $product.canbuy|}
+                            {|* кнопка покупки *|}
+                            <div class="js-shop-buy" data-productid="{|$product.id|}">
+                                <a href="#" class="os-submit green js-shop-buy-action">{|$translate_buy|}</a>
+                            </div>
+                        {|/if|}
+                    </td>
+                {|/foreach|}
+            </tr>
+        </table>
+    </div>
+{|else|}
+    <div class="os-message-error">
+        {|$translate_there_are_no_products_to_compare|}<br />
+        {|$translate_you_can_add_any_item|}
+    </div>
+{|/if|}

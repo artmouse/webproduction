@@ -1,0 +1,98 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+    <form action="" method="get">
+        <div class="element">
+            <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_s|}" />
+        </div>
+        <div class="element">
+            <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_po|}" />
+        </div>
+
+        {|if $managerArray|}
+            <div class="element">
+                {|$translate_user_manager|}
+                <select name="managerid[]" class="chzn-select" multiple>
+                    <option value="0">{|$translate_all_managers|}</option>
+                    {|foreach from=$managerArray item="name" key="managerID"|}
+                        <option value="{|$managerID|}" {|if in_array($managerID, $managerFilter)|} selected {|/if|}>{|$name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        {|/if|}
+
+        {|if $workflowArray|}
+            <div class="element">
+                Бизнес-процесс задач
+                <select name="workflowid" class="chzn-select">
+                    <option value="0">---</option>
+                    {|foreach from=$workflowArray item="w"|}
+                        <option value="{|$w.id|}" {|if $w.id == $control_workflowid|} selected {|/if|}>{|$w.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        {|/if|}
+
+        <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        <div class="clear"></div>
+        <br />
+
+    </form>
+</div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div class="shop-overflow-table">
+            <table class="shop-table">
+                <thead>
+                    <tr>
+                        <td>Дата</td>
+                        <td>Название задачи</td>
+                        <td>Сотрудник</td>
+                        <td class="nowrap">Время, ч</td>
+                    </tr>
+                </thead>
+                {|assign var=timeTotall value=0|}
+                {|foreach from=$reportArray item="e"|}
+                    <tr>
+                        <td class="nowrap">
+                            {|$e.date|}
+                        </td>
+                        <td>
+                            {|if $e.url|}
+                                <a href="{|$e.url|}">{|$e.name|}</a>
+                            {|else|}
+                                {|$e.name|}
+                            {|/if|}
+                        </td>
+                        <td>
+                            {|if $e.urlUser|}
+                                <a href="{|$e.urlUser|}">{|$e.nameUser|}</a>
+                            {|else|}
+                                {|$e.nameUser|}
+                            {|/if|}
+                        </td>
+                        <td class="align_right">
+                            {|$e.time|}
+                        </td>
+                    </tr>
+                    {|assign var=timeTotall value=$timeTotall+$e.time|}
+                {|/foreach|}
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td class="align_right">Итого:</td>
+                        <td class="align_right"><strong>{|$timeTotall|}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

@@ -1,0 +1,88 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/finance/">&lsaquo; {|$translate_simple_back|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/account/">{|$translate_account_list_all|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/account/add/" class="selected" >{|$translate_account_add_new|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'success'|}
+    <div class="shop-message-success">
+        {|$translate_akkaunt_uspeshno_sozdan|}.
+    </div>
+
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_oshibka_dobavleniya_akkaunta|}.<br />
+
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'currency'|}
+                {|$translate_error_currency|}.
+            {|/if|}
+            {|if $e == 'contractor'|}
+                {|$translate_ne_vibrano_yur|}. {|$translate_litso|}.
+            {|/if|}
+            {|if $e == 'name'|}
+                {|$translate_neobhodimo_ukazat_nazvanie_akkaunta|}.
+            {|/if|}
+            {|if $e == 'exists'|}
+                {|$translate_akkaunt_s_takim_imenem_uzhe_sushchestvuet|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <h1>{|$translate_sozdanie_novogo_koshelka|}</h1>
+
+    <strong>{|$translate_nazvanie_koshelka|}</strong><br />
+    <input type="text" name="name" value="{|$control_name|}" style="width: 300px;">
+    <br />
+    <br />
+
+    <strong>{|$translate_opisanie_koshelka|}</strong><br />
+    <input type="text" name="description" value="{|$control_description|}" style="width: 300px;">
+    <br />
+    <br />
+
+    <strong>{|$translate_currency_small|}</strong><br />
+    <select class="chzn-select" name="currencyid" style="width: 300px;">
+        {|foreach from=$currencyArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_currencyid|} selected {|/if|}>{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>{|$translate_aktiven|}</strong><br />
+    <label><input type="checkbox" name="active" value="1" {|if $control_active|}checked{|/if|} /></label>
+    <br />
+    <br />
+
+    <strong>{|$translate_contractor|}:</strong><br />
+    <select class="chzn-select" name="contractorid" style="width: 300px;">
+        {|foreach from=$contractorArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>{|$translate_startoviy_balans|}</strong><br />
+    <input type="text" name="balancestart" value="{|$control_balancestart|}">
+    <br />
+    <br />
+
+    <input class="ob-button" type="submit" name="ok" value="{|$translate_sozdat_akkaunt|}" />
+
+</form>

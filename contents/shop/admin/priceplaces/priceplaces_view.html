@@ -1,0 +1,62 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/priceplaces/">&lsaquo; {|$translate_priceplaces|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$name|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="ob-block-element">
+    {|$translate_priceplace_file_link|}:
+
+    <strong>{|$url|}</strong>
+    <br />
+
+    {|$translate_refresh_rate|}.
+</div>
+
+<br />
+
+{|$translate_priceplace_product_list|}:<br />
+<br />
+
+<table class="shop-table">
+    {|foreach from=$productsArray item="e"|}
+        <tr>
+            <td>{|$e.id|}</td>
+            <td>
+                {|if $e.image|}
+                    <img src="{|$e.image|}" width="100" />
+                {|else|}
+                    &nbsp;
+                {|/if|}
+            </td>
+            <td>
+                <a href="{|$e.url|}">{|$e.name|}</a>
+            </td>
+            <td>
+                {|$e.price|}
+                {|$e.currency|}
+            </td>
+        </tr>
+    {|/foreach|}
+</table>
+
+<br />
+<br />
+
+<div class="ob-block-element">
+    <form action="" method="post">
+        <strong>{|$translate_priceplace_product_add|}</strong>
+        {|$translate_priceplace_product_declare|}
+        <br />
+        <br />
+
+        <textarea name="codes" style="width: 100%; height: 50px;"></textarea>
+        <br />
+        <br />
+
+        <input type="submit" name="ok" value="{|$translate_add|}" class="ob-button button-green" />
+    </form>
+</div>

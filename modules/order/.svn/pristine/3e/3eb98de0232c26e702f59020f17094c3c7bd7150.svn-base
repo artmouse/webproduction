@@ -1,0 +1,83 @@
+<div class="name">
+    <strong>{|$statusName|}</strong>
+</div>
+
+<table class="list">
+    {|if $employerArray|}
+        <tr>
+            <td>
+                {|$translate_otvetstvennie|}:
+            </td>
+            <td>
+                {|foreach from=$employerArray item="e"|}
+                    <a href="{|$e.url|}" >{|$e.name|}</a><br />
+                {|/foreach|}
+            </td>
+        </tr>
+    {|/if|}
+    
+    {|if $statusTerm|}
+        <tr>
+            <td>
+                {|$translate_rekomenduemiy_srok_etapa|}:
+            </td>
+            <td>
+                {|$statusTerm|}
+            </td>
+        </tr>
+    {|/if|}
+
+    {|if $orderEmployerTerm|}
+        <tr>
+            <td>
+                {|$translate_krayniy_srok_zaversheniya|}:
+            </td>
+            <td>
+                {|$orderEmployerTerm|}
+            </td>
+        </tr>
+    {|/if|}
+
+    {|if $statusRole|}
+        <tr>
+            <td>
+                {|$translate_rol|}:
+            </td>
+            <td>
+                {|$statusRole|}
+            </td>
+        </tr>
+    {|/if|}
+
+    {|if $statusContent|}
+        <tr>
+            <td>
+                {|$translate_rekomenduemie_deystviya|}:
+            </td>
+            <td>
+                {|$statusContent|}
+            </td>
+        </tr>
+    {|/if|}
+
+    <tr>
+        <td>
+            {|$acl_issue|}:
+        </td>
+        <td>
+            {|foreach from=$issueArray item="e"|}
+                {|if $e.closed|}
+                    &#9745;
+                {|else|}
+                    &#9744;
+                {|/if|}
+                <a href="{|$e.url|}">#{|$e.id|}</a> - {|$e.name|}
+                ({|$e.manager|})
+                <br />
+            {|/foreach|}
+
+            <a href="javascript:void(0);" onclick="settings_stage_popup({|$orderId|}, {|$statusId|});">{|$acl_settings|}</a>&nbsp;
+            <a href="{|$urlAddSubIssue|}" target="_blank">{|$translate_novaya_zadacha|}...</a>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,195 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="order" {|if in_array('order', $typeArray)|}checked{|/if|}>
+                    {|$translate_ords|}
+                </label>
+            </div>
+            
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="project" {|if in_array('project', $typeArray)|}checked{|/if|}>
+                    {|$translate_proekti|}
+                </label>
+            </div>
+            
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="issue" {|if in_array('issue', $typeArray)|}checked{|/if|}>
+                    {|$acl_issue|}
+                </label>
+            </div>
+        
+            <div class="element ulist">
+                <label><input type="radio" name="direction" value="" {|if !$control_direction|}checked{|/if|}>{|$translate_all_orders|}</label>
+                <label><input type="radio" name="direction" value="in" {|if $control_direction == 'in'|}checked{|/if|}>{|$translate_ot_klientov_vhodyashchie_|}</label>
+                <label><input type="radio" name="direction" value="out" {|if $control_direction == 'out'|}checked{|/if|}>{|$translate_postavshchikam_ishodyashchie_|}</label>
+            </div>
+
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_zakaza_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+
+            {|$block_workflow_filter|}
+
+            {|if $sourceArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kanal_zakaza|}</div>
+                    <select name="sourceid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$sourceArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_sourceid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_menedzher_zakaza|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_avtor_zakaza|}</div>
+                    <select name="authorid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_authorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $contractorArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="contractorid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$contractorArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_etapi_zakazov|}</h1>
+
+        {|if $reportArray|}
+            <table border="0" class="shop-table">
+                <thead>
+                    <tr>
+                        <td>{|$translate_ord|}</td>
+                        <td>{|$translate_client_small|}</td>
+                        <td>{|$translate_user_access_manager|}</td>
+                        <td align="right">{|$translate_summa_zakaza|} ({|$currency|})</td>
+                        <td>{|$translate_data_sozdaniya_zakaza|}</td>
+                        <td>{|$translate_data_perehoda_v_etap|}</td>
+                        <td align="right">{|$translate_raznitsa_dat_v_dnyah_|}</td>
+                    </tr>
+                </thead>
+                {|foreach from=$reportArray item="e" key="clientID"|}
+                    <tr>
+                        <td>
+                            <a href="{|$e.orderURL|}" class="js-issue-preview" data-id="{|$e.orderId|}">{|$e.orderName|}</a>
+                        </td>
+                        <td>
+                            <a href="{|$e.clientURL|}" class="js-contact-preview" data-id="{|$e.clientID|}">{|$e.clientName|}</a>
+                        </td>
+                        <td>
+                            <a href="{|$e.managerURL|}" class="js-contact-preview" data-id="{|$e.managerID|}">{|$e.managerName|}</a>
+                        </td>
+                        <td align="right">{|$e.sum|round:2|}</td>
+                        <td>{|$e.orderDate|}</td>
+                        <td>{|$e.statusDate|}</td>
+                        <td align="right">{|$e.diff|}</td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        {|else|}
+            {|$translate_dlya_postroeniya_otcheta_pozhaluysta_viberite_etap_biznes_protsessa_i_interval_dat|}.
+        {|/if|}
+
+        {|if $reportArray|}
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_client_small|}', '{|$translate_raznitsa_dat_po_klientam|}'],
+                {|foreach from=$reportClientArray item="e" key="clientName"|}
+                    ['{|$clientName|}', {|$e|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_1'));
+                chart.draw(data, options);
+
+                // ---
+
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_user_access_manager|}', '{|$translate_raznitsa_dat_po_menedzheram|}'],
+                {|foreach from=$reportManagerArray item="e" key="managerName"|}
+                    ['{|$managerName|}', {|$e|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_2'));
+                chart.draw(data, options);
+
+                // ---
+
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_ord|}', '{|$translate_raznitsa_dat_po_zakazam|}'],
+                {|foreach from=$reportArray item="e"|}
+                    ['{|$e.orderID|}', {|$e.diff|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_3'));
+                chart.draw(data, options);
+            }
+            </script>
+
+            <div id="chart_div_1" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div_2" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div_3" style="width: 100%; height: 500px;"></div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

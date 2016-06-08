@@ -1,0 +1,65 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/passports/" >{|$translate_passport_of_products|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_passport|} #{|$id|} {|$name|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/passport/{|$id|}/delete/">{|$translate_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="js-message-div"></div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">{|$translate_passport_edit_success|}.</div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">{|$translate_passport_edit_error|}.</div>
+{|/if|}
+
+<table width="100%">
+    <tr valign="top">
+        <td>
+            <h1>{|$translate_many_products|}</h1>
+
+            <form action="" method="post" id="id-passport-products">
+                {|$productTable|}
+            </form>
+        </td>
+
+        <td width="10">&nbsp;</td>
+
+        <td width="49%">
+            <h1>{|$translate_material|}</h1>
+
+            <form action="" method="post" id="id-passport-materials">
+                {|$materialTable|}
+            </form>
+        </td>
+    </tr>
+</table>
+<br />
+
+<div class="ob-block-element">
+    <a href="#" onclick="$j('#js-add-block-product').toggle(); return false;" style="display: block; font-size: 18px;">{|$translate_product_add|}</a>
+
+    <div id="js-add-block-product" style="display: none;">
+        {|$addFormProduct|}
+    </div>
+</div>
+
+<div class="ob-block-element">
+    <a href="#" onclick="$j('#js-add-block-material').toggle(); return false;" style="display: block; font-size: 18px;">{|$translate_material_add|}</a>
+
+    <div id="js-add-block-material" style="display: none;">
+        {|$addFormMaterial|}
+    </div>
+</div>
+
+<form action="" method="post" class="ob-block-element">
+    <strong>{|$translate_box_name_small|}</strong><br />
+    <input type="text" name="name" value="{|$control_name|}" />
+
+    <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+</form>

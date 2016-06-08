@@ -1,0 +1,76 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_requests_sent_success|}.<br />
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_send_error|}.<br />
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'email'|}
+                {|$translate_profile_error_mail|}.<br />
+            {|/if|}
+            {|if $e == 'name'|}
+                {|$translate_enter_name|}.<br />
+            {|/if|}
+            {|if $e == 'message'|}
+                {|$translate_text_error|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if not $serviceArray|}
+    <div class="shop-message-error">
+        {|$translate_unfortunately_the_feature_is_temporarily_unavailable|}.<br />
+        {|$translate_please_try_again_in_a_few_minutes|}.
+    </div>
+{|else|}
+    <div class="shop-admin-orderpage">
+        <form action="" method="post">
+            {|foreach from=$serviceArray item="category"|}
+                <h2>{|$category.category|}</h2>
+
+                {|foreach from=$category.serviceArray item="e"|}
+                    <label>
+                        <input type="checkbox" name="service[]" value="{|$e.name|htmlspecialchars|}" />
+                        <strong>{|$e.name|}</strong>
+                        {|if $e.description|}
+                            <span class="description">
+                                {|$e.description|}
+                            </span>
+                        {|/if|}
+                        {|if $e.term|}
+                            <span class="term">{|$e.term|}</span>
+                        {|/if|}
+                        {|if $e.price|}
+                            <span class="price">{|$e.price|}</span>
+                        {|/if|}
+                    </label>
+                {|/foreach|}
+
+                <br />
+                <br />
+            {|/foreach|}
+
+            <h2>{|$translate_execution_of_an_application|}</h2>
+
+            <strong>{|$translate_your_name|}:</strong><br/>
+            <input type="text" name="name" value="{|$control_name|}" style="width: 300px;" /><br/>
+            <br/>
+
+            <strong>E-mail:</strong><br/>
+            <input type="text" name="email" value="{|$control_email|}" style="width: 300px;" /><br/>
+            <br/>
+
+            <strong>{|$translate_message|}:</strong><br/>
+            <textarea name="message" style="width: 100%; height: 80px;">{|$control_message|}</textarea>
+            <br/>
+            <br/>
+
+            {|*|}<div class="total">{|$translate_only|}: <strong>2 456</strong> {|$translate_uah|}.</div>{|*|}
+            <input type="submit" name="ok" value="{|$translate_order_selected_services|}" class="ob-button button-green" />
+        </form>
+    </div>
+{|/if|}

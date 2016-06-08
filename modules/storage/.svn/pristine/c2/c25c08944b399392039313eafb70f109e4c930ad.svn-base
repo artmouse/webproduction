@@ -1,0 +1,94 @@
+{|if $saleArray|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+        <thead>
+            <tr>
+                <td>{|$translate_code|}</td>
+                <td>{|$translate_product|}</td>
+                <td>{|$translate_number|}</td>
+                <td>&nbsp;</td>
+                <td colspan="2">{|$translate_price_sale|}</td>
+                <td>{|$translate_link_products_amount|}</td>
+                <td>{|$translate_bind_small|}</td>
+                <td>
+                    <label>
+                        <input type="checkbox" id="id-check-all" value="1" />
+                        {|$translate_delete_small|}
+                    </label>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {|foreach from=$saleArray item="e" |}
+                <tr>
+                    <td>{|$e.productid|}</td>
+                    <td style="width: 150px;">
+                        {|$e.name|}
+                    </td>
+                    <td>
+                        <input name="count{|$e.id|}" value="{|$e.count|}" style="width: 80px;" />
+                    </td>
+                    <td>{|$e.unit|}</td>
+                    <td>
+                        <input type="text" value="{|$e.price|}" name="price{|$e.id|}" style="width: 50px;" />
+                    </td>
+                    <td>
+                        <select name="currencyid{|$e.id|}" >
+                            {|foreach from=$currencyArray item="c"|}
+                                <option value="{|$c.id|}" {|if $c.id == $e.currencyid|} selected {|/if|}>{|$c.symbol|}</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    <td align="right">
+                        <span id="id-linked-amount-{|$e.id|}">{|$e.linkedAmount|}</span>
+                    </td>
+                    <td>
+                        <a href="#" id="{|$e.id|}" class="js-link">{|$translate_link_products_to_warehouse|}</a>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="delete{|$e.id|}" value="1" class="table-checkbox" />
+                            {|$translate_delete_small|}
+                        </label>
+                    </td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td align="right">{|$translate_in_total|}:</td>
+                <td align="right"><strong>{|$sum|} {|$currency|}</strong></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="3">
+                    <input type="hidden" name="saveok" value="1" />
+                    <input type="submit" value="{|$translate_save_changes_small|}" class="ob-button button-green" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <br />
+
+{|else|}
+    <div class="shop-message-info">
+        {|$translate_sale_add_to_basket|}.
+    </div>
+{|/if|}

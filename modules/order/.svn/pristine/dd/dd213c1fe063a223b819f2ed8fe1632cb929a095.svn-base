@@ -1,0 +1,140 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        {|if $urlBack|}
+            <div class="tab-element"> <a href="{|$urlBack|}">&lsaquo; {|$translate_simple_back|}</a></div>
+        {|/if|}
+        {|if $isProject|}
+            <div class="tab-element"><a href="/admin/projects/">{|$translate_proekti|}</a></div>
+        {|else|}
+            <div class="tab-element"><a href="/admin/shop/orders/">{|$translate_ords|}</a></div>
+        {|/if|}
+        {|foreach from=$parentArray item="e"|}
+            <div class="tab-element"><a href="{|$e.url|}" {|if $e.id == $orderid AND $selected == 'view'|} class="selected" {|/if|}>{|$e.name|}</a></div>
+        {|/foreach|}
+        {|if $issueURL|}
+            <div class="tab-element"><a href="{|$issueURL|}" class="selected">{|$issueName|}</a></div>
+        {|/if|}
+
+        <div class="tab-element">
+            <form action="" style="display: inline-block;">
+                <input class="quick-jump js-quick-jump" type="text" name="" value="" placeholder="{|$translate_ord|} №..."/>
+                <input name="" type="hidden"/>
+
+                <script>
+                    $j('.js-quick-jump').on('change', function(){
+                        $j(this).closest('form').attr('action', '/admin/shop/orders/'+ $j(this).val() +'/');
+                    });
+                </script>
+            </form>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="ob-block-head js-block-head">
+    <div class="background" {|if $bigImage|}style="background-image: url('{|$bigImage|}');"{|/if|}>
+        {|if $menuColor|}<span style="background-color: {|$menuColor|};"></span>{|/if|}
+    </div>
+    <div class="head-wrap">
+        {|if $image|}
+            <div class="image">
+                <a class="js-colorbox nb-block-avatar" {|if $bigImage|}href="{|$bigImage|}"{|else|}href="{|$image|}"{|/if|} style="background-image: url('{|$image|}');"></a>
+            </div>
+        {|/if|}
+
+        <div class="info">
+            <div class="caption">
+                {|if $number|}
+                    <div class="tag">
+                        <span>
+                            #{|$number|}
+                        </span>
+                        {|if $statusName|}
+                            <span>
+                                {|if $statusColor|}
+                                    <em class="status" style="background-color: {|$statusColor|};"></em>
+                                {|/if|}
+                                {|$statusName|}
+                            </span>
+                        {|/if|}
+                    </div>
+                {|/if|}
+
+                {|if !$isWatcher|}
+                    <a class="ob-link-follow js-tooltip" href="{|$urlWatch|}" title="{|$translate_sledit|}"></a>
+                {|else|}
+                    <a class="ob-link-follow no js-tooltip" href="{|$urlWatch|}" title="{|$translate_ne_sledit|}"></a>
+                {|/if|}
+
+                <h1>{|$orderName|}</h1>
+
+                {|if $fireIssue|}
+                    <div class="ob-icon-overdue"></div>
+                {|/if|}
+
+                <div class="clear"></div>
+            </div>
+
+            {|if $description|}
+                <div class="description">
+                    {|$description|}
+                </div>
+            {|/if|}
+        </div>
+    </div>
+
+    <div class="navigation {|if $menuAnimation|}js-ui-navigation{|/if|}">
+        {|if $isProject|}
+            <a href="{|$orderUrl|}" {|if $selected == 'view'|} class="selected" {|/if|}>{|$translate_proekt|}</a>
+            <a href="/admin/shop/orders/{|$orderid|}/issue/" {|if $selected == 'issue'|} class="selected" {|/if|}>
+                {|$acl_issue|}
+                {|if $issueCount > 0|}
+                    <span class="ob-count-element">{|$issueCount|}</span>
+                {|/if|}
+            </a>
+            <a href="/admin/project/{|$orderid|}/order/" {|if $selected == 'order'|} class="selected" {|/if|}>
+                {|$translate_ords|}
+                {|if $orderCount > 0|}
+                    <span class="ob-count-element">{|$orderCount|}</span>
+                {|/if|}
+            </a>
+            <a href="/admin/project/{|$orderid|}/info/" {|if $selected == 'info'|} class="selected" {|/if|}>{|$translate_timework_small|}</a>
+            <a href="/admin/project/{|$orderid|}/products/" {|if $selected == 'products'|} class="selected" {|/if|}>{|$translate_many_products|}</a>
+        {|else|}
+            <a href="{|$orderUrl|}" {|if $selected == 'view'|} class="selected" {|/if|}>{|$translate_ord|}</a>
+            {|if $box|}
+                <a href="/admin/shop/orders/{|$orderid|}/issue/" {|if $selected == 'issue'|} class="selected" {|/if|}>
+                    {|$acl_issue|}
+                    {|if $issueCount > 0|}
+                        <span class="ob-count-element">{|$issueCount|}</span>
+                    {|/if|}
+                </a>
+            {|/if|}
+            <a href="/admin/shop/orders/{|$orderid|}/info/" {|if $selected == 'info'|} class="selected" {|/if|}>{|$translate_timework_small|}</a>
+        {|/if|}
+
+        {|foreach from=$moduleTabArray item="e"|}
+            <a href="{|$e.url|}" {|if $selected == $e.moduleName|} class="selected" {|/if|} >{|$e.name|}</a>
+        {|/foreach|}
+
+        {|if $canDelete|}
+            {|if $isDeleted|}
+                <a href="/admin/shop/orders/{|$orderid|}/restore/" {|if $selected == 'restore'|} class="selected" {|/if|}>{|$translate_restore|}</a>
+            {|else|}
+                <a href="/admin/shop/orders/{|$orderid|}/delete/" {|if $selected == 'delete'|} class="selected" {|/if|}>{|$translate_delete|}</a>
+            {|/if|}
+        {|/if|}
+    </div>
+</div>
+
+<script>
+    // инициализация просмотра картинок
+    $j('.js-colorbox').colorbox({
+        maxWidth: '95%',
+        maxHeight: '95%',
+        current: false,
+        returnFocus: false
+    });
+</script>

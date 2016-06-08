@@ -1,0 +1,343 @@
+<?php
+/**
+ * OneBox
+ *
+ * @copyright (C) 2011-2012 WebProduction (tm) <webproduction.com.ua>
+ *
+ * This program is commercial software; you cannot redistribute it and/or
+ * modify.
+ */
+
+
+
+/**
+ * StorageNameService
+ *
+ * @copyright WebProduction
+ *
+ * @package Shop
+ */
+class StorageNameService extends ServiceUtils_AbstractService {
+
+    /**
+     * GetStorageNameByID
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNameByID($id) {
+        try {
+            return $this->getObjectByID($id, 'ShopStorageName');
+        } catch (Exception $e) {
+
+        }
+        throw new ServiceUtils_Exception('Shop-object by id not found');
+    }
+
+    /**
+     * GetStorageNamesAll
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesAll() {
+        $x = new ShopStorageName();
+        $x->setOrder('name', 'ASC');
+        return $x;
+    }
+
+    /**
+     * GetStorageNamesActive
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesActive() {
+        $x = $this->getStorageNamesAll();
+        $x->setHidden(0);
+        return $x;
+    }
+
+    /**
+     * Получить склады-сотрудики
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesEmployees() {
+        $x = $this->getStorageNamesAll();
+        $x->setIsemployee(1);
+        return $x;
+    }
+
+    /**
+     * Получить склады-сотрудики которые можно видеть пользователю
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesEmployeesByUser(User $user) {
+        $x = $this->getStorageNamesEmployees();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'read')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады-поставщики
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesVendors() {
+        $x = $this->getStorageNamesAll();
+        $x->setIsvendor(1);
+        return $x;
+    }
+
+    /**
+     * Получить склады-поставщики которые можно видеть пользователю
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesVendorsByUser(User $user) {
+        $x = $this->getStorageNamesVendors();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'read')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады-поставщики с которых пользователю можно приходовать товары
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForIncomingFromByUser(User $user) {
+        $x = $this->getStorageNamesVendors();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'incomingfrom')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады, на которые/с которых можно перемещать товар
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForTransfers() {
+        $x = $this->getStorageNamesAll();
+        $x->setHidden(0);
+        $x->setIsvendor(0);
+        $x->setIssold(0);
+        $x->setIsoutcoming(0);
+        $x->setIsproduction(0);
+        return $x;
+    }
+
+    /**
+     * Получить склады-помещения
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesWarehouses() {
+        $x = $this->getStorageNamesAll();
+        $x->setIsvendor(0);
+        $x->setIssold(0);
+        $x->setIsoutcoming(0);
+        $x->setIsemployee(0);
+        $x->setIsproduction(0);
+        return $x;
+    }
+
+    /**
+     * Получить склады-помещения, которые может видеть пользователь
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesWarehousesByUser(User $user) {
+        $x = $this->getStorageNamesWarehouses();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'read')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады, на которые пользователь может приходовать товар
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForIncomingToByUser(User $user) {
+        $x = $this->getStorageNamesForTransfers();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'incomingto')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады, на которые пользователь может перемещать товар
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForTransferToByUser(User $user) {
+        $x = $this->getStorageNamesForTransfers();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'transferto')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады, с которых пользователь может перемещать товар
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForTransferFromByUser(User $user) {
+        $x = $this->getStorageNamesForTransfers();
+        $x->setHidden(0);
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'transferfrom')).'))');
+        return $x;
+    }
+
+    /**
+     * Получить склады, с которых можно продавать
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForSale() {
+        $x = $this->getStorageNamesAll();
+        $x->setHidden(0);
+        $x->setForsale(1);
+        $x->setOrder('default', 'DESC');
+        return $x;
+    }
+
+    /**
+     * Получить склады, с которых пользователь может продавать товар
+     *
+     * @param User $user
+     *
+     * @return ShopStorageName
+     */
+    public function getStorageNamesForSaleByUser($user = false) {
+        $x = $this->getStorageNamesForSale();
+        $x->setHidden(0);
+        if ($user) {
+            $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($user, 'salefrom')).'))');
+        }
+        return $x;
+    }
+
+    /**
+     * Получить склад, на который "складывается" проданный товар
+     *
+     * @return ShopStorageName
+     * @throws ServiceUtils_Exception
+     */
+    public function getStorageNameSold() {
+        $x = $this->getStorageNamesAll();
+        $x->setIssold(1);
+        if ($x = $x->getNext()) {
+            return $x;
+        }
+        throw new ServiceUtils_Exception('No storage for sold items');
+    }
+
+    /**
+     * Получить склад, на который "складывается" израсходованный товар
+     *
+     * @return ShopStorageName
+     * @throws ServiceUtils_Exception
+     */
+    public function getStorageNameOutcoming() {
+        $x = $this->getStorageNamesAll();
+        $x->setIsoutcoming(1);
+        if ($x = $x->getNext()) {
+            return $x;
+        }
+        throw new ServiceUtils_Exception('No storage for outcoming items');
+    }
+
+    /**
+     * Получить склад, на который "складывается" товар использованный для производства (комплектования)
+     *
+     * @return ShopStorageName
+     *
+     * @throws ServiceUtils_Exception
+     */
+    public function getStorageNameProduction() {
+        $x = $this->getStorageNamesAll();
+        $x->setIsproduction(1);
+        if ($x = $x->getNext()) {
+            return $x;
+        }
+        throw new ServiceUtils_Exception('No production storage');
+    }
+
+    /**
+     * Получить массив ID складов, в которых текущему пользователю разрешена операция
+     *
+     * @param string $operation
+     *
+     * @return array
+     */
+    public function getStorageNameIDsArrayByUser(User $cuser, $operation) {
+        $storageNames = $this->getStorageNamesAll();
+        $storageNamesArray = array(-1);
+        while ($storageName = $storageNames->getNext()) {
+            if ($cuser->isAllowed('storagename-'.$storageName->getId().'-'.$operation) ||
+                $storageName->getIsproduction()) {
+                $storageNamesArray[] = $storageName->getId();
+            }
+        }
+        return $storageNamesArray;
+    }
+
+    public function getStorageNamesByUser(User $cuser, $operation) {
+        $x = $this->getStorageNamesAll();
+        $x->addWhereQuery('(`id` IN ('.implode(',', $this->getStorageNameIDsArrayByUser($cuser, $operation)).'))');
+        return $x;
+    }
+
+    /**
+     * Разрешена ли пользователю операция над складом
+     *
+     * @param User $cuser
+     * @param ShopStorageName $storageName
+     * @param string $operation
+     *
+     * @return boolean
+     */
+    public function isStorageOperationAllowed(User $cuser, ShopStorageName $storageName, $operation) {
+        return $cuser->isAllowed('storagename-'.$storageName->getId().'-'.$operation);
+    }
+
+    /**
+     * Static Get
+     *
+     * @return StorageNameService
+     */
+    public static function Get() {
+        if (!self::$_Instance) {
+            self::$_Instance = new self();
+        }
+        return self::$_Instance;
+    }
+
+    private function __construct() {
+
+    }
+
+    private function __clone() {
+
+    }
+
+    private static $_Instance = null;
+
+}

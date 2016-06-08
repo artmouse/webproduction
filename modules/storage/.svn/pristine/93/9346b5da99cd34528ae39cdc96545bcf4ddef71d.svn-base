@@ -1,0 +1,10 @@
+<div class="shop-block">
+    <h1>Добавить продукт в корзину:</h1>
+    <form action="" method="POST" class="js-storage-basket-add-form">
+        <input type="hidden" name="type" value="{|$type|}" />
+        <input type="hidden" name="storagenameid" value="{|$storagenameid|}" />
+        <input class="js-product-autocomplete-input" type="text" data-orderid="{|$orderid|}" id="id-value" name="productid" style="width: 400px; " />
+        <a href="#" id="id-product" class="ob-button">{|$translate_select_find_create_product|}...</a>
+    </form>
+</div>
+<br />

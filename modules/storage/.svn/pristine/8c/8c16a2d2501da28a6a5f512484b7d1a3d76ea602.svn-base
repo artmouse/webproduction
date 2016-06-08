@@ -1,0 +1,177 @@
+<?php
+/**
+ * OneBox
+ *
+ * @copyright (C) 2011-2012 WebProduction (tm) <webproduction.com.ua>
+ *
+ * This program is commercial software; you cannot redistribute it and/or
+ * modify.
+ */
+
+class ShopStorageTransaction extends XShopStorageTransaction {
+
+    public function __construct($id = 0) {
+        parent::__construct($id);
+        $this->setClassname(__CLASS__);
+    }
+
+    /**
+     * Получить переменные для документа
+     *
+     * @return array
+     */
+    public function makeAssignArrayForDocument($tool = false) {
+
+        $transaction = $this;
+
+        $currency = Shop::Get()->getCurrencyService()->getCurrencySystem();
+
+        try{
+            $storageNameFrom = StorageNameService::Get()->getStorageNameByID(
+                $transaction->getStoragenamefromid()
+            )->getName();
+        } catch (Exception $e) {
+            $storageNameFrom = 'Склад №'.$transaction->getStoragenamefromid();
+        }
+
+        try{
+            $storageNameTo = StorageNameService::Get()->getStorageNameByID(
+                $transaction->getStoragenametoid()
+            )->getName();
+        } catch (Exception $e) {
+            $storageNameTo = 'Склад №'.$transaction->getStoragenametoid();
+        }
+
+        try {
+            $userName = Shop::Get()->getUserService()->getUserByID($transaction->getUserid())->makeName();
+        } catch (ServiceUtils_Exception $se) {
+            $userName = $transaction->getUserid();
+        }
+
+        try {
+            $orderName = Shop::Get()->getShopService()->getOrderByID($transaction->getOrderid())->makeName();
+        } catch (ServiceUtils_Exception $se) {
+            $orderName = '';
+        }
+
+
+        // список товаров перемещения
+        if ($tool) {
+            $user = Shop::Get()->getUserService()->getUsersAll();
+            $user->setLevel(3);
+            $user = $user->getNext();
+            $storage = StorageService::Get()->getStorageMotion(
+                $user,
+                $transaction->getId()
+            );
+        } else {
+            $storage = StorageService::Get()->getStorageMotion(
+                Shop::Get()->getUserService()->getUser(),
+                $transaction->getId()
+            );
+        }
+
+        $productsArray = array();
+        $sum = 0;
+        $sumTax = 0;
+        while ($x = $storage->getNext()) {
+
+            try {
+                $currencyName = $x->getCurrency()->getName();
+            } catch (ServiceUtils_Exception $se) {
+                $currencyName = '';
+            }
+
+            try {
+                $unit = $x->getProduct()->getUnit();
+            } catch (ServiceUtils_Exception $se) {
+                $unit = '';
+            }
+
+            $productsArray[] = array(
+                'productid' => $x->getProductid(),
+                'name' => $x->getProductname(),
+                'price' => $x->getPrice(),
+                'priceNopanny' => round($x->getPrice(), 0),
+                'currency' => $currencyName,
+                'unit' => $unit,
+                'productsumtax' => round(($x->getPricebase($x->getCurrency())*0.2)*$x->getAmount(), 2),
+                'productsumtaxprice' => round(($x->getPrice($x->getCurrency())*0.2)*$x->getAmount(), 2),
+                'productsumtaxpriceNopanny' => round(($x->getPrice($x->getCurrency())*0.2)*$x->getAmount(), 0),
+                'productsumandtax' => round($x->getPrice() * $x->getAmount(), 2),
+                'productsumandtaxNopanny' => round($x->getPrice() * $x->getAmount(), 0),
+                'productpricesumtax' => round(($x->getPricebase($x->getCurrency())*1.2)*$x->getAmount(), 2),
+                'productpricesumandtax' => round(($x->getPrice($x->getCurrency())*1.2)*$x->getAmount(), 2),
+                'productpricesumandtaxNopanny' => round(($x->getPrice($x->getCurrency())*1.2)*$x->getAmount(), 0),
+                'count' => $x->getAmount(),
+                'sumnotax' => $x->getPrice() * $x->getAmount(),
+                'sumnotaxNopanny' => round($x->getPrice() * $x->getAmount(), 0),
+                'sum' => $x->getPricebase() * $x->getAmount(),
+                'sumNopanny' => round($x->getPricebase() * $x->getAmount(), 0)
+
+            );
+            $sumTax += round($x->getPricebase($x->getCurrency())*0.2, 2);            
+            $sumTaxPrice += round($x->getPrice($x->getCurrency())*0.2, 2);            
+            $sum += $x->getAmount() * $x->getPricebase();
+            $sumPrice += $x->getAmount() * $x->getPrice();
+        }
+
+        $amounttext = StringUtils_Converter::FloatToMoney(round($transaction->getAmount(), 3), 'ru');
+        $a = array();
+        $a['id'] = $transaction->getId();
+        $a['date'] = $transaction->getDate();
+        $a['storagefrom'] = $storageNameFrom;
+        $a['storageto'] = $storageNameTo;
+        $a['user'] = $userName;
+        $a['client'] = $transaction->getClient();
+        $a['orderId'] = $transaction->getOrderid();
+        $a['orderName'] = $orderName;
+        $a['amount'] = round($transaction->getAmount(), 3);
+        $a['amountInt'] = round($transaction->getAmount(), 0);
+        $a['cost'] = $transaction->getCost();
+        $a['costInt'] = round($transaction->getCost(), 0);
+        $a['sum'] = round($sum, 2);
+        $a['sumNopanny'] = round($sum, 0);
+        $a['sumPrice'] = round($sumPrice, 0);
+        $a['currency'] = $currency->getName();
+        $a['transferlogArray'] = $productsArray;
+        $a['productcount'] = count($productsArray);
+
+        $a['sumtext'] = StringUtils_Converter::FloatToMoney(round($sum, 2), 'ru');
+        $a['sumtext_ua'] = StringUtils_Converter::FloatToMoney(round($sum, 2), 'ua');
+        $a['sumtext_by'] = StringUtils_Converter::FloatToMoney(round($sum, 0), 'by', false);
+        $a['amounttext'] = StringUtils_Converter::ClearCurrency($amounttext);
+                
+        $a['taxsum'] = round($sumTax, 2);
+        $a['taxsumPrice'] = round($sumTaxPrice, 0);
+        $a['taxsumtext_ru'] = StringUtils_Converter::FloatToMoney(round($sumTax, 2), 'ru');   
+        
+        $a['storagesumwithtax'] = round($sum + $sumTax, 0);
+        $a['storagesumwithtaxPrice'] = round($sumPrice + $sumTaxPrice, 0);
+        $a['storagesumwithtaxtext_ru'] = StringUtils_Converter::FloatToMoney($sum + $sumTax, 'ru');
+        $a['storagesumwithtaxtext_by'] = StringUtils_Converter::FloatToMoney(round($sum + $sumTax, 0), 'by', false);
+        $a['storagesumpricewithtaxtext_by'] =  StringUtils_Converter::FloatToMoney(round($sumPrice, 0), 'by', false);
+        
+        return $a;
+    }
+
+    /**
+     * GetNext
+     *
+     * @return ShopStorageTransaction
+     */
+    public function getNext($exception = false) {
+        $commit = true;
+        return parent::getNext($exception);
+    }
+
+    /**
+     * Get
+     *
+     * @return ShopStorageTransaction
+     */
+    public static function Get($key) {
+        return self::GetObject('ShopStorageTransaction', $key);
+    }
+
+}

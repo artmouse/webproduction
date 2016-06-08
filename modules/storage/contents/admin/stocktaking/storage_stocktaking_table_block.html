@@ -1,0 +1,59 @@
+{|if $basketArray|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable" width="100%">
+        <thead>
+            <tr>
+                <th width="40">{|$translate_code|}</th>
+                <th>{|$translate_product|}</th>
+                <th width="100">{|$translate_number|}</th>
+                <th width="40">&nbsp;</th>
+                <th width="100">Количество на складе</th>
+                <th width="100">Расхождение</th>
+                <th width="100">
+                    <label>
+                        <input type="checkbox" id="id-check-all" value="1" />
+                        {|$translate_delete_small|}
+                    </label>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {|foreach from=$basketArray item="e" |}
+                <tr>
+                    <td><a href="{|$e.productURL|}" class="js-product-preview" data-id="{|$e.productid|}" >{|$e.productid|}</a></td>
+                    <td>{|$e.name|}</td>
+                    <td>
+                        <input name="count{|$e.id|}" value="{|$e.count|}" style="width: 80px;" />
+                    </td>
+                    <td>{|$e.unit|}</td>
+                    <td align="right">{|if $e.balanceHistoryURL|}<a href="{|$e.balanceHistoryURL|}">{|/if|}{|$e.balance|number_format:3|}{|if $e.balanceHistoryURL|}</a>{|/if|}</td>
+                    <td align="right"><span {|if $e.diff != 0|} style="color:red; "{|/if|} >{|if $e.diff != 0|}{|if $e.diff > 0|}+{|/if|}{|$e.diff|}{|else|}-{|/if|}</span></td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="delete{|$e.id|}" value="1" class="table-checkbox" />
+                            {|$translate_delete_small|}
+                        </label>
+                    </td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="2">
+                    <input type="hidden" name="saveok" value="1" />
+                    <input type="submit" value="{|$translate_save_changes_small|}" class="ob-button button-green" />
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+{|else|}
+    <div class="shop-message-info">
+        Добавьте продукты в корзину переучета. 
+    </div>
+{|/if|}

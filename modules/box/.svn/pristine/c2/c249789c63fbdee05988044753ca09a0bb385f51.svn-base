@@ -1,0 +1,84 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_user_manager|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="name" key="managerID"|}
+                            <option value="{|$managerID|}" {|if $managerID == $control_managerid|} selected {|/if|}>{|$name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|$block_workflow_filter|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div class="shop-overflow-table">
+            <table class="shop-table">
+                <thead>
+                    <tr>
+                        <td>{|$translate_proekt|}</td>
+                        <td align="right">{|$translate_balance|}</td>
+                        <td width="70%">{|$acl_issue|}</td>
+                    </tr>
+                </thead>
+
+                {|foreach from=$reportArray item="e"|}
+                    <tr>
+                        <td>
+                            <a href="{|$e.url|}"><strong>{|$e.name|}</strong></a><br />
+                            {|$e.managerName|}<br />
+                            <br />
+
+                            <div class="ob-wf-stage nowrap" style="background-color: {|$e.statusColor|};">
+                                {|$e.statusName|}
+                            </div>
+
+                            <br />
+                            <br />
+                        </td>
+                        <td align="right">
+                            {|$e.balance|}&nbsp;{|$e.balanceCurrency|}
+
+                            {|if $e.probation|}
+                                <span class="ob-wf-stage nowrap" style="background-color: lightgreen;">+{|$e.probation|}&nbsp;{|$currency|}</span>
+                            {|/if|}
+                        </td>
+                        <td>
+                            {|foreach from=$e.issueArray item="issues" key="managerID"|}
+                                <strong>{|$managerArray[$managerID]|}</strong><br />
+                                {|foreach from=$issues item="i"|}
+                                    <a href="{|$i.url|}">{|$i.name|}</a>
+                                    {|$i.dateto|}
+                                    {|if $i.priority|}
+                                        #{|$i.priority|}
+                                    {|/if|}
+                                    <br />
+                                {|/foreach|}
+                                <br />
+                            {|/foreach|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

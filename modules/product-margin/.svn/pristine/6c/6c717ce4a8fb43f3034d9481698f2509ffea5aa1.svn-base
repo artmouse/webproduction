@@ -1,0 +1,102 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/marginrule/">Автоматические наценки на товары</a></div>
+        <div class="tab-element"><a href="" class="selected">Редактирование правила</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $categoryid != 0|}
+    {|if $message == 'ok'|}
+        <div>
+            Изменения сохранены.<br />
+            Хотите пересчитать цены <button onclick=" document.location = '/admin/shop/marginrule/{|$categoryid|}/reculc/'" class="ob-button">Да</button>   <button onclick=" document.location = '/admin/shop/marginrule/'" class="ob-button">Нет</button>
+        </div>
+    {|/if|}
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        Произошла ошибка.
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <strong>Цена от (включительно)</strong><br />
+    <input type="text" name="pricefrom" value="{|$control_pricefrom|}" style="width: 150px;"  />
+    <br />
+    <br />
+
+    <strong>Цена до (включительно)</strong><br />
+    <input type="text" name="priceto" value="{|$control_priceto|}" style="width: 150px;"  />
+    <br />
+    <br />
+
+    <strong>Тип наценки</strong><br />
+    <select name="type" >
+        <option value="percent" {|if 'percent' == $control_type|}selected{|/if|}>Процент</option>
+        <option value="sum" {|if 'sum' == $control_type|}selected{|/if|}>Сумма</option>
+    </select>
+    <br />
+    <br />
+
+    <strong>Значение наценки</strong><br />
+    <input type="text" name="value" value="{|$control_value|}" style="width: 150px;"  />
+    <br />
+    <br />
+
+    <strong>Валюта</strong><br />
+    <select name="currencyid" >
+        {|foreach from=$currencyArray item="e"|}
+            <option value="{|$e.id|}" {|if $e.id == $control_currencyid|}selected{|/if|} >{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>Бренд</strong><br />
+    <select name="brandid" >
+        <option value="0" >
+            ---
+        </option>
+        {|foreach from=$brandArray item="e"|}
+        <option value="{|$e.id|}" {|if $e.id == $control_brandid|}selected{|/if|} >{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>Поставщик</strong><br />
+    <select name="supplierid" >
+        <option value="0" >
+            ---
+        </option>
+        {|foreach from=$supplierArray item="e"|}
+        <option value="{|$e.id|}" {|if $e.id == $control_supplierid|}selected{|/if|} >{|$e.name|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    <strong>Приоритет наценки (0-99)</strong><br />
+    <input type="text" name="priority" value="{|$control_priority|}" style="width: 150px;"  />
+    <br />
+    <br />
+
+    <strong>Применить изменения для</strong><br />
+    <label>
+        <input type="radio" name="apply" value="this" checked />
+        Правила в выбранной категории ({|$categoryThisName|})
+    </label>
+    <br />
+    <label>
+        <input type="radio" name="apply" value="this" />
+         Всех идентичных правил во всех категориях ({|$categoryAllName|})
+    </label>
+    <br />
+    <br />
+
+    <input class="ob-button" type="submit" name="update" value="Изменить правило" />
+    <input class="ob-button" type="submit" name="delete" value="Удалить правило" onclick="return confirm('Подтверждаете удаление?');" />
+</form>

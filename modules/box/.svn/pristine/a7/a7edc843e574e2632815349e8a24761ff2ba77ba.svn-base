@@ -1,0 +1,59 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element separate">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        если, после даты выполнения прошло <input type="text" name="{|$index|}_time" value="{|$time|}"  style=" width: 50px;"/> часов
+
+    </div>
+    <div class="double">
+        <div class="form-element separate">
+            Название задачи
+            <input name="{|$index|}_name" value="{|$name|}" type="text" style="width: 100%; margin-bottom: 10px;">
+
+            Описание задачи
+            <textarea name="{|$index|}_text" style="width: 100%;">{|$text|}</textarea>
+        </div>
+        <div class="form-element separate">
+            <br>
+            [orderid] - номер заказа<br>
+            [dateto] - дата выполнения заказа<br>
+            [hour] - прошло часов
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="double">
+        <div class="form-element">
+            Менеджер
+            <select class="{|$index|}-chzn-select" name="{|$index|}_manager">
+                {|foreach from=$managerArray item="m"|}
+                    <option value="{|$m.id|}" {|if $manager == $m.id|}selected{|/if|}>{|$m.name|}</option>
+                {|/foreach|}
+            </select>
+        </div>
+        <div class="form-element">
+            Бизнес-процесс
+            <select class="{|$index|}-chzn-select" name="{|$index|}_workflow">
+                {|foreach from=$workflowArray item="w"|}
+                    <option value="{|$w.id|}" {|if $workflow == $w.id|}selected{|/if|}>{|$w.name|}</option>
+                {|/foreach|}
+            </select>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        // chzn
+        $j('.{|$index|}-chzn-select').select2();
+    });
+</script>

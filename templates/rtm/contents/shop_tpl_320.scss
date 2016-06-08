@@ -1,0 +1,339 @@
+@media screen and (max-width: 720px){
+    .no-320 {
+        display: none !important;
+    }
+
+    .inner {
+        width: 100%;
+        padding: 0 10px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    header {
+        > .inner {
+            min-height: 0;
+        }
+
+        .rtm-logo {
+            float: none;
+            margin: 40px 0 0 0;
+            display: block;
+            width: 130px;
+            height: 55px;
+
+            img {
+                width: 130px;
+            }
+        }
+    }
+
+    .rtm-auth-block {
+        margin-bottom: 15px;
+    }
+
+    .rtm-topcontacts-block {
+        margin: 5px 0 12px 0;
+
+        .address {
+            display: none;
+        }
+
+        .contact-mail {
+            display: none;
+        }
+
+        .social {
+            display: none;
+        }
+
+    }
+
+    .rtm-headerright-block {
+        float: none;
+        width: 100%;
+
+        .search-block {
+            display: none;
+        }
+    }
+
+    .rtm-index-features {
+        text-align: left;
+
+        .f-1 {
+            background-position: 9px 23px;
+        }
+
+        .f-2 {
+            background-position: 9px 23px;
+        }
+
+        .f-3 {
+            background-position: 9px 24px;
+        }
+
+        .f-4 {
+            background-position: 9px 24px;
+        }
+
+        .f-5 {
+            background-position: 9px 24px;
+        }
+
+        .element {
+            margin: 0;
+        }
+
+        .element > span {
+            width: 300px;
+            height: 52px;
+        }
+    }
+
+    .rtm-index-cat-list {
+        .item {
+            width: 100%;
+
+            .image {
+                width: 100%;
+                height: auto;
+
+                a {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                }
+
+                img {
+                    max-width: 100%;
+                    max-height: auto;
+                }
+            }
+        }
+    }
+
+    .page-footer {
+        height: auto;
+
+        .item {
+            float: none;
+            width: 100%;
+            border-left: none;
+            border-top: 1px solid #aaaaaa;
+            margin: 0;
+            padding: 20px 0;
+            height: auto;
+
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3) {
+                display: none;
+            }
+
+            &:nth-child(4) {
+                border: none;
+            }
+        }
+    }
+
+    .rtm-copy {
+        position: static;
+        height: auto;
+
+        .inner {
+            margin-top: 0;
+            padding: 10px;
+        }
+
+        .wp {
+            float: none;
+        }
+    }
+
+    .rtm-navigation {
+        height: auto;
+        display: none;
+
+        .inner {
+            padding: 0;
+        }
+
+        .navi {
+            display: block;
+
+            > li {
+                display: block;
+                border: none;
+                background-image: url("/templates/rtm/_images/menu_bg.png");
+
+                > a {
+                    text-transform: uppercase;
+                }
+            }
+
+            .sub {
+                position: static;
+            }
+        }
+    }
+
+    aside.left-layer {
+        float: none;
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+
+    section.right-layer {
+        float: none;
+        width: 100%;
+    }
+
+    .rtm-filter-tabs  {
+        display: none;
+
+        .tab.right-tab {
+            float: left;
+        }
+    }
+
+    .rtm-filter-block {
+        display: none;
+    }
+
+    .rtm-filter-toggle {
+        display: block;
+
+        .close {
+            float: right;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            background: url('/templates/rtm/_images/rtm-popup-close.png')no-repeat center center #fbf0de;
+            margin: -28px 0 0 0;
+            position: relative;
+            z-index: 5;
+            cursor: pointer;
+            display: none;
+        }
+
+        .rtm-submit {
+            width: 100%;
+            margin: 5px 0 0 0;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+    }
+
+    .rtm-product-list {
+        .element {
+            width: 48%;
+
+            .p-image {
+                width: 100%;
+                display: block;
+            }
+        }
+    }
+
+    .rtm-product-view {
+        .main-image {
+            overflow: hidden;
+        }
+
+        .left-col,
+        .right-col {
+            width: 100%;
+            float: none;
+        }
+    }
+
+    .zoomPad {
+        width: 100% !important;
+    }
+
+    .rtm-popup-block {
+        .popup-block.basketp-block {
+            width: 90%;
+
+            .h-count {
+                width: auto !important;
+            }
+        }
+    }
+
+    .rtm-contacts {
+        .text{
+            float: none;
+            width: 100%;
+            margin: 0 0 20px 0;
+        }
+    }
+
+    .rtm-contacts  {
+        .rtm-feedback-block {
+            float: none;
+            width: 100%;
+        }
+    }
+
+    .os-form-block input[type="text"],
+    .os-form-block input[type="password"],
+    .os-form-block textarea {
+        width: 200px !important;
+    }
+
+    .rtm-blog-layer {
+        float: none;
+        width: 100%;
+        padding: 0;
+        background-image: none;
+    }
+
+    .rtm-lastnews-layer {
+        display: none;
+    }
+
+    .rtm-basket-widget {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        background-image: none;
+        padding: 0 10px 0 60px;
+
+        br {
+            display: none;
+        }
+
+        .p-count {
+            left: 10px;
+            top: 50%;
+            margin: -10px 0 0 0;
+        }
+    }
+
+    .rtm-menu-toggle {
+        width: 20px;
+        height: 16px;
+        background: url("/templates/rtm/_images/menu-toggle.png");
+        float: right;
+        margin: 10px 0 0 0;
+        cursor: pointer;
+        display: block;
+    }
+}
+
+@media screen and (max-width: 470px){
+    .rtm-product-list {
+        .element {
+            width: 100%;
+        }
+    }
+}

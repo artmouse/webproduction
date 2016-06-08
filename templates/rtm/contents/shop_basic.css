@@ -1,0 +1,358 @@
+.os-404 {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    background-color: #ffffff;
+}
+
+.os-404 img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+
+.os-message-error {
+    margin: 0 0 20px 0;
+    background-color: #e8e8e8;
+    /*background-image: url('/_images/message-error.png');*/
+    /*background-position: center left;*/
+    /*background-repeat: no-repeat;*/
+    box-shadow: 0 1px 2px #d7d7d7 inset;
+    color: #818181;
+    padding: 24px 24px 24px 24px;
+    min-height: 45px;
+}
+
+.os-message-error .caption {
+    color: #654321;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 20px;
+    margin: 0 0 6px 0;
+}
+
+.os-message-success {
+    margin: 0 0 20px 0;
+    background-color: #e8e8e8;
+    background-image: url('/templates/rtm/_images/rtm-succsess.png');
+    background-position: 35px center;
+    background-repeat: no-repeat;
+    box-shadow: 0 1px 2px #d7d7d7 inset;
+    color: #818181;
+    padding: 24px 24px 24px 133px;
+    min-height: 45px;
+}
+
+.os-message-success .caption {
+    color: #0cb061;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 20px;
+    margin: 0 0 6px 0;
+}
+
+.os-form-block {
+    margin: 0 0 20px 0;
+    background-color: #e8e8e8;
+    box-shadow: 0 1px 2px #d7d7d7 inset;
+    padding: 15px;
+}
+
+.os-form-block table {
+    border-collapse: collapse;
+}
+
+.os-form-block td {
+    padding: 5px;
+    color: #757575;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.os-form-block td.vtop {
+    vertical-align: top;
+    padding: 12px 5px 5px 5px;
+}
+
+.os-form-block .light {
+    font-weight: normal;
+    text-transform: none;
+}
+
+.os-form-block input[type="text"],
+.os-form-block input[type="password"] {
+    height: 30px;
+    padding: 0 10px;
+    box-shadow: 0 1px 1px #d0d0d0;
+    background-color: #ffffff;
+    width: 380px;
+    border: none;
+}
+
+.os-form-block textarea {
+    height: 100px;
+    min-height: 100px;
+    padding: 10px;
+    box-shadow: 0 1px 1px #d0d0d0;
+    background-color: #ffffff;
+    width: 380px;
+    border: none;
+    resize: vertical;
+}
+
+.os-form-block label {
+    display: inline-block;
+    position: relative;
+    padding: 0 0 0 20px;
+    cursor: pointer;
+}
+
+.os-form-block label input {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    margin: 0;
+}
+
+.os-crumbs {
+    margin: 0 0 20px 0;
+    color: #757575;
+    font-size: 11px;
+}
+
+.os-crumbs a {
+    font-size: 11px;
+    background: url('/_images/crumbs-a-bg.png') center right no-repeat;
+    padding: 0 15px 0 0;
+    margin: 0 6px 0 0;
+}
+
+.ei-slider{
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+    height: 340px;
+    margin: 0 0 20px 0;
+    background-color: #E8E8E8;
+    padding: 0 0 13px 0;
+}
+
+.ei-slider ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.ei-slider-loading{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:11;
+    background: rgba(0,0,0,0.9);
+    color: #fff;
+    text-align: center;
+    line-height: 340px;
+}
+
+.ei-slider-large{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.ei-slider-large li{
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.ei-slider-large li img{
+    width: 100%;
+}
+
+.os-form-find {
+    background-color: #e8e8e8;
+    box-shadow: 0 1px 2px #d7d7d7 inset;
+    padding: 10px 0 10px 10px;
+}
+
+.os-form-find table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.os-form-find td {
+    padding: 0 10px 0 0;
+    color: #757575;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.os-form-find td:first-child {
+    width: 400px;
+}
+
+.os-form-find input[type="text"] {
+    box-shadow: 0 1px 1px #d0d0d0;
+    background-color: #ffffff;
+    height: 30px;
+    border: none;
+    padding: 0 10px;
+    width: 400px;
+}
+
+.os-form-find input[type="text"].count {
+    text-align: center;
+    width: 50px;
+    font-size: 17px;
+}
+
+.os-form-find .os-submit {
+    height: 30px;
+    width: 120px;
+}
+
+.os-submit {
+    border: none;
+    background-color: #4aa7ff;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    height: 40px;
+    display: inline-block;
+    padding: 0 10px;
+    min-width: 70px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+a.os-submit {
+    line-height: 40px;
+}
+
+.os-submit:hover {
+    background-color: #2495ff;
+    text-shadow: #1e4b76 0 1px 0;
+    box-shadow: 0 1px 1px #d0d0d0;
+}
+
+.os-submit:active {
+    box-shadow: 1px 1px 2px #1764ab inset;
+}
+
+.os-submit.green {
+    background-color: #33da89;
+}
+
+.os-submit.green:hover {
+    background-color: #22c777;
+    text-shadow: #1d5f3f 0 1px 0;
+}
+
+.os-submit.green:active {
+    box-shadow: 1px 1px 2px #137646 inset;
+}
+
+.os-submit.red {
+    background-color: #da6633;
+}
+
+.os-submit.red:hover {
+    background-color: #c85624;
+    text-shadow: #60321e 0 1px 0;
+}
+
+.os-submit.red:active {
+    box-shadow: 1px 1px 2px #7a3517 inset;
+}
+
+.os-submit.grey{
+    background-color: #b1b1b1;
+}
+
+.os-submit.grey:hover{
+    background-color: #939393;
+    text-shadow: #757575 0 1px 0;
+}
+
+.os-submit.grey:active{
+    box-shadow: 1px 1px 2px #757575 inset;
+}
+
+.os-product-view .maininfo-block .price .specify {
+    font-size: 15px;
+    color: #757575;
+}
+
+body ul.ui-autocomplete {
+    z-index: 100000  !important;
+    border: none !important;
+    border-radius: 0 !important;
+    -webkit-box-shadow: 0 1px 1px #d0d0d0;
+    -moz-box-shadow: 0 0 1px 1px #d0d0d0;
+    box-shadow: 0 1px 1px #d0d0d0;
+    background-color: #ffffff;
+    padding: 0 !important;
+}
+
+.shop-autocoplete-element {
+    display: block;
+    max-width: 519px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.shop-autocoplete-element .clear {
+    display: block;
+}
+
+.shop-autocoplete-element .image {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    float: left;
+}
+
+.shop-autocoplete-element .image span {
+    width: 50px;
+    height: 50px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.shop-autocoplete-element .image img {
+    max-width: 50px;
+    max-height: 50px;
+    display: block;
+    margin: 0 auto;
+}
+
+.shop-autocoplete-element .description {
+    font-style: italic;
+    font-size: 10px;
+    color: #4F4F4F;
+    margin: 0 0 0 60px;
+    display: block;
+}
+
+.shop-autocoplete-element .label {
+    display: block;
+    color: #1097FF;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+}

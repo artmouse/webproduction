@@ -1,0 +1,97 @@
+<h1>OneBox: система комментариев и типы комментариев</h1>
+
+В OneBox есть система комментариев к заказам/задачам/проектам/... (ShopOrder).<br />
+<br />
+
+<h2>Типы комментариев</h2>
+Комментарии делается на такие типы:
+<br />
+
+<ol>
+    <li>comment - показывается как обычно.</li>
+    <li>change - изменение (что поменялось), пишется мелким сереньким.</li>
+    <li>notify - уведомление, выделяется</li>
+    <li>email - письмо</li>
+    <li>call - звонок</li>
+    <li>sms - смс</li>
+    <li>result - результат (выделяется зеленым)</li>
+</ol>
+
+<span style="color: red;">Все эти типы - это всего-лишь визуальное отображение комментарев внутри заказа, задачи, проекта и тд. На логику они никак не влияют.</span><br />
+<br />
+
+<h2>Как храняться комментарии?</h2>
+
+Комментарии хранятся в таблице commentsapi_comment (SQLObject-класс CommentsAPI_XComment).<br />
+<br />
+
+У кажлого комментария есть поле key (ключ) - оно показывает к чему относиться комментарий.<br />
+Например: order-153 - к заказу 153. user-111 - к пользователю 222.
+<br />
+
+У каждого комментария есть поле deleted = 0/1, которое отвечает за удален/не удален.<br />
+<br />
+
+<h2>Получить комментарии</h2>
+Чтобы получить все комментарии по какому-нибудь ключу, можно вызвать:
+<br />
+<br />
+
+<code><pre>
+$comments = CommentsAPI::Get()->getComments('user-111');
+$comments->setOrder('cdate', 'DESC');
+while ($x = $comments->getNext()) {
+    // do something with $x
+}
+</pre></code>
+<br />
+
+Если нужно получить комментарии сразу по нескольким ключам:
+<br />
+<br />
+
+<code><pre>
+$comments = CommentsAPI::Get()->getComments(array('user-111', 'user-112', ...));
+$comments->setOrder('cdate', 'DESC');
+while ($x = $comments->getNext()) {
+    // do something with $x
+}
+</pre></code>
+<br />
+<br />
+
+<h2>Добавить комментарий</h2>
+
+Соотвественно, в API есть соотвествующие методы:<br />
+<ol>
+    <li>addOrderComment</li>
+    <li>addOrderChange</li>
+    <li>addOrderNotify</li>
+    <li>addOrderResult</li>
+    <li>addOrderEmail</li>
+    <li>addOrderCall</li>
+    <li>addOrderSMS</li>
+</ol>
+<br />
+
+<code><pre>
+Shop::Get()->getShopService()->addOrderComment($order, $user, $comment,
+    $fileIDArray = false, $addOrderEmployer = true, $excludeNotifyUserArray = false);
+</pre></code>
+<br />
+
+Где параметры:
+<ol>
+    <li>
+    $user - кто добавляет запись (автор).<br />
+    Для addOrderComment нужно обязательно передавать User'a (кто пишет комментарий),<br />
+    а для addOrderChange и addOrderNotify - не обязательно.<br />
+    </li>
+    <li>$fileIDArray - массив ID файлов (см документацию по файловой системе OneBox)</li>
+    <li>$addOrderEmployer - автоматически добавлять автора ($user) в наблюдатели задачи, если его там нет.<br />
+    По умолчанию true.</li>
+    <li>$excludeNotifyUserArray - каких пользователей исключить из уведомлений (см документацию по центру уведомлений)</li>
+</ol>
+
+<br />
+<br />

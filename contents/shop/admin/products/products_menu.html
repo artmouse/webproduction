@@ -1,0 +1,93 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/products/list-table/">&lsaquo; {|$translate_many_products|}</a></div>
+        {|if $canEdit or $selected == 'edit'|}
+            <div class="tab-element">
+                <a href="../edit/" {|if $selected == 'edit'|} class="selected" {|/if|}>{|$translate_edit|}</a>
+            </div>
+        {|/if|}
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="ob-block-head js-block-head">
+    <div class="background" {|if $bigImage|}style="background-image: url('{|$bigImage|}');"{|/if|}>
+        {|if $menuColor|}<span style="background-color: {|$menuColor|};"></span>{|/if|}
+    </div>
+    <div class="head-wrap">
+        {|if $image|}
+            <div class="image"><a class="js-colorbox-head" {|if $bigImage|}href="{|$bigImage|}"{|else|}href="{|$image|}"{|/if|}><img src="{|$image|}" alt=""/></a></div>
+        {|/if|}
+
+        <div class="info">
+            <div class="caption">
+                {|if $productId|}
+                    <div class="tag"><span>#{|$productId|}</span></div>
+                {|/if|}
+                <h1>{|$productName|}</h1>
+
+                <div class="description">{|$description|}</div>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation js-ui-navigation">
+        {|if $canEdit or $selected == 'edit'|}
+            <a href="../edit/" {|if $selected == 'edit'|} class="selected" {|/if|}>{|$translate_edit|}</a>
+        {|/if|}
+
+        {|if $canViewSuppliers|}
+            <a href="../supplier/" {|if $selected == 'supplier'|} class="selected" {|/if|}>{|$translate_suppliers|}</a>
+        {|/if|}
+
+        {|if $canViewFilters|}
+            <a href="../filters/" {|if $selected == 'filters'|} class="selected" {|/if|}>{|$translate_products_filters_only|}</a>
+        {|/if|}
+
+        {|if $canViewViews|}
+            <a href="../view/" {|if $selected == 'view'|} class="selected" {|/if|}>{|$translate_views|}</a>
+        {|/if|}
+
+        {|if $canViewComments|}
+            <a href="../comments/" {|if $selected == 'comments'|} class="selected" {|/if|}>{|$translate_many_comments|}</a>
+        {|/if|}
+
+        {|if $canViewHistory|}
+            <a href="../history/" {|if $selected == 'history'|} class="selected" {|/if|}>{|$translate_history|}</a>
+        {|/if|}
+
+        {|if $canViewPriceplaces|}
+            <a href="../priceplaces/" {|if $selected == 'priceplaces'|} class="selected" {|/if|}>{|$translate_priceplace|}</a>
+        {|/if|}
+
+        {|if $canViewRelated|}
+            <a href="../related/" {|if $selected == 'related'|} class="selected" {|/if|}>{|$translate_related_products|}</a>
+        {|/if|}
+
+        {|if $canViewLists|}
+            <a href="../lists/" {|if $selected == 'lists'|} class="selected" {|/if|}>{|$translate_lists|}</a>
+            <a href="../sets/" {|if $selected == 'action_set'|} class="selected" {|/if|}>{|$translate_aktsionnie_nabori|}</a>
+        {|/if|}
+
+        {|foreach from=$moduleTabArray item="e"|}
+            <a href="{|$e.url|}" {|if $selected == $e.moduleName|} class="selected" {|/if|} >{|$e.name|}</a>
+        {|/foreach|}
+
+        {|if $canDelete|}
+            <a href="../delete/"  {|if $selected == 'delete'|} class="selected" {|/if|}>{|$translate_delete|}</a>
+        {|/if|}
+    </div>
+</div>
+
+<script>
+    // инициализация просмотра картинок
+    $j('.js-colorbox-head').colorbox({
+        maxWidth: '95%',
+        maxHeight: '95%',
+        current: false,
+        returnFocus: false
+    });
+</script>

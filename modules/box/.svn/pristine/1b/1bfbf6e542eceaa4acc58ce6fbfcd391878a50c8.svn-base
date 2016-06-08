@@ -1,0 +1,18 @@
+{|if $orderArray|}
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">{|$translate_pohozhie_zadachi|}</div>
+        {|foreach from=$orderArray item="e"|}
+            <a class="shop-activity-preview js-issue-preview" data-id="{|$e.id|}" href="{|$e.url|}">
+                <span class="activity-head">
+                    <span class="{|if $e.closed|}ob-icon-done{|elseif $e.fire|}ob-icon-overdue{|else|}ob-icon-list{|/if|} type-icon"></span>
+                    {|if $e.dateto || $e.managerName|}
+                        {|if $e.dateto|}<span class="date fl-r">{|$e.dateto|}</span>{|/if|}
+                        <span class="name">{|if $e.managerName|}{|$e.managerName|}{|else|}{|$translate_net_otvetstvennogo|}{|/if|}</span>
+                    {|/if|}
+                    <span class="clear"></span>
+                    <span class="subject">{|$e.name|} <span style="font-size: smaller"> #{|$e.id|}</span></span>
+                </span>
+            </a>
+        {|/foreach|}
+    </div>
+{|/if|}

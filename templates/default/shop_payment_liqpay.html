@@ -1,0 +1,30 @@
+{|if !$publicKey || !privateKey|}
+    <div class="os-message-error">
+        {|$translate_please_first_configure_your_store_integration|} LiqPay.com<br />
+        {|$translate_admin_settings_integration|}
+    </div>
+{|else|}
+    {|if $orderID and $orderSum|}
+        <div class="os-message-success">
+            <div class="caption">{|$translate_payment_order|} #{|$orderID|}</div>
+            <strong>{|$translate_sum_to_pay|}: {|$orderSum|} {|$orderCurrency|}</strong>
+            <br />
+            <br />
+            {|$html|}
+        </div>
+    {|/if|}
+
+    {|if $message == 'success'|}
+        <div class="os-message-success">
+            {|$translate_thank_you_payment_was_successfully_received|}
+            {|$translate_in_the_near_future|}
+        </div>
+    {|/if|}
+
+    {|if $message == 'fail'|}
+        <div class="os-message-error">
+            {|$translate_unfortunately_we_did_not_receive_your_payment|}.
+            {|$translate_please_contact_us|}.
+        </div>
+    {|/if|}
+{|/if|}

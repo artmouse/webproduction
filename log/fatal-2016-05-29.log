@@ -1,0 +1,63 @@
+[2016-05-29 22:32:01]
+host: shop.local
+url: /
+contentID: 500
+point: /shop.starter.php
+data: type=1
+message=Uncaught exception 'ConnectionManager_Exception' with message 'No query result to fetch' in /var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php:205
+Stack trace:
+#0 /var/www/shop.local/packages/SQLObject/SQLObject.class.php(847): ConnectionManager_MySQLi->fetch(NULL)
+#1 /var/www/shop.local/api/db/XShopBlock.class.php(174): SQLObject->getNext(false)
+#2 /var/www/shop.local/api/system/ShopBlock.class.php(25): XShopBlock->getNext(false)
+#3 /var/www/shop.local/api/system/Shop_BlockObserver.class.php(36): ShopBlock->getNext()
+#4 /var/www/shop.local/packages/Events/Events_Event.class.php(78): Shop_BlockObserver->notify(Object(Engine_Event_ContentProcess))
+#5 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(259): Events_Event->notify()
+#6 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(120): Engine_ContentDriver->displayOne(500)
+#7 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(77): Engine_ContentDriver->display(500)
+#8 /var/www/sho
+file=/var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php
+line=205
+
+
+[2016-05-29 22:32:03]
+host: shop.local
+url: /
+contentID: 500
+point: /shop.starter.php
+data: type=1
+message=Uncaught exception 'ConnectionManager_Exception' with message 'No query result to fetch' in /var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php:205
+Stack trace:
+#0 /var/www/shop.local/packages/SQLObject/SQLObject.class.php(847): ConnectionManager_MySQLi->fetch(NULL)
+#1 /var/www/shop.local/api/db/XShopBlock.class.php(174): SQLObject->getNext(false)
+#2 /var/www/shop.local/api/system/ShopBlock.class.php(25): XShopBlock->getNext(false)
+#3 /var/www/shop.local/api/system/Shop_BlockObserver.class.php(36): ShopBlock->getNext()
+#4 /var/www/shop.local/packages/Events/Events_Event.class.php(78): Shop_BlockObserver->notify(Object(Engine_Event_ContentProcess))
+#5 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(259): Events_Event->notify()
+#6 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(120): Engine_ContentDriver->displayOne(500)
+#7 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(77): Engine_ContentDriver->display(500)
+#8 /var/www/sho
+file=/var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php
+line=205
+
+
+[2016-05-29 22:32:04]
+host: shop.local
+url: /
+contentID: 500
+point: /shop.starter.php
+data: type=1
+message=Uncaught exception 'ConnectionManager_Exception' with message 'No query result to fetch' in /var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php:205
+Stack trace:
+#0 /var/www/shop.local/packages/SQLObject/SQLObject.class.php(847): ConnectionManager_MySQLi->fetch(NULL)
+#1 /var/www/shop.local/api/db/XShopBlock.class.php(174): SQLObject->getNext(false)
+#2 /var/www/shop.local/api/system/ShopBlock.class.php(25): XShopBlock->getNext(false)
+#3 /var/www/shop.local/api/system/Shop_BlockObserver.class.php(36): ShopBlock->getNext()
+#4 /var/www/shop.local/packages/Events/Events_Event.class.php(78): Shop_BlockObserver->notify(Object(Engine_Event_ContentProcess))
+#5 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(259): Events_Event->notify()
+#6 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(120): Engine_ContentDriver->displayOne(500)
+#7 /var/www/shop.local/packages/Engine/Engine_ContentDriver.class.php(77): Engine_ContentDriver->display(500)
+#8 /var/www/sho
+file=/var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php
+line=205
+
+

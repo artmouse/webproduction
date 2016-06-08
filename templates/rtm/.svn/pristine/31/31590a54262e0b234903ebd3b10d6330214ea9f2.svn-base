@@ -1,0 +1,21 @@
+{|if $bannerArray|}
+    <div class="rtm-banner-top">
+        <div class="banner-wrap">
+            {|foreach from=$bannerArray item="b"|}
+                <div>
+                    <a href="{|$b.url|}" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                        <img src="{|$b.image|}" alt="{|$b.name|}" />
+                    </a>
+                </div>
+            {|/foreach|}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $j('.rtm-banner-top .banner-wrap').slick({
+            dots: true,
+            slidesToShow: 1,
+            adaptiveHeight: true
+        });
+    </script>
+{|/if|}

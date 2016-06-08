@@ -1,0 +1,73 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            {|if $storagenamesArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_from_storage|}</div>
+                    <input type="hidden" name="filter1_key" value="storagenamefromid" />
+                    <input type="hidden" name="filter1_type" value="equals" />
+                    <select name="filter1_value">
+                        <option value="">{|$translate_all_storages|}</option>
+                        {|foreach from=$storagenamesArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_filter1_value|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+                <div class="element">
+                    <div class="caption-field">{|$translate_to_storage|}</div>
+                    <input type="hidden" name="filter6_key" value="storagenametoid" />
+                    <input type="hidden" name="filter6_type" value="equals" />
+                    <select name="filter6_value">
+                        <option value="">{|$translate_all_storages|}</option>
+                        {|foreach from=$storagenamesArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_filter6_value|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managersArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_operator|}</div>
+                    <input type="hidden" name="filter2_key" value="userid" />
+                    <input type="hidden" name="filter2_type" value="equals" />
+                    <select name="filter2_value">
+                        <option value="">{|$translate_all_operators|}</option>
+                        {|foreach from=$managersArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_filter2_value|} selected {|/if|}>{|if $e.name|}{|$e.name|}{|else|}{|$e.login|}{|/if|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <input type="hidden" name="filter3_key" value="productid" />
+                <input type="hidden" name="filter3_type" value="equals" />
+                <input type="text" name="filter3_value" value="{|$control_filter3_value|}" placeholder="{|$translate_code_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter4_key" value="productname" />
+                <input type="hidden" name="filter4_type" value="search" />
+                <input type="text" name="filter4_value" value="{|$control_filter4_value|}" placeholder="{|$translate_title|}" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter5_key" value="serial" />
+                <input type="hidden" name="filter5_type" value="search" />
+                <input type="text" name="filter5_value" value="{|$control_filter5_value|}" placeholder="{|$translate_serial_number|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|$table|}
+    </div>
+</div>
+<div class="clear"></div>
+

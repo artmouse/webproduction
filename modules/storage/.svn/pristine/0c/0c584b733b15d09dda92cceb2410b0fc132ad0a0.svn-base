@@ -1,0 +1,9 @@
+<form action="" method="get" class="shop-block">
+    {|$translate_order_search_for_shipment|}:
+    <input type="input" name="orderid" value="" />
+    <input class="ob-button" type="submit" name="ok" value="Оприходовать" />
+</form>
+
+<br />
+
+{|$table|}

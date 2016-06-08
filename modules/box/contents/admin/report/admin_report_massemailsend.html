@@ -1,0 +1,58 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_sozdaniya_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_sozdaniya_do|}" />
+            </div>
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+        <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_otchet_po_zaplanirovannim_i_sovershennim_e_mail_rassilkam|}</h1>
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_created|}</td>
+                    <td>{|$translate_order_status_ind|}</td>
+                    <td>{|$translate_dispatch_date|}</td>
+                    <td>{|$translate_obratniy_adress|}</td>
+                    <td align="right">{|$translate_subject|}</td>
+                </tr>
+            </thead>
+            {|foreach from=$arrayMailsSend item="sender" key="key"|}
+                {|if $sender.status|}
+                    <tr style="background: #ebebeb;">
+                        <td>{|$sender.cdate|}</td>
+                        <td>{|$translate_otpravleno|}</td>
+                        <td>{|$sender.sdate|}</td>
+                        <td>{|$sender.about|}</td>
+                        <td align="right">{|$sender.theme|}</td>
+                    </tr>
+                {|else|}
+                    <tr style="background: #07AF3D;">
+                        <td>{|$sender.cdate|}</td>
+                        <td>{|$translate_eshche_ne_otpravleno|}</td>
+                        <td>{|$sender.sdate|}</td>
+                        <td>{|$sender.about|}</td>
+                        <td align="right">{|$sender.theme|}</td>
+                    </tr>
+                {|/if|}
+            {|/foreach|}
+        </table>    
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

@@ -1,0 +1,53 @@
+.shop-module-content {
+    float: left;
+    width: 100%;
+
+    .module-content {
+        margin: 0 310px 0 0;
+    }
+}
+
+.shop-module-preview {
+    float: left;
+    width: 290px;
+    margin: 0 0 0 -290px;
+
+    @media screen and (max-width: 1250px){
+        float: none;
+        width: 100%;
+        margin: 0 0 0 0;
+    }
+}
+
+.shop-finance-table {
+    margin: 0 0 10px 0;
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td {
+        padding: 5px;
+        color: #444444;
+        border-bottom: 1px solid #eff0f2;
+
+        a {
+            color: #444444;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .marked td {
+        background-color: #eff0f2;
+    }
+
+    .element {
+        padding: 0 0 0 10px;
+        display: block;
+    }
+}

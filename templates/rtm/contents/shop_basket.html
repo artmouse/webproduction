@@ -1,0 +1,266 @@
+<div class="rtm-crumbs">
+    <a href="/">{|$translate_main|}</a> &rarr;
+    {|$translate_my_basket|}
+</div>
+
+<h1 class="title">{|$translate_checkout|}</h1>
+
+{|if $okmessage|}
+    <div class="os-message-success">
+        {|$goodmessage|}
+        {|if $paymentInfo|}
+            <br />
+            {|$paymentInfo|}
+        {|/if|}
+    </div>
+
+{|if $urlredirect|}
+    <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+    </script>
+{|elseif $urlpayment|}
+    <script type="text/javascript">
+        document.location = '{|$urlpayment|}';
+    </script>
+{|/if|}
+{|else|}
+    <form method="post" id="id-basket" enctype="multipart/form-data">
+        {|if not $basketArray|}
+            <div class="os-message-error">
+                <div class="caption">В Вашей корзине пока нет товаров</div>
+                <a href="/">{|$translate_empty_basket|}</a>.
+            </div>
+        {|else|}
+            <div class="rtm-basket-page">
+                <table>
+                <thead>
+                <tr>
+                    <td class="h-image">{|$translate_product|}</td>
+                    <td>&nbsp;</td>
+                    <td class="no-320">&nbsp;</td>
+                    <td class="h-price no-320">Код товара</td>
+                    <td class="h-count">{|$translate_number|}</td>
+                    <td class="h-summ ta_center">{|$translate_total|}</td>
+                </tr>
+                </thead>
+                {|foreach from=$basketArray item="b"|}
+                    <tr>
+                        <td class="ta-center" style="text-align: center">
+                            <a href="{|$projecturl|}{|$b.pUrl|}" target="_blank">
+                                <img src="{|$b.image|}" alt="{|$b.name|escape|}" title="{|$b.name|escape|}" />
+                            </a>
+                        </td>
+                        <td>
+                            <div class="name">
+                                <a href="{|$projecturl|}{|$b.pUrl|}" target="_blank">
+                                    {|$b.name|}
+                                </a>
+                                {|if $b.price == '0.00'|}
+                                    <div class="specify">{|$translate_specify_price|}.</div>
+                                {|else|}
+                                <div class="price">{|$b.price|number_format:0|} {|$b.currency|}</div>
+                                {|/if|}
+                            </div>
+                        </td>
+
+                        <td class="no-320">
+                            {|if $b.optionArray|}
+                            <div class="os-options-list">
+                                <div class="body">
+                                    {|foreach from=$b.optionArray item="e"|}
+                                        <div style="color: #595959;">{|$e.name|} {|$e.value|}</div><br>
+                                    {|/foreach|}
+                                </div>
+                            </div>
+                            {|/if|}
+                        </td>
+                        <td valign="top" class="no-320">
+                            <a href="">№ {|$b.articul|}</a>
+                            <br />
+                            {|$b.byuOrExchange|}
+                        </td>
+                        <td valign="top">
+                            <div class="count">
+                                <input type="hidden" name="selproducts[]" value="{|$b.id|}" />
+                                <input onkeydown="$j('#b{|$b.id|}').attr('checked', 'checked');" type="text" disabled name="pcount_{|$b.id|}" value="{|$b.count|}" /> шт.
+                            </div>
+                        </td>
+                        <td class="ta_center" valign="top" style="padding-top: 18px;">
+                            {|if $b.sum == '0.00'|}
+                            <div class="specify">{|$translate_specify_price|}.</div>
+                            {|else|}
+                            <div class="summ">{|$b.sum|number_format:0|} {|$b.currency|}</div>
+                            {|/if|}
+
+                            <a class="remove-product" href="{|$b.urldelete|}" title="{|$translate_delete|escape|}"></a>
+                        </td>
+                    </tr>
+                {|/foreach|}
+                    {|if $discountSum|}
+                    <tr class="total">
+                        <td></td>
+                        <td></td>
+                        <td class="no-320"></td>
+                        <td class="no-320"></td>
+                        <td class="ta_center">{|if $discountName|} {|$discountName|}: {|else|} Скидка: {|/if|}</td>
+                        <td class="ta_center">
+                            <div class="summ-total">{|$discountSum|number_format:0|} {|$currency|}</div>
+                        </td>
+                    </tr>
+                    {|/if|}
+                    <tr class="total">
+                        <td></td>
+                        <td></td>
+                        <td class="no-320"></td>
+                        <td class="no-320"></td>
+                        <td class="ta_center">{|$translate_in_total|}:</td>
+                        <td class="ta_center">
+                            <div class="summ-total">{|$allSum|number_format:0|} {|$currency|}</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="no-320" style="border-top: 1px solid #818181;"></td>
+                        <td class="no-320" style="border-top: 1px solid #818181;"></td>
+                        <td colspan="4" class="ta_right" style="border-top: 1px solid #818181;">
+                            <input type="hidden" name="pchcount" value="{|$translate_calculate|}" />
+                            <input type="button" value="{|$translate_clear|}" onclick="if(confirm('{|$translate_baket_clear_confirm|}')) document.location='{|$urlclear|}';" class="rtm-submit" />
+                            <input style="display: none" type="submit" name="refresh" value="{|$translate_calculate|}" class="button-refresh rtm-submit" />
+                            {|if $basketArray|}
+                                <input type="submit" name="" onclick="popupOpen('#shop-popup-basket-block'); return false;" class="rtm-submit js-focus-order" value="{|$translate_place_an_order|}" />
+                            {|/if|}
+                        </td>
+                    </tr>
+                </table>
+
+            {|if $authorizedFail|}
+                <br />
+                <div class="os-message-error">
+                    {|$translate_need_sign_in|} <a href="/registration/">{|$translate_sing_up|}</a>
+                </div>
+                <br />
+            {|/if|}
+
+        </div>
+        {|/if|}
+
+
+        <div class="rtm-popup-block" style="display: none;" id="shop-popup-basket-block">
+            <div class="dark" onclick="popupClose('.js-popup-register-block');">&nbsp;</div>
+            <div class="popup-block register-block">
+                <div class="head">
+                    <a href="javascript: void(0);" class="close" onclick="popupClose('#shop-popup-basket-block');">&nbsp;</a>
+                    {|$translate_place_an_order|}
+                </div>
+
+                {|if $errorName|}
+                    <div class="os-message-error">
+                        {|$translate_registration_error|}:<br />
+                        {|$translate_order_error_login|}. {|$translate_order_error_login_must_be|}.<br />
+                    </div>
+                {|/if|}
+
+                {|if $e == 'login-exists'|}
+                    <div class="os-message-error">
+                        {|$translate_registration_error|}:<br />
+                        {|$translate_login_already_exists|}.<br />
+                    </div>
+                {|/if|}
+
+                {|if $errorPhone|}
+                    <div class="os-message-error">
+                        {|$translate_registration_error|}:<br />
+                        Некорректный номер телефона
+                    </div>
+                {|/if|}
+
+                {|if $errorEmail|}
+                    <div class="os-message-error">
+                        {|$translate_registration_error|}:<br />
+                        {|$translate_profile_error_mail|}.<br />
+                    </div>
+                {|/if|}
+
+                {|if $e == 'email-exists'|}
+                    <div class="os-message-error">
+                        {|$translate_registration_error|}:<br />
+                        {|$translate_profile_error_mail_exists|}.<br />
+                    </div>
+                {|/if|}
+
+
+                <form method="post">
+                    <div class="body">
+
+                        <input  type="text" name="name" value="{|$control_name|}" placeholder="{|$translate_name_small|} *" class="rtm-check-fill02 {|if $errorName|}invalid{|/if|}" /><br /><br />
+
+                        <input  type="text" name="namelast" value="{|$control_name_last|}" placeholder="{|$translate_name_last|}" {|if $errorNameLast|} class="invalid" {|/if|}/><br /><br />
+
+                        <input  type="text" name="phone" value="{|$control_phone|}" placeholder="{|$translate_phone|} *" class="{|if $errorPhone|}invalid{|/if|} js-phone-formatter rtm-check-fill02"/><br /><br />
+
+                        <input  type="text"  name="email" value="{|$control_email|}" placeholder="E-mail *" class="rtm-check-fill02 {|if $errorEmail|}invalid{|/if|}" /><br /><br />
+
+                        <input type="text" name="city" value="{|$control_city|}" placeholder="Город" {|if $errorAddress|}class="invalid" {|/if|}/><br /><br />
+
+                        <input type="text" name="address" value="{|$control_address|}" placeholder="Адрес" {|if $errorAddress|}class="invalid" {|/if|}/><br /><br />
+
+                        {|if $paymentArray|}
+                            {|$translate_payment_method|}:<br />
+                            <select name="payment" style="width: 255px" class="js-rtm-payment">
+                                <option value="0"></option>
+                                {|foreach from=$paymentArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $control_payment == $e.id|} selected {|else|} {|if $e.selected|} selected {|/if|} {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select><br />
+                        {|/if|}
+                        {|foreach from=$paymentArray item="e"|}
+                            <div class="js-rtm-payment-div" style="font-size: 12px; margin-top: 14px; width: 238px; display: none" data-id="{|$e.id|}">{|$e.description|}</div>
+                        {|/foreach|}
+                        <br />
+                        Примечания <br />
+                        <textarea name="comments" style="width: 238px;">{|$control_comments|}</textarea>
+                        <br />
+                        <br />
+                        <span class="descript-small">
+                            Введенная Вами информация будет использоваться только для связи с
+                            Вами и не может быть передана третьим лицам.
+                        </span>
+                    </div>
+                    <div class="foot">
+                        <input type="hidden" name="ajs" class="ajs" value="1" />
+                        <input type="submit" name="makeorder" value="{|$translate_place_an_order|}" class="rtm-submit rtm-submit-fill02" disabled="disabled" />
+                        <div class="clear">&nbsp;</div>
+                        <br />
+                        <span class="descript-small ta_left">
+                             Подтверждая заказ, я даю согласие на использование моих персональных данных на законных
+                            основаниях (согласно Закона Украины «О защите персональных данных»).
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <script type="text/javascript">
+        $j(function() {
+            // вывод описания способа оплаты
+            $j('.js-rtm-payment').change(function() {
+                var paymentId = $j(this).val();
+                $j('.js-rtm-payment-div').hide();
+                if (paymentId) {
+                    $j('.js-rtm-payment-div[data-id="'+paymentId+'"]').show();
+                }
+            });
+
+
+        });
+    </script>
+
+    {|if $message == "error"|}
+        <script type="text/javascript">
+            $j(function() {
+                $j('#shop-popup-basket-block').toggle();
+                return false;
+            });
+        </script>
+    {|/if|}
+{|/if|}

@@ -1,0 +1,48 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success visible">
+        {|$translate_product|} #{|$id|}: <strong>{|$name|}</strong> добавлен в корзину.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error visible">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'product'|}
+                {|$translate_box_error_product|}.
+            {|/if|}
+            {|if $e == 'count'|}
+                {|$translate_box_error_amount|}.
+            {|/if|}
+            {|if $e == 'price'|}
+                {|$translate_incoming_error_price|}.
+            {|/if|}
+            {|if $e == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.
+            {|/if|}
+            {|if $e == 'serial'|}
+                {|$translate_incoming_error_serial|}.
+            {|/if|}
+            {|if $e == 'currency'|}
+                {|$translate_incoming_error_currency|}.
+            {|/if|}
+            {|if $e == 'permission'|}
+                {|$translate_storage_error_permission|}
+            {|/if|}
+            {|if $e == 'user'|}
+                {|$translate_storage_error_permission|}
+            {|/if|}
+            {|if $e == 'storagefrom'|}
+                {|$translate_storage_error_warehouse|}.
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messagesave == 'ok'|}
+    <div class="shop-message-success visible">
+        {|$translate_message_success_update|}.
+    </div>
+{|/if|}

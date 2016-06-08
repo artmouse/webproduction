@@ -1,0 +1,52 @@
+{|if $contentID != 'shop-product'|}
+    <aside class="left-layer">
+        {|$block_menu_category|}
+        {|$block_compare|}
+
+        {|if $contentID == 'shop-category'|}
+            <div class="js-filter-place"></div>
+        {|else|}
+            {|$block_news|}
+
+            {|$block_faq|}
+
+            {|$block_guestbook|}
+
+            {|$block_banner_left|}
+
+            {|$block_facebook|}
+        {|/if|}
+    </aside>
+{|/if|}
+
+<section class="mid-layer {|if $contentID == 'shop-product'|}no-aside{|/if|}">
+    <div class="section-inner">
+        {|$content|}
+    </div>
+</section>
+
+<div class="clear"></div>
+
+{|$block_banner_bottom|}
+
+{|*|}
+<div class="def-banner-bottom-wrap">
+    <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+        <li>
+            <a class="element" href="#">
+                <img src="http://demo.magentech.com/themes/sm_maxshop/media/wysiwyg/static-image-home/free-shipping.png" alt=""/>
+            </a>
+        </li>
+        <li>
+            <a class="element" href="#">
+                <img src="http://demo.magentech.com/themes/sm_maxshop/media/wysiwyg/static-image-home/guaranteed.png" alt=""/>
+            </a>
+        </li>
+        <li>
+            <a class="element" href="#">
+                <img src="http://demo.magentech.com/themes/sm_maxshop/media/wysiwyg/static-image-home/deal.png" alt=""/>
+            </a>
+        </li>
+    </ul>
+</div>
+{|*|}

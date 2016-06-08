@@ -1,0 +1,343 @@
+<input type="hidden" class="js-tabselect" value="{|$tabSelect|}" />
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <h1>{|$translate_shop_settings|}</h1>
+        <input class="js-setting-helper" type="text" name="" value="" placeholder="{|$translate_bistriy_poisk|}">
+        <br>
+        <br>
+        <div class="ob-block-tree js-setting-list">
+            {|assign var=index value=0|}
+            <ul>
+                {|foreach from=$tabsArray item="t" key="name"|}
+                    <li>
+                        <a href="#" class="settings-tab{|if $name == $tabSelected|} selected{|/if|}" data-rel="#settings-tab-{|$index|}">{|$name|}</a><br />
+                        <div style="display: none;">
+                            {|foreach from=$t item="s"|}
+                                {|$s.key|} {|$s.name|}
+                            {|/foreach|}
+                        </div>
+                        {|assign var=index value=$index+1|}
+                    </li>
+                {|/foreach|}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $message == 'ok'|}
+            <div class="shop-message-success">
+                {|$translate_data_saved|}!
+            </div>
+        {|elseif $message == 'cash'|}
+            <div class="shop-message-success">
+                {|$translate_cash_clear_success|}!
+            </div>
+        {|/if|}
+
+        {|if $message == 'error'|}
+            <div class="shop-message-error">
+                {|$translate_update_data_error|}.<br />
+                {|foreach from=$errorsArray item="e"|}
+                    {|$e|}
+                {|/foreach|}
+            </div>
+        {|/if|}
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {|assign var=index value=0|}
+            {|foreach from=$tabsArray item="t" key="name"|}
+                <div id="settings-tab-{|$index|}" style="display: {|if $name == $tabSelected|}block{|else|}none{|/if|};">
+                    {|foreach from=$t item="s"|}
+                        <div class="shop-block-settings">
+                            <div class="key">{|$s.key|}</div>
+                            {|if $s.type == 'string'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <input type="text" name="setting{|$s.id|}" value="{|$s.value|}" style="width: 100%;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+                            
+                            {|if $s.type == 'chzn-select-time'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <select class="chzn-select" multiple name="setting{|$s.id|}[]">
+                                                <option {|if in_array('00', $s.value)|} selected {|/if|} value="00">00:00</option>
+                                                <option {|if in_array('01', $s.value)|} selected {|/if|} value="01">01:00</option>
+                                                <option {|if in_array('02', $s.value)|} selected {|/if|} value="02">02:00</option>
+                                                <option {|if in_array('03', $s.value)|} selected {|/if|} value="03">03:00</option>
+                                                <option {|if in_array('04', $s.value)|} selected {|/if|} value="04">04:00</option>
+                                                <option {|if in_array('05', $s.value)|} selected {|/if|} value="05">05:00</option>
+                                                <option {|if in_array('06', $s.value)|} selected {|/if|} value="06">06:00</option>
+                                                <option {|if in_array('07', $s.value)|} selected {|/if|} value="07">07:00</option>
+                                                <option {|if in_array('08', $s.value)|} selected {|/if|} value="08">08:00</option>
+                                                <option {|if in_array('09', $s.value)|} selected {|/if|} value="09">09:00</option>
+                                                <option {|if in_array('10', $s.value)|} selected {|/if|} value="10">10:00</option>
+                                                <option {|if in_array('11', $s.value)|} selected {|/if|} value="11">11:00</option>
+                                                <option {|if in_array('12', $s.value)|} selected {|/if|} value="12">12:00</option>
+                                                <option {|if in_array('13', $s.value)|} selected {|/if|} value="13">13:00</option>
+                                                <option {|if in_array('14', $s.value)|} selected {|/if|} value="14">14:00</option>
+                                                <option {|if in_array('15', $s.value)|} selected {|/if|} value="15">15:00</option>
+                                                <option {|if in_array('16', $s.value)|} selected {|/if|} value="16">16:00</option>
+                                                <option {|if in_array('17', $s.value)|} selected {|/if|} value="17">17:00</option>
+                                                <option {|if in_array('18', $s.value)|} selected {|/if|} value="18">18:00</option>
+                                                <option {|if in_array('19', $s.value)|} selected {|/if|} value="19">19:00</option>
+                                                <option {|if in_array('20', $s.value)|} selected {|/if|} value="20">20:00</option>
+                                                <option {|if in_array('21', $s.value)|} selected {|/if|} value="21">21:00</option>
+                                                <option {|if in_array('22', $s.value)|} selected {|/if|} value="22">22:00</option>
+                                                <option {|if in_array('23', $s.value)|} selected {|/if|} value="23">23:00</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+                            
+                            {|if $s.type == 'select-margin-priority'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <select class="chzn-select" name="setting{|$s.id|}">
+                                                <option value="profit"{|if $s.value == 'profit'|} selected {|/if|} >{|$translate_samaya_vigodnaya_tsena|}</option>
+                                                <option value="supplier" {|if $s.value == 'supplier'|} selected {|/if|}>{|$translate_snachala_uchitivat_postavshchika|}</option>
+                                                <option value="storage" {|if $s.value == 'storage'|} selected {|/if|}>{|$translate_snachala_uchitivat_sklad|}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+
+                            {|if $s.type == 'select-language'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <select class="chzn-select" name="setting{|$s.id|}">
+                                                <option value="ru"{|if $s.value == 'ru'|} selected {|/if|}>{|$translate_russkiy|}</option>
+                                                <option value="ua" {|if $s.value == 'ua'|} selected {|/if|}>{|$translate_ukrainskiy|}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+                            
+                            {|if $s.type == 'select-smstype'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <select class="chzn-select" name="setting{|$s.id|}">
+                                                <option value="TurboSMS"{|if $s.value == 'TurboSMS'|} selected {|/if|}>TurboSMS</option>
+                                                <option value="SMSCru" {|if $s.value == 'SMSCru'|} selected {|/if|}>SMSCru</option>
+                                                <option value="SMSCkz" {|if $s.value == 'SMSCkz'|} selected {|/if|}>SMSCkz</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+
+                            {|if $s.type == 'select-calendar-issue'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <select class="chzn-select" multiple name="setting{|$s.id|}[]">
+                                                <option value="name" {|if in_array('name', $s.value)|} selected {|/if|}>{|$translate_nazvanie_zadachi|}</option>
+                                                <option value="client" {|if in_array('client', $s.value)|} selected {|/if|}>{|$translate_fio_klienta|}</option>
+                                                <option value="project" {|if in_array('project', $s.value)|} selected {|/if|}>{|$translate_nazvanie_proekta|}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+
+                            {|if $s.type == 'select-calendar-issue-type'|}
+                                <table>
+                                    <tr>
+                                        <td class="caption">
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <select class="chzn-select" multiple name="setting{|$s.id|}[]">
+                                                {|foreach from=$workflowTypeArray item="w"|}
+                                                    <option value="{|$w.type|}" {|if in_array($w.type, $s.value)|} selected {|/if|}>{|$w.name|}</option>
+                                                {|/foreach|}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+
+                            {|if $s.type == 'html'|}
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <textarea class="js-autosize" name="setting{|$s.id|}" style="width: 100%; height: 200px;">{|$s.value|}</textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+
+                            {|if $s.type == 'boolean'|}
+                                 <label>
+                                     <input type="checkbox" name="setting{|$s.id|}" value="1" {|if $s.value == 1|}checked{|/if|} />
+                                     <strong>{|$s.name|}</strong>
+                                 </label>
+                                {|if $s.description|}
+                                    <span class="light">{|$s.description|}</span>
+                                {|/if|}
+                            {|/if|}
+
+                            {|if $s.type == 'text'|}
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <textarea class="js-editor" name="setting{|$s.id|}" style="width: 100%; height: 100px;" id="{|$s.id|}">{|$control_text|}{|$s.value|}</textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {|/if|}
+
+                            {|if $s.type == 'image'|}
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <input type="file" name="setting{|$s.id|}" />
+
+                                            {|if $s.value|}
+                                                <br /><br />
+                                                <div class="current-image">
+                                                    <img src="{|$s.value|}" />
+                                                </div>
+                                                <label>
+                                                    <input type="checkbox" name="delete[]" value="{|$s.id|}" />
+                                                    {|$translate_delete|}
+                                                </label>
+                                            {|/if|}
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            {|/if|}
+
+                            {|if $s.type == 'color'|}
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {|$s.name|}
+                                            {|if $s.description|}
+                                                <span class="light">{|$s.description|}</span>
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                            <input type="text" class="js-color" name="setting{|$s.id|}" value="{|$s.value|}" style="width: 80px;" />
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            {|/if|}
+                        </div>
+                    {|/foreach|}
+                </div>
+                {|assign var=index value=$index+1|}
+            {|/foreach|}
+
+            <div class="ob-button-fixed">
+                <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $j(function() {
+                //colorpicjer init
+                $j('.js-color').each(function(){
+                    var input = $j(this);
+                    var currentColor = input.val();
+                    input.css({
+                        'background-color' : currentColor
+                    });
+
+                    input.ColorPicker({
+                        color: currentColor,
+                        onShow: function (colpkr) {
+                            $j(colpkr).fadeIn(500);
+                            return false;
+                        },
+                        onHide: function (colpkr) {
+                            $j(colpkr).fadeOut(500);
+                            return false;
+                        },
+                        onChange: function (hsb, hex, rgb) {
+                            input.css({
+                                'background-color' : '#' + hex
+                            });
+                            input.val('#' + hex);
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="ob-button-fixed-place"></div>

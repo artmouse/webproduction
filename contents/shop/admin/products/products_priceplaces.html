@@ -1,0 +1,34 @@
+{|$menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_data_error|}.
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="shop-block-toggle">
+        <div class="caption">{|$translate_unload_product|}:</div>
+        <div class="block">
+            {|foreach from=$ppArray item="e"|}
+                <label>
+                    <input type="checkbox" name="pp[]" value="{|$e.id|}" {|if $e.selected|} checked {|/if|} />
+                    {|$e.name|}
+                </label>
+            {|/foreach|}
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="button" onclick="document.location='/admin/shop/products/'" name="ok" value="&lsaquo; {|$translate_product_list_run|}" class="ob-button" />
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+        <a href="/product/{|$productid|}/" target="_blank">{|$translate_review|}</a>
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

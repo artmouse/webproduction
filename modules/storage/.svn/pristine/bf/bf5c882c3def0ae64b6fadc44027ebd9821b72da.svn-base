@@ -1,0 +1,29 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_product|} #{|$id|}: <strong>{|$name|}</strong> {|$translate_passport_product_added|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'product'|}
+                {|$translate_box_error_product|}.<br />
+            {|/if|}
+            {|if $e == 'amount'|}
+                {|$translate_box_error_amount_small|}.<br />
+            {|/if|}
+            {|if $e == 'productExists'|}
+                {|$translate_passport_error_product_exists|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messagesave == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_message_success_update|}.
+    </div>
+{|/if|}

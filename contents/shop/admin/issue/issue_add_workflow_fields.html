@@ -1,0 +1,35 @@
+{|foreach from=$customFieldArray item="e" key="key"|}
+    {|if $e.type == 'text'|}
+        <strong>{|$e.name|}</strong><br />
+        <textarea name="custom_{|$key|}" style="width: 80%; height: 50px;">{|$e.value|}</textarea>
+        <br />
+        <br />
+    {|elseif $e.type == 'string'|}
+        <strong>{|$e.name|}</strong><br />
+        <input type="text" name="custom_{|$key|}" value="{|$e.value|}" style="width: 80%;" />
+        <br />
+        <br />
+    {|elseif $e.type == 'date'|}
+        <strong>{|$e.name|}</strong><br />
+        <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-date" />
+        <br />
+        <br />
+    {|elseif $e.type == 'int'|}
+        <strong>{|$e.name|}</strong><br />
+        <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-int" />
+        <br />
+        <br />
+    {|elseif $e.type == 'float'|}
+        <strong>{|$e.name|}</strong><br />
+        <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-float" />
+        <br />
+        <br />
+    {|elseif $e.type == 'bool'|}
+        <label>
+            <input type="checkbox" name="custom_{|$key|}" value="1" {|if $e.value|} checked {|/if|} />
+            {|$e.name|}
+        </label>
+        <br />
+        <br />
+    {|/if|}
+{|/foreach|}

@@ -1,0 +1,9 @@
+{|if $paymentID|}
+    <a href="{|$accountURL|}">{|$accountname|}</a>
+    (<a href="{|$paymentURL|}" target="_blank">Платеж #{|$paymentID|}</a>)
+{|elseif $orderID|}
+    <a href="{|$orderURL|}">Заказ {|$orderID|}</a><br />
+{|/if|}
+{|if $clientName|}
+    <a href="{|$clientURL|}" class="js-contact-preview" data-id="{|$clientID|}">{|$clientName|}</a>
+{|/if|}

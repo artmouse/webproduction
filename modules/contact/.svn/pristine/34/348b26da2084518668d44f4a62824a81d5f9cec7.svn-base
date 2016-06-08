@@ -1,0 +1,30 @@
+{|$menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_contact_deleted|}.<br />
+        <a href="/admin/shop/users/">{|$translate_all_users|}</a>
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_user_delete_error|}.
+        <br />
+            {|foreach from=$errorsArray item="e"|}
+                {|$e|} <br>
+            {|/foreach|}
+    </div> 
+{|/if|}
+
+{|if $message != 'ok'|}
+    <div class="ob-block-element">
+        <form action="" method="post">
+            {|$translate_contact_confirm_delete|}
+            <br />
+            <br />
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='../';" />
+        </form>
+    </div>
+{|/if|}

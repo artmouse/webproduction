@@ -1,0 +1,100 @@
+<div class="shop-product-list">
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+            <td class="category">
+                <h1>{|$translate_remains_in_stock|}</h1>
+                <div class="list">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <a href="{|$e.url|}" class="open level_0 {|if $e.selected|}selected{|/if|}">
+                            {|$e.name|}
+                        </a>
+                    {|/foreach|}
+                </div>
+            </td>
+            <td class="separator">&nbsp;</td>
+            <td>
+                {|if !$arg_storagenameid|}
+                    <br />
+                    <div class="shop-message-info">{|$translate_storage_select|}.</div>
+                {|else|}
+                    <div class="shop-product-filter">
+                        <form action="" method="post">
+
+                            <label>
+                                <span>
+                                    <strong>{|$translate_item_name|}:</strong>
+                                    <input type="text" name="productname" value="{|$control_productname|}" />
+                                </span>
+                            </label>
+
+                            <label>
+                                <span>
+                                    <strong>{|$translate_item_code|}:</strong>
+                                    <input type="text" name="productid" value="{|$control_productid|}" />
+                                </span>
+                            </label>
+
+                            <label>
+                                <span>
+                                    <strong>{|$translate_single_category|}</strong>
+                                    <select name="categoryid" >
+                                        <option value="0">{|$translate_category_all|}</option>
+                                        {|foreach from=$categoryArray item="e"|}
+                                            <option value="{|$e.id|}" {|if $e.id == $control_categoryid|} selected {|/if|}>{|$e.name|}</option>
+                                        {|/foreach|}
+                                    </select>
+                                </span>
+                            </label>
+
+                            <input class="ob-button" type="submit" name="ok" value="{|$translate_search|}" />
+                            <br />
+                            <br />
+                        </form>
+                    </div>
+                    <br />
+
+                    {|if $productsArray|}
+                        <table border="0" cellpadding="0" cellspacing="0" class="shop-table sortable">
+                            <thead>
+                                <tr>
+                                    <th>{|$translate_code_small|}</th>
+                                    <th>{|$translate_product|}</th>
+                                    <th>{|$translate_sum|}</th>
+                                    <th>Зарезервировано</th>
+                                    <th>{|$translate_total|}</th>
+                                    {|if $canTransfer|}
+                                        <th>{|$translate_move|} ({|$translate_sum_small|})</th>
+                                    {|/if|}
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {|foreach from=$productsArray item="e"|}
+                                    <tr>
+                                        <td>{|$e.productid|}</td>
+                                        <td>{|$e.name|}</td>
+                                        <td align="right">{|$e.amount|}</td>
+                                        <td align="right">{|$e.amountlinked|}</td>
+                                        <td align="right">{|$e.sum|} {|$currency|}</td>
+                                        {|if $canTransfer|}
+                                            <td>
+                                                <form action="{|$urltransfer|}" method="post" target="_blank">
+                                                    <input type="hidden" name="storagefromid" value="{|$storagenameid|}" />
+                                                    <input type="hidden" name="productid" value="{|$e.productid|}" />
+                                                    <input type="text" name="count" />
+                                                    <input class="ob-button" type="submit" name="ok" value="{|$translate_in_moving|}" />
+                                                </form>
+                                            </td>
+                                        {|/if|}
+                                    </tr>
+                                {|/foreach|}
+                            </tbody>
+                        </table>
+                    {|else|}
+                        <div class="shop-message-info">{|$translate_balance_error_storage|}.</div>
+                    {|/if|}
+                {|/if|}
+            </td>
+        </tr>
+    </table>
+</div>

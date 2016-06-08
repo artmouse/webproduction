@@ -1,0 +1,171 @@
+{|* сам блок корзины (preview) *|}
+<div class="os-block-basket" id="id-shop-basket">
+    <div class="head" onclick="document.location='{|$main|}/basket/';">
+        <span>{|$translate_in_yoar_basket|}</span>
+        <span class="go">{|$translate_go_basket|}</span>
+    </div>
+    <div class="body">
+        <a href="#" class="os-link-dashed js-basketpopup-toggle">{|$translate_goods|} <span id="id-basket-count">{|$cnt|}</span></a><br />
+        {|$translate_basket_block_amount|} <span id="id-basket-sum">{|$allSum|}</span> {|$currency|}
+    </div>
+</div>
+
+{|* всплывающее окно с содержимым корзины (popup) *|}
+<div class="os-block-popup js-basket-popup" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-basket-popup');"></div>
+    <div class="block-popup popup-basket">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('.js-basket-popup');">&nbsp;</a>
+            {|if $basketArray|}
+                {|$translate_added_to_basket|}
+            {|else|}
+                {|$translate_basket_is_empty|}
+            {|/if|}
+        </div>
+
+        {|if $basketArray|}
+            <div class="product-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="h-name">{|$translate_product|}</td>
+                            <td class="ta-center">{|$translate_price|}</td>
+                            <td class="ta-center">{|$translate_number|}</td>
+                            <td class="ta-center">{|$translate_total|}</td>
+                        </tr>
+                    </thead>
+                    {|foreach from=$basketArray item="set" key="setid"|}
+                        {|if $setid > 0|}
+                            <tr>
+                                <td class="ta-center" colspan="5">
+                                    {|$translate_nabor|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                        {|foreach from=$set item="e"|}
+                            <tr>
+                                <td class="ta-center">
+                                    <a href="{|$e.url|}"><img src="{|$e.image|}" alt="" /></a>
+                                </td>
+                                <td>
+                                    <div class="name"><a href="{|$e.url|}">{|$e.name|}</a></div>
+                                    {|if $e.option|}
+                                        <div class="os-options-list">
+                                            <div class="body">
+                                                {|foreach from=$e.option item="o"|}
+                                                    {|$o.name|}: {|$o.value|}<br>
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                    {|/if|}
+                                </td>
+                                <td>
+                                    {|if $setid == 0|}
+                                        {|if $e.price == '0.00'|}
+                                            <div class="os-price-specify">{|$translate_specify_price|}.</div>
+                                        {|else|}
+                                            <div class="os-price-available">{|$e.price|} {|$e.currency|}</div>
+                                        {|/if|}
+                                    {|/if|}
+                                </td>
+                                <td class="ta-center">
+                                    {|if $setid == 0|}
+                                        <div class="count">{|$e.count|} {|$e.unit|}</div>
+                                    {|/if|}
+                                </td>
+                                <td>
+                                    {|if $setid == 0|}
+                                        {|if $e.sum == '0.00'|}
+                                            <div class="os-price-specify">{|$translate_specify_price|}.</div>
+                                        {|else|}
+                                            <div class="os-price-available">{|$e.sum|} {|$e.currency|}</div>
+                                        {|/if|}
+                                    {|/if|}
+                                </td>
+                            </tr>
+                        {|/foreach|}
+                        {|if $setid > 0|}
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td class="ta-center">
+                                    {|$translate_tsena_nabora|}
+                                </td>
+                                <td class="ta-center">
+                                    {|$setSumArray[$setid].one|} {|$currency|}
+                                </td>
+                                <td class="ta-center">
+                                    <div class="count">{|$setSumArray[$setid].count|}</div>
+                                </td>
+                                <td class="ta-center">
+                                    {|$setSumArray[$setid].total|} {|$currency|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                    {|/foreach|}
+                    <tfoot>
+                        {|if $deliveryName|}
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                                <td  colspan="2" class="ta-right"><div class="total">{|$translate_delivery|}: {|$deliveryName|}</div></td>
+                                <td><div class="os-price-available">{|$deliveryPrice|} {|$currency|}</div></td>
+                            </tr>
+                        {|/if|}
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td class="ta-right"><div class="total">{|$translate_in_total|}:</div></td>
+                            <td><div class="os-price-available">{|$allSum|} {|$currency|}</div></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <a class="link os-link-dashed" href="javascript: void(0);" onclick="popupClose('.js-basket-popup');"> {|$translate_continue_shopping|}</a>
+                                <a class="link" href="/basket/">{|$translate_go_basket|}</a>
+                            </td>
+                            <td class="ta-right" colspan="2">
+                                <form class="ta-right" action="/basket/makeorder/" method="post">
+                                    <a class="os-submit green" href="/basket/">{|$translate_place_an_order|}</a>
+                                </form>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            {|if $recommendedArray|}
+                <div class="recomended-place">
+                    <div class="os-recomended-caption">{|$translate_our_recomendation|}</div>
+                    <div class="os-recomended-list">
+                        {|foreach from=$recommendedArray item="r"|}
+                            <div class="os-recomended-element">
+                                <div class="recomended-wrap">
+                                    <div class="block-image">
+                                        <a href="{|$r.url|}">
+                                            <img src="{|$r.image|}" alt="{|$r.name|}" title="{|$r.name|}">
+                                        </a>
+                                    </div>
+                                    <div class="block-name">
+                                        <a href="{|$r.url|}" title="">{|$r.name|}</a>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="block-button">
+                                        <a href="{|$r.url|}" class="os-submit green">{|$r.price|} {|$r.currency|}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {|/foreach|}
+                    </div>
+                </div>
+            {|/if|}
+        {|else|}
+            <div class="message-error">
+                {|$translate_basket_is_empty|}<br />
+                <a href="/">{|$translate_empty_basket|}</a>.
+            </div>
+        {|/if|}
+    </div>
+</div>
+
+{|* шаблон кнопки "уже в корзине" *|}
+<div class="js-basket-button-inbasket" style="display: none;">
+    <a href="#" class="js-shop-buy-action os-submit green">{|$translate_in_basket|}</a>
+</div>

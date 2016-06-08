@@ -1,0 +1,168 @@
+<div id="{|$formID|}-div">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+            <td width="35%">
+                <form action="" method="post" id="{|$formID|}" >
+                    {|foreach from=$parameterArray item="e"|}
+                        <input type="hidden" name="{|$e.name|}" value="{|$e.value|}" />
+                    {|/foreach|}
+
+                    <div style="padding: 10px;">&nbsp;</div>
+
+                    <div style="background-color: #dadada; padding: 10px;">
+                        <strong>{|$translate_product|} *</strong><br />
+                        <input type="text" class="js-wait-backspace" id="id-product-search-input" value="{|$productname|}" autocomplete="off" style="width: 280px;" />
+                        <span id="id-product-input-indicator">-</span>
+                        <input type="hidden" name="productid" id="id-value" value="{|$control_productid|}" />
+                    </div>
+                    <br />
+
+                    <div style="padding: 10px;">
+                        <strong>{|$translate_number|} *</strong><br />
+                        <input type="text" name="count" value="{|$control_count|}" id="id-product-amount" style="width: 150px;" />
+                        <span id="id-unit"></span>
+                        <br />
+                        <br />
+
+                        {|if $isIncoming OR $isOrderIncoming OR $isSale|}
+                            <strong>{|if not $isSale|}{|$translate_price_purchase|}{|else|}{|$translate_price_sale|}{|/if|}</strong><br />
+                            <input type="text" name="price" value="{|$control_price|}" id="id-price" style="width: 100px;" />
+
+                            <select name="currencyid" id="id-currencyid" style="width: 65px;">
+                                {|foreach from=$currencyArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_currencyid|} selected {|/if|}>{|$e.symbol|}</option>
+                                {|/foreach|}
+                            </select>
+                            
+                            <label>
+                                <input type="checkbox" name="tax" value="1" {|if $control_tax|} checked{|/if|} />
+                                с учетом НДС
+                            </label>
+                            <br />
+                            <br />
+                        {|/if|}
+
+                        {|if $isIncoming|}
+                            <strong>{|$translate_product_serial_number|}</strong> {|$translate_if_number_is_one|}<br />
+                            <input type="text" name="serial" value="{|$control_serial|}" style="width: 300px;" id="id-product-serial" />
+                            <br />
+                            <br />
+
+                            <strong>{|$translate_warranty|}</strong><br />
+                            <input type="text" name="warranty" value="{|$control_warranty|}" style="width: 300px;" />
+                            <br />
+                            <br />
+
+                            <strong>{|$translate_batch_code|}</strong><br />
+                            <input type="text" name="shipment" value="{|$control_shipment|}" style="width: 300px;" />
+                            <br />
+                            <br />
+
+                            {|if $productionAllowed|}
+                                <strong>{|$translate_fio_employee|}</strong><br />
+                                <select name="workerid" class="chzn-select" style="width: 300px;">
+                                    <option value="0" >---</option>
+                                    {|foreach from=$workersArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_workerid|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                                <br />
+                                <br />
+
+                                <strong>{|$translate_operation_code|}</strong><br />
+                                <input type="text" name="workeroperation" value="{|$control_workeroperation|}" style="width: 50%;" />
+                                <br />
+                                <br />
+                            {|/if|}
+                        {|/if|}
+
+                        * {|$translate_necessary|}<br />
+                        <br />
+
+                        <input type="hidden" name="balanceid" id="id-balanceid" />
+                        <input type="hidden" name="ok" value="1" />
+
+                        <input class="ob-button" type="button" value="{|$translate_add|}" onclick="$j('#{|$formID|}').submit();" />
+                    </div>
+                </form>
+            </td>
+            <td>
+                <div id="id-product-list">
+                    <div class="shop-product-add-tabs">
+                        <a href="#" class="settings-tab selected" data-rel="#{|$formID|}-settings-tab-1">{|$translate_find_product|}</a>
+
+                        {|if !$isProduction|}
+                            <a href="#" class="settings-tab" data-rel="#{|$formID|}-settings-tab-2">{|$translate_product_add|}</a>
+                        {|/if|}
+                    </div>
+
+                    <div id="{|$formID|}-settings-tab-1" style="background-color: #dadada; padding: 10px; max-height: 400px; overflow: scroll;">
+                        {|if $categorySearchAllowed|}
+                            <strong>{|$translate_product_category|}: </strong>
+                            <select id="{|$formID|}-search-categoryid" class="chzn-select-tree">
+                                <option value="0">{|$translate_category_all|}</option>
+                                {|foreach from=$categoryArray item="e"|}
+                                    <option value="{|$e.id|}" data-level="{|$e.level|}">
+                                    {|$e.name|}
+                                    </option>
+                                {|/foreach|}
+                            </select>
+                            <br />
+                            <br />
+                        {|/if|}
+
+                        <table id="id-product-table" class="shop-table" width="100%">
+                        </table>
+                    </div>
+
+                    <div id="{|$formID|}-settings-tab-2" style="background-color: #dadada; padding: 10px; display: none;">
+                        <form action="" method="post" class="js-add-product">
+                            <strong>Выберите категорию</strong><br />
+                            <select name="categoryid" class="chzn-select-tree">
+                                <option value="0">---</option>
+                                {|foreach from=$categoryArray item="e"|}
+                                    <option value="{|$e.id|}" data-level="{|$e.level|}">
+                                        {|$e.name|}
+                                    </option>
+                                {|/foreach|}
+                            </select>
+                            <br />
+                            <br />
+
+                            <strong>Наименование товара</strong><br />
+                            <input type="text" name="name" />
+                            <br />
+                            <br />
+
+                            <strong>Цена продажи</strong><br />
+                            <input type="text" name="price" />
+                            <select name="currencyid">
+                                {|foreach from=$currencyArray item="e"|}
+                                    <option value="{|$e.id|}">{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                            <br />
+                            <br />
+
+                            <input type="submit" name="add" value="{|$translate_create|}" class="ob-button button-green" />
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <strong>{|$translate_use_key_combination|}:</strong>
+    <br />
+    <ul class="fl-l">
+        <li>&uarr; &darr; - {|$translate_choose_product_from_list|}</li>
+        <li>{|$translate_enter_search_query|} + Enter - {|$translate_product_search_small|}</li>
+        <li>Backspace - {|$translate_clear_input_field|} {|$translate_product_select_of|}</li>
+    </ul>
+    <ul class="fl-l">
+        <li>Tab - {|$translate_next_field|}</li>
+        <li>Shift+Tab - {|$translate_previous_field|}</li>
+        <li>Ctrl+Enter - {|$translate_send_data|} ({|$translate_product_add_small|})</li>
+    </ul>
+    <div class="clear">&nbsp;</div>
+</div>

@@ -1,0 +1,168 @@
+<?php
+/**
+ * WebProduction Packages.
+ * Copyright (C) 2007-2014  WebProduction <webproduction.com.ua>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+/**
+ * Doc
+ *
+ * @author Dima
+ * 
+ * @copyright WebProduction
+ * 
+ * @package SCSSPHP
+ */
+class Compile_Scss_To_Css {
+
+
+    private function __construct() {
+
+    }
+
+    private static $_Instance = false;
+
+    /**
+     * Doc
+     *
+     * @return Compile_Scss_To_Css
+     */
+    public static function Get() {
+        if (!self::$_Instance) {
+            self::$_Instance = new Compile_Scss_To_Css();
+        }
+        return self::$_Instance;
+    }
+
+    public function compile () {
+
+        $rootDir = PackageLoader::Get()->getProjectPath();
+        // Получаем файлы, на 2 папки
+        // Предпологаем, что scss файлов в других местах быть не может.
+        $this->_getFilesArray($rootDir.'/_css/');
+        $this->_getFilesArray($rootDir.'/_icons/admin/');
+        $this->_getFilesArray($rootDir.'/contents/');
+
+        // Ищем scss файлы в шаблонах
+        try {
+            $template = Engine::Get()->getConfigFieldSecure('shop-template');
+            $this->_getFilesArray(PackageLoader::Get()->getProjectPath().'/templates/'.$template, false);
+        } catch (Exception $e) {
+
+        }
+
+        // Ищем scss в модулях
+        try {
+            $modulesArray = Engine::Get()->getConfigField('shop-module');
+            foreach ($modulesArray as $moduleName) {
+                $this->_getFilesArray(PackageLoader::Get()->getProjectPath().'/modules/'.$moduleName, true, false);
+            }
+        } catch (Exception $e) {
+
+        }
+
+        // Компилируем
+        $this->_compilesCssToCss();
+    }
+
+    private function _getExtension ($filename) {
+        return substr($filename, strrpos($filename, '.') + 1);
+    }
+
+    private function _compilesCssToCss () {
+        // Сначала находим все импорты (файлы которые будут включены в другие файлы)
+        $importsFileNameArray = array();
+        foreach ($this->_filesArray as $file) {
+            preg_match_all('/@import \'([^\']+)\'/ius', file_get_contents($file['filepath']), $r);
+            // Если есть строка @import 'путь_к_файлу'
+            if ($r[1]) {
+                // Накапливаем названия импорт файлов
+                $key = str_replace('.scss', '', $file['filename']);
+                $importsFileNameArray[$key] = $r[1];
+                foreach ($r[1] as $t) {
+                    if (isset($this->_filesArray[$t])) {
+                        // Те файлы, которые включены в другие файлы, мы не компилируем.
+                        $this->_filesArray[$t]['continue'] = true;
+                    }
+                }
+            }
+        }
+
+        foreach ($this->_filesArray as $k => $file) {
+            // Если не нужно компилировать, то идем дальше
+            if (@$file['continue']) {
+                continue;
+            }
+            print "filepath: ".$file['filepath']."\n";
+            // Создаем каждый раз объект класса (Для того что бы номально можно было устанавливать importPath)
+            $compiler = new scssc();
+            $compiler->setFormatter('scss_formatter_compressed');
+            if (isset($importsFileNameArray[$k])) {
+                $importPathArray = array();
+
+                // Если в этот файл входят другие, то находим где они лежат, и говорим компилятору,
+                // что бы он искал их по данному пути
+                foreach ($importsFileNameArray[$k] as $key) {
+                    if (isset($this->_filesArray[$key])) {
+                        $importPathArray[] = $this->_filesArray[$key]['path'];
+                    }
+                }
+                $compiler->setImportPaths($importPathArray);
+            }
+            // Записываем в .css файл, скомпиллированный код
+            file_put_contents(
+                str_replace('.scss', '.css', $file['filepath']),
+                $compiler->compile(file_get_contents($file['filepath']))
+            );
+        }
+
+    }
+
+    private function _getFilesArray($path) {
+        $handle = @opendir($path);
+
+        // Защищаемся от рекурсии
+        if (in_array($path, $this->_checkPathArray)) {
+            return;
+        }
+        $this->_checkPathArray[] = $path;
+
+        // Пропускаем папки, в которых не может быть scss файлов
+        while (($file = @readdir($handle))) {
+            // В папках .svn точно не может scss файлов
+            if ($file == '.' || $file == '..' || $file == '.svn') {
+                continue;
+            }
+            if (is_file($path."/".$file) && $this->_getExtension($file) == "scss" ) {
+                $this->_filesArray[str_replace('.scss', '', $file)] =
+                    array(
+                        'filepath' => str_replace('//', '/', $path ."/".$file),
+                        'filename' => $file, 'path' => str_replace('//', '/', $path).'/'
+                    );
+            }
+
+            if (is_dir($path."/".$file) && ($file != ".") && ($file != "..")) {
+                $this->_getFilesArray($path."/".$file);
+            }
+        }
+        @closedir($handle);
+    }
+
+    private $_filesArray = array();
+
+    private $_checkPathArray = array();
+
+}

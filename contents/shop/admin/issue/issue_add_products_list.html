@@ -1,0 +1,99 @@
+<div class="product-results js-result-wrap">
+    <table class="shop-table" style="width: 100%;">
+        {|foreach from=$productArray item="p"|}
+            <thead onclick='issue_add_product("{|$p.id|}", "{|$p.name2|}", "{|$p.categoryName|}",
+                    "{|if $isOrderOutcoming|}{|$p.pricebaseInCurrencyDefault|}{|else|}{|$p.price|}{|/if|}", "{|$p.url|}")'>
+                <tr>
+                    <td colspan="3">{|$p.name|}</td>
+                    <td align="right">{|$p.price|} {|$currency|}</td>
+                </tr>
+            </thead>
+            <tbody>
+                {|foreach from=$p.storageArray item="s"|}
+                    <tr style="background-color: lightyellow" onclick='issue_add_product("{|$p.id|}", "{|$p.name2|}", "{|$p.categoryName|}",
+                    "{|if $isOrderOutcoming|}{|$p.pricebaseInCurrencyDefault|}{|else|}{|$p.price|}{|/if|}", "{|$p.url|}", "{|$s.serial|}", "{|$s.linkkey|}")'>
+                        <td>
+                            {|$s.name|}
+                        </td>
+                        <td>
+                            {|$s.serial|}
+                        </td>
+                        <td align="right">
+                            {|$s.count|}
+                        </td>
+                        <td align="right">
+                            {|$s.price|} {|$currency|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+                {|if $visible|}
+                    {|foreach from=$p.supplierArray item="s"|}
+                        <tr style="background-color: {|$s.color|}" onclick='issue_add_product("{|$p.id|}", "{|$p.name2|}", "{|$p.categoryName|}",
+                    "{|if $isOrderOutcoming|}{|$p.pricebaseInCurrencyDefault|}{|else|}{|$p.price|}{|/if|}", "{|$p.url|}", "", "{|$s.linkkey|}")'>
+                            <td colspan="2">
+                                {|$s.name|}
+                            </td>
+                            <td>
+                                {|if $s.date|}
+                                    {|$s.date|},
+                                {|/if|}
+                                {|if $s.avail|}
+                                    {|$s.avail|},
+                                {|/if|}
+                                {|if $s.availText|}
+                                    {|$s.availText|},
+                                {|/if|}
+                                {|$s.comment|}
+                            </td>
+                            <td align="right">
+                                {|$s.price|} {|$currency|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                {|else|}
+                    {|foreach from=$p.supplierArray item="s"|}
+                        <tr onclick='issue_add_product("{|$p.id|}", "{|$p.name2|}", "{|$p.categoryName|}",
+                    "{|if $isOrderOutcoming|}{|$p.pricebaseInCurrencyDefault|}{|else|}{|$p.price|}{|/if|}", "{|$p.url|}", "", "{|$s.linkkey|}")'>
+                            {|if $s.avail > 0|}
+                                <td colspan="4" style="background-color: {|$s.color|}; color: green;">
+                                    {|if $s.availText|}
+                                        {|$s.availText|}
+                                    {|/if|}
+                                </td>
+                            {|else|}
+                                <td colspan="4" style="background-color: {|$s.color|}; color: red;">
+                                    {|if $s.availText|}
+                                        {|$s.availText|}
+                                    {|/if|}
+                                </td>
+                            {|/if|}
+                        </tr>
+                    {|/foreach|}
+                {|/if|}
+            </tbody>
+        {|/foreach|}
+    </table>
+</div>
+<strong class="ob-link-dashed js-resultlist-toggle opened" style="display: inline-block; margin: 7px 0 0 0;">
+    {|$translate_skrit_spisok|}
+</strong>
+
+<script>
+    // toglling list and adding height
+    $j(function () {
+        var screenHeight = $j(window).height();
+        $j('.js-result-wrap').css({
+            'max-height': screenHeight / 100 * 60
+        });
+    });
+
+    $j('.js-resultlist-toggle').on('click', function () {
+        if ($j(this).hasClass('opened')) {
+            $j(this).removeClass('opened').html('{|$translate_pokazat_spisok|}');
+            $j('.js-result-wrap').slideUp();
+        } else {
+            $j(this).addClass('opened').html('{|$translate_skrit_spisok|}');
+            $j('.js-result-wrap').slideDown();
+        }
+    });
+</script>

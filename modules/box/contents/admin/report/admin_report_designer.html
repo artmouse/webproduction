@@ -1,0 +1,151 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/report/designer/" class="selected" >{|$translate_konstruktor_otchetov|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-datetime" placeholder="{|$translate_data_s|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-datetime" placeholder="{|$translate_data_po|}" />
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_postroit_otchet_po|}</div>
+                <select name="row" class="chzn-select">
+                    <option value="">&nbsp;</option>
+                    {|foreach from=$rowArray item="rowName" key="rowKey" |}
+                        <option value="{|$rowKey|}" {|if $control_row == $rowKey|} selected {|/if|}>{|$rowName|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                {|$translate_poschitat|}
+            </div>
+
+            <div class="element ulist">
+                {|foreach from=$columnArray item="columnName" key="columnKey" |}
+                    <label>
+                        <input type="checkbox" name="column[]" value="{|$columnKey|}" {|if in_array($columnKey, $columnSelectedArray)|} checked {|/if|} />
+                        {|$columnName|}
+                    </label>
+                {|/foreach|}
+            </div>
+
+            <input type="hidden" name="id" value="{|$reportID|}" />
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $reportName|}<h1>{|$translate_otchet|} &quot;{|$reportName|}&quot;</h1>{|/if|}
+
+        {|if $message == 'error'|}
+            <div class="shop-message-error">
+                {|$translate_error|}. {|$translate_neobhodimo_ukazat_nazvanie_otcheta|}.<br />
+            </div>
+        {|/if|}
+
+        {|if $columnResultArray|}
+            <div class="ob-block-element">
+                <form method="post" action="" >
+                    <input type="hidden" name="id" value="{|$reportID|}" />
+                    <input type="hidden" name="row" value="{|$control_row|}" />
+                    {|foreach from=$columnSelectedArray item="e" |}
+                        <input type="hidden" name="column[]" value="{|$e|}" />
+                    {|/foreach|}
+                    {|$translate_nazvanie_otcheta|}:
+                    <input type="text" name="name" value="{|$control_name|}" />
+                    <input type="submit" name="save" value="{|$translate_sohranit_otchet|}" class="ob-button" />
+                    {|if $reportID|}
+                        <input type="submit" name="delete" value="{|$translate_udalit_otchet|}" class="ob-button" onclick="return confirm('{|$translate_udalit_otchet|}?');" />
+                    {|/if|}
+                </form>
+            </div>
+
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{|$rowCurrentName|}</th>
+                        {|foreach from=$columnCurrentArray item="columnCurrentName" |}
+                            <th>{|$columnCurrentName|}</th>
+                        {|/foreach|}
+                    </tr>
+                </thead>
+                <tbody>
+                    {|foreach from=$rowResultArray item="rowResultName" key="rowResultKey"|}
+                        <tr>
+                            <td>{|$rowResultName|}</td>
+                            {|foreach from=$columnResultArray item="columnRowResultArray" key="columnKey" |}
+                                <td align="right">
+                                    {|if $columnRowResultArray.$rowResultKey|}
+                                        {|if $columnTypeArray.$columnKey == 'sum'|}
+                                            {|$columnRowResultArray.$rowResultKey|number_format:2|} {|$currency|}
+                                        {|else|}
+                                            {|$columnRowResultArray.$rowResultKey|}
+                                        {|/if|}
+                                    {|else|}
+                                        -
+                                    {|/if|}
+                                </td>
+                            {|/foreach|}
+                        </tr>
+                    {|/foreach|}
+                </tbody>
+            </table>
+            <br />
+
+            {|foreach from=$columnCurrentArray item="columnCurrentName" key="columnKey" |}
+                {|if $columnResultArray.$columnKey|}
+                    <strong>{|$columnCurrentName|}</strong>
+                    <div id="chart_div_{|$columnKey|}" style="width: 100%; height: 500px;"></div>
+                    <br />
+                {|/if|}
+            {|/foreach|}
+
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+            $j(function () {
+                $j('.js-sortable').tablesorter();
+            });
+
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                {|foreach from=$columnResultArray item="columnRowResultArray" key="columnKey" |}
+                var data = google.visualization.arrayToDataTable([
+                ['{|$rowCurrentName|}', '{|$columnArray.$columnKey|}'],
+                {|foreach from=$rowResultArray item="rowResultName" key="rowResultKey"|}
+                ['{|$rowResultName|}', {|if $columnRowResultArray.$rowResultKey|}{|$columnRowResultArray.$rowResultKey|round:2|}{|else|}0{|/if|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                {|if $columnTypeArray.$columnKey == 'count'|}
+                var chart = new google.visualization.PieChart(document.getElementById('chart_div_{|$columnKey|}'));
+                chart.draw(data, options);
+                {|else|}
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_{|$columnKey|}'));
+                chart.draw(data, options);
+                {|/if|}
+                {|/foreach|}
+            }
+            </script>
+
+            <br />
+            <br />
+            <br />
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+

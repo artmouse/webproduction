@@ -1,0 +1,155 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/report/reserve/" class="selected" >Минимальный резерв и РРЦ на складах</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_storage|}</div>
+                <select name="storagenameid[]" multiple class="chzn-select">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $storagenameSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_product_category|}</div>                
+                <select name="categoryid" class="chzn-select-tree">
+                    <option value="0">{|$translate_category_all|}</option>
+                    {|foreach from=$categoryArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_categoryid == $e.id|} selected{|/if|} data-level="{|$e.level|}">
+                        {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <input type="text" name="productname" value="{|$control_productname|}" placeholder="Название / код продукта" />
+            </div>
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $storageArray|}
+            {|foreach from=$storageArray item="storage"|}
+                <h1>{|$storage.storagename|}</h1>
+                <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable" width="100%">
+                    <thead>
+                        <tr>
+                            <th width="50">{|$translate_item_code|}</th>
+                            <th>{|$translate_category|}</th>
+                            <th>{|$translate_product|}</th>
+                            <th width="100" align="right">{|$translate_number|}</th>
+                            <th width="200" align="right">{|$translate_required_reserve_small|}</th>
+                            <th width="100" align="right">{|$translate_percentage|}</th>
+                            <th width="300" align="right" rowspan="2">Рекомендуемая цена продажи</th>
+                        </tr>
+                    </thead>
+        
+                    {|foreach from=$storage.productArray item="e" name='foreachproduct'|}
+                        <tr>
+                            <td><a href="{|$e.productURL|}" class="js-product-preview" data-id="{|$e.productid|}" >{|$e.productid|}</a></td>
+                            <td>{|$e.categoryname|}</td>
+                            <td>{|$e.productname|}</td>
+                            <td align="right">
+                                {|if $e.historyURL|}<a href="{|$e.historyURL|}">{|/if|}
+                                {|$e.amount|number_format:3|}
+                                {|if $e.historyURL|}</a>{|/if|}
+                            </td>
+                            <td align="right">
+                                <a href="#" class="js-storage-reserve-edit-link" data-storagenameid="{|$storage.storagenameid|}" data-productid="{|$e.productid|}" title="Редактировать" >
+                                    {|$e.reserve|number_format:3|}
+                                </a>
+                            </td>
+                            <td align="right" {|if $e.lack|} style="color: red;" {|/if|} {|if $e.plenty|} style="color: green;" {|/if|}>
+                                <span class="js-storage-reserve-percent-{|$storage.storagenameid|}-{|$e.productid|}">{|$e.percent|round|}%</span>
+                            </td>
+                            <td align="right">
+                                <a href="#" class="js-storage-reserve-rrc-edit-link" data-storagenameid="{|$storage.storagenameid|}" data-productid="{|$e.productid|}" data-rrc="{|$e.rrc|}" data-currencyid="{|$e.currencyid|}" title="Редактировать" >
+                                    {|$e.rrc|number_format:2|} {|$e.currency|}
+                                </a>
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                </table>
+                <br />
+            {|/foreach|}
+            
+            <div class="js-storage-reserve-edit-form-div" style="display:none; ">
+                <form class="js-storage-reserve-edit-form">
+                    <input type="hidden" name="storagenameid" value="" />
+                    <input type="hidden" name="productid" value="" />
+                    <input type="text" name="amount" value="" style="width: 100px; " />
+                    <input class="ob-button" type="submit" name="ok" value="OK" />
+                </form>            
+            </div>
+            
+            <div class="js-storage-reserve-rrc-edit-form-div" style="display:none; ">
+                <form class="js-storage-reserve-edit-form">
+                    <input type="hidden" name="storagenameid" value="" />
+                    <input type="hidden" name="productid" value="" />
+                    <input type="text" name="rrc" value="" style="width: 100px; " />
+                    <select name="currencyid" style="width: 65px;">
+                        {|foreach from=$currencyArray item="e"|}
+                            <option value="{|$e.id|}" >{|$e.symbol|}</option>
+                        {|/foreach|}
+                    </select>
+                    <input class="ob-button" type="submit" name="ok" value="OK" />
+                </form>            
+            </div>
+        {|else|}
+            <div class="shop-message-info">Нет данных.</div>
+        {|/if|}
+        
+        <form action="" method="post" class="shop-block">
+            <strong>Добавить значение минимального резерва продукта</strong>
+            <br />
+            <br />
+            
+            {|$translate_storage|}
+            <select name="storagenameid" class="chzn-select" style="width: 200px; ">
+                {|foreach from=$storageNamesArray item="e"|}
+                    <option value="{|$e.id|}">{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+            <br />
+            
+            Код товара<br />
+            <input type="text" name="productid" value="" style="width: 200px; ">
+            <br />
+            <br />
+            
+            Количество<br />
+            <input type="text" name="amount" value="" style="width: 200px; ">
+            <br />
+            <br />
+            
+            Рекомендуемая цена продажи<br />
+            <input type="text" name="rrc" value="" style="width: 131px; " />
+            <select name="currencyid" style="width: 65px;">
+                {|foreach from=$currencyArray item="e"|}
+                    <option value="{|$e.id|}" >{|$e.symbol|}</option>
+                {|/foreach|}
+            </select>
+            <br />
+            <br />
+            
+            <input class="ob-button" type="submit" name="add" value="Добавить" />
+
+        </form>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

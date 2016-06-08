@@ -1,0 +1,61 @@
+Subject: [OneBox] Заказ #{|$orderid|}
+
+Здравствуйте!<br />
+<br />
+
+Пользователь {|$userName|} добавил комментарий к заказу #{|$orderid|}:
+{|$orderURL|}<br />
+
+<br />
+{|$comment|}
+<br />
+<hr />
+
+{|if $basketsArray|}
+    Информация о заказе:
+    <br />
+    <table cellpadding="5" cellspacing="0" border="1" width="100%">
+        <tr class="tab_tr_head">
+            <td><strong>Товар</strong></td>
+            <td width="120" align="center"><strong>Цена</strong></td>
+            <td width="80" align="center"><strong>Количество</strong></td>
+            <td width="120" align="center"><strong>Сумма</strong></td>
+        </tr>
+        {|foreach from=$basketsArray item="b"|}
+            <tr>
+                <td>
+                    {|$b.name|} (код #{|$b.productid|})<br />
+                    {|$b.comment|}
+                </td>
+                <td align="right">{|$b.price|} {|$ordercurrency|}</td>
+                <td align="center">{|$b.count|}</td>
+                <td align="right">{|$b.sum|} {|$ordercurrency|}</td>
+            </tr>
+        {|/foreach|}
+    </table>
+    <br />
+    {|if $discountSum > 0|}
+        Сумма скидки: <strong>-{|$discountSum|} {|$ordercurrency|}</strong><br />
+    {|/if|}
+    {|if $deliveryPrice > 0|}
+        Доставка: <strong>{|$deliveryPrice|} {|$ordercurrency|}</strong><br />
+    {|/if|}
+    Общая сумма заказа: <strong>{|$ordersum|} {|$ordercurrency|}</strong>
+    <br />
+    <br />
+{|/if|}
+
+Номер заказа: {|$orderid|}<br />
+Ф.И.О.: {|$clientname|}<br />
+Телефон: {|$clientphone|}<br />
+Email: {|$clientemail|}<br />
+Адрес доставки: {|$clientaddress|}<br />
+Прочие контактные данные: {|$clientcontacts|}<br />
+Комментарий: {|$comments|}<br />
+Дата оформления заказа: {|$date|}<br />
+{|if $deliveryNote|}
+Накладная доставки: {|$deliveryNote|} <br />
+{|/if|}
+<br />
+
+{|$signature|}

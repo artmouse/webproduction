@@ -1,0 +1,108 @@
+{|if $productsArray|}
+    <div class="os-productthumb-list">
+        {|foreach from=$productsArray item="e"|}
+            <div class="os-productthumb-element js-productthumb-element">
+                <div class="wrapper js-wrapper">
+                    <div class="image">
+                        {|if $e.iconImage|}
+                            <img src="{|$e.iconImage|}" alt="{|$e.iconName|escape|}" title="{|$e.iconName|escape|}" class="icon-image" />
+                        {|/if|}
+                        <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|escape|}" title="{|$e.name|escape|}" /></a>
+                    </div>
+                    <div class="name">
+                        <a href="{|$e.url|}" title="{|$e.name|}">{|$e.name|}</a>
+                    </div>
+
+                    <div class="clear"></div>
+                    <div class="block-price">
+                        {|if $e.price == 0|}
+                            <div class="os-price-specify">{|$translate_specify_a_price|}</div>
+                        {|else|}
+                            {|if !$e.avail|}
+                                <div class="os-price-unavailable">{|$translate_from_small|} {|$e.price|} {|$e.currency|}</div>
+                            {|else|}
+                                <div class="os-price-available">{|$translate_from_small|} {|$e.price|} {|$e.currency|}</div>
+                            {|/if|}
+                            {|if $e.priceold AND $e.priceold > $e.price|}
+                                <div class="os-price-old">
+                                    {|$e.priceold|} {|$e.currency|}
+                                </div>
+                            {|/if|}
+
+                            <div class="js_personal_discount_check" data-productid="{|$e.id|}"></div>
+
+                        {|/if|}
+                    </div>
+
+                    {|if $e.rating > 0|}
+                        <div class="os-block-rating">
+                            <div class="inner" style="width: {|$e.rating*20|}%;"></div>
+                        </div>
+                    {|/if|}
+                    <div class="clear"></div>
+
+                    <div class="avail js-avail">
+                        {|if $e.avail|}
+                            {|if $e.availtext|}
+                                <div class="os-available">{|$e.availtext|}</div>
+                            {|else|}
+                                <div class="os-available">{|$translate_in_stock|}</div>
+                            {|/if|}
+                        {|else|}
+                            {|if $e.availtext|}
+                                <div class="os-unavailable">{|$e.availtext|}</div>
+                            {|else|}
+                                <div class="os-unavailable">{|$translate_out_of_stock|}</div>
+                            {|/if|}
+                        {|/if|}
+                    </div>
+
+                    <div class="block-buttons">
+                        <div class="row">
+                            {|if $e.canbuy or $e.canMakePreorder|}
+                                <div class="button js-shop-buy" data-productid="{|$e.id|}">
+                                    <a href="#" class="js-shop-buy-action os-submit green">{|$translate_buy|}</a>
+                                </div>
+                            {|/if|}
+
+                            {|if $isAdmin|}
+                                {|if not($e.canbuy or $e.canMakePreorder)|}
+                                    <div class="button-expand">&nbsp;</div>
+                                {|/if|}
+                                <div class="button edit">
+                                    <a href="{|$e.urlEdit|}" class="os-submit red"></a>
+                                </div>
+                            {|else|}
+                                {|if $e.canbuy or $e.canMakePreorder|}
+                                    <div class="button">
+                                        <a href="javascript: void(0);" onclick="basket_order_quick('{|$e.id|}', '{|$e.nameQuick|}');" class="os-submit quick">{|$translate_buy_quick|}</a>
+                                    </div>
+                                {|/if|}
+                            {|/if|}
+                        </div>
+                    </div>
+
+                    {|if ($e.discount && $e.avail && !$e.canMakePreorder) || ($e.discount && $e.canMakePreorder && !$e.avail) |}<div class="discount">-{|$e.discount|}%</div>{|/if|}
+
+                    <div class="expanded js-expanded">
+                        {|if $e.descriptionshort|}
+                            <div class="description">
+                                <span>{|$e.descriptionshort|}</span>
+                            </div>
+                        {|/if|}
+                    </div>
+                </div>
+            </div>
+        {|/foreach|}
+
+        <div class="os-productthumb-empty js-product-list-ajax-add"></div>
+        <div class="os-productthumb-empty"></div>
+        <div class="os-productthumb-empty"></div>
+        <div class="os-productthumb-empty"></div>
+        <div class="os-productthumb-empty"></div>
+    </div>
+{|else|}
+    <div class="os-message-noproducts">
+        {|$translate_noproducts_message|}.
+    </div>
+{|/if|}

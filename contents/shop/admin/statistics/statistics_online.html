@@ -1,0 +1,56 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/activity/">{|$translate_activity|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/online/" class="selected">{|$translate_users_online|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/statistics/search/">{|$translate_statistics_search|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ban'|}
+    <div class="shop-message-success">
+        {|$translate_users_get_ban|}!
+    </div>
+{|/if|}
+
+{|if $message == 'kick'|}
+    <div class="shop-message-success">
+        {|$translate_users_get_kick|}!
+    </div>
+{|/if|}
+
+<table class="shop-table sortable">
+    <thead>
+        <tr>
+            <th>{|$translate_login_small|}</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Должность</th>
+            <th>e-mail</th>
+            <th>IP</th>
+            <th>SessionID</th>
+            <th>{|$translate_session_date|}</th>
+            <th>{|$translate_last_active_time|}</th>
+            <th>{|$translate_ban|}</th>
+            <th>{|$translate_kick|}</th>
+        </tr>
+    </thead>
+    {|foreach from=$usersArray item="u"|}
+        <tr>
+            <td><a href="{|$u.url|}" class="js-contact-preview" data-id="{|$u.id|}">{|$u.login|}</a></td>
+            <td>{|$u.last_name|}</td>
+            <td>{|$u.first_name|}</td>
+            <td>{|$u.middle_name|}</td>
+            <td>{|$u.position|}</td>
+            <td>{|$u.email|}</td>
+            <td>{|$u.ip|}</td>
+            <td>{|$u.sid|}</td>
+            <td>{|$u.sdate|}</td>
+            <td>{|$u.adate|}</td>
+            <td><a href="?ban={|$u.id|}">{|$translate_give_ban|}</a></td>
+            <td><a href="?kick={|$u.id|}">{|$translate_kick|}</a></td>
+        </tr>
+    {|/foreach|}
+</table>

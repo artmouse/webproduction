@@ -1,0 +1,41 @@
+{|if NOT $issue|}
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="storage_incoming" value="1" {|if $control_storage_incoming|} checked {|/if|} />
+            Автоматически приходовать заказ на склад
+        </label>
+        <select name="storagenameid_incoming" class="chzn-select">
+            {|foreach from=$storageNameIncomingArray item="e"|}
+                <option value="{|$e.id|}" {|if $e.id == $control_storagenameid_incoming|} selected {|/if|}>{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="storage_sale" value="1" {|if $control_storage_sale|} checked {|/if|} />
+            Автоматически продавать заказ со склада {|$storageName|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="storage_reserve" value="1" {|if $control_storage_reserve|} checked {|/if|} />
+            Автоматически резервировать товар на складе {|$storageName|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="storage_unreserve" value="1" {|if $control_storage_unreserve|} checked {|/if|} />
+            Автоматически снимать резерв товара на складе
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="storage_return" value="1" {|if $control_storage_return|} checked {|/if|} />
+            Автоматически возвращать товар на склад
+        </label>
+    </div>
+{|/if|}

@@ -1,0 +1,139 @@
+<h1>Как правильно писать блоки к бизнес-процессам UI (User Interface)</h1>
+На данный момент в шопе типы ShopOrder делятся на 3 вида: Заказ, Задача, Проект.
+<br />
+Каждый тип имеет свой интерфейс при редактировании, свои Бизнес-процессы и ряд других особенностей.
+<br />
+Новый UI позволяет создавать свои, уникальные типы, со своим интерфейсом.
+<br />
+Интерфес состоит из блоков, ниже будет описанно как добавить свой блок в интерфейс.
+<br />
+<br />
+Что бы включить новый UI нужно в engine.mode.php прописать
+<code><pre>Engine::Get()->setConfigField('dynamic-workflow-type-in-menu', true);</pre></code>
+<br />
+Так же обязательно наличие модуля box.
+<br />
+<h2>Как добавить новый тип?</h2>
+<br />
+Новые типы добавляются на странице /admin/shop/workflowtype/
+<br />
+<br />
+
+<h2>Как добавить новый блок?</h2>
+<br />
+Что бы добавить новый блок интерфейса, надо сделать всего 2 вещи: Создать контент и добавить блок в БД.
+<br />
+<br />
+
+<h3 style="color: #555; font-weight: bold;">1. Создаем контент, состоящий из php и html файла. В php будет содержатся логика. В html собственно наш интерфейс, который будет отображаться в карточке заказа.</h3>
+<br />
+<code>
+    <pre>
+        Engine::GetContentDataSource()->registerContent(
+            'box-admin-block-graph-load',
+            array(
+                'filehtml' => dirname(__FILE__).'/block/box_block_graph_load.html',
+                'filephp' => dirname(__FILE__).'/block/box_block_graph_load.php',
+                'level' => '2',
+            ),
+            'override'
+        );
+    </pre>
+</code>
+<br />
+<br />
+<br />
+
+
+<h3 style="color: #555; font-weight: bold;">2. Добавить блок-контент в Базу данных</h3>
+<br />
+<p>
+    Блок добавляется методом Interface_Block_Loader::Get()->addBlock.
+    <br>
+    Первый параметр - ContentID блока, созданного в пункте 1.
+    <br>
+    Второй параметр - Название блока.
+    <br>
+</p>
+
+<strong>Добавление обязательно завернуть в development.</strong>
+<br>
+<code>
+    <pre>
+        if (PackageLoader::Get()->getMode('development')) {
+
+            Interface_Block_Loader::Get()->addBlock(
+                'box-admin-block-graph-load',
+                'График нагрузки на исполнителей проекта'
+            );
+        }
+    </pre>
+</code>
+<br />
+<br />
+<br />
+
+<h2>Что должно содержаться в контентах?</h2>
+<br />
+<br />
+<h3 style="color: #555; font-weight: bold;">1. Содержание файла html.</h3>
+В html файле оформляете свой интерфес. Весь код должен быть обернут блочным тегом.
+<br />
+<br />
+Пример файла
+<br>
+<br>
+<img src="/modules/api-docs/docs/_images/status_ui_1.png">
+<br />
+<br />
+
+
+<h3 style="color: #555; font-weight: bold;">2. Содержание файла php.</h3>
+Файл содержит 1 метод - process. В нем выполняется вывод и сохранение данных.
+<br>
+<br>
+        Данные которые передаются в каждый контент:
+        <br>
+$this->getValue('order');  - Получаем заказ(объект) в котором находимся.
+        <br>
+$this->getValue('process'); - Блоки обрабатываются в 2 этапа: 1 этап - сохранение данных для всех блоков, 2 этап - формирование html Для каждого блока. Если в переменную process приходит "false" - значит выполняется сохранение данных, если "true" - значит формирование html.
+
+
+<br>
+<br>
+Если вам необходимо сохранять данные, используем следующий код:
+<br>
+<code>
+    <pre>
+          if (!$process && $this->getControlValue('ok')) {
+            // сохранение данных
+          }
+    </pre>
+</code>
+где, $process - Значение $this->getValue('process');
+<br>
+<br>
+Пример файла
+<br>
+<br>
+<img src="/modules/api-docs/docs/_images/status_ui_2.png">
+<br>
+<br>
+Примеры блоков можно посмотреть по пути:
+<br>
+\modules\box\contents\block\
+<br>
+<br>
+<br>
+<h2>Как увидеть новый блок?</h2>
+- Запускаем update.sh / development(что бы добавить ноый блок в БД)
+<br>
+- Заходим в настройки Бизнес-процесса
+<br>
+- Заходим в интерфейс любого этапа
+<br>
+<img src="/modules/api-docs/docs/_images/status_ui_3.png">
+<br>
+- Слева ищем наш новый блок, перетягиваем в нужно место расположение на странице редактирования заказа, сохраняем.
+<br>
+- Идем в заказ в таким же статусом, в котором произвели настройку.

@@ -1,0 +1,450 @@
+<h1>Как правильно разрабатывать парсера данных и вливать данные в OneBox</h1>
+<h2>Что такое парсер?</h2>
+Парсер - это небольшой (или иногда реально большой) скрипт,
+который забирает данные из внешних источников (например, сайтов) и структурированно
+сохраняет их во внутренний источник (например, нашу базу данных).
+<br />
+<br />
+
+<h2>Как пишутся парсера</h2>
+
+Первое что приходит в голову - это писать скрипт,
+который будет ходить по ссылкам на сайте,
+парсить данные из страниц и записывать полученные данные в базу данных.
+<br />
+<br />
+
+<strong>Но тут будут сложности:</strong><br />
+<ol>
+    <li>во-первых, что будет если соединение оборвется - все прийдется парсить заново?</li>
+    <li>во-вторых, у соединения с базой данных есть срок жизни, порядка часа.<br />
+        Если открыть соединение, то через час оно закроется само
+        (и парсер если не быть готовым - вылетит).
+    </li>
+    <li>
+    в-третьих, парсинг может занять дни, а то и месяца.
+    </li>
+    <li>в-четвертых, вас могут забанить. Сильно часто обращаетесь к серверу - ваш IP забанят.</li>
+</ol>
+<br />
+
+Чтобы предусмотреть эти сложности, мы:<br />
+
+<ol>
+    <li>Мы используем <strong>TextProcessor</strong> с указанием ttl=99999 (или сколько там нам надо помнить кеш).
+Это позволит если все вылетит - начать заново, но уже не ждать кучу времени,
+потому что все данные уже будут в кеше.</li>
+    <li>Пишем парсера в два этапа.</li>
+</ol>
+<br />
+<br />
+
+<strong>Пример работы с TextProcessor:</strong><br />
+<br />
+
+<code><pre>
+$p = new TextProcessor();
+$p->addAction(new TextProcessor_ActionContentFromURL($url, $ttl));
+$html = $p->process();
+</pre></code>
+<br />
+
+<ol>
+    <li>ttl - это время кеширования ответа. Укажите там число в секундах на сколько надо запомнить содержимое страницы. Если вы повторно запустите парсер - TextProcessor сразу вернет вам данные и не будет делать стук по URL. Это облегчает разработку парсеров значительно.<br /></li>
+    <li>TextProcessor_ActionContentFromURL работает через CURL и имитирует браузер (вы можете указать какой). По умолчанию это Firefox. Риск того что вас забанят - намного меньший.<br /></li>
+</ol>
+
+<br />
+<br />
+
+<h2>Парсер в два этапа</h2>
+
+<ol>
+    <li><strong>Скрипт по сбору данных</strong>, он собирает данные и сохраняет в формат CSV, JSON, XML и тд.<br />
+    То есть, он не обращается к базе. Результат работы скрипта - файл JSON, XML, CSV.<br />
+    Скрипт мы пишем “без движка”. Это делает его легким, никакие соединения не оборвутся.
+    Поэтому его можно запустить в фоне nohup php -f xxx.php > mylog.log &
+    и просто ждать пока он сформирует нужные данные.<br />
+    Скрипт мы запускаем на локальных машинах в офисах или дома.
+    Чтобы забанить нас было нельзя, ведь у нас серые IP.
+    </li>
+    <li>Скрипт, который берет на вход <strong>полученный файл и записывает его данные в БД</strong>.</li>
+</ol>
+<br />
+<br />
+
+
+<h2>Парсера контактов</h2>
+
+Парсера контактов еще более стандартизированы.<br />
+По сути нужно делать только скрипт по сбору данныз, а скрипт по вливанию данных уже готов и он стандартный,
+modules/contact/tools/tool-import-contacts.php.<br />
+<br />
+
+Причем этот скрипт умный, сам проверяет все на дубликаты.<br />
+Но, формат файла который он принимает - немного необычный, это обычный текстовый файл,
+где каждая строка это отдельный json.<br />
+<br />
+
+<h2>Пример структуры JSON\n</h2>
+
+<code><pre>
+{"type":"company","company":"name","personArray":["ithem1, item2"],"comment":"comment_parse","position":"director","address":"Kiev Street 2 kd ","phoneArray":["+380322528178"],"emailArray":["vip24@bigmir.net"],"urlArray":[" http:\/\/companies.kontrakty.ua\/firms\/32.html"],"source":"http:\/\/companies.kontrakty.ua"}
+{"type":"company","company":"name2","personArray":["ithem1, item2"],"comment":"comment_parse2","position":"secretar","address":"Lviv Street 12 kd ","phoneArray":["380665988778"],"emailArray":["test22@mail.ru"],"urlArray":[" http:\/\/companies.kontrakty.ua\/firms\/33.html"],"source":"http:\/\/companies.kontrakty.ua"}
+{"type":"company","company":"name3","personArray":["ithem1, item2"],"comment":"comment_parse3","position":"state","address":"Odessa Street 12 kd ","phoneArray":["380632587466"],"emailArray":["test54@rambler.net"],"urlArray":[" http:\/\/companies.kontrakty.ua\/firms\/34.html"],"source":"http:\/\/companies.kontrakty.ua"}
+</pre></code>
+<br />
+<br />
+
+<h2>Пример парсера</h2>
+
+Примеры нескольких парсеров,
+которые делают именно такой формат и пример JSON-структуры:
+<br />
+<br />
+Пример парсера контактов
+<code><pre>
+
+$ttl = 99999999;
+$url = 'http://companies.kontrakty.ua/';
+
+$p = new TextProcessor();
+$p->addAction(new TextProcessor_ActionContentFromURL($url, $ttl));
+$html = $p->process();
+
+$urlArray = array();
+
+if (preg_match_all("/ref=\"http:\/\/companies\.kontrakty\.ua\/industries\/(\d+).(\w+)\">/ius", $html, $r)) {
+    foreach ($r[1] as $index => $x) {
+        $url = 'http://companies.kontrakty.ua/industries/'.$r[1][$index];
+        $urlArray[] = $url;
+    }
+}
+for($i = 0; $i < count($urlArray); $i++) {
+    $urlArray[$i] = $urlArray[$i]."/p1,10000.html";
+}
+echo 'Я спарсил URL категорий, их всего:'.  count($urlArray);
+print "\n\n";
+$urlArray2 = array();
+foreach ($urlArray as $url) { 
+    print $url."\n";   
+    $p = new TextProcessor();
+    $p->addAction(new TextProcessor_ActionContentFromURL($url, $ttl));
+    $html = $p->process();
+
+    if (preg_match_all("/href=\"http:\/\/companies\.kontrakty\.ua\/firms\/(\d+).(\w+)\">/ius", $html, $r)) {
+    foreach ($r[1] as $index => $x) {
+        $urles = 'http://companies.kontrakty.ua/firms/'.$r[1][$index].'.'.$r[2][$index];
+        $urlArray2[] = $urles;
+        }
+    }
+}
+echo 'Я спарсил URLы записей:'.  count($urlArray2);
+print "\n\n";
+$result = array();
+foreach ($urlArray2 as $url) {   
+    print $url."\n";
+    $p = new TextProcessor();
+    $p->addAction(new TextProcessor_ActionContentFromURL($url, $ttl));  
+    $html = $p->process();
+
+    $name = false;
+    if (preg_match("/div class=\"b-header\" style=\"background-color:#126EBB;#50B0FF\">(.+?)<\/div>/ius", $html, $r)) {
+        $name = trim($r[1]);
+    }
+
+    $comment = false;
+    if (preg_match("/img src=\"\/img\/flag_ru\.png\"(.+?)span class=\"(.+?|org) title\">(.+?)<\/span>/ius", $html, $r)) {     
+        $comment .= trim($r[3]);        
+    }
+
+    $personArray = array();
+    if (preg_match("/td width=\"\">(.+?)br>(.+?)<\/span>/ius", $html, $r)) {
+        $personArray[] = trim($r[1]);
+        $personArray[] = trim($r[2]);   
+    }
+
+    $position = false;
+    if (preg_match("strong>Отрасли:<\/strong><\/td>(.+?)ul>(.+?)li style=\"padding:0\">(.+?)<\/li>/ius", $html, $r)) {
+        $position = trim($r[3]);
+    }
+
+    $address = false;
+    if (preg_match("/span class=\"region\">(.+?)<\/span>/ius", $html, $r)) {
+        $address ="Украина " . trim($r[1])." ";
+    }
+
+    if (preg_match("/span class=\"street\-address\">(.+?)<\/span>/ius", $html, $r)) {
+        $address .= trim($r[1])." ";
+    }
+
+    if (preg_match("/span class=\"postal-code\">(\d+)<\/span>/ius", $html, $r)) {
+        $address .= trim($r[1])." ";
+    }
+
+    $phoneArray = false;
+    if (preg_match("/abbr class=\"type\" title=\"work\"><\/abbr>(.+?)<\/li>/ius", $html, $r)) {
+        $phone = trim($r[1]." ");      
+        $phoneArray = explode(",", $phone);   
+    }
+    if (preg_match("/abbr class=\"type\" title=\"fax\"><\/abbr>(.+?)<\/li>/ius", $html, $r)) {
+        $phoneArray[] = trim($r[1]." ");
+    }
+    
+    $emailArray = array();
+    if (preg_match("/class=\"email\"(.+?)\">(.+?)<\/a>/ius", $html, $r)) {
+        $emailArray[] = trim(html_entity_decode($r[2])); 
+    }
+
+    $urlArray = array();
+    if (preg_match("/a class=\"url\"(.+?)>(.+?)<\/a><\/li>/ius", $html, $r)) {
+        $urlArray[] = trim($r[2]);
+    }
+
+    $urlArray[] =" ".$url;
+ 
+    print "type="."company"."\n";
+    print "company=".$name."\n";
+    print "comment=".$comment."\n";
+    print "personArray=".implode(',', $personArray)."\n";
+    print "position=".$position."\n";
+    print "address=".$address."\n";
+    print "phoneArray=".implode(',', $phoneArray)."\n";
+    print "emailArray=".implode(',', $emailArray)."\n";
+    print "urlArray=".implode(',', $urlArray)."\n";
+    print "source="."http://companies.kontrakty.ua/"."\n";
+    print "\n";
+    
+    $result = array();  
+    $result = array(
+        'type' => 'company',
+        'company' => $name,
+        'personArray' => $personArray,
+        'comment' => $comment,
+        'position' => $position,
+        'address' => $address,
+        'phoneArray' => $phoneArray,
+        'emailArray' => $emailArray,
+        'urlArray' => $urlArray,
+	'source' => 'http://companies.kontrakty.ua'
+        ); 
+
+        $file = dirname(__FILE__).'/parsecontactfirm.json';
+
+        if ($file) {
+            $f = fopen($file, 'a+');
+            fputs($f, json_encode($result)."\n");
+            fclose($f);
+        }
+}
+print "\n\ndone.\n\n";
+</pre></code>
+<br />
+<br />
+Пример парсера товаров
+<code><pre>
+
+$ttl = 999999999;
+$url = 'http://hotline.ua/sport/';
+
+$urlArray = array();
+
+print "Парсим подкатегории с категории " . $url . "\n";
+$p = new TextProcessor();
+$p->addAction(new TextProcessor_ActionContentFromURL($url, $ttl));
+$html = $p->process();
+
+if (preg_match_all("/a href=\"(.+?)\" hlSectionId=\"\d+\">/iU", $html, $r)) {
+    foreach ($r[1] as $index => $x) {
+        $url = trim($r[1][$index]);
+        if (!strstr($url, "http://hotline.ua")) {
+            $url = 'http://hotline.ua' . $url;
+        }
+        $urlArray[] = $url . "?catmode=lines&p=";
+    }
+}
+print "\n\n";
+echo 'Я спарсил URLы подкатегорий, их всего: ' . count($urlArray);
+print "\n\n";
+
+$urlArray2 = array();
+
+foreach ($urlArray as $url) {
+    print "Парсим тут страницы: " . $url . "\n";
+    $p = new TextProcessor();
+    $action = new TextProcessor_ActionContentFromURL($url, $ttl);
+    $p->addAction($action);
+    $html = $p->process();
+    $html = iconv('windows-1251', 'utf-8', $html);
+    $cnt = 0;
+    if (preg_match("/Страница 1 из (\d+)/ius", $html, $r)) {
+        $cnt = trim($r[1]);
+    }
+    for ($j = 0; $j <= $cnt; $j++) {
+        $urlArray2[] = $url.$j;
+    }
+}
+
+print "\n\n";
+echo 'Я спарсил URLы подкатегорий со всеми страницами их: ' . count($urlArray2);
+print "\n\n";
+
+$urlArray3 = array();
+foreach ($urlArray2 as $url) {
+    print "Парсим товары с страницы: " . $url . "\n";
+
+    $p = new TextProcessor();
+    $action = new TextProcessor_ActionContentFromURL($url, $ttl);
+    $p->addAction($action);
+    $html = $p->process();
+    $html = iconv('windows-1251', 'utf-8', $html);
+    if (preg_match_all("/eventCategoryID\': \'\d+\' \}\)\;\"\s+href=\"(.+?)\">.+?<\/a>\s+<\/div>\s+<\/div>/ius", $html, $r)) {
+        foreach ($r[1] as $index => $x) {
+            $urlProd = trim($r[1][$index]);
+            $urlArray3[] = 'http://hotline.ua' . $urlProd;
+        }
+    }
+    print "\n" . "Количество товаров уже = " . count($urlArray3) . "\n";
+}
+
+print "\n\n";
+echo 'Я спарсил URLы продуктов, их всего: ' . count($urlArray3);
+print "\n\n";
+
+foreach ($urlArray3 as $url) {
+    print $url . "\n";
+
+    $p = new TextProcessor();
+    $action = new TextProcessor_ActionContentFromURL($url, $ttl);
+    $p->addAction($action);
+    $html = $p->process();
+    $html = iconv('windows-1251', 'utf-8', $html);
+    $name = false;
+    if (preg_match("/h1.+?>(.+?)</ius", $html, $r)) {
+        $name = trim($r[1]);
+    }
+
+    $price = false;
+    if (preg_match("/span>Средняя цена: (.+?) \w+<\/strong>/ius", $html, $r)) {
+        $price = strip_tags($price);
+        $price = str_replace('&nbsp;', '', $price);
+        $price = trim($r[1]);
+    }
+    
+    $imageArray = false;
+    if (preg_match_all("/id=\"main-small-cont\">\s+.+?src=\"(.+?)\" class=/ius", $html, $r)) {
+        foreach ($r[1] as $index => $x) {
+            $imageArray[] = trim("http://hotline.ua" . $r[1][$index]);
+        }
+    }
+
+    $description = false;
+    if (preg_match("/p class=\"full-desc\".+?>(.+?)<\/p>/ius", $html, $r)) {
+        $description = trim($r[1]);
+    }
+
+    $filterArray = array();
+    if (preg_match_all("/span>(.+?)\s+<\/span>\s+<\/th>\s+(.+?)<\/td>\s+<\/tr>/ius", $html, $r)) {
+        foreach ($r[1] as $index => $x) {
+            $r[1][$index] = strip_tags($r[1][$index]);
+            $r[1][$index] = trim($r[1][$index]);
+            $r[2][$index] = strip_tags($r[2][$index]);
+            $r[2][$index] = trim($r[2][$index]);
+            $filterArray[$r[1][$index]] = $r[2][$index];
+        }
+    }
+
+    $categoryArray = array();
+    if (preg_match_all("/li class=\"lvl1-1.+?a.+?itemprop=\".+?>(.+?)<\/a>/iu", $html, $r)) {
+        foreach ($r[1] as $x) {
+            $x = trim(strip_tags($x));
+            if ($x) {
+                $categoryArray[] = $x;
+            }
+        }     
+    }
+
+    print "name=" . $name . "\n";
+    print "url=" . $url . "\n";
+    print "imageArray=" . implode(',', $imageArray) . "\n";
+    print "price=" . $price . "\n";
+    print "description=" . $description . "\n";
+    print "filterArray=" . "\n";
+    print_r($filterArray);
+    print "\n";
+    print "categoryArray=" . implode(" -> ", $categoryArray) . "\n";
+
+    print "\n";
+
+    $result = array();
+
+    $result = array(
+        'name' => $name,
+        'url' => $url,
+        'imageArray' => $imageArray,
+        'price' => $price,
+        'description' => $description,
+        'filterArray' => $filterArray,
+        'categoryArray' => $categoryArray
+    );
+
+    $file = dirname(__FILE__) . '/sport.json';
+
+    if ($file) {
+        $f = fopen($file, 'a+');
+        fputs($f, json_encode($result) . "\n");
+        fclose($f);
+    }
+}
+print "\n\ndone.\n\n";
+</pre></code>
+<br />
+<br />
+
+При парсинге контактов проверять данные на корректность не имеет смысла.<br />
+<br />
+
+Важно только учитывать всего две вещи:
+<ul>
+    <li>
+    <strong>чтобы номера телефонов были в полном формате.</strong><br />
+Например, если вот тут http://www.ua-region.info/38553367 номера телефонов
+записаны (0472) 568020 - то вам нужно добавлять к ним 38.<br />
+Чтобы получилось 38(0472) 568020. Скобки, пробелы и тд можно не удалять.<br />
+    </li>
+    <li>
+    чтобы в передаваемом в JSON массиве <strong>phoneArray и emailArray данные были раздельно</strong>.<br />
+То есть, чтобы каждый телефон и емейл был в отдельной ячейке массива.<br />
+А то часто бывает что номера телефонов указываются через запятую,
+и получается типа [0] = "xxxx,yyyy”
+    </li>
+</ul>
+
+<br />
+
+<h2>Подсказки парсинга</h2>
+
+Когда пишете парсер товаров или контактов, есть два пути:
+
+<ul>
+    <li>лазить по всем ссылкам на сайте</li>
+    <li>угадывать ссылки</li>
+</ul>
+
+<br />
+
+<strong>Второй вариант как правило намного проще.</strong><br />
+Например, вот страница http://www.ua-region.info/38553367 - по URL ясно,
+что номер компании подставляется в URL.<br />
+Поэтому, все что нужно сделать, это в цикле перебирать все варианты<br />
+<br />
+
+http://www.ua-region.info/100000000<br />
+http://www.ua-region.info/100000001<br />
+http://www.ua-region.info/100000002<br />
+...<br />
+<br />
+
+сложность только в том, чтобы примерно прикинуть сколько там таких
+компаний и не перебирать лишнего. А то например на map.cn.ua всего около 15000 компаний
+поэтому цикл надо заканчивать где-то на 20000, потому что IDшники могу пропускаться.<br />

@@ -1,0 +1,113 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        {|if $urlBack|}
+            <div class="tab-element"><a href="{|$urlBack|}">&lsaquo; {|$translate_simple_back|}</a></div>
+        {|else|}
+            <div class="tab-element"><a href="/admin/shop/users/">&lsaquo; {|$translate_users|}</a></div>
+        {|/if|}
+        <div class="tab-element"><a href="{|$urlEdit|}" class="js-type-user-fields {|if $selected == 'edit'|}selected{|/if|}">{|$translate_contact_card|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/users/add/">{|$translate_users_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="ob-block-head js-block-head">
+    <div class="background" {|if $bigImage|}style="background-image: url('{|$bigImage|}');"{|/if|}>
+        {|if $menuColor|}<span style="background-color: {|$menuColor|};"></span>{|/if|}
+    </div>
+    <div class="head-wrap">
+        {|if $image|}
+            <div class="image">
+                <a class="js-colorbox nb-block-avatar" style="background-image: url('{|$image|}');" {|if $bigImage|}href="{|$bigImage|}"{|else|}href="{|$image|}"{|/if|}></a>
+            </div>
+        {|/if|}
+
+        <div class="info">
+            <div class="caption">
+                <div class="tag"><span>#{|$id|}</span></div>
+                <h1>{|$name|}</h1>
+                <div class="description">{|$description|}</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation js-ui-navigation">
+        <a href="{|$urlEdit|}" class="js-type-user-fields {|if $selected == 'edit'|}selected{|/if|}">{|$translate_contact_card|}</a>
+        <a href="{|$urlEdit|}" class="js-type-company-fields {|if $selected == 'edit'|}selected{|/if|}" style="display: none;">{|$translate_company_card|}</a>
+
+        {|if $urlEvent|}
+            <a href="{|$urlEvent|}" {|if $selected == 'event'|} class="selected" {|/if|}>{|$translate_sobitiya|}</a>
+        {|/if|}
+
+        {|foreach from=$moduleTabArray item="e"|}
+            <a href="{|$e.url|}" {|if $selected == $e.moduleName|} class="selected" {|/if|} >{|$e.name|}</a>
+        {|/foreach|}
+
+        {|if $dynamic_menu|}
+            {|foreach from=$workflowTypeArray item="w"|}
+                <a href="{|$w.url|}" {|if $selected == $w.type|} class="selected" {|/if|}>
+                    {|$w.name|}
+                    {|if $w.count > 0|}
+                        <span class="ob-count-element">{|$w.count|}</span>
+                    {|/if|}
+                </a>
+            {|/foreach|}
+        {|else|}
+            {|if $urlOrder|}
+                <a href="{|$urlOrder|}" {|if $selected == 'order'|} class="selected" {|/if|}>
+                    {|$translate_ords|}
+                    {|if $orderCount > 0|}
+                        <span class="ob-count-element">{|$orderCount|}</span>
+                    {|/if|}
+                </a>
+            {|/if|}
+
+            {|if $urlProject|}
+                <a href="{|$urlProject|}" {|if $selected == 'project'|} class="selected" {|/if|}>
+                    {|$translate_proekti|}
+                    {|if $projectCount > 0|}
+                        <span class="ob-count-element">{|$projectCount|}</span>
+                    {|/if|}
+                </a>
+            {|/if|}
+
+            {|if $urlIssue|}
+                <a href="{|$urlIssue|}" {|if $selected == 'issue'|} class="selected" {|/if|}>
+                    {|$acl_issue|}
+                    {|if $issueCount > 0|}
+                        <span class="ob-count-element">{|$issueCount|}</span>
+                    {|/if|}
+                </a>
+            {|/if|}
+
+        {|/if|}
+
+        {|if $urlGraphics|}
+            <a href="{|$urlGraphics|}" {|if $selected == 'graphics'|} class="selected" {|/if|}>{|$translate_statistic|}</a>
+        {|/if|}
+
+        {|if $urlLegal|}
+            <a href="{|$urlLegal|}" {|if $selected == 'legal'|} class="selected" {|/if|}>{|$translate_yuridicheskie_rekviziti|}</a>
+        {|/if|}
+
+        {|if $urlPermissions|}
+            <a href="{|$urlPermissions|}" {|if $selected == 'permissions'|} class="selected" {|/if|}>{|$translate_permissions|}</a>
+        {|/if|}
+
+        {|if $urlDelete|}
+            <a href="{|$urlDelete|}" {|if $selected == 'delete'|} class="selected" {|/if|}>{|$translate_delete|}</a>
+        {|/if|}
+    </div>
+</div>
+
+<script>
+    // инициализация просмотра картинок
+    $j('.js-colorbox').colorbox({
+        maxWidth: '95%',
+        maxHeight: '95%',
+        current: false,
+        returnFocus: false
+    });
+</script>

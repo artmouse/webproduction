@@ -1,0 +1,36 @@
+[2015-11-22 14:51:47]
+host: shop.local
+url: /basket/
+contentID: shop-basket
+point: /shop.starter.php
+data: 0=500
+1=Shop-object by id not found
+
+
+[2015-11-22 14:52:11]
+host: shop.local
+url: /basket/
+contentID: shop-basket
+point: /shop.starter.php
+data: 0=500
+1=Shop-object by id not found
+
+
+[2015-11-22 14:52:13]
+host: shop.local
+url: /basket/
+contentID: shop-basket
+point: /shop.starter.php
+data: 0=500
+1=Shop-object by id not found
+
+
+[2015-11-22 14:53:49]
+host: shop.local
+url: /basket/
+contentID: shop-basket
+point: /shop.starter.php
+data: 0=500
+1=Shop-object by id not found
+
+

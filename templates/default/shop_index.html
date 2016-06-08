@@ -1,0 +1,38 @@
+{|$block_banner_top_index|}
+
+{|if $seotextinindexpage|}
+    {|$seotextinindexpage|}
+{|/if|}
+
+{|foreach from=$carouselArray item="e"|}
+    {|if $e.html !== ""|}
+        <div class="os-block-caption">
+            <h3>{|$e.name|}</h3>
+        </div>
+        {|$e.html|}
+    {|/if|}
+{|/foreach|}
+
+{|if $tabsArray|}
+    <div class="os-block-tabs" id="id-tabs">
+        {|foreach from=$tabsArray item="e"|}
+            <a href="#" data-rel=".tab-{|$e.id|}">{|$e.name|}</a>
+        {|/foreach|}
+        <div class="clear"></div>
+    </div>
+
+    {|foreach from=$tabsArray item="e"|}
+        <div class="tab-{|$e.id|} shop-tabI" style="display: none;">{|$e.html|}</div>
+    {|/foreach|}
+{|/if|}
+
+{|foreach from=$setArray item=e|}
+        <a href="{|$e.url|}">
+            {|$e.name|}
+            <img src="{|$e.image|}">
+        </a>
+{|/foreach|}
+
+{|$block_brand_top|}
+
+{|$block_category_top|}

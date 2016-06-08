@@ -1,0 +1,31 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <select name="{|$index|}_roleid" class="{|$index|}-chzn-select-tree" style="width: 100%;">
+            <option value="0">---</option>
+            {|foreach from=$roleArray item="e"|}
+                <option value="{|$e.id|}" {|if $e.id == $roleid|} selected {|/if|} data-level="{|$e.level|}">
+                    {|$e.name|}
+                </option>
+            {|/foreach|}
+        </select>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        // tree chzn
+        $j('.{|$index|}-chzn-select-tree').select2({
+            formatResult: chznResultTree
+        });
+    });
+</script>

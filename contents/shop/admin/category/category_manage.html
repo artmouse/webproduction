@@ -1,0 +1,323 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/category/manage/" class="selected">{|$translate_category_manage|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/category/">{|$translate_category|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/category/add/">{|$translate_category_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $successDel|}
+    <div class="shop-message-success">
+        {|$successName|}
+    </div>
+{|else|}
+    {|if $success|}
+        <div class="shop-message-success">
+            {|$successName|}
+        </div>
+    {|/if|}
+    <ol class="shop-block-categorymanage js-category-sortable">
+        {|foreach from=$categoryArray item=e|}
+
+            <li id="list_{|$e.id|}" class="{|if $e.childsArray|}shop-admin-nestedSortable-branch shop-admin-nestedSortable-collapsed{|else|}shop-admin-nestedSortable-leaf{|/if|}">
+                <div {|if $e.hidden == 1|}class="hidden"{|/if|}>
+                    <span class="check"><input type="checkbox" name="id[]" value="{|$e.id|}" class="js-checkbox" data-level="1"></span>
+                    <a href="{|$e.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                    <span class="disclose">
+                        <span></span>
+                    </span>
+                    <a href="{|$e.editURL|}" target="_blank" title="{|$e.name|}">{|$e.name|}</a>
+                    {|if $e.hidden == 1|}
+                        ({|$translate_hidden_category|})
+                    {|/if|}
+                </div>
+                {|if $e.childsArray|}
+                    <ol>
+                        {|foreach from=$e.childsArray item=e1|}
+
+                            <li id="list_{|$e1.id|}" class="{|if $e1.childsArray|}shop-admin-nestedSortable-branch shop-admin-nestedSortable-collapsed{|else|}shop-admin-nestedSortable-leaf{|/if|}">
+                                <div {|if $e1.hidden == 1|}class="hidden"{|/if|}>
+                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e1.id|}" class="js-checkbox" data-level="2"></span>
+                                    <a href="{|$e1.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                    <span class="disclose">
+                                        <span></span>
+                                    </span>
+                                    <a href="{|$e1.editURL|}" target="_blank" title="{|$e1.name|}">{|$e1.name|}</a>
+                                    {|if $e1.hidden == 1|}
+                                        ({|$translate_hidden_category|})
+                                    {|/if|}
+                                </div>
+                                {|if $e1.childsArray|}
+                                    <ol>
+                                        {|foreach from=$e1.childsArray item=e2|}
+                                            <li id="list_{|$e2.id|}" class="shop-admin-nestedSortable-leaf">
+                                                <div {|if $e2.hidden == 1|}class="hidden"{|/if|}>
+                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e2.id|}" class="js-checkbox" data-level="3"></span>
+                                                    <a href="{|$e2.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                    <span class="disclose">
+                                                        <span></span>
+                                                    </span>
+                                                    <a href="{|$e2.editURL|}" target="_blank" title="{|$e2.name|}">{|$e2.name|}</a>
+                                                    {|if $e2.hidden == 1|}
+                                                        ({|$translate_hidden_category|})
+                                                    {|/if|}
+                                                </div>
+                                                {|if $e2.childsArray|}
+                                                    <ol>
+                                                        {|foreach from=$e2.childsArray item=e3|}
+
+                                                            <li id="list_{|$e3.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                <div {|if $e3.hidden == 1|}class="hidden"{|/if|}>
+                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e3.id|}" class="js-checkbox" data-level="4"></span>
+                                                                    <a href="{|$e3.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                    <span class="disclose">
+                                                                        <span></span>
+                                                                    </span>
+                                                                    <a href="{|$e3.editURL|}" target="_blank" title="{|$e3.name|}">{|$e3.name|}</a>
+                                                                    {|if $e3.hidden == 1|}
+                                                                        ({|$translate_hidden_category|})
+                                                                    {|/if|}
+                                                                </div>
+                                                                {|if $e3.childsArray|}
+                                                                    <ol>
+                                                                        {|foreach from=$e3.childsArray item=e4|}
+
+                                                                            <li id="list_{|$e4.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                <div {|if $e4.hidden == 1|}class="hidden"{|/if|}>
+                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e3.id|}" class="js-checkbox" data-level="5"></span>
+                                                                                    <a href="{|$e4.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                    <span class="disclose">
+                                                                                        <span></span>
+                                                                                    </span>
+                                                                                    <a href="{|$e4.editURL|}" target="_blank" title="{|$e4.name|}">{|$e4.name|}</a>
+                                                                                    {|if $e4.hidden == 1|}
+                                                                                        ({|$translate_hidden_category|})
+                                                                                    {|/if|}
+                                                                                </div>
+                                                                                {|if $e4.childsArray|}
+                                                                                    <ol>
+                                                                                        {|foreach from=$e4.childsArray item=e5|}
+
+                                                                                            <li id="list_{|$e5.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                                <div {|if $e5.hidden == 1|}class="hidden"{|/if|}>
+                                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e5.id|}" class="js-checkbox" data-level="6"></span>
+                                                                                                    <a href="{|$e5.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                                    <span class="disclose">
+                                                                                                        <span></span>
+                                                                                                    </span>
+                                                                                                    <a href="{|$e5.editURL|}" target="_blank" title="{|$e5.name|}">{|$e5.name|}</a>
+                                                                                                    {|if $e5.hidden == 1|}
+                                                                                                        ({|$translate_hidden_category|})
+                                                                                                    {|/if|}
+                                                                                                </div>
+                                                                                                {|if $e5.childsArray|}
+                                                                                                    <ol>
+                                                                                                        {|foreach from=$e5.childsArray item=e6|}
+
+                                                                                                            <li id="list_{|$e6.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                                                <div {|if $e6.hidden == 1|}class="hidden"{|/if|}>
+                                                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e6.id|}" class="js-checkbox" data-level="7"></span>
+                                                                                                                    <a href="{|$e6.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                                                    <span class="disclose">
+                                                                                                                        <span></span>
+                                                                                                                    </span>
+                                                                                                                    <a href="{|$e6.editURL|}" target="_blank" title="{|$e6.name|}">{|$e6.name|}</a>
+                                                                                                                    {|if $e6.hidden == 1|}
+                                                                                                                        ({|$translate_hidden_category|})
+                                                                                                                    {|/if|}
+                                                                                                                </div>
+                                                                                                                {|if $e6.childsArray|}
+                                                                                                                    <ol>
+                                                                                                                        {|foreach from=$e6.childsArray item=e7|}
+
+                                                                                                                            <li id="list_{|$e7.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                                                                <div {|if $e7.hidden == 1|}class="hidden"{|/if|}>
+                                                                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e7.id|}" class="js-checkbox" data-level="8"></span>
+                                                                                                                                    <a href="{|$e7.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                                                                    <span class="disclose">
+                                                                                                                                        <span></span>
+                                                                                                                                    </span>
+                                                                                                                                    <a href="{|$e7.editURL|}" target="_blank" title="{|$e7.name|}">{|$e7.name|}</a>
+                                                                                                                                    {|if $e7.hidden == 1|}
+                                                                                                                                        ({|$translate_hidden_category|})
+                                                                                                                                    {|/if|}
+                                                                                                                                </div>
+                                                                                                                                {|if $e7.childsArray|}
+                                                                                                                                    <ol>
+                                                                                                                                        {|foreach from=$e7.childsArray item=e8|}
+
+                                                                                                                                            <li id="list_{|$e8.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                                                                                <div {|if $e8.hidden == 1|}class="hidden"{|/if|}>
+                                                                                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e8.id|}" class="js-checkbox" data-level="9"></span>
+                                                                                                                                                    <a href="{|$e8.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                                                                                    <span class="disclose">
+                                                                                                                                                        <span></span>
+                                                                                                                                                    </span>
+                                                                                                                                                    <a href="{|$e8.editURL|}" target="_blank" title="{|$e8.name|}">{|$e8.name|}</a>
+                                                                                                                                                    {|if $e8.hidden == 1|}
+                                                                                                                                                        ({|$translate_hidden_category|})
+                                                                                                                                                    {|/if|}
+                                                                                                                                                </div>
+                                                                                                                                                {|if $e8.childsArray|}
+                                                                                                                                                    <ol>
+                                                                                                                                                        {|foreach from=$e8.childsArray item=e9|}
+
+                                                                                                                                                            <li id="list_{|$e9.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                                                                                                <div {|if $e9.hidden == 1|}class="hidden"{|/if|}>
+                                                                                                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e9.id|}" class="js-checkbox" data-level="10"></span>
+                                                                                                                                                                    <a href="{|$e9.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                                                                                                    <span class="disclose">
+                                                                                                                                                                        <span></span>
+                                                                                                                                                                    </span>
+                                                                                                                                                                    <a href="{|$e9.editURL|}" target="_blank" title="{|$e9.name|}">{|$e9.name|}</a>
+                                                                                                                                                                    {|if $e9.hidden == 1|}
+                                                                                                                                                                        ({|$translate_hidden_category|})
+                                                                                                                                                                    {|/if|}
+                                                                                                                                                                </div>
+                                                                                                                                                                {|if $e9.childsArray|}
+                                                                                                                                                                    <ol>
+                                                                                                                                                                        {|foreach from=$e9.childsArray item=e10|}
+
+                                                                                                                                                                            <li id="list_{|$e10.id|}" class="shop-admin-nestedSortable-leaf">
+                                                                                                                                                                                <div {|if $e10.hidden == 1|}class="hidden"{|/if|}>
+                                                                                                                                                                                    <span class="check"><input type="checkbox" name="id[]" value="{|$e10.id|}" class="js-checkbox" data-level="11"></span>
+                                                                                                                                                                                    <a href="{|$e10.editURL|}" class="ob-link-edit ob-icon edit" target="_blank" title="{|$translate_edit|}"></a>
+                                                                                                                                                                                    <span class="disclose">
+                                                                                                                                                                                        <span></span>
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                    <a href="{|$e10.editURL|}" target="_blank" title="{|$e10.name|}">{|$e10.name|}</a>
+                                                                                                                                                                                    {|if $e10.hidden == 1|}
+                                                                                                                                                                                        ({|$translate_hidden_category|})
+                                                                                                                                                                                    {|/if|}
+                                                                                                                                                                                </div>
+                                                                                                                                                                            </li>
+                                                                                                                                                                        {|/foreach|}
+                                                                                                                                                                    </ol>
+                                                                                                                                                                {|/if|}
+                                                                                                                                                            </li>
+                                                                                                                                                        {|/foreach|}
+                                                                                                                                                    </ol>
+                                                                                                                                                {|/if|}
+                                                                                                                                            </li>
+                                                                                                                                        {|/foreach|}
+                                                                                                                                    </ol>
+                                                                                                                                {|/if|}
+                                                                                                                            </li>
+                                                                                                                        {|/foreach|}
+                                                                                                                    </ol>
+                                                                                                                {|/if|}
+                                                                                                            </li>
+                                                                                                        {|/foreach|}
+                                                                                                    </ol>
+                                                                                                {|/if|}
+                                                                                            </li>
+                                                                                        {|/foreach|}
+                                                                                    </ol>
+                                                                                {|/if|}
+                                                                            </li>
+                                                                        {|/foreach|}
+                                                                    </ol>
+                                                                {|/if|}
+                                                            </li>
+                                                        {|/foreach|}
+                                                    </ol>
+                                                {|/if|}
+                                            </li>
+                                        {|/foreach|}
+                                    </ol>
+                                {|/if|}
+                            </li>
+                        {|/foreach|}
+                    </ol>
+                {|/if|}
+            </li>
+        {|/foreach|}
+    </ol>
+
+    <form class="shop-categorymanage-add" action="" method="post">
+        <h2>{|$translate_bistroe_dobavlenie_kategorii|}</h2>
+        <input type="text" name="categoryname">
+        <input type="submit" class="ob-button" value="{|$translate_add|}" name="createcategory">
+    </form>
+
+    <div class="nb-right-sidebar disable">
+        <div class="toggle"></div>
+        <form class="inner" action="" method="post">
+            <input type="hidden" id="id-category" name="moveids" />
+
+            <div class="element">
+                <input type="submit" name="do-action-hidden" value="{|$translate_skrit|}" class="ob-button" />
+            </div>
+
+            <div class="element">
+                <input type="submit" name="do-action" value="{|$translate_open|}" class="ob-button" />
+            </div>
+
+            <div class="element">
+                <input class="ob-button" type="submit" name="delete" value="{|$translate_delete|}" onclick="return confirm('{|$translate_vi_deystvitelno_hotite_udalit_kategoriyu_i_|}?');" />
+            </div>
+            <div class="clear"></div>
+
+            <div class="element">
+                {|$translate_tip_prosmotra|}:
+                <select class="chzn-select" name="showtype">
+                    <option value="0">---</option>
+                    <option value="thumbs">{|$translate_pictures_by_default|}</option>
+                    <option value="table">{|$translate_list_default_table|}</option>
+                    <option value="thumbsonly">{|$translate_only_pictures|}</option>
+                    <option value="tableonly">{|$translate_only_list_table|}</option>
+                    <option value="subcategory">{|$translate_the_default_sub_categories|}</option>
+                    <option value="subcategoryonly">{|$translate_only_subcategories|}</option>
+                </select>
+            </div>
+            <div class="element">
+                <br />
+                <input class="ob-button" type="submit" name="changeshowtype" value="{|$translate_perform|}" />
+            </div>
+
+            <div class="element double">
+                {|$translate_move_into_category|}:
+                <select class="chzn-select-tree" name="goidcategory">
+                    <option value="0">---</option>
+                    {|foreach from=$categoryTreeArray item=e|}
+                        <option value="{|$e.id|}" data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <input class="ob-button" type="submit" name="gotocategory" value="{|$translate_move|}" />
+            </div>
+            <div class="clear"></div>
+
+            <div class="element double">
+                {|$translate_dobavit_svyazannuyu_kategoriyu|}:
+                <select class="chzn-select-tree" name="reletedidcategory[]" multiple>
+                    <option value="0">---</option>
+                    {|foreach from=$categoryTreeArray item=e|}
+                    <option value="{|$e.id|}" data-level="{|$e.level|}">
+                        {|$e.name|}({|$e.productcount|})
+                    </option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <input class="ob-button" type="submit" name="reletedcategory" value="{|$translate_bind_small|}" />
+            </div>
+            <div class="clear"></div>
+
+            <div class="element">
+                {|$translate_udalit_svyazannie_kategorii|}:
+                <textarea  disabled id="js-del-releted-category-names" value=""></textarea>
+            </div>
+            <div class="element">
+                <br />
+                <input class="ob-button" type="submit" name="delreletedcategory" value="{|$translate_udalit_svyazi|}" />
+            </div>
+            <div class="element"></div>
+        </form>
+    </div>
+{|/if|}

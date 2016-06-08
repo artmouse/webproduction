@@ -1,0 +1,33 @@
+[2015-12-02 18:02:27]
+host: 
+url: 
+contentID: 
+point: ./updater.sh
+data: type=1
+message=Class 'XShopKPI' not found
+file=/var/www/shop.local/modules/box/api/service/KPIService.class.php
+line=38
+
+
+[2015-12-02 18:15:35]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: type=1
+message=Call to undefined function imap_mime_header_decode()
+file=/var/www/shop.local/modules/box/api/system/Box_SenderMail.class.php
+line=125
+
+
+[2015-12-02 18:19:15]
+host: 
+url: 
+contentID: 
+point: cron/cron-minute.php
+data: type=2
+message=unlink(/var/www/shop.local/packages/MailUtils/media/mailutils_que/630cf1a67bc651788bed75ce47c198c6): No such file or directory
+file=/var/www/shop.local/packages/MailUtils/MailUtils_SenderQueDB.class.php
+line=159
+
+

@@ -1,0 +1,11 @@
+{|if $value|}
+    <a href="{|$value|}">{|$translate_current_file|}</a><br />
+    <br />
+{|/if|}
+
+{|$translate_download_file|} <input type="file" name="{|$key|}" {|if $disabled|} disabled {|/if|} /><br />
+
+<label>
+    <input type="checkbox" name="{|$key|}-delete" {|if $disabled|} disabled {|/if|} />
+    {|$translate_delete_file|}
+</label>

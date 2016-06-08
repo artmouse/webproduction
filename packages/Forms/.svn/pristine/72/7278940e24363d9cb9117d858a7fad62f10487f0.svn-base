@@ -1,0 +1,5 @@
+<select name="{|$key|}" {|if $disabled|} disabled {|/if|}>
+    {|foreach from=$optionsArray item="e"|}
+        <option value="{|$e.value|}" {|if $e.value == $value|} selected {|/if|}>{|$e.name|}</option>
+    {|/foreach|}
+</select>

@@ -1,0 +1,20 @@
+<div class="def-block-header-pages js-drop-pagemenu">
+    <ul>
+        {|foreach from=$textpageArray item="e1"|}
+            <li {|if $e1.childArray|}class="has-sub"{|/if|}>
+                <a href="{|$e1.url|}">
+                    <span>{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</span>
+                    <span class="arr js-tpage-sub-toggle"></span>
+                </a>
+
+                {|if $e1.childArray|}
+                    <ul class="sub">
+                        {|foreach from=$e1.childArray item="e2"|}
+                            <li><a class="def-icon-angle-right" href="{|$e2.url|}">{|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}</a></li>
+                        {|/foreach|}
+                    </ul>
+                {|/if|}
+            </li>
+        {|/foreach|}
+    </ul>
+</div>

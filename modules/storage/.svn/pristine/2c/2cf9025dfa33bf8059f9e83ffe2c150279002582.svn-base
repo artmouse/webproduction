@@ -1,0 +1,102 @@
+<h1>Перемещение {|$date|}</h1>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_incoming_success_change|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'price'|}
+                {|$translate_incoming_error_price|}.<br />
+            {|/if|}
+            {|if $e == 'count'|}
+                {|$translate_box_error_amount|}.<br />
+            {|/if|}
+            {|if $e == 'serial'|}
+                {|$translate_incoming_error_serial|}.
+            {|/if|}
+            {|if $e == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+        <thead>
+            <tr>
+                <td>{|$translate_code_small|}</td>
+                <td>{|$translate_product|}</td>
+                <td>{|$translate_sum|}</td>
+                <td>{|$translate_serial_number|}</td>
+                <td>{|$translate_warranty|}</td>
+                <td>{|$translate_price|}</td>
+                {|if $productionAllowed|}
+                    <td>{|$translate_employee|}</td>
+                    <td>{|$translate_operation_code|}</td>
+                {|/if|}
+            </tr>
+        </thead>
+
+        <tbody>
+            {|foreach from=$productsArray item="e"|}
+                <tr>
+                    <td>{|$e.productid|}</td>
+                    <td>{|$e.name|}</td>
+                    <td align="right">
+                        <input name="count{|$e.id|}" value="{|$e.count|}" />
+                    </td>
+                    <td>{|$e.serial|}</td>
+                    <td>{|$e.warranty|}</td>
+                    <td align="right">
+                        {|$e.price|} {|$e.currency|}
+                        <input type="text" value="{|$e.price|}" name="price{|$e.id|}" style="width: 50px;" />
+
+                        <select name="currencyid{|$e.id|}" >
+                            {|foreach from=$currencyArray item="c"|}
+                                <option value="{|$c.id|}" {|if $c.id == $e.currencyid|} selected {|/if|}>{|$c.symbol|}</option>
+                            {|/foreach|}
+                        </select>
+                    </td>
+                    {|if $productionAllowed|}
+                        <td>
+                            <select name="workerid{|$e.id|}" class="chzn-select" style="width: 300px">
+                                <option value="0" >---</option>
+                                {|foreach from=$workersArray item="w"|}
+                                    <option value="{|$w.id|}" {|if $e.workerid == $w.id|} selected {|/if|}>{|$w.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        <td>
+                            <input name="workeroperation{|$e.id|}" value="{|$e.workeroperation|}" />
+                        </td>
+                    {|/if|}
+                </tr>
+            {|/foreach|}
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td align="right">{|$translate_in_total|}:</td>
+                <td align="right"><strong>{|$sum|} {|$currency|}</strong></td>
+                {|if $productionAllowed|}
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                {|/if|}
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+    <input class="ob-button" type="submit" name="saveok" value="{|$translate_save_changes_small|}" />
+    <br />
+    <br />
+</form>

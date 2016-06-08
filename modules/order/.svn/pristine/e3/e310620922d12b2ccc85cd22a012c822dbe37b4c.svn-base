@@ -1,0 +1,120 @@
+<form action="" method="post">
+    <div class="element">
+        <div class="el-caption">{|$translate_nazvanie_etapa|}</div>
+        <div class="el-value">
+            <strong>{|$statusName|}</strong>
+        </div>
+    </div>
+
+    {|if $managerArray|}
+        <div class="element">
+            <div class="el-caption">{|$translate_responsible|}</div>
+            <div class="el-value">
+                <select name="manager_status" class="chzn-select">
+                    <option value="0">---</option>
+                    {|foreach from=$managerArray item="m"|}
+                        <option value="{|$m.id|}" {|if $m.selected|}selected{|/if|}>{|$m.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+    {|/if|}
+
+    <div class="element">
+        <div class="el-caption">{|$translate_krayniy_srok_etapa|}</div>
+        <div class="el-value"><input type="text" class="js-datetime" value="{|$statusTerm|}" name="statusTerm" style="width: 300px;"></div>
+    </div>
+
+    <div class="element">
+        <textarea name="new_issue" placeholder="{|$translate_vvedite_nazvanie_novih_zadach|}"></textarea>
+    </div>
+
+    <div class="element fl-l  half">
+        {|$translate_otkritie_zadachi|} <br />
+        {|foreach from=$issueArray item="e"|}
+            <span class="popup-task">
+                <a href="{|$e.url|}">#{|$e.id|}</a> - <strong>{|$e.name|}</strong> ({|$e.manager|})
+                <a href="javascript:void(0);" class="ob-link-edit js-task-edit"></a>
+                <a href="#" class="ob-link-delete js-issue-remove"></a>
+                <input type="checkbox" value="1" name="issueClosed_{|$e.id|}" style="visibility: hidden;">
+                <span class="task-params js-edit-task-drop" style="display: none;">
+                    {|$translate_otvestvenniy|}:
+                    <br />
+                    <select name="manager_{|$e.id|}" class="chzn-select">
+                        <option value="0">---</option>
+                        {|foreach from=$managerArray item="m"|}
+                            <option value="{|$m.id|}" {|if $m.id == $e.managerId|}selected{|/if|}>{|$m.name|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br />
+                    {|$translate_run_up|}:
+                    <br />
+                    <input type="text" class="js-datetime" value="{|$e.dateTo|}" name="date_to_{|$e.id|}">
+                </span>
+            </span>
+        {|/foreach|}
+    </div>
+
+    <div class="element fl-r half">
+        {|$translate_zakritie_zadachi|} <br />
+        {|foreach from=$issueArrayClosed item="e"|}
+            <span>
+                <a href="{|$e.url|}">#{|$e.id|}</a> - {|$e.name|} ({|$e.manager|})
+                <input type="checkbox" value="1" checked disabled style="visibility: hidden;">
+                <br />
+            </span>
+        {|/foreach|}
+    </div>
+    <div class="clear"></div>
+
+    <input type="hidden" value="{|$statusId|}" name="setting-status-id">
+    <input type="hidden" value="{|$orderId|}" name="setting-order-id">
+    <input class="ob-button button-green" type="submit" value="{|$translate_save|}" name="setting-info-ok">
+    <input class="ob-button button-cancel" type="button" value="{|$translate_cancel|}" onclick="popupClose('.js-settings-stage-popup');" />
+</form>
+
+<script>
+    // select
+    $j('select.chzn-select').select2();
+    $j('select.chzn-select-tree').select2({
+        formatResult: chznResultTree
+    });
+
+    // выбор времени
+    $j('.js-datetime').each(function (i, e) {
+        var $e = $j(e);
+        var format = $e.data('dateformat');
+        if (!format) {
+            format = 'yy-mm-dd';
+        }
+
+        $e.datetimepicker({
+            dateFormat: format,
+            changeMonth: true,
+            changeYear: true,
+            //showButtonPanel: false,
+            timeText: '{|$translate_time|}',
+            hourText: '{|$translate_chas|}',
+            minuteText: '{|$translate_minuta|}'
+        });
+    });
+
+    // remove issue
+    $j('.js-issue-remove').click(function(){
+        $j(this).parent().fadeToggle();
+        $j(this).next().click();
+        return false;
+    });
+
+
+    $j('.js-task-edit').on('click',function(e){
+
+        if($j(e.target).hasClass('opened')){
+            $j(e.target).removeClass('opened');
+            $j(e.target).parent().find('.js-edit-task-drop').slideUp();
+        }else{
+            $j(e.target).addClass('opened');
+            $j(e.target).parent().find('.js-edit-task-drop').slideDown();
+        }
+    });
+</script>

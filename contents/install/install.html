@@ -1,0 +1,162 @@
+<div class="shop-install-content">
+    <div class="install-sccess-block">
+        {|if $message == 'userok'|}
+            <div class="caption">
+                {|$translate_user_create_with_data|}:
+            </div>
+            <br />
+            <div class="shop-message-success">
+                <strong>{|$translate_login_small|}:</strong> {|$userLogin|}<br/>
+                <strong>{|$translate_password_small|}:</strong> {|$userPass|}<br/>
+                <strong>Email:</strong> {|$userEmail|}<br/>
+                <br />
+                <a href="/?auth_login={|$userLogin|}&auth_password={|$userPass|}">{|$translate_go_to_main|}</a><br/>
+                <a href="/admin/shop/settings/?auth_login={|$userLogin|}&auth_password={|$userPass|}">{|$translate_edit_general_settings|}</a><br/><br/>
+
+                {|if $cronTab|}
+                    {|$cronTab|}
+                {|/if|}
+            </div>
+        {|/if|}
+    </div>
+    <div class="shop-install-block">
+
+        {|if $message == 'connectok'|}
+            <div class="shop-message-success">
+                {|$translate_success_connect|}.<br/>
+            </div>
+
+            <script type="text/javascript">
+            setTimeout(function(){
+                document.location = '/install/';
+            }, 50);
+            </script>
+
+        {|/if|}
+
+        {|if $message !== 'connectok' AND $message !== 'userok' |}
+            <form action="" method="post">
+                {|if !$dbok|}
+                    <div class="caption">
+                        {|$translate_connect_db|}
+                    </div>
+                    <div class="inner-content">
+                        {|if $message == 'connecterror'|}
+                            <div class="shop-message-error">
+                                {|$translate_error_database|}.
+                            </div>
+                        {|/if|}
+                        <label>
+                            <strong>{|$translate_host_name|}</strong> <small>({|$translate_default|}: localhost)</small><br/>
+                            <input type="text" name="dbhost" value="{|$control_dbhost|}" placeholder="localhost" />
+                        </label>
+                        <label>
+                            <strong>{|$translate_database_name|}</strong><br/>
+                            <input type="text" name="dbname" value="{|$control_dbname|}" />
+                        </label>
+                        <label>
+                            <strong>{|$translate_database_login|}</strong><br/>
+                            <input type="text" name="dblogin" value="{|$control_dblogin|}" />
+                        </label>
+                        <label>
+                            <strong>{|$translate_database_password|}</strong><br/>
+                            <input type="password" name="dbpass" value="{|$control_dbpass|}" />
+                        </label>
+                        <label>
+                            <strong>{|$translate_install_template|}</strong><br/>
+                            <select name="template">
+                                    <option>basic</option>
+                                {|foreach from=$templatesArray item="t"|}
+                                    <option>{|$t|}</option>
+                                {|/foreach|}
+                            </select>
+                        </label>
+                        <div class="install-submit">
+                            <input type="submit" name="ok" value="{|$translate_send|}" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {|else|}
+                    <div class="caption">
+                        {|$translate_choose_site_language|}
+                    </div>
+                    <div class="inner-content">
+                        <label>
+                            <select name="language">
+                                <option value="ru">Русский</option>
+                                <option value="en">English</option>
+                                <option value="ua">Український</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="caption">
+                        {|$translate_currency_default|}
+                    </div>
+                    <div class="inner-content">
+                        <label>
+                             <select name="currency">
+                                <option value="UAH">UAH</option>
+                                <option value="USD">USD</option>
+                                <option value="RUB">RUB</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="caption">
+                        {|$translate_user_admin_data|}
+                    </div>
+                    <div class="inner-content">
+                        {|if $message == 'usererror'|}
+                            <div class="shop-message-error">
+                                {|$translate_update_data_error|}.<br />
+                                {|foreach from=$errorsArray item="e"|}
+                                    {|if $e == 'pass'|}
+                                        {|$translate_passwords_not_match|}<br />
+                                    {|/if|}
+                                    {|if $e == 'login'|}
+                                        {|$translate_order_error_login|}<br />
+                                    {|/if|}
+                                    {|if $e == 'email'|}
+                                        {|$translate_profile_error_mail|}<br />
+                                    {|/if|}
+                                {|/foreach|}
+                            </div>
+                        {|/if|}
+                        <label>
+                            <strong>{|$translate_enter_login|}</strong><br/>
+                            <input type="text" name="login" value="{|$control_login|}" />
+                            <span class="popup-notice">
+                                <span class="index">&nbsp;</span>
+                                {|$translate_order_error_login_must_be|}.
+                            </span>
+                        </label>
+                        <label>
+                            <strong>{|$translate_enter_password|}</strong><br/>
+                            <input type="password" name="pass1" value="{|$control_pass1|}" />
+                            <span class="popup-notice">
+                                <span class="index">&nbsp;</span>
+                                {|$translate_password_small|} {|$translate_password_must_be|}
+                            </span>
+                        </label>
+                        <label>
+                            <strong>{|$translate_repeat_password|}</strong><br/>
+                            <input type="password" name="pass2" value="{|$control_pass2|}" />
+                        </label>
+                        <label>
+                            <strong>{|$translate_enter_mail|}</strong><br/>
+                            <input type="text" name="email" value="{|$control_email|}" />
+                            <span class="popup-notice">
+                                <span class="index">&nbsp;</span>
+                                ({|$translate_at_example|}: example@example.ua).
+                            </span>
+                        </label>
+                        <div class="install-submit">
+                            <input type="submit" name="userok" value="{|$translate_send|}" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {|/if|}
+            </form>
+        {|/if|}
+    </div>
+</div>

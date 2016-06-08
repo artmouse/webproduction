@@ -1,0 +1,54 @@
+<div class="cat-caption def-icon-list">
+    <span>Категории</span>
+</div>
+<nav class="def-side-nav js-side-nav">
+    <ul>
+        {|foreach from=$categoryArray item="e1" key="key"|}
+            <li class="has-sub has-product">
+                <a href="{|$e1.url|}">
+                    {|$e1.name|}
+                    <span {|if $e1.childsArray|}class="arr def-icon-angle-right js-drop-toggle"{|/if|}></span>
+                </a>
+
+                {|if $e1.childsArray|}
+                    <div class="drop">
+                        <ul class="sub">
+                            <li class="stump">
+                                <div class="def-thumb-element">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="/_images/temp/003.png" alt=""/>
+                                        </a>
+                                    </div>
+                                    <div class="block-rating">
+                                        <div class="def-block-rating">
+                                            <div class="inner-value" style="width: 30%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <a class="name" href="#">Hasem nite race</a>
+                                    <div class="price-block">
+                                        <div class="def-price-available">$1,210.00</div>
+                                        <div class="def-price-old"><s>$1,444</s></div>
+                                    </div>
+
+                                    <div class="block-buttons">
+                                        <a class="float-btn buy def-icon-basket" href="javascript:void(0);"><span class="tooltip">Купить</span></a>
+                                        <a class="float-btn like def-icon-heart" href="javascript:void(0);"><span class="tooltip">В желаемое</span></a>
+                                        <a class="float-btn compare def-icon-shuffle" href="javascript:void(0);"><span class="tooltip">В сравнения</span></a>
+                                    </div>
+                                </div>
+                            </li>
+                            {|foreach from=$e1.childsArray item="e2" key="keye2"|}
+                                <li>
+                                    <a href="{|$e2.url|}">{|$e2.name|}</a>
+                                    {|if not $e2.childsArray|}{|if $e2.productCount|}({|$e2.productCount|}){|/if|}{|/if|}
+                                </li>
+                            {|/foreach|}
+                        </ul>
+                    </div>
+                {|/if|}
+            </li>
+        {|/foreach|}
+    </ul>
+</nav>

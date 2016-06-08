@@ -1,0 +1,19 @@
+<div class="def-block-tabs">
+    <div class="tabs-controls">
+        {|if $admin|}
+            <a class="tab-item no-small" href="/admin/">{|$translate_administration|}</a>
+        {|/if|}
+        <a class="tab-item {|if $page == 'shop-client-profile'|}selected{|/if|}" cla href="/client/profile/">{|$translate_profile_small|}</a>
+        <a class="tab-item {|if $page == 'shop-client-orders' || $page == 'shop-client-orders-view'|}selected{|/if|}" href="/client/orders/">{|$translate_my_orders|}</a>
+        <a class="tab-item {|if $page == 'shop-client-products-viewed'|}selected{|/if|}" href="/client/products/viewed/">{|$translate_products_viewed_small|}</a>
+        <a class="tab-item {|if $page == 'shop-client-products-ordered'|}selected{|/if|}" href="/client/products/ordered/">{|$translate_products_ordered_small|}</a>
+        {|if $countCompare|}<a class="tab-item" href="/compare/">{|$translate_products_compare|}</a>{|/if|}
+        {|foreach from=$moduleTabArray item="e"|}
+            <a class="tab-item {|if $selected == $e.moduleName|}selected{|/if|}" href="{|$e.url|}">{|$e.name|}</a>
+        {|/foreach|}
+        <div class="clear"></div>
+    </div>
+    <hr/>
+</div>
+
+{|$content|}

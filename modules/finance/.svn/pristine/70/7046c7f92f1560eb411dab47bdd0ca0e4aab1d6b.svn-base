@@ -1,0 +1,165 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_contractor|}</div>
+                <select name="contractorid" class="js-contractor chzn-select">
+                    <option value="0" {|if !$control_contractorid|}selected{|/if|} >{|$translate_contacts_all|}</option>
+                    {|foreach from=$contractorArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_account|}</div>
+                <select name="accountid" class="js-account chzn-select">
+                    <option value="0" {|if !$control_accountid|}selected{|/if|}>{|$translate_contacts_all|}</option>
+                    {|foreach from=$accountArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_accountid|}selected{|/if|} class="js-account-option js-contractor-{|$e.contractorid|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+                <script type="text/javascript">
+                    $j(function () {
+                        $j('.js-contractor').change(function (event) {
+                            var x = $j(event.target).val();
+                            $j('.js-account-option').hide();
+                            $j('.js-contractor-' + x).show();
+                            $j('.js-account').val(0);
+                        });
+
+                        var y = $j('.js-account').val();
+                        //$j('.js-contractor').change();
+                        $j('.js-account').val(y);
+                    });
+                </script>
+            </div>
+
+            <div class="element">
+                <select name="datetype" class="chzn-select">
+                    <option value="cdate" {|if $control_datetype == 'cdate'|} selected {|/if|}>{|$translate_sozdan|}</option>
+                    <option value="pdate" {|if $control_datetype == 'pdate'|} selected {|/if|}>{|$translate_proveden|}</option>
+                    {|*|}<option value="rdate" {|if $control_datetype == 'rdate'|} selected {|/if|}>{|$translate_otklonen|}</option>{|*|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="datefrom" value="{|$control_datefrom|}" placeholder="{|$translate_date|} {|$translate_with|}"  />
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="dateto" value="{|$control_dateto|}" placeholder="{|$translate_date|} {|$translate_for|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="comment" placeholder="{|$translate_comment|}" value="{|$control_comment|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <input type="hidden" name="clientid" value="{|$control_clientid|}" class="js-select2 js-select2-clientid" data-type="financepayment_client" />
+                <script type="text/javascript">
+                    $j(function () {
+                        var tags = [
+                            {|foreach from=$clientArray item="p" name="foreach1"|}
+                                {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                                {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                            {|/foreach|}
+                        ];
+
+                        $j(".js-select2-clientid").select2('data', tags);
+                    });
+                </script>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_manager|}</div>
+                <input type="hidden" name="userid" value="{|$control_userid|}" class="js-select2 js-select2-managerid" data-type="financepayment_manager" style="width: 200px;" />
+                <script type="text/javascript">
+                    $j(function () {
+                        var tags = [
+                            {|foreach from=$userArray item="p" name="foreach1"|}
+                                {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                                {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                            {|/foreach|}
+                        ];
+
+                        $j(".js-select2-managerid").select2('data', tags);
+                    });
+                </script>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_single_category|}</div>
+                <select name="categoryid[]" multiple class="chzn-select">
+                    {|foreach from=$categoryArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $categorySelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_napravlenie_platezha|}</div>
+                <select name="direction" class="chzn-select">
+                    <option value="0">{|$translate_contacts_all|}</option>
+                    <option value="in" {|if $control_direction == 'in'|} selected {|/if|}>{|$translate_ot_klienta_vhodyashchie_|}</option>
+                    <option value="out" {|if $control_direction == 'out'|} selected {|/if|}>{|$translate_klientu_ishodyashchie_|}</option>
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|$table|}
+
+        {|if $dataCount|}
+            <div class="ob-block-details">
+                <div class="single-wrap">
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_kolichestvo_platezhey|}:</div>
+                            <div class="el-value">{|$dataCount|}</div>
+                        </div>
+                    </div>
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_vhodyashchih_platezhey|}:</div>
+                            <div class="el-value">{|$inSum|} {|$currency|}</div>
+                        </div>
+                    </div>
+
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_ishodyashchih_platezhey|}:</div>
+                            <div class="el-value">{|$outSum|} {|$currency|}</div>
+                        </div>
+                    </div>
+                    {|if $sumContractorsArray|}  
+                        {|foreach from=$sumContractorsArray key=k item='e'|}
+                            <div class="ob-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_in_total|} {|$translate_contractor|} {|$k+1|}:</div>
+                                    <div class="el-value">{|$e.sum|number_format:2|} {|$currency|}</div>
+                                </div>
+                            </div>
+                        {|/foreach|}
+                    {|/if|}
+
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption">{|$translate_in_total|}:</div>
+                            <div class="el-value">{|$Sum|} {|$currency|}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

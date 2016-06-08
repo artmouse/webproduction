@@ -1,0 +1,74 @@
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_error|}. {|$translate_zakaz_ne_nayden|}.
+    </div>
+{|else|}
+    <!DOCTYPE html>
+
+    {|$translate_ord|} #{|$orderid|} {|$translate_v_magazine|} {|$shopname|}
+    <br />
+    <br />
+
+    <div style="width: 1000px">
+        <table cellpadding="5" cellspacing="0" border="1" width="100%">
+            <tr class="tab_tr_head">
+                <td><strong>{|$translate_product|}</strong></td>
+                <td width="120" align="center"><strong>{|$translate_price|}</strong></td>
+                <td width="80" align="center"><strong>{|$translate_number|}</strong></td>
+                <td width="120" align="center"><strong>{|$translate_total|}</strong></td>
+            </tr>
+            {|foreach from=$basketsArray item="b"|}
+            <tr>
+                <td>
+                    {|$b.name|} ({|$translate_code_small|} #{|$b.productid|})<br />
+                    {|$b.comment|}
+                </td>
+                <td align="right">
+                    {|if $b.price=='0.00'|}
+                        {|$translate_specify_price|}.
+                    {|else|}
+                        {|$b.price|} {|$ordercurrency|}
+                    {|/if|}
+                </td>
+                <td align="center">
+                    {|$b.count|}
+                </td>
+                <td align="right">
+                    {|if $b.sum=='0.00'|}
+                        {|$translate_specify_price|}.
+                    {|else|}
+                        {|$b.sum|} {|$ordercurrency|}
+                    {|/if|}
+                </td>
+            </tr>
+            {|/foreach|}
+        </table>
+        <br />
+        {|if $discountSum > 0|}
+            {|$translate_discount_amount|}: <strong>-{|$discountSum|} {|$ordercurrency|}</strong><br />
+        {|/if|}
+        {|if $deliveryPrice > 0|}
+            {|$translate_delivery|}: <strong>{|$deliveryPrice|} {|$ordercurrency|} {|if $payDelivery|}({|$translate_dostavka_ne_uchitivaetsya|}){|/if|}</strong><br />
+        {|/if|}
+        {|$translate_total_order_amount|}: <strong>{|$ordersum|} {|$ordercurrency|}</strong>
+        <br />
+        <br />
+
+        {|$translate_order_number|}: {|$orderid|}<br />
+        Ф.И.О.: {|$clientname|}<br />
+        {|$translate_phone|}: {|$clientphone|}<br />
+        Email: {|$clientemail|}<br />
+        {|$translate_delivery_address|}: {|$clientaddress|}<br />
+        {|$translate_prochie_kontaktnie_dannie|}: {|$clientcontacts|}<br />
+        {|$translate_comment|}: {|$comments|}<br />
+        {|$translate_order_date|}: {|$date|}<br />
+        <br />
+        <hr/>
+        {|$shopname|}
+        <br/>
+        {|foreach from=$shopfhones item='e'|}
+            {|$e|}
+            <br/>
+        {|/foreach|}
+    </div>
+{|/if|}

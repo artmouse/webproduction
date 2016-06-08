@@ -1,0 +1,15 @@
+<?php
+
+include_once(dirname(__FILE__).'/api/include.php');
+
+// переопределяем контенты
+$fileContents = file_get_contents(dirname(__FILE__).'/contents.xml');
+
+Engine::GetContentDataSource()->registerContentsFromXML(
+$fileContents,
+dirname(__FILE__).'/contents/'
+);
+
+if (PackageLoader::Get()->getMode('development')) {
+    Shop::Get()->getBlockService()->addBlock('kazakh-order', 'block-kazakh-order', 'template_order');
+}

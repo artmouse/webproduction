@@ -1,0 +1,316 @@
+<h1>Двойные формы</h1>
+Двойные формы - это вариант разметки форм в системе OneBox.<br />
+Он позволяет разделить форму на две области, в левой отображается основная информация, в правой - дополнительная.<br />
+<br />
+
+<h2>Стандартный вывод</h2>
+В стандартном выводе левая колонка занимает 2/3 формы, правая - 1/3.<br />
+<br />
+<div class="ui-class">.ob-block-doubleform</div>
+<code>
+    <pre>
+&lt;div class="ob-block-doubleform"&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="left-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="right-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Additional caption&lt;/div&gt;
+                Additional text
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 120px;">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">Additional caption</div>
+                    Additional text
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Вывод без дополнительной колонки</h2>
+Возможен и вывод без дополнительной(правой) колонки.
+<br>
+<br>
+<div class="ui-class">.ob-block-doubleform</div>
+<code>
+    <pre>
+&lt;div class="ob-block-doubleform"&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="left-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 120px;">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Симметричный вывод</h2>
+Возможен и такой вариант, когда обе колонки имеют одинаковую ширину.
+Для этого необходимо использовать модификатор <div class="ui-class inline">.half</div> для правой колонки.
+<br>
+<br>
+<div class="ui-class">.ob-block-doubleform</div>
+<code>
+     <pre>
+&lt;div class="ob-block-doubleform"&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="left-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="right-column half"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Additional caption&lt;/div&gt;
+                Additional text
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="3" style="width: 100%; height: 120px;">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text
+                </div>
+            </div>
+
+            <div class="right-column half">
+                <div class="form-element">
+                    <div class="element-caption">Additional caption</div>
+                    Additional text
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br />
+<br />
+
+<h2>Элементы форм</h2>
+Элемент формы - это единичный параметр/значение, который используется в форме. Каждый элемент формы обозначается классом <div class="ui-class inline">.form-element</div><br>
+В данном элементе может присутствовать его название <div class="ui-class inline">.element-caption</div><br>
+Если формировать контент, использовать данные элементы, то данные будет легко воспринимать, так как между каждыми элементами установлены определенные отступы, подходящие для лучшего восприятия контента.<br>
+Для отображения дополнительно текста необходимо использовать <div class="ui-class inline">.light</div>
+<br>
+<br>
+<div class="ui-class">.ob-block-doubleform</div>
+<code>
+     <pre>
+&lt;div class="ob-block-doubleform"&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="left-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text &lt;span class="light"&gt;description text&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text
+            &lt;/div&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="right-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Additional caption &lt;span class="light"&gt;description text&lt;/span&gt;&lt;/div&gt;
+                Additional text
+            &lt;/div&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Additional caption&lt;/div&gt;
+                Additional text
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="4" style="width: 100%; height: 240px;">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text <span class="light">description text</span>
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">Additional caption <span class="light">description text</span></div>
+                    Additional text
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">Additional caption</div>
+                    Additional text
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br />
+<br />
+
+<h2>Группировка элементов форм</h2>
+Для группировки элементов в форме необходимо использовать обвертки:
+<div class="ui-class inline">.double</div> - два элемента в строке,
+<div class="ui-class inline">.tripple</div> - три элемента в строке,
+<div class="ui-class inline">.four</div> - четыре элемента в строке.
+<br>
+<br>
+<div class="ui-class">.ob-block-doubleform</div>
+<code>
+     <pre>
+&lt;div class="ob-block-doubleform"&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="left-column"&gt;
+            &lt;div class="double"&gt;
+                &lt;div class="form-element"&gt;
+                    &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                    Main text
+                &lt;/div&gt;
+                &lt;div class="form-element"&gt;
+                    &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                    Main text
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Main caption&lt;/div&gt;
+                Main text
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="right-column"&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Additional caption&lt;/div&gt;
+                Additional text
+            &lt;/div&gt;
+            &lt;div class="form-element"&gt;
+                &lt;div class="element-caption"&gt;Additional caption&lt;/div&gt;
+                Additional text
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="5" style="width: 100%; height: 180px;">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="double">
+                    <div class="form-element">
+                        <div class="element-caption">Main caption</div>
+                        Main text
+                    </div>
+                    <div class="form-element">
+                        <div class="element-caption">Main caption</div>
+                        Main text
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">Main caption</div>
+                    Main text
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">Additional caption</div>
+                    Additional text
+                </div>
+                <div class="form-element">
+                    <div class="element-caption">Additional caption</div>
+                    Additional text
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

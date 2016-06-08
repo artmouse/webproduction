@@ -1,0 +1,46 @@
+{|if $passportArray|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table" width="100%">
+        <thead>
+            <tr>
+                <td>{|$translate_passport|}</td>
+                <td>{|$translate_number|}</td>
+                <td>
+                    <label>
+                        <input type="checkbox" id="id-check-all" value="1" />
+                        {|$translate_delete_small|}
+                    </label>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {|foreach from=$passportArray item="e" |}
+                <tr>
+                    <td style="width: 150px;">
+                        {|$e.name|}
+                        {|if $e.orderid|}
+                            <div class="small">
+                                <a href="{|$e.orderURL|}" >{|$translate_ord|} #{|$e.orderid|}</a>
+                            </div>
+                        {|/if|}
+                    </td>
+                    <td>
+                        <input name="count{|$e.id|}" value="{|$e.count|}" style="width: 80px;" />
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="delete{|$e.id|}" value="1" class="table-checkbox" />
+                            {|$translate_delete_small|}
+                        </label>
+                    </td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+    </table>
+
+    <br />
+    <input type="hidden" name="saveok" value="1" />
+    <input class="ob-button" type="submit" value="{|$translate_save_changes_small|}" class="ob-button button-green" />
+    <br />
+
+{|/if|}

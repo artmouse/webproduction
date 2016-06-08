@@ -1,0 +1,3 @@
+{|foreach from=$linksArray item="e"|}
+    <a href="{|$e.url|}" {|if $e.css|}class="{|$e.css|}"{|/if|}>{|$e.name|}</a>
+{|/foreach|}

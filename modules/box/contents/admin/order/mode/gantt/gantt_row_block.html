@@ -1,0 +1,26 @@
+{|foreach from=$issueArray item="e" key="n"|}
+    <li class="js-gantt-issue" data-id="{|$e.id|}" data-parentid="{|$e.parentID|}">
+        <div class="row">
+            <div class="block-issue js-issue-block">
+                <input class="js-checkbox" type="checkbox" name="" value="{|$e.id|}" />
+                <span class="expand js-expand"></span>
+                <a href="{|$e.url|}" data-id="{|$e.id|}" class="js-issue-preview">{|$e.id|}</a>
+                {|if $e.name|}
+                    - <span class="mark" style="background-color: {|$e.color|};">{|$e.name|}</span>
+                {|/if|}
+            </div>
+            <div class="block-value js-gantt-value-block">
+                <div class="days-list" style="width: {|$lineWidth|}px;">
+                    {|if $e.width AND $e.startDay|}
+                        <div class="line js-issue-preview {|if $e.allowEdit|}js-issue-line{|else|}no-edit{|/if|}" data-id="{|$e.id|}" style="background-color: {|$e.color|}; width: {|$e.width|}px; left: {|$e.left|}px;"></div>
+                    {|/if|}
+                </div>
+            </div>
+        </div>
+        {|if $e.block_row|}
+            <ol>
+                {|$e.block_row|}
+            </ol>
+        {|/if|}
+    </li>
+{|/foreach|}

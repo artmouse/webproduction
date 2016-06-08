@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <translate_forms_record_edit>Редагування запису</translate_forms_record_edit>
+    <translate_forms_record_add>Створення нового запису</translate_forms_record_add>
+    <translate_forms_message_error>Помилка! Неможливо отримати дані.</translate_forms_message_error>
+    <translate_forms_message_delete_ok>Запис успішно видалено.</translate_forms_message_delete_ok>
+    <translate_forms_message_delete_error>Помилка видалення запису.</translate_forms_message_delete_error>
+    <translate_forms_message_update_ok>Запис успішно збережено.</translate_forms_message_update_ok>
+    <translate_forms_message_update_error>Помилка збереження (поновлення) запису.</translate_forms_message_update_error>
+    <translate_forms_message_insert_ok>Запис додано.</translate_forms_message_insert_ok>
+    <translate_forms_message_insert_error>Помилка додавання нового запису.</translate_forms_message_insert_error>
+    <translate_forms_record_insert>Додати новий запис</translate_forms_record_insert>
+    <translate_forms_record_update>Зберегти запис</translate_forms_record_update>
+    <translate_forms_record_delete>Видалити запис</translate_forms_record_delete>
+    <translate_forms_confirm_delete>Підтверджуєте видалення?</translate_forms_confirm_delete>
+    
+    <translate_download>Завантажити</translate_download>
+    <translate_download_file>Завантажити файл</translate_download_file>
+    <translate_delete_file>Видалити файл</translate_delete_file>
+    <translate_current_file>Поточний файл</translate_current_file>
+</form>

@@ -1,0 +1,123 @@
+<h1>Отложенные обрабочики, очередь ProcessorQue</h1>
+
+Processor Que - отложенная очередь обработчиков.
+
+<h2>Терминология</h2>
+que - очередь (в OneBox таблица в БД с очередью)<br />
+processor - небольшой класс с всего одним методом process()<br />
+<br />
+
+<h2>Зачем нужен ProcessorQue?</h2>
+Бывают ситуации, когда изменяется какая-то сущность в системе,
+и из-за этого нужно что-то поменять глобальное или тяжелое.<br />
+<br />
+
+<strong>Пример 1:</strong><br />
+Добавился бизнес-процесс, и из-за этого нужно перестроить весь ACL на всех пользователях. Но, перестройка всего ACL занимает 2-3 секунды работы процессора на 100% и ждать это пользователю не нужно.<br />
+<br />
+
+<strong>Пример 2:</strong><br />
+Изменился заказ (ShopOrder) и изменения нужно отправить в Sphinx. Но Sphinx не быстро принимает изменения и может затупить на 20 секунд.<br />
+<br />
+
+В таких ситуациях было бы неплохо сделать какую-то пометку в базе, что пора что-то изменить, и сделать эти изменения в фоне (в cron minute).<br />
+Также стоит учитывать, что таких изменений и пометок может быть много, и нужно чтобы они не накладывались одна на другую и попросту не занимали cron лишними запросами "проверяем пометку 1, затем 2 и тд если пометок 100 штук”.<br />
+<br />
+
+<h2>Что такое ProcessorQue?</h2>
+Для таких целей в OneBox была сделана отложенная очередь обработчиков ProcessoeQue. Ею управляет сервис ProcessorQueService.<br />
+Идея очереди обработчиков очень простая - добавляем обработчик в очередь, а очередь обрабатывается "по очереди ASC” в cron-minute.<br />
+Поэтому, почти все системы в OneBox запускаются в порядке очереди и только когда нужно. Например, если нужно перестроить ACL - в очередь (que) записывается обработчик (processor) - и он запускается по cron-minute.<br />
+<br />
+<br />
+
+<h2>Как добавить событие в очередь</h2>
+Добавить событие можно только одним способом:<br />
+<br />
+<code>ProcessorQueService::Get()->addProcessor('ProcessorClassName', $unique);</code>
+<br />
+
+ProcessorClassName должен существовать, иначе он просто удалиться из очереди при проверке.<br />
+<br />
+
+Параметр unique по умолчанию true - он не позволяет добавить в очередь дубликат обработчика.<br />
+Приведенный пример все равно добавит Class1 в очередь только один раз.<br />
+<br />
+
+<code><pre>
+ProcessorQueService::Get()->addProcessor('Class1', true);
+ProcessorQueService::Get()->addProcessor('Class1', true);
+ProcessorQueService::Get()->addProcessor('Class1', true);
+</pre></code>
+<br />
+<br />
+
+
+<h2>Каким должен быть обработчик?</h2>
+Это любой класс с методом process()
+<br />
+<br />
+
+<code><pre>
+class Class1 {
+
+    public function process() {
+       // любые действия тут, которые нужно выполнить в фоне по крону
+    }
+
+}
+</pre></code>
+<br />
+<br />
+
+<h2>Когда оно запустится?</h2>
+<strong>В cron minute в порядке очереди добавления.</strong><br />
+Для теста можно запустить cron-minute.php с параметром verbose - в выводе будет показано какие обработчики из очереди запускаются.<br />
+<br />
+
+<code><pre>
+php -f cron/cron-minute.php force verbose
+...
+verbose: Process ProcessorQue…
+verbose: Run processor "Class1" in ProcessorQue…
+verbose: Run processor "Class2" in ProcessorQue...
+...
+</pre></code>
+<br />
+<br />
+
+После обработки (неважно успешной или нет) обработчик удаляется из очереди.
+<br />
+<br />
+
+<h2>Примеры</h2>
+Для примеров смотрите исходный код класса ProcessorQueService.class.php.<br />
+В OneBox по умолчанию на отложенных событиях работает модуль search-sphinx и перестройка ACL.<br />
+<br />
+
+<h2>SQLObject events и ProcessorQue</h2>
+Наиболее частой задачей, при которой нужно что-то добавить в ProcessorQue является изменение или добавление какого либо объекта.<br />
+Для этого нужно городить специальное событие в SQLObject, которое вызовет единственный метод ProcessorQueService::Get()->addProcessor()<br />
+Чтобы не писать кучу такого мусора было сделано специальное событие Shop_QueProcessor_Event, которое вторым параметром принимает название обработчика и просто добавляет его в очередь.<br />
+<br />
+Приведенный пример после добавления/редактирования/удаления добавляет в очередь обработчик перестройки меню Shop_Processor_BuildMenu и обработчик перестройки ACL Shop_Processor_BuildACL. Эти два обработчика отложенные, они будут добавлены в очередь и выполнены по cron.<br />
+<br />
+
+<code><pre>
+Events::Get()->addEvent('XShopWorkflowType.delete.after', 'SQLObject_Event');
+Events::Get()->observe('XShopWorkflowType.delete.after', 'Shop_QueProcessor_Event', 'Shop_Processor_BuildACL');
+Events::Get()->observe('XShopWorkflowType.delete.after', 'Shop_QueProcessor_Event', 'Shop_Processor_BuildMenu');
+Events::Get()->addEvent('XShopWorkflowType.update.after', 'SQLObject_Event');
+Events::Get()->observe('XShopWorkflowType.update.after', 'Shop_QueProcessor_Event', 'Shop_Processor_BuildACL');
+Events::Get()->observe('XShopWorkflowType.update.after', 'Shop_QueProcessor_Event', 'Shop_Processor_BuildMenu');
+Events::Get()->addEvent('XShopWorkflowType.insert.after', 'SQLObject_Event');
+Events::Get()->observe('XShopWorkflowType.insert.after', 'Shop_QueProcessor_Event', 'Shop_Processor_BuildACL');
+Events::Get()->observe('XShopWorkflowType.insert.after', 'Shop_QueProcessor_Event', 'Shop_Processor_BuildMenu');
+</pre></code>
+<br />
+<br />
+
+<h2>Как это технически работает</h2>
+С технической точки зрения очередь ProcessorQue это таблица в базе данных shopprocessorque, в которую пишется очередь обработчиков.<br />
+По cron-minutе таблица вычитывается, и после полной обработки очищается полностью (truncate, чтобы IDшники не закончились).<br />
+<br />

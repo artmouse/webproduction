@@ -1,0 +1,145 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            {|if $categoryArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kategoriya_tovara|}</div>
+                    <select name="categoryid" class="chzn-select">
+                        {|foreach from=$categoryArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_categoryid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            
+            {|if $brandArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_brend_tovara|}</div>
+                    <select name="brandid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$brandArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_brandid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            
+            {|if $supplierArray|}
+                <div class="element">
+                    {|$translate_price_name|}
+                    <select name="supplierid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$supplierArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_supplierid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            
+
+                <div class="element">
+                    {|$translate_model|}
+                    {|*|}
+                    <select name="modelname" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$modelArray item="e"|}
+                            <option value="{|$e|}" {|if $control_modelname == $e|} selected {|/if|}>{|$e|}</option>
+                        {|/foreach|}
+                    </select>
+                    {|*|}
+                    <input class="js-model-autocomplete-input" type="text" name="modelname"  value=""/>
+                </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">     
+        <table width="100%">
+            <tr>
+                <td><h1>{|$translate_otchet_po_tsenam_postavshchika|}</h1></td>
+                <td align="right"><a href="/admin/shop/report/priceinsupplier/?{|$urlget|}&export-xls=1" class="xls" name="export-xls">{|$translate_export_to|} XLS</a></td>
+            </tr>
+        </table>
+            <table class="shop-table">
+            <thead>
+                <tr>
+                    <td>{|$translate_code|}</td>
+                    <td>{|$translate_articul|}</td>
+                    <td>{|$translate_title_short|}</td>
+                    <td>{|$translate_product_price|}</td>
+                    {|foreach from=$supplierName item="supname"|}
+                        <td>{|$supname|}</td>
+                    {|/foreach|}
+                </tr>
+            </thead>
+            {|foreach from=$productArray item="product" key="productID"|}
+                <tr>
+                    <td>{|$product.id|}</td>
+                    <td>{|$product.articul|}</td>
+                    <td>
+                        <a href="{|$product.url|}" data-id="{|$product.id|}" class="js-product-preview">{|$product.name|}</a>
+                    </td>
+                    <td>{|$product.price|}</td>
+                    {|foreach from=$supplierName item="supname"|}
+                        {|if $product[$supname]|}
+                        <td style="background-color: {|if $product[$supname] < $product.price|} #FFBB93; {|else|} #C8FEA1; {|/if|}">{|$product[$supname]|}</td>
+                        {|else|}
+                            <td>0</td>
+                        {|/if|}
+                    {|/foreach|}
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+</div>
+
+{|if count($pagesArray.pagesArray) > 1|}
+    <div class="ob-block-stepper">
+        {|if $pagesArray.urlprev|}
+            <a href="{|$pagesArray.urlprev|}" class="prev">&lsaquo; {|$translate_back|}</a>
+            {|if $pagesArray.hellip|}&hellip;{|/if|}
+        {|/if|}
+
+        {|foreach from=$pagesArray.pagesArray item="e"|}
+            <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+        {|/foreach|}
+
+        {|if $pagesArray.urlnext|}
+            {|if $pagesArray.hellip|}&hellip;{|/if|}
+            <a href="{|$pagesArray.urlnext|}" class="next">{|$translate_next|} &rsaquo;</a>
+        {|/if|}
+    </div>
+{|/if|}
+<script>
+    filterOpen();
+
+    $j(function () {
+        $j('.js-model-autocomplete-input').select2({
+            minimumInputLength: 0,
+            allowClear: true,
+            initSelection: function(element, callback) {
+            },
+            ajax: {
+                quietMillis: 150,
+                url: "/admin/shop/report/priceinsupplier/model/ajax/",
+                dataType: 'json',
+                data: function (term) {
+                    return {
+                        query: term,
+                        brand: $j('[name=brandid]').val()
+                    };
+                },
+                results: function (data) {
+                    return {results: data.Results};
+                }
+            }
+        });
+    });
+</script>

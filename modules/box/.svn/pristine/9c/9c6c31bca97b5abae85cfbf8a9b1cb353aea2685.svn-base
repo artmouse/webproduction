@@ -1,0 +1,37 @@
+<h1>{|$translate_dopolnitelnie_polya_v_dannom_etape|}</h1>
+<table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+<thead>
+    <tr>
+        <td>#</td>
+        <td>{|$translate_tip_polya|}</td>
+        <td>{|$translate_nazvanie_polya|}</td>
+        <td>{|$translate_key|}</td>
+        <td>{|$translate_the_handler|}</td>
+    </tr>
+</thead>
+{|foreach from=$fieldArray item="e"|}
+    <tr>
+        <td>
+            {|$e.index|}
+        </td>
+        <td>
+            <select name="type{|$e.index|}">
+                <option value="string">{|$translate_stroka|}</option>
+                <option value="text">{|$translate_tekst|}</option>
+                <option value="date">{|$translate_date|}</option>
+                <option value="datetime">{|$translate_datetime|}</option>
+                <option value="file">{|$translate_file|}</option>
+            </select>
+        </td>
+        <td>
+            <input type="text" name="name{|$e.index|}" value="{|$e.name|}" />
+        </td>
+        <td>
+            <input type="text" name="key{|$e.index|}" value="{|$e.key|}" />
+        </td>
+        <td>
+            <input type="text" name="logicclass{|$e.index|}" value="{|$e.logicclass|}" />
+        </td>
+    </tr>
+{|/foreach|}
+</table>

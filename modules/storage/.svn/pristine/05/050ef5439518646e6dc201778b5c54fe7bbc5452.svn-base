@@ -1,0 +1,182 @@
+.shop-help {
+	padding:10px 23px;	
+}
+
+.shop-help-main { 
+	min-height:100%; 
+	height:auto !important;
+	height:100%;
+	background:url('/_images/manual/bg.png');
+}
+
+.shop-help-main .header {
+	border-bottom:1px solid #5b5b5b;
+	padding:35px 21px 1px 21px;
+	color:#34a7f0;
+	font-size:36px;
+	margin:0 23px;
+}
+
+.shop-help-main .content {
+	padding:25px 44px;
+}
+
+.shop-help-main .content .menu {
+	float:left;
+	width:320px;
+}
+
+.shop-help-main .content .menu ol { 
+	counter-reset:list1;
+	padding:0;
+	margin:0; 
+}
+
+.shop-help-main .content .menu ol li { 
+	list-style-type:none; 
+	font-size:18px;
+	padding:0 0 11px 0;
+}
+
+.shop-help-main .content .menu ol li a { 
+	text-decoration:none;
+	font-size:18px;
+	color:inherit;
+	width:264px;
+	line-height:31px;
+	display:inline-block;
+	vertical-align:top;
+	padding:0 0 0 10px;
+}
+
+.shop-help-main .content .menu ol li ol li a { 
+	width:235px;
+	padding:0 0 0 39px;
+	margin:0 0 0 -31px;
+}
+
+.shop-help-main .content .menu ol li a:hover,
+.shop-help-main .content .menu ol li a.selected { 
+	background:url('/_images/manual/menu_h.png') top right;
+}
+
+.shop-help-main .content .menu ol li:before {
+	counter-increment:list1; 
+	content:counter(list1) ". ";
+	width:20px;
+	display:inline-block;
+	vertical-align:top;
+	margin:5px 0 0 0;
+	position:relative;
+	z-index:10;
+}
+
+.shop-help-main .content .menu ol ol { 
+	counter-reset:list2;
+	padding:9px 0 0 26px; 
+} 
+
+.shop-help-main .content .menu ol ol li { 
+	font-size:14px;
+	padding:0 0 8px 0;
+} 
+
+.shop-help-main .content .menu ol ol li a { 
+	font-size:14px;
+	color:inherit;
+} 
+
+.shop-help-main .content .menu ol ol li:before {
+	counter-increment: list2;
+	content:counter(list1) "." counter(list2) ". ";
+	margin:7px 0 0 0;
+	display:inline-block;
+}
+
+.shop-help-main .content .menu ol ol ol { 
+	counter-reset:list3;
+	padding:0 0 0 18px; 
+} 
+
+.shop-help-main .content .menu ol ol ol li:before {
+	counter-increment: list3;
+	content:counter(list1) "." counter(list2) "." counter(list3) ". ";
+}
+
+.shop-help-main .content .info {
+	margin:0 0 0 320px;
+	padding:1px 0 15px 0;	
+	color:#222222;
+	line-height:18px;
+	font-size:14px;
+}
+
+.shop-help-main .content .info p {
+	color:#222222;
+	font-size:14px;
+}
+
+.shop-help-main .content .info a {
+	color:#008DEB;
+	font-size:14px;
+}
+
+.shop-help-hfooter { 
+	height:45px; 
+}
+
+.shop-help-footer { 
+	height:36px; 
+	border-top:1px solid #5b5b5b;
+	text-align:center;
+	padding:8px 0 0 0;
+	margin:-45px 45px 0 45px;
+}
+
+.shop-help-footer a {
+	text-decoration:none;
+}
+
+.shop-help-footer a:hover {
+	text-decoration:underline;
+}
+
+.shop-help-hint {
+    position: absolute;
+    top: 100px;
+    left: 300px;
+    z-index: 9999;
+    width: 226px;
+    background: url('/_images/manual_new/hint-bg.png') no-repeat;
+    line-height: 20px;
+    padding: 5px 15px 0 15px;
+    color: #3b3b3b;
+    font-weight: bold;
+}
+
+.shop-help-hint:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 256px;
+    height: 10px;
+    background: url('/_images/manual_new/hint-bg.png') bottom left;
+}
+
+.shop-help-hint:before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: 100px;
+    width: 42px;
+    height: 43px;
+    background: url('/_images/manual_new/hint-arrow-01.png') no-repeat;
+}
+
+.bottom-arrow:before {
+    top: auto;
+    bottom: -60px;
+    left: 30px;
+    background: url('/_images/manual_new/hint-arrow-02.png') no-repeat;
+}

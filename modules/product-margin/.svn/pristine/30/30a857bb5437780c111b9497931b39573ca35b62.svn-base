@@ -1,0 +1,19 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/marginrule/" class="selected">Автоматические наценки на товары</a></div>
+        <div class="tab-element"><a href="./add/">{|$translate_rule_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        Задача на пересчет создана. Через несколько минут, цены будут пересчитаны.  
+    </div>
+{|/if|}
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.
+    </div>
+{|/if|}

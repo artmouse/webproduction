@@ -1,0 +1,93 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element separate">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <label>
+            <input type="checkbox" name="{|$index|}_virtual" value="1" {|if $virtual|}checked{|/if|}>
+            Учитывать виртуальные платежи
+        </label>
+        <br>
+        <br>
+        Тип письма:
+        <label>
+            <input type="radio" name="{|$index|}_type" value="text" {|if !$type || $type == 'text'|}checked{|/if|}>
+            TEXT
+        </label>
+        <label>
+            <input type="radio" name="{|$index|}_type" value="html" {|if $type == 'html'|}checked{|/if|}>
+            HTML
+        </label>
+
+        <br>
+        <br>
+
+        <label>
+            <input type="checkbox" name="{|$index|}_html" value="1" {|if $html|}checked{|/if|}>
+            Письмо в фирменном стиле
+        </label>
+        <br>
+        <br>
+        Подпись отправителя
+        <br>
+        <input type="text" value="{|$userSignature|}" name="{|$index|}_userSignature">
+        <br>
+        <br>
+        <label>
+            <input type="checkbox" name="{|$index|}_signature" value="1" {|if $signature|}checked{|/if|}>
+            Автоматически добавлять подпись сотрудника, если это возможно
+        </label>
+        <br>
+        <br>
+
+        Обратный Email
+        <br>
+        <input type="text" name="{|$index|}_email" value="{|$email|}" style="width: 400px;">
+
+        <br>
+        <br>
+        Тема письма
+        <br>
+        <input type="text" name="{|$index|}_subject" value="{|$subject|}" style="width: 400px;">
+    </div>
+
+    <div class="form-element">
+        <textarea class="js-autosize-{|$index|}" style="height: 150px; width: 100%;" cols="40" rows="5" name="{|$index|}_text_notify_email_client">{|$text_notify_email_client|}</textarea>
+        <br>
+        <a href="/doc/post_variables">Переменные в письме</a>
+    </div>
+
+    {|if $box|}
+        <br>
+        <br>
+        {|if $filesArray|}
+            <div>
+                Файлы:<br>
+                {|foreach from=$filesArray item="f"|}
+                    <input type="hidden" name="{|$index|}_fileId[]" value="{|$f.id|}">
+                    <a href="jsvascript:void(0);">{|$f.name|}</a> &nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="{|$index|}_deleteFileId[]" value="{|$f.id|}">Удалить</label><br>
+                {|/foreach|}
+            </div>
+            <br>
+        {|/if|}
+        <div class="ob-block-attach js-droppable-zone{|$index|}" >
+            <a href="#" name="file[]" class="ob-button-attach js-uploader{|$index|}">{|$translate_prilozhit_fayli|}...</a>
+        </div>
+        <script type="text/javascript">
+            var uploader = new DropUploader('.js-droppable-zone{|$index|}', '.js-uploader{|$index|}', '{|$index|}_fileId');
+        </script>
+    {|/if|}
+</div>
+
+<script>
+    $j(function () {
+        $j('.js-autosize-{|$index|}').autosize();
+    });
+</script>

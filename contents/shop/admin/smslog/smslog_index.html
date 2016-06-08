@@ -1,0 +1,28 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|$translate_history_of_sent_SMS|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $false|}
+
+    <div class="shop-message-light">
+        {|$translate_integratsiya_s_turbosms_ne_nastroena|}.<br />
+        {|$translate_nastroyka_akkaunta_v_magazine_|} <a class=" ob-link-dashed" href="/admin/shop/settings/{|$translate_integratsii|}/">{|$translate_pereyti|}</a>.<br />
+        {|$translate_sayt_servisa_turbosms_|} <a class=" ob-link-dashed" href="http://turbosms.ua/">{|$translate_pereyti|}</a>.<br />
+    </div>
+
+{|else|}
+    {|if $balance|}
+        {|$translate_ostalos_kreditov|}: {|$balance|}
+        <a href="http://turbosms.ua/"> {|$translate_popolnit_schet|}</a>
+        <br /><br />
+    {|elseif $errorAuth|}
+        {|$translate_oshibka_avtorizatsii|}. {|$translate_proverte_dannie_dlya_integratsii|}.<br /><br />
+    {|/if|}
+
+    {|$table|}
+{|/if|}
+

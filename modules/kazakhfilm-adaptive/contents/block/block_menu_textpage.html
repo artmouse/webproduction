@@ -1,0 +1,32 @@
+{|*|}
+<nav class="js-nav">
+    <a href="/" {|if $contentID == 'index'|}class="active"{|/if|}>Отель</a>
+    <a href="{|$bookingUrl|}" {|if $contentID == 'booking'|}class="active"{|/if|}>Номера и цены</a>
+    <a href="http://astanacapital.com/i/hotelkz/index.html">3D тур отеля</a>
+
+
+
+    <a href="https://www.google.com.ua/maps/place/%D0%9E%D1%82%D0%B5%D0%BB%D1%8C+%22%D0%9A%D0%B0%D0%B7%D0%B0%D1%85%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%22/@43.195039,76.906485,17z/data=!3m1!4b1!4m2!3m1!1s0x388368a5fed46b17:0x58c07c032fe31aa1" class="mobile-only {|if $contentID == 'shop-page'|}active{|/if|}">Как проехать</a>
+
+
+
+    <a class="mobile-only" href="/how-get/">Как добратся</a>
+    <a href="javascript:void(0);" class="book js_menu_booking" data-caption="bookingForm-1">Забронировать <em>Бесплатная отмена брони!</em></a>
+</nav>
+{|*|}
+
+<div class="nav-element">
+    <a {|if $contentID == 'index'|}class="active"{|/if|} href="/"><span>Главная</span></a>
+</div>
+<div class="nav-element">
+    <a href="{|$bookingUrl|}" {|if $contentID == 'booking'|}class="active"{|/if|}><span>Номера и цены</span></a>
+</div>
+<div class="nav-element">
+    <a href="http://astanacapital.com/i/hotelkz/index.html"><span>3D тур</span></a>
+</div>
+<div class="nav-element">
+    <a href="{|$guestbookUrl|}" {|if $contentID == 'shop-guestbook'|}class="active"{|/if|}><span>Отзывы</span></a>
+</div>
+<div class="nav-element">
+    <a href="/contacts/" {|if $contentID == 'shop-page'|}class="active"{|/if|}><span>Контакты</span></a>
+</div>

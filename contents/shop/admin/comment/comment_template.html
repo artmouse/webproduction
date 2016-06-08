@@ -1,0 +1,28 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/comment/template/" class="selected">{|$translate_comment_template|}</a></div>
+        <div class="tab-element"><a href="./add/">{|$translate_dobavit_shablon|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="inner-list no-filter">
+    <table class="shop-table">
+        <thead>
+            <tr>
+                <td>{|$translate_box_name_small|}</td>
+                <td>{|$translate_tekst|}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {|foreach from=$commentArray item="data"|}
+                <tr>
+                    <td><a href="{|$data.url|}">{|$data.name|}</a></td>
+                    <td>{|$data.text|}</td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+    </table>
+</div>
+<div class="clear"></div>

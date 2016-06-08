@@ -1,0 +1,17 @@
+{|if count($pagesArray) > 1|}
+    <div class="ob-block-stepper">
+        {|if $urlprev|}
+            <a href="{|$urlprev|}" class="prev">&lsaquo; {|$translate_back|}</a>
+            {|if $hellip|}&hellip;{|/if|}
+        {|/if|}
+
+        {|foreach from=$pagesArray item="e"|}
+            <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>,
+        {|/foreach|}
+
+        {|if $urlnext|}
+            {|if $hellip|}&hellip;{|/if|}
+            <a href="{|$urlnext|}" class="next">{|$translate_next|} &rsaquo;</a>
+        {|/if|}
+    </div>
+{|/if|}

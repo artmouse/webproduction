@@ -1,0 +1,42 @@
+<div class="def-block-crumbs">
+    <div class="item def-icon-home">
+        <a href="/">{|$translate_main|}</a>
+    </div>
+    <div class="item def-icon-angle-right">
+        <a href="/basket/">{|$translate_my_basket|}</a>
+    </div>
+    <div class="item def-icon-angle-right">
+        {|$translate_checkout|}
+    </div>
+</div>
+
+<h1>{|$translate_checkout|}</h1>
+
+<div class="def-message-success">
+    {|$goodmessage|}
+</div>
+
+{|if $productsArray|}
+    <ul class="def-thumbs-list small-block-grid-3 medium-block-grid-3 large-block-grid-4">
+        {|foreach from=$productsArray item="p"|}
+            <li>
+                <div class="def-thumb-element">
+                    <div class="image">
+                        <a  href="{|$p.url|}"><img src="{|$p.image|}" /></a>
+                    </div>
+                    <div class="name"><a href="{|$p.url|}">{|$p.name|}</a></div>
+                </div>
+            </li>
+        {|/foreach|}
+    </ul>
+{|/if|}
+
+{|if $bannerSuccess|}
+    <div class="def-block-ordersuccess">
+        <a {|if $bannerSuccessUrl|} href="{|$bannerSuccessUrl|}" {|/if|}>
+            <img class="success-image" src="{|$bannerSuccess|}" alt="" />
+        </a>
+    </div>
+{|/if|}
+
+{|$integration_google_conversion|}

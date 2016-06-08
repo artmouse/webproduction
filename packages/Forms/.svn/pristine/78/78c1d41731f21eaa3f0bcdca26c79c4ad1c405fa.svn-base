@@ -1,0 +1,556 @@
+<?php
+/**
+ * WebProduction Packages
+ * Copyright (C) 2007-2012 WebProduction <webproduction.ua>
+ *
+ * This program is commercial software; you can not redistribute it and/or
+ * modify it.
+ */
+
+class Forms_ContentTable extends Forms_Content {
+
+    public function __construct($datasource) {
+        $this->setFileHTML(dirname(__FILE__).'/'.__CLASS__.'.html');
+
+        $this->setRow(new Forms_ContentTableRow());
+        $this->setHeaders(new Forms_ContentTableHeaders());
+        $this->setStepper(new Forms_ContentStepper());
+
+        if ($datasource) {
+            $this->setDataSource($datasource);
+        }
+    }
+
+    /**
+     * Задать stepper
+     *
+     * @param Forms_ContentStepper $contentStepper
+     */
+    public function setStepper($contentStepper) {
+        if ($contentStepper && $contentStepper instanceof Forms_ContentStepper) {
+            $this->_contentStepper = $contentStepper;
+        } elseif (!$contentStepper) {
+            $this->_contentStepper = false;
+        }
+    }
+
+    /**
+     * Получить stepper
+     *
+     * @return Forms_ContentStepper
+     */
+    public function getStepper() {
+        return $this->_contentStepper;
+    }
+
+    public function setRow(Forms_ContentTableRow $object) {
+        $this->_contentRow = $object;
+    }
+
+    /**
+     * GetRow
+     *
+     * @return Forms_ContentTableRow
+     */
+    public function getRow() {
+        return $this->_contentRow;
+    }
+
+    public function setHeaders(Forms_ContentTableHeaders $object) {
+        $this->_contentHeaders = $object;
+    }
+
+    /**
+     * GetHeaders
+     *
+     * @return Forms_ContentTableHeaders
+     */
+    public function getHeaders() {
+        return $this->_contentHeaders;
+    }
+
+    /**
+     * Узнать обработчик поля
+     *
+     * @param string $key
+     *
+     * @return Forms_ContentField
+     *
+     * @throws Forms_Exception
+     */
+    public function getField($key) {
+        if (!isset($this->_fieldsArray[$key])) {
+            throw new Forms_Exception("Field by key '{$key}' not found");
+        }
+        return $this->_fieldsArray[$key];
+    }
+
+    /**
+     * Задать обработчик поля
+     *
+     * @param Forms_ContentField $field
+     *
+     * @deprecated
+     *
+     * @see addField()
+     */
+    public function setField(Forms_ContentField $field) {
+        $this->addField($field);
+    }
+
+    /**
+     * Добавить поле
+     *
+     * @param Forms_ContentField $field
+     */
+    public function addField(Forms_ContentField $field) {
+        $field->setDataSourceGroup($this->getDataSource());
+        $this->_fieldsArray[$field->getKey()] = $field;
+    }
+
+    /**
+     * Удалить (скрыть) поле
+     *
+     * @param string $key
+     */
+    public function removeField($key) {
+        unset($this->_fieldsArray[$key]);
+    }
+
+    /**
+     * Установить источник данных
+     *
+     * @param Forms_ADataSource $datasource
+     */
+    public function setDataSource(Forms_ADataSource $datasource) {
+        $this->_datasource = $datasource;
+
+        $fieldsArray = $datasource->getFieldsArray();
+        $a = array();
+        foreach ($fieldsArray as $field) {
+            $a[$field->getKey()] = $field;
+        }
+
+        $this->_fieldsArray = $a;
+    }
+
+    /**
+     * GetDataSource
+     *
+     * @return Forms_ADataSource
+     */
+    public function getDataSource() {
+        // @todo exception
+        return $this->_datasource;
+    }
+
+    /**
+     * GetFieldsArray
+     *
+     * @return array
+     */
+    public function getFieldsArray() {
+        return $this->_fieldsArray;
+    }
+
+    /**
+     * Получить количество строк на одной странице
+     *
+     * @return int
+     */
+    public function getLinesOnPage() {
+        // пытаемся достать параметр из COOKIE
+        $rowsCount = (int) @$_COOKIE['rowscount_'.get_class($this->getDataSource())];
+        if (!$rowsCount && $rowsCount <= 0) {
+            return $this->_linesOnPage;
+        }
+        if ($rowsCount <= 10) {
+            $rowsCount = 10;
+        }
+        if ($rowsCount >= 1000) {
+            $rowsCount = 1000;
+        }
+        return $rowsCount;
+    }
+
+    /**
+     * Задать количество строк на странице
+     *
+     * @param int $count
+     */
+    public function setLinesOnPage($count) {
+        $count = (int) $count;
+        if ($count <= 0) {
+            throw new Forms_Exception();
+        }
+        $this->_linesOnPage = $count;
+    }
+
+
+    public function setPages($pages) {
+        $this->_pages = $pages;
+    }
+
+    public function getPages() {
+        return $this->_pages;
+    }
+
+    /**
+     * Перегрузка на множестенные фильтры.
+     * array of Forms_FilterObject
+     *
+     * @return array
+     */
+    public function makeFiltersArray() {
+        $operationsArray = array();
+        $operationsArray[] = 'equals';
+        $operationsArray[] = 'lt';
+        $operationsArray[] = 'gt';
+        $operationsArray[] = 'lte';
+        $operationsArray[] = 'gte';
+        $operationsArray[] = 'search'; // like
+
+        $connection = ConnectionManager::Get()->getConnectionDatabase();
+
+        $filtersArray = array();
+        $arguments = Engine::GetURLParser()->getArguments();
+        foreach ($arguments as $k => $v) {
+            if (preg_match('/^filter(\d+)_key$/uis', $k, $r)) {
+                try {
+                    $key = $v;
+                    $type = @$arguments['filter'.$r[1].'_type'];
+                    $value = @$arguments['filter'.$r[1].'_value'];
+
+                    if ($value === false || $value === '' || $value === null) {
+                        continue;
+                    }
+
+                    if (!in_array($type, $operationsArray)) {
+                        $type = $operationsArray[0];
+                    }
+
+                    // @todo: переписать на обработчики
+                    // @todo: refactoring
+
+                    if ($type == 'equals') {
+                        /*$field = $this->getDataSource()->getField($key);
+                        if ($field instanceof Forms_ContentFieldInt
+                        || $field instanceof Forms_ContentFieldNumeric
+                        ) {
+                        $value = (float) $value;
+                        } else {
+                        $value = mysql_escape_string($value);
+                        $value = "'{$value}'";
+                        }*/
+
+                        if (!is_numeric($value)) {
+                            $value = "'$value'";
+                        }
+
+                        $field = $this->getDataSource()->getField($key);
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            "= $value",
+                            true
+                        );
+                    } elseif ($type == 'lt') {
+                        /*$field = $this->getDataSource()->getField($key);
+                        if ($field instanceof Forms_ContentFieldInt
+                        || $field instanceof Forms_ContentFieldNumeric
+                        ) {
+                        $value = (float) $value;
+                        } else {
+                        $value = mysql_escape_string($value);
+                        $value = "'{$value}'";
+                        }*/
+
+                        if (!is_numeric($value)) {
+                            $value = "'$value'";
+                        }
+
+                        $field = $this->getDataSource()->getField($key);
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            "<= $value",
+                            true
+                        );
+                    } elseif ($type == 'lte') {
+                        /*$field = $this->getDataSource()->getField($key);
+                        if ($field instanceof Forms_ContentFieldInt
+                        || $field instanceof Forms_ContentFieldNumeric
+                        ) {
+                        $value = (float) $value;
+                        } else {
+                        $value = mysql_escape_string($value);
+                        $value = "'{$value}'";
+                        }*/
+
+                        if (!is_numeric($value)) {
+                            $value = "'$value'";
+                        }
+
+                        $field = $this->getDataSource()->getField($key);
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            "<= $value",
+                            true
+                        );
+                    } elseif ($type == 'gt') {
+                        /*$field = $this->getDataSource()->getField($key);
+                        if ($field instanceof Forms_ContentFieldInt
+                        || $field instanceof Forms_ContentFieldNumeric
+                        ) {
+                        $value = (float) $value;
+                        } else {
+                        $value = mysql_escape_string($value);
+                        $value = "'{$value}'";
+                        }*/
+
+                        if (!is_numeric($value)) {
+                            $value = "'$value'";
+                        }
+
+                        $field = $this->getDataSource()->getField($key);
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            "> $value",
+                            true
+                        );
+                    } elseif ($type == 'gte') {
+                        /*$field = $this->getDataSource()->getField($key);
+                        if ($field instanceof Forms_ContentFieldInt
+                        || $field instanceof Forms_ContentFieldNumeric
+                        ) {
+                        $value = (float) $value;
+                        } else {
+                        $value = mysql_escape_string($value);
+                        $value = "'{$value}'";
+                        }*/
+
+                        if (!is_numeric($value)) {
+                            $value = "'$value'";
+                        }
+
+                        $field = $this->getDataSource()->getField($key);
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            ">= $value",
+                            true
+                        );
+                    } elseif ($type == 'in') {
+                        // перечисление через запятую
+                        $field = $this->getDataSource()->getField($key);
+
+                        $variantsArray = array();
+                        $value = explode(',', $value);
+                        foreach ($value as $x) {
+                            $variantsArray[] = "'".$connection->escapeString($x)."'";
+                        }
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            "IN (".implode(', ', $variantsArray).")",
+                            true
+                        );
+                    } elseif ($type == 'search') {
+                        // текстовый like поиск
+                        $field = $this->getDataSource()->getField($key);
+
+                        // issue #22210
+                        $value = str_replace(' ', '%', $value);
+
+                        $filter = new Forms_FilterObject(
+                            $field->getLink(),
+                            "LIKE '%".$connection->escapeString($value)."%'",
+                            true
+                        );
+                    }
+
+                    $filtersArray[] = $filter;
+                } catch (Exception $filterException) {
+
+                }
+            }
+        }
+        return $filtersArray;
+    }
+
+    public function makeDataSourceData($filters, $sorts, $pages, $count = false) {
+        if ($filters) {
+            $filtersArray = $this->makeFiltersArray();
+        } else {
+            $filtersArray = array();
+        }
+
+        $sortType = false;
+        $sortBy = false;
+        if ($sorts) {
+            // сортировка
+            try {
+                $sortType = Engine::GetURLParser()->getArgument('sorttype');
+            } catch (Exception $e) {
+                // достаем сортировку из COOKIE
+                $sortType = @$_COOKIE['rowssorttype_'.get_class($this->getDataSource())];
+            }
+
+            $sortType = strtoupper($sortType);
+            if ($sortType != 'ASC') {
+                $sortType = 'DESC';
+            } else {
+                $sortType = 'ASC';
+            }
+
+            try {
+                $sortBy = Engine::GetURLParser()->getArgument('sortkey');
+            } catch (Exception $e) {
+                // достаем сортировку из COOKIE
+                $sortBy = @$_COOKIE['rowssort_'.get_class($this->getDataSource())];
+            }
+        }
+
+        if ($sortBy) {
+            // проверяем наличие такого ключа (проверка безопастности)
+            try {
+                $field = $this->getDataSource()->getField($sortBy);
+                $sortBy = $field->getLink();
+            } catch (Exception $e) {
+
+            }
+        }
+
+        // сколько шагов в обе стороны нужно строить страницы?
+        $pageStep = 3;
+
+        $onpage = false;
+        $page = false;
+        //if ($pages) {
+            $onpage = $this->getLinesOnPage();
+            $page = Engine::GetURLParser()->getArgumentSecure('page');
+        //}
+
+        // экспорт всех данных
+        if ($pages === 'all') {
+            $page = false;
+            $pageStep = false;
+        }
+
+        $result = $this->getDataSource()->select(
+            $filtersArray,
+            $sortBy, $sortType,
+            $page * $onpage, $onpage * $pageStep,
+            false // no count here!
+        );
+
+        if ($count) {
+            return count($result) + $page*$onpage;
+
+            // от текущего количества отнимаем шаг назад
+            /*$x = count($result) - $onpage * $pageStep;
+            if ($x < 0) {
+            $x = 0;
+            }
+            return $x;*/
+        } else {
+            if ($pages === 'all') {
+                return $result;
+            } elseif ($pages) {
+                // оставляем только $onpage количество записей
+                $a = array();
+                $i = 0;
+                foreach ($result as $x) {
+                    $a[] = $x;
+                    $i ++;
+                    if ($i >= $onpage) {
+                        break;
+                    }
+                }
+                return $a;
+            } else {
+                return $result;
+            }
+        }
+    }
+
+    public function render($assignsArray = array()) {
+        $assigns = $assignsArray;
+
+        $assigns['cssClassName'] = $this->getCSSClassName();
+        $showStepper = false;
+        $pages = false;
+
+        if ($this->getStepper()) {
+            $onpage = $this->getLinesOnPage();
+            $page = Engine::GetURLParser()->getArgumentSecure('page');
+            $showStepper = true;
+            $pages = true;
+        }
+
+        if ($this->getPages()) {
+            $pages = $this->getPages();
+        }
+
+        // делаем запрос к источнику
+        $count = $this->makeDataSourceData(
+            true,
+            false,
+            false,
+            true
+        );
+
+        $selectArray = $this->makeDataSourceData(
+            true,
+            true,
+            $pages,
+            false // no summary count
+        );
+
+        // clear data array
+        $this->setValue('dataArray', $selectArray);
+
+        // data
+        $a = array();
+        foreach ($selectArray as $i => $row) {
+            $a[] = $this->getRow()->render($this, $i, $row);
+        }
+        $assigns['rowsArray'] = $a;
+
+        // headers
+        $assigns['headers'] = $this->getHeaders()->render($this);
+
+        if ($showStepper) {
+            // stepper
+            $assigns['stepper'] = $this->getStepper()->render($page, $onpage, $count);
+        }
+
+        return parent::render($assigns);
+    }
+
+    public function setCSSClassName($className) {
+        $this->_cssClassName = $className;
+    }
+
+    public function getCSSClassName() {
+        return $this->_cssClassName;
+    }
+
+    private $_cssClassName = '';
+
+    private $_contentRow;
+
+    private $_contentHeaders;
+
+    private $_contentStepper;
+
+    private $_datasource = null;
+
+    private $_fieldsArray = array();
+
+    private $_linesOnPage = 100;
+
+    private $_pages = false;
+}

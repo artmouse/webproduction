@@ -1,0 +1,22 @@
+<div class="ob-block-checklist">
+    <div class="checklist-caption">{|$translate_chek_list|}</div>
+
+    <textarea name="checklistadd" class="js-autosize" placeholder="{|$translate_dobavit_v_chek_list|}"></textarea>
+
+    {|if $checklistArray|}
+        <div class="ob-progressbar">
+            <span style="width: {|$checklistProgress|}%;"></div>
+        </div>
+        {|$translate_vipolneno|} {|$checklistProgress|}%
+        <br />
+        <br />
+    {|/if|}
+
+    {|foreach from=$checklistArray item="e"|}
+        <label>
+            <input type="checkbox" name="checklist{|$e.id|}" value="1" {|if $e.closed|} checked {|/if|} />
+            {|$e.name|}
+        </label>
+        <br />
+    {|/foreach|}
+</div>

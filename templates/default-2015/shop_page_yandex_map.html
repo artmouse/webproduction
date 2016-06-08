@@ -1,0 +1,40 @@
+{|if $address|}
+    <div id="YMapsID" style="height:400px; width:700px;"></div>
+
+    <script src="http://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+    <script type="text/javascript">
+        $j(document).ready(function() {
+            showAddress('{|$address|}');
+        });
+        // Функция для отображения результата геокодирования на карте
+        // Параметр value - адрес объекта для поиска
+        function showAddress (value) {
+            var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
+
+            // Запускает процесс геокодирования
+            var geocoder = new YMaps.Geocoder(value, {results: 1, boundedBy: map.getBounds()});
+
+            // Создает обработчик успешного завершения геокодирования
+            YMaps.Events.observe(geocoder, geocoder.Events.Load, function () {
+                // Если объект найден, добавляет его на карту
+                // и устанавливает центр карты в центр области показа объекта
+                if (this.length()) {
+                    var geoResult = this.get(0);
+                    map.addOverlay(geoResult);
+                    map.setBounds(geoResult.getBounds());
+                } else {
+                    console.log("Адресс не найден");
+                    map.destructor();
+                    $j('#YMapsID').hide();
+                }
+            });
+
+            // Процесс геокодирования завершен с ошибкой
+            YMaps.Events.observe(geocoder, geocoder.Events.Fault, function (gc, error) {
+                alert("Произошла ошибка: " + error);
+                map.destructor();
+                $j('#YMapsID').hide();
+            })
+        }
+    </script>
+{|/if|}

@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        {|$engine_includes|}
+
+        <style type="text/css">
+            body, table, td {
+                font-family: 'Trebuchet MS', Arial;
+                font-size: 12px;
+                text-decoration: none;
+                margin: 0;
+                padding: 0;
+                color: #000000;
+            }
+            body {
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+            <td width="48%">
+                <div style="background-color: #eaeaea; padding: 10px; border-radius: 5px;">
+                    {|if $logo|}
+                        <img src="{|$logo|}" width="100" style="float: left; margin-right: 10px;" />
+                    {|/if|}
+
+                    "{|$shopName|}"<br />
+                    {|if $companyAddress|}
+                        Address:  {|$companyAddress|}<br />
+                    {|/if|}
+                    {|if $shopPhone|}
+                        Phone:  {|$shopPhone|}<br />
+                    {|/if|}
+                    {|$shopUrl|}
+
+                    <div style="clear: both; line-height: 1px;">&nbsp;</div>
+                </div>
+
+                <h1>Receipt #{|$id|}</h1>
+                <strong>{|$name|}</strong><br />
+                Category: {|$category|}<br />
+                <strong>Task:</strong>
+                {|$content|}<br />
+
+                Model: {|$model|}<br />
+                Serial number: {|$serial|}<br />
+                State: {|$state|}<br />
+                Estimated cost of services: {|$estimate|}<br />
+
+                <hr />
+
+                <strong>Client:</strong><br />
+                Name: {|$client.name|}<br />
+                Phone: {|$client.phone|}<br />
+                E-mail: {|$client.email|}<br />
+
+                <hr />
+
+                Task came in the service: {|$cdate|}<br />
+                The estimated date of preparedness: {|$edate|}<br />
+
+                <br />
+                <br />
+
+                <div style="font-size: 12px;">
+                    Provider reserves the right to remove the equipment from the warranty when it detects external interference, presence of mechanical damage or other violations of operational rules. Supplier is not responsible for the security of information on media (WIC). In case of loss of this document, the product is issuing a passport card that delivered the product with a written statement after two weeks from the date of submission of the application. If the owner fails to appear for the product over four months, the inspector does not assume responsible for the storage of the product.<br />
+                </div>
+                <br />
+                <br />
+
+                Signature of owner _________________________________
+                <br />
+                <br />
+                <br />
+
+                Signature of inspector _________________________________
+                <br />
+                <br />
+                <br />
+            </td>
+
+            <td width="50">&nbsp;</td>
+
+            <td>
+                <div style="background-color: #eaeaea; padding: 10px; border-radius: 5px;">
+                    {|if $logo|}
+                    <img src="{|$logo|}" width="100" style="float: left; margin-right: 10px;" />
+                    {|/if|}
+
+                    "{|$shopName|}"<br />
+                    {|if $companyAddress|}
+                    Address:  {|$companyAddress|}<br />
+                    {|/if|}
+                    {|if $shopPhone|}
+                    Phone:  {|$shopPhone|}<br />
+                    {|/if|}
+                    {|$shopUrl|}
+
+                    <div style="clear: both; line-height: 1px;">&nbsp;</div>
+                </div>
+
+                <h1>Receipt #{|$id|}</h1>
+                <strong>{|$name|}</strong><br />
+                Category: {|$category|}<br />
+                <strong>Task:</strong>
+                {|$content|}<br />
+
+                Model: {|$model|}<br />
+                Serial number: {|$serial|}<br />
+                State: {|$state|}<br />
+                Estimated cost of services: {|$estimate|}<br />
+
+                <hr />
+
+                <strong>Client:</strong><br />
+                Name: {|$client.name|}<br />
+                Phone: {|$client.phone|}<br />
+                E-mail: {|$client.email|}<br />
+
+                <hr />
+
+                Task came in the service: {|$cdate|}<br />
+                The estimated date of preparedness: {|$edate|}<br />
+
+                <br />
+                <br />
+
+                <div style="font-size: 12px;">
+                    Provider reserves the right to remove the equipment from the warranty when it detects external interference, presence of mechanical damage or other violations of operational rules. Supplier is not responsible for the security of information on media (WIC). In case of loss of this document, the product is issuing a passport card that delivered the product with a written statement after two weeks from the date of submission of the application. If the owner fails to appear for the product over four months, the inspector does not assume responsible for the storage of the product.<br />
+                </div>
+                <br />
+                <br />
+
+                Signature of owner _________________________________
+                <br />
+                <br />
+                <br />
+
+                Signature of inspector _________________________________
+                <br />
+                <br />
+                <br />
+            </td>
+        </tr>
+    </table>
+    </body>
+</html>

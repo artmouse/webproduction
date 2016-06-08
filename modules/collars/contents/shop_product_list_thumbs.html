@@ -1,0 +1,58 @@
+{|if $productsArray|}
+    <div class="cl-product-list">
+        <ul class="small-block-grid-1 smaller-block-grid-2 medium-block-grid-3 sub-large-block-grid-4 large-block-grid-4">
+            {|foreach from=$productsArray item="e"|}
+                <li>
+                    <div class="cl-product-thumb">
+                        <div class="block-image">
+                            {|if $e.iconImage|}
+                                <img src="{|$e.iconImage|}" alt="{|$e.iconName|escape|}" title="{|$e.iconName|escape|}" class="icon-image" />
+                            {|/if|}
+                            <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|escape|}" title="{|$e.name|escape|}" /></a>
+                        </div>
+
+                        <div class="hidden-descript">
+
+                            <div class="name"><a href="{|$e.url|}" title="{|$e.name|}">{|$e.name|}</a></div>
+
+                            <div class="block-price">
+                                {|if $e.price == 0|}
+                                <div class="os-price-specify">{|$translate_specify_a_price|}</div>
+                                {|else|}
+                                {|if !$e.avail|}
+                                <div class="os-price-unavailable {|if $e.priceold AND $e.priceold > $e.price|}new-price{|/if|}">
+                                    from {|$e.price|} {|$e.currency|}
+                                </div>
+                                {|else|}
+                                <div class="os-price-available {|if $e.priceold AND $e.priceold > $e.price|}new-price{|/if|}">
+                                    from {|$e.price|} {|$e.currency|}
+                                </div>
+                                {|/if|}
+                                {|if $e.priceold AND $e.priceold > $e.price|}
+                                <div class="os-price-old">
+                                    {|$e.priceold|} {|$e.currency|}
+                                </div>
+                                {|/if|}
+                                <div class="js_personal_discount_check" data-productid="{|$e.id|}"></div>
+                                {|/if|}
+                            </div>
+                            <div class="block-button">
+                                {|if $e.canbuy or $e.canMakePreorder|}
+                                <div class="button js-shop-buy" data-productid="{|$e.id|}">
+                                    <a href="#" class="js-shop-buy-action cl-button buy-button">{|$translate_buy|}</a>
+                                </div>
+                                {|/if|}
+                                <a href="javascript:void(0);" class="js-shop-favorite cl-favorite-button"  data-productid="{|$e.id|}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {|/foreach|}
+        </ul>
+    </div>
+{|else|}
+    <div class="os-message-noproducts">
+        {|$translate_noproducts_message|}.
+    </div>
+{|/if|}
+

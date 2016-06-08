@@ -1,0 +1,98 @@
+<div class="kzh-page-content">
+    <h1>Отзывы клиентов</h1>
+
+    {|if $message == 'ok'|}
+        <div class="kzh-warning-massage">
+            <div class="kzh-warning-massage-content">
+                Ваш отзыв успешно отослан.
+            </div>
+        </div>
+        <div class="clear">&nbsp;</div>
+    {|/if|}
+    {|if $message == 'error'|}
+        <div class="kzh-warning-massage">
+            <div class="kzh-warning-massage-content">
+                {|foreach from=$errorArray item=e|}
+                    {|if $e == 'name'|}
+                        Не указано имя.<br>
+                    {|/if|}
+                    {|if $e == 'email'|}
+                        Не корректны E-mail.<br>
+                    {|/if|}
+                    {|if $e == 'response'|}
+                        Не заполнен отзыв.<br>
+                    {|/if|}
+                {|/foreach|}
+            </div>
+        </div>
+        <div class="clear">&nbsp;</div>
+    {|/if|}
+
+    <div class="kzh-add-feedback-block">
+        <div class="kzh-add-feedback-block-text">
+            Все отзывы о нашей работе реальны. <br />
+            Мы будем благодарны вам, если вы сможете написать отзыв о нашем отеле и сервисе.
+        </div>
+        <div class="add-feedback-btn">
+            <a href="javascript:void(0);" class="kzh-btn-default" data-caption="feedbackModal">Написать отзыв</a>
+        </div>
+    </div>
+</div>
+<div class="feedback-list-block">
+    {|foreach from=$guestBookArray item="g"|}
+        <div class="feedback-list-item">
+            {|if $g.image|}
+                <div class="image">
+                    <img src="{|$g.image|}" alt=""/>
+                </div>
+            {|/if|}
+
+            <div class="data {|if !$g.image|}no-image{|/if|}">
+                <div class="feedback-user-name">
+                    {|if $g.name|}
+                        {|$g.name|}:
+                    {|else|}
+                        {|$g.login|}:
+                    {|/if|}
+                </div>
+                <div class="feedback-post-date">
+                    {|$g.cdate|}
+                </div>
+                <div class="feedback-list-item-text">
+                    {|$g.response|}
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {|/foreach|}
+</div>
+
+<div class="kzh-modal-wrapp feedbackModal">
+    <div class="modal-black-mask">&nbsp;</div>
+    <div class="kzh-modal" style="margin-left: -280px;">
+        <div class="kzh-modal-content">
+            <div class="kzh-modal-header">
+                Форма отзыва
+            </div>
+            <form method="post">
+                <label style="margin-right: 17px">
+                    <span>Имя</span><br />
+                    <input type="text" name="name" value="{|$control_name|}"/>
+                </label>
+                <label>
+                    <span>E-mail</span><br />
+                    <input type="text" name="email" value="{|$control_email|}"/>
+                </label>
+                <br />
+                <label style="margin-top: 15px">
+                    <span>Отзыв</span><br />
+                    <textarea name="response">{|$control_response|}</textarea>
+                </label>
+                <div class="kzh-modal-submit">
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input type="submit" name="guestbook" value="Отправить" class="kzh-btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

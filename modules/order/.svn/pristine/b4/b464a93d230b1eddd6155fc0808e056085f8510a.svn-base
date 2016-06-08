@@ -1,0 +1,45 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_item_to_basket|}.<br />
+        <br />
+
+        <a href="#" onclick="history.back(-1); return false;">&larr; {|$translate_back|}</a>
+        <a href="/basket/">{|$translate_to_basket|} &rarr;</a>
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_basket_error|}.
+        <br />
+    </div>
+{|/if|}
+
+{|if $link|}
+    <div class="ob-block-element">
+        <form action="" method="post">
+            <strong>{|$translate_bind|}:</strong>
+            <br />
+            <br />
+
+            {|$translate_price_name|}: <strong>{|$pricename|}</strong><br />
+            {|$translate_price_code|}: <strong>{|$pricecode|}</strong><br />
+            <br />
+
+            <strong>{|$translate_code_or_name|}</strong><br />
+            <input type="text" name="productid" value="{|$control_productid|}" style="width: 30%;" id="id-product" />
+            <div class="JSPrototypeAutocomplete" id="id-product-autocomplete"></div>
+            <br />
+            <br />
+
+            <label>
+                <input type="checkbox" name="product-add" value="1" />
+                {|$translate_create_product|}
+            </label>
+            <br />
+            <br />
+
+            <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+        </form>
+    </div>
+{|/if|}

@@ -1,0 +1,173 @@
+{|if $position_y_max > 0 AND $statusArray|}
+    {|* "canvas" для расстановки элементов *|}
+    <div class="onebox-workflow-layout" style="height: {|$position_y_max|}px;">
+        {|foreach from=$statusArray item='e'|}
+            <div id="js-wfe-{|$e.id|}"
+                 data-id="{|$e.id|}"
+                 title="{|$e.description|}"
+                 onclick="init_status('{|$e.id|}', '{|$e.name|}')"
+                 class="onebox-workflow-element
+                        onebox-workflow-element-allow
+                        {|if $e.id == $control_status|}onebox-workflow-element-current{|/if|}"
+            style="left: {|$e.positionx|}px; top: {|$e.positiony|}px; width: {|$e.width|}px; height: {|$e.height|}px; {|if $e.colour|} background-color: {|$e.colour|}; {|/if|}">
+                <span class="inner">{|$e.name|}</span>
+            </div>
+        {|/foreach|}
+        <div class="clear"></div>
+    </div>
+    <div id="divStatusDefaultIssue" style="display: none;">
+        <strong>{|$translate_status_zadachi|}: </strong><span id="statusNameDefaultIssue">{|$defaultStatusName|}</span>
+        <input type="hidden" id="statusIdDefaultIssue" name="statusIdDefaultIssue" value="{|$defaultStatusId|}">
+        <br />
+        <br />
+    </div>
+    <br />
+
+    <a class="ob-link-dashed js-stage-block-toggle" href="javascript:void(0);">{|$translate_ukazat_otvetstvennih_po_etapam|}</a><br />
+    <br />
+
+    <div class="js-stage-block ob-block-element" style="display: none;">
+        {|foreach from=$statusArray item="e"|}
+            {|$translate_otvetstvenniy_za_etap|} <strong>{|$e.name|}</strong>
+            <br />
+            <select name="manager_status_{|$e.id|}" class="chzn-select inline" style="width: 300px;">
+                <option value="0">---</option>
+                {|foreach from=$managerStatusArray item="m"|}
+                    <option value="{|$m.id|}" {|if $e.default && $m.id == $userId|}selected{|/if|}>{|$m.name|}</option>
+                {|/foreach|}
+            </select>
+            <input type="text" class="js-datetime" name="status_term_{|$e.id|}" value="">
+            <br />
+            <br />
+        {|/foreach|}
+    </div>
+
+    <script type="text/javascript">
+        // выбор ответственных
+        $j('.js-stage-block-toggle').click(function(){
+            $j('.js-stage-block').slideToggle();
+
+            // select
+            $j('select.chzn-select').select2();
+        });
+
+        // выбор времени
+        $j('.js-datetime').each(function (i, e) {
+            var $e = $j(e);
+            var format = $e.data('dateformat');
+            if (!format) {
+                format = 'yy-mm-dd';
+            }
+
+            $e.datetimepicker({
+                dateFormat: format,
+                changeMonth: true,
+                changeYear: true,
+                //showButtonPanel: false,
+                timeText: '{|$translate_time|}',
+                hourText: '{|$translate_chas|}',
+                minuteText: '{|$translate_minuta|}'
+            });
+        });
+
+        function init_status(id, name) {
+            if ($j('#statusNameDefaultIssue').length) {
+                $j('#statusNameDefaultIssue').text(name);
+            }
+
+            if ($j('#statusIdDefaultIssue').length) {
+                $j('#statusIdDefaultIssue').val(id);
+            }
+
+            if ($j('.js-order-add-statusid').length) {
+                $j('.js-order-add-statusid').select2("val", id);
+            }
+
+            // убираем все current-классы
+            $j('.onebox-workflow-element-current').removeClass('onebox-workflow-element-current');
+
+            // добавляем current class
+            $j('#js-wfe-' + id).addClass('onebox-workflow-element-current');
+        }
+
+        $j(function() {
+            jsPlumb.importDefaults({
+                DragOptions : { cursor: "pointer", zIndex: 2000 },
+                HoverClass: "connector-hover"
+            });
+
+            var stateMachineConnector = {
+                connector: "StateMachine",
+                paintStyle: {
+                    lineWidth: 2,
+                    strokeStyle: "#888888"
+                },
+                hoverPaintStyle:{strokeStyle:"#ff0000"},
+                endpoint:"Blank",
+                anchor:"Continuous",
+                overlays:[ ["PlainArrow", {location: 1, width: 5, length: 5} ]]
+            };
+
+            var stateMachineConnectorAllow = {
+                connector: "StateMachine",
+                paintStyle: {
+                    lineWidth: 3,
+                    strokeStyle: "green"
+                },
+                hoverPaintStyle:{strokeStyle:"#ff0000"},
+                endpoint:"Blank",
+                anchor:"Continuous",
+                overlays:[ ["PlainArrow", {location: 1, width: 10, length: 10} ]]
+            };
+
+            // на все блоки делаем подсказки
+            $j('.onebox-workflow-layout .onebox-workflow-element').tooltip();
+
+            {|foreach from=$statusArray item='e1'|}
+                {|foreach from=$statusArray item='e2'|}
+                    {|if $changeArray[$e1.id][$e2.id]|}
+                        jsPlumb.connect({
+                            source: "js-wfe-{|$e1.id|}",
+                            target: "js-wfe-{|$e2.id|}"
+                        }, stateMachineConnector);
+                    {|/if|}
+                {|/foreach|}
+            {|/foreach|}
+
+            $j('.onebox-workflow-element, .onebox-workflow-element .inner').click(function (e) {
+                if ($j(e.target).hasClass('inner')) {
+                    var statusID = $j(e.target).closest('.onebox-workflow-element').data('id');
+                } else {
+                    var statusID = $j(e.target).data('id');
+                }
+                var statusID = $j(e.target).data('id');
+
+                if ($j('#js-statusid').length) {
+                    $j('#js-statusid').val(statusID);
+                    $j('#js-statusid').change();
+                }
+            });
+
+            $j('#js-statusid').change(function (e) {
+                var statusID = $j('#js-statusid').val();
+
+                // убираем все current-классы
+                $j('.onebox-workflow-element-current').removeClass('onebox-workflow-element-current');
+
+                // добавляем current class
+                $j('#js-wfe-'+statusID).addClass('onebox-workflow-element-current');
+            });
+
+            $j('.js-order-add-statusid').change(function (e) {
+                var id = $j(this).val();
+                var name = $j(this).find('option:selected').text();
+
+                init_status(id, name);
+            });
+    });
+    </script>
+{|/if|}
+
+<input type="hidden" class="js-default-managerid" value="{|$defaultManagerID|}" />
+<input type="hidden" class="js-default-issuename" value="{|$defaultIssueName|}" />
+<input type="hidden" class="js-default-dateto" value="{|$defaultDateTo|}" />

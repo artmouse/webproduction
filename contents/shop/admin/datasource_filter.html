@@ -1,0 +1,58 @@
+<div style="display: none;" class="shop-block-popup js-tableview-popup">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a class="close" onclick="popupClose('.js-tableview-popup');" href="#">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="head">{|$translate_caption_tool_table|}</div>
+        <div class="window-content">
+            <div class="shop-table-view">
+                <form action="" method="post">
+                    {|foreach from=$fieldsArray item="e"|}
+                        <label class="element">
+                            <input type="checkbox" name="columns[]" value="{|$e.key|}" {|if $e.visible|} checked {|/if|} {|if $e.primary|} disabled {|/if|} />
+                            {|$e.name|}
+                        </label>
+                    {|/foreach|}
+                    <br />
+
+                    <div class="view">
+                        <table>
+                            <tr>
+                                <td><strong>{|$translate_show_records_per_page|}</strong>:</td>
+                                <td><input type="text" name="rowscount" value="{|$rowscount|}" style="width: 70px;"/> (max:100)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>{|$translate_sort_by_default|}:</strong></td>
+                                <td>
+                                    <select class="chzn-select inline" name="rowssort" style="width: 200px;">
+                                        <option value="">Auto</option>
+                                        {|foreach from=$fieldsArray item="e"|}
+                                            {|if $e.sortable|}
+                                                <option value="{|$e.key|}" {|if $rowssort == $e.key|} selected {|/if|}>{|$e.name|}</option>
+                                            {|/if|}
+                                        {|/foreach|}
+                                    </select>
+
+                                    <select class="chzn-select inline" name="rowssorttype">
+                                        <option value="">Auto</option>
+                                        <option value="asc" {|if $rowssorttype == 'asc'|} selected {|/if|}>A-Z</option>
+                                        <option value="desc" {|if $rowssorttype == 'desc'|} selected {|/if|}>Z-A</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="ob-button-fixed">
+                        <input type="submit" value="{|$translate_save|}" name="columnsave" class="ob-button button-green" />
+                        <input type="button" value="{|$translate_cancel|}" class="ob-button" onclick="popupClose('.js-tableview-popup');" />
+                    </div>
+                    <div class="ob-button-fixed-place"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

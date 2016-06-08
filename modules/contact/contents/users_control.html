@@ -1,0 +1,1285 @@
+{|$menu|}
+
+{|if $message == 'access'|}
+    <div class="shop-message-error">
+        Доступ запрещён.
+    </div>
+    <script>setTimeout("location='{|$redirectUrl|}'",3000);</script>
+{|else|}
+
+    {|if $message == 'deleted'|}
+        <div class="shop-message-success">
+            {|$translate_record_deleted_successfully|}
+        </div>
+    {|/if|}
+
+    {|if $message == 'ok'|}
+        <div class="shop-message-success">
+            {|$translate_user_save_success|}.
+        </div>
+    {|/if|}
+
+    {|if $messageSend == 'ok'|}
+        <div class="shop-message-success">
+            {|$translate_vashe_soobshchenie_uspeshno_otpravleno|}.
+        </div>
+    {|/if|}
+
+    {|if $message == 'error'|}
+        <div class="shop-message-error">
+            {|$translate_update_data_error|}.<br />
+            {|foreach from=$errorsArray item="e"|}
+                {|if $e == 'login'|}
+                    {|$translate_order_error_login|}. {|$translate_order_error_login_must_be|}.<br />
+                {|/if|}
+                {|if $e == 'login-exists'|}
+                    {|$translate_login_already_exists|}.<br />
+                {|/if|}
+                {|if $e == 'password'|}
+                    {|$translate_profile_error_password|}.<br />
+                {|/if|}
+                {|if $e == 'email'|}
+                    {|$translate_profile_error_mail|}.<br />
+                {|/if|}
+                {|if $e == 'email-exists'|}
+                    {|$translate_profile_error_mail_exists|}.<br />
+                {|/if|}
+                {|if $e == 'parentid'|}
+                    {|$translate_user_error_parent_id|}.<br />
+                {|/if|}
+                {|if $e == 'phone'|}
+                    {|$translate_order_error_phone|}.<br />
+                {|/if|}
+                {|if $e == 'bdate'|}
+                    {|$translate_user_error_bdate|}.<br />
+                {|/if|}
+                {|if $e == 'demo'|}
+                    {|$translate_user_error_demo|}.<br />
+                {|/if|}
+                {|if $e == 'cdate'|}
+                    {|$translate_nepravilnaya_data_sozdaniya_kontakta|}.<br />
+                {|/if|}
+                {|if $e == 'noname'|}
+                    {|$translate_no_name_error|}.<br />
+                {|/if|}
+                {|if $e == 'nocontact'|}
+                    {|$translate_no_contact_error|}.<br />
+                {|/if|}
+                {|if $e == 'notUnicCompany'|}
+                    {|$translate_kompaniya_s_takim_imenem_uzhe_sushchestvuet|}.<br />
+                {|/if|}
+                {|if $e == 'nosourceid'|}
+                     Невыбран {|$translate_istochnik|} или {|$translate_kanal|} .<br />
+                {|/if|}
+            {|/foreach|}
+        </div>
+    {|/if|}
+
+    {|if not $canEdit|}
+        <div class="shop-message-info">
+            {|$translate_client_cant_edit_mess|}.
+        </div>
+    {|/if|}
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="ob-grid-default">
+            <div class="main-layer">
+                <div class="double">
+                    <div class="block-zone">
+                        <div class="ob-block-element js-userform-layer">
+                            <div class="block-caption">{|$translate_personalnaya_informatsiya|}</div>
+                            <label class="employee">
+                                <input type="checkbox" name="employer" {|if $control_employer|}checked{|/if|} {|if not $canEdit|} disabled {|/if|} />
+                                <span class="js-type-company-fields" {|if "company" != $control_typesex|}style="display: none;"{|/if|}>{|$translate_moya_kompaniya|}</span>
+                                <span class="js-type-user-fields" {|if "company" == $control_typesex|}style="display: none;"{|/if|}>{|$translate_employee|}</span>
+                            </label>
+                            <div class="clear"></div>
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_type_shot|}:</div>
+                                    <div class="el-value">
+                                        {|if $control_typesex == 'company'|}
+                                            {|$translate_company|}
+                                        {|else|}
+                                            {|$translate_contact|}
+                                        {|/if|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <input type="hidden" name="typesex" value="{|$control_typesex|}" class="js-type-change" id="js-typesex-input">
+
+                                    <select class="chzn-select js-typesex">
+                                        <option value="company" {|if $control_typesex == 'company'|} selected {|/if|}> {|$translate_company|}</option>
+                                        <option value="" {|if $control_typesex != 'company'|} selected {|/if|}>{|$translate_contact|}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="ob-data-element js-data-element js-type-user-fields" {|if "company" == $control_typesex|} style="display: none;" {|/if|}>
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_pol|}:</div>
+                                    <div class="el-value">
+                                        {|if "woman" == $control_typesex|}{|$translate_user_woman|}{|elseif "" == $control_typesex|}{|$translate_no_sex|}{|else|}{|$translate_user_man|}{|/if|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <select class="chzn-select js-typesex" id="js-type-sex">
+                                        <option value="" {|if $control_typesex == ""|} selected {|/if|}></option>
+                                        <option value="man" {|if $control_typesex == 'man'|} selected {|/if|}>{|$translate_user_man|}</option>
+                                        <option value="woman" {|if $control_typesex == 'woman'|} selected {|/if|}>{|$translate_user_woman|}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="ob-data-element js-data-element js-type-user-fields" {|if "company" == $control_typesex|} style="display: none;" {|/if|}>
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_fio|}:</div>
+                                    <div class="el-value">
+                                        {|$control_namelast|}
+                                        {|$control_name|}
+                                        {|$control_namemiddle|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <table class="layer-table">
+                                        <tr>
+                                            <td>
+                                                <input type="text" name="namelast" value="{|$control_namelast|}" placeholder="{|$translate_name_last|}" {|if not $canEdit|} disabled {|/if|} />
+                                            </td>
+                                            <td class="separator"></td>
+                                            <td>
+                                                <input type="text" name="name" value="{|$control_name|}" placeholder="{|$translate_name_small|}" {|if not $canEdit|} disabled {|/if|} />
+                                            </td>
+                                            <td class="separator"></td>
+                                            <td>
+                                                <input type="text" name="namemiddle" value="{|$control_namemiddle|}" placeholder="{|$translate_name_middle|}" {|if not $canEdit|} disabled {|/if|} />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_company|}:</div>
+                                    <div class="el-value">
+                                        {|if $companyArray|}
+                                            {|foreach from=$companyArray item="e"|}
+                                                <a href="{|$e.url|}" title="{|$translate_prosmotret_kompaniyu|} {|$e.name|}">{|$e.name|}</a>
+                                                <a class="ob-link-edit" href="#"></a>
+                                                <br />
+                                            {|/foreach|}
+                                        {|else|}
+                                            {|$control_company|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        {|/if|}
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    {|if $canEdit|}
+                                        <ul id="js-company-tag" data-input="#js-company-input"></ul>
+                                        <input id="js-company-input" type="text" name="company" value="{|$control_company|}" style="display: none" placeholder="{|$translate_company|}" />
+                                    {|else|}
+                                        <input type="text" name="company" value="{|$control_company|}" placeholder="{|$translate_company|}" disabled />
+                                    {|/if|}
+                                </div>
+                            </div>
+
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption ">
+                                        <span class="js-post-title">{|if 'company' == $control_typesex|}{|$translate_spacialization|}{|else|}{|$translate_post|}{|/if|}</span>:
+                                    </div>
+                                    <div class="el-value">
+                                        {|$real_post|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    {|if $canEdit|}
+                                        <ul id="js-post-tag" data-input="#js-post-field"></ul>
+                                    {|/if|}
+                                    <input type="text" name="post" value="{|$control_post|}" id="js-post-field" {|if not $canEdit|} disabled {|/if|} style="display: none" />
+                                </div>
+                            </div>
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_manager|}:</div>
+                                    <div class="el-value">
+                                        {|foreach from=$managerArray item="e"|}
+                                            {|if $e.id == $control_managerid|}{|$e.name|}{|/if|}
+                                        {|/foreach|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <select name="managerid" class="chzn-select" {|if not $canEdit|} disabled {|/if|}>
+                                        <option value="0">---</option>
+                                        {|foreach from=$managerArray item="e"|}
+                                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                                        {|/foreach|}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {|if !$box|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_convenient_time|}:</div>
+                                        <div class="el-value">
+                                            {|$control_time|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="text" name="time" value="{|$control_time|}" {|if not $canEdit|} disabled {|/if|} />
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.phone|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_pozvonit|}:</div>
+                                        <div class="el-value">
+                                            {|foreach from=$phoneArray item="e"|}
+                                                {|if $box AND $canOriginate|}
+                                                    <a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="javascript:void(0);" data-phone="{|$e|}" title="{|$translate_pozvonit|} {|$e|}">{|$e|}</a>
+                                                {|else|}
+                                                    <span class="ob-link-phone">{|$e|}</span>
+                                                {|/if|}
+
+                                                {|if $canSmsPhonesArray.$e|}
+                                                    &nbsp;
+                                                    <a class="ob-link-email ob-link-dashed js-tooltip" href="javascript:void(0);" onclick='sms_popup_open("{|$e|}");' title="{|$translate_napisat|} {|$e|}">SMS</a>
+                                                {|/if|}
+                                                <a class="ob-link-edit" href="#"></a>
+                                                <br />
+                                                {|foreachelse|}
+                                                <a class="ob-link-edit" href="#"></a>
+                                            {|/foreach|}
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <textarea name="phones" rows="1" class="js-autosize" title="{|$control_phones|}" placeholder="{|$translate_phones|}" {|if not $canEdit|} disabled {|/if|}>{|$control_phones|}</textarea>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.email|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_napisat|}:</div>
+                                        <div class="el-value">
+                                            {|foreach from=$emailArray item="e"|}
+                                                {|if $box|}
+                                                    <a class="ob-link-email ob-link-dashed js-email-write js-tooltip" href="javascript:void(0);" data-email="{|$e|}" title="{|$translate_napisat|} {|$e|}">{|$e|}</a>
+                                                {|else|}
+                                                    <a href="mailto:{|$e|}" class="ob-link-email js-tooltip" title="{|$translate_napisat|} {|$e|}">{|$e|}</a>
+                                                {|/if|}
+                                                <a class="ob-link-edit" href="#"></a>
+                                                <br />
+                                                {|foreachelse|}
+                                                <a class="ob-link-edit" href="#"></a>
+                                            {|/foreach|}
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <textarea name="emails" rows="1" class="js-autosize" placeholder="E-mail" {|if not $canEdit|} disabled {|/if|}>{|$control_emails|}</textarea>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.subscribe|}
+                                <div class="ob-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">&nbsp;</div>
+                                        <div class="el-value">
+                                            <label>
+                                                <input type="checkbox" name="distribution" {|if $control_distribution|}checked{|/if|} {|if not $canEdit|} disabled {|/if|} />
+                                                {|$translate_subscribe_to_our_newsletter|}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if $recommendTimeArray|}
+                                <div class="ob-recommended-time">
+                                    <div class="head">{|$translate_vremya_udobnoe_dlya_svyazi|}:</div>
+                                    <div class="line">
+                                        {|foreach from=$recommendWeekDayArray item="dayName" key="day"|}
+                                            <div class="day {|if $recommendWeekDayCurrent == $dayName|}current{|/if|}">
+                                                <span>{|$dayName|}</span>
+                                                {|if !$recommendTimeArray[$day]|}
+                                                    <div class="time">-</div>
+                                                {|else|}
+                                                    <div class="time">{|$recommendTimeArray[$day]|}</div>
+                                                {|/if|}
+                                            </div>
+                                        {|/foreach|}
+                                    </div>
+                                </div>
+                                <br />
+                            {|/if|}
+
+                            {|if $box |}
+                                {|if not $fieldHideArray.skype|}
+                                    <div class="ob-data-element js-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">Skypes:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$skypeArray item="e"|}
+                                                    {|if $e|}<a class="ob-link-email ob-link-dashed js-tooltip" href="skype:{|$e|}?chat" title="{|$translate_napisat|} {|$e|}">{|$e|}</a>{|/if|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                    <br />
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                        <div class="data-edit">
+                                            <a class="ob-link-delete" href="#"></a>
+                                            <a class="ob-link-accept" href="#"></a>
+                                            <textarea name="skype" rows="1" class="js-autosize" {|if not $canEdit|} disabled {|/if|}>{|$control_skype|}</textarea>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if not $fieldHideArray.jabber|}
+                                    <div class="ob-data-element js-data-element js-type-user-fields">
+                                        <div class="data-view">
+                                            <div class="el-caption">Jabber:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$jabberArray item="e"|}
+                                                    {|if $e|}<span class="ob-link-email">{|$e|}</span>{|/if|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                    <br />
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                        <div class="data-edit">
+                                            <a class="ob-link-delete" href="#"></a>
+                                            <a class="ob-link-accept" href="#"></a>
+                                            <textarea name="jabber" rows="1" class="js-autosize">{|$control_jabber|}</textarea>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if not $fieldHideArray.whatsapp|}
+                                    <div class="ob-data-element js-data-element js-type-user-fields">
+                                        <div class="data-view">
+                                            <div class="el-caption">WhatsApp:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$whatsappArray item="e"|}
+                                                    {|if $e|}<span class="ob-link-email">{|$e|}</span>{|/if|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                    <br />
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                        <div class="data-edit">
+                                            <a class="ob-link-delete" href="#"></a>
+                                            <a class="ob-link-accept" href="#"></a>
+                                            <textarea name="whatsapp" rows="1" class="js-autosize">{|$control_whatsapp|}</textarea>
+                                        </div>
+                                    </div>
+                                {|/if|}
+                            {|/if|}
+
+                            {|if not $fieldHideArray.address|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_address_small|}:</div>
+                                        <div class="el-value">
+                                            {|if $control_address|}<span class="ob-link-adress">{|$control_address|}</span>{|/if|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <textarea name="address" class="js-autosize" rows="1" placeholder="" {|if not $canEdit|}disabled{|/if|}>{|$control_address|}</textarea>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if $box|}
+                                {|if not $fieldHideArray.source|}
+                                    <div class="ob-data-element js-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">{|$translate_kanal|}:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$sourceArray item="e"|}
+                                                    {|if $e.id == $control_sourceid|}{|$e.name|}{|/if|}
+                                                {|/foreach|}
+                                                <a class="ob-link-edit" href="#"></a>
+                                            </div>
+                                        </div>
+                                        <div class="data-edit">
+                                            <a class="ob-link-delete" href="#"></a>
+                                            <a class="ob-link-accept" href="#"></a>
+                                            <select name="sourceid" class="chzn-select" {|if not $canEdit|} disabled {|/if|}>
+                                                <option value="">---</option>
+                                                {|foreach from=$sourceArray item="e"|}
+                                                    <option value="{|$e.id|}" {|if $e.id == $control_sourceid|} selected {|/if|}>{|$e.name|}</option>
+                                                {|/foreach|}
+                                            </select>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if not $fieldHideArray.contractor|}
+                                    <div class="ob-data-element js-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">{|$translate_contractor|}:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$contractorArray item="e"|}
+                                                    {|if $e.id == $control_contractorid|}{|$e.name|}{|/if|}
+                                                {|/foreach|}
+                                                <a class="ob-link-edit" href="#"></a>
+                                            </div>
+                                        </div>
+                                        <div class="data-edit">
+                                            <a class="ob-link-delete" href="#"></a>
+                                            <a class="ob-link-accept" href="#"></a>
+                                            <select name="contractorid" class="chzn-select" {|if not $canEdit|} disabled {|/if|}>
+                                                {|foreach from=$contractorArray item="e"|}
+                                                    <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                                                {|/foreach|}
+                                            </select>
+                                        </div>
+                                    </div>
+                                {|/if|}
+                            {|/if|}
+
+                            {|if not $fieldHideArray.bdate|}
+                                <div class="ob-data-element js-data-element ">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_bdate|}:</div>
+                                        <div class="el-value">
+                                            {|$control_bdate|}
+                                            {|if $birthday|}
+                                                <span class="ob-link-bday" title="{|$translate_segodnya_den_rozhdeniya|} {|$control_bdate|}"></span>
+                                            {|/if|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit" style="overflow:hidden">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <div class="field-date">
+                                            <select name="bdate_day" class="chzn-select" placeholder="{|$translate_day|}">
+                                                <option value="">---</option>
+                                                {|foreach from=$arrayDay item="day"|}
+                                                    <option value="{|$day|}" {|if $day == $control_bdate_day|} selected {|/if|}>{|$day|}</option>
+                                                {|/foreach|}
+                                            </select>
+                                        </div>
+                                        <div class="field-month">
+                                            <select name="bdate_month" class="chzn-select" placeholder="{|$translate_month|}">
+                                                <option value="">---</option>
+                                                {|foreach from=$arrayMonth item="month"|}
+                                                    <option value="{|$month.num|}" {|if $month.num == $control_bdate_month|} selected {|/if|}>{|$month.name|}</option>
+                                                {|/foreach|}
+                                            </select>
+                                        </div>
+                                        <div class="field-year">
+                                            <input type="text" name="bdate_year" value="{|$control_bdate_year|}" placeholder="{|$translate_year|}" {|if not $canEdit|} disabled {|/if|} />
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_created|}:</div>
+                                    <div class="el-value">
+                                        {|$control_cdate|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <input type="text" class="js-date" name="cdate" value="{|$control_cdate|}" {|if not $canEdit|} disabled {|/if|} />
+                                </div>
+                            </div>
+
+                            {|if not $fieldHideArray.url|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_website_urls|}:</div>
+                                        <div class="el-value">
+                                            {|foreach from=$urlsArray item="e"|}
+                                                {|if $e|}<a href="{|$e|}">{|$e|}</a><br />{|/if|}
+                                            {|/foreach|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <textarea name="urls" class="js-autosize" rows="1" {|if not $canEdit|} disabled {|/if|}>{|$control_urls|}</textarea>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.parent|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_contact_recomendation|}:</div>
+                                        <div class="el-value">
+                                            {|if $control_parent_href|}
+                                                <a href="{|$control_parent_href|}" target="_blank">{|$control_parentname|}</a>
+                                            {|else|}
+                                                {|$control_parentname|}
+                                            {|/if|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit" style="padding-right: 70px;">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        {|if $canEdit|}
+                                            <a class="ob-link-clear" href="#" id="id-delete-recomended" title="{|$translate_clear|}"></a>
+                                        {|/if|}
+                                        <input type="text" name="parentname" id="id-recomended-name" value="{|$control_parentname|}" />
+                                        {|*|}<a href="#" id="id-recomended" class="ob-button">{|$translate_change_contact|}</a>{|*|}
+                                        <input type="hidden" name="parentid" id="id-recomended-value" value="{|$control_parentid|}" />
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if $box AND not $fieldHiddenArray.referral|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_protsent_referalnie_partnerskie|}:</div>
+                                        <div class="el-value">
+                                            {|if $control_allowreferal|}
+                                                {|$control_allowreferal|}%
+                                            {|/if|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="text" name="allowreferal" rows="1" value="{|$control_allowreferal|}" />
+                                    </div>
+                                </div>
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_svyazi|}:</div>
+                                        <div class="el-value">
+                                            {|foreach from=$friendsArray key="i" item="e"|}
+                                                {|if $i|}
+                                                    ,
+                                                {|/if|}
+                                                <a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.name|}</a>
+                                            {|/foreach|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <input type="hidden" name="friendslist" value="{|$control_friendslist|}" class="js-user-filter-autocomplete-client" id="js-user-filter" style="width: 100%;"/>
+                                        <script type="text/javascript">
+                                            $j(function () {
+                                                var tags = [
+                                                    {|foreach from=$friendsArray item="p" name="foreach1"|}
+                                                    {'id':{|$p.id|}, 'text':'{|$p.name|}'}
+                                                    {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                                                    {|/foreach|}
+                                                ];
+
+                                                $j("#js-user-filter").select2('data', tags);
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.tags|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_tags|}:</div>
+                                        <div class="el-value">
+                                            {|$control_tags|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <ul class="js-tags" data-input=".js-tags-input"></ul>
+                                        <input type="hidden" name="tags" value="{|$control_tags|}" class="js-tags-input" />
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.pricelevel|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_price_level|}:</div>
+                                        <div class="el-value">
+                                            {|if $control_pricelevel === '0'|}
+                                                {|$translate_usual_prices|}
+                                            {|else|}
+                                                {|$control_pricelevel|}
+                                            {|/if|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <select name="pricelevel" class="chzn-select" {|if not $canEdit|} disabled {|/if|}>
+                                            <option value="1" {|if $control_pricelevel == 1|} selected {|/if|}>1</option>
+                                            <option value="2" {|if $control_pricelevel == 2|} selected {|/if|}>2</option>
+                                            <option value="3" {|if $control_pricelevel == 3|} selected {|/if|}>3</option>
+                                            <option value="4" {|if $control_pricelevel == 4|} selected {|/if|}>4</option>
+                                            <option value="5" {|if $control_pricelevel == 5|} selected {|/if|}>5</option>
+                                            <option value="0" {|if $control_pricelevel === '0'|} selected {|/if|}>{|$translate_usual_prices|}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            {|if not $fieldHideArray.discount|}
+                                <div class="ob-data-element js-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_discount|}:</div>
+                                        <div class="el-value">
+                                            {|$control_discountName|}
+                                            <a class="ob-link-edit" href="#"></a>
+                                        </div>
+                                    </div>
+                                    <div class="data-edit">
+                                        <a class="ob-link-delete" href="#"></a>
+                                        <a class="ob-link-accept" href="#"></a>
+                                        <select name="discount" class="chzn-select" {|if not $canEdit|} disabled {|/if|}>
+                                            <option value="0">---</option>
+                                            {|foreach from=$discountArray item="d"|}
+                                                <option value="{|$d.id|}" {|if $control_discount == $d.id|} selected {|/if|}>{|$d.name|}</option>
+                                            {|/foreach|}
+                                        </select>
+                                    </div>
+                                </div>
+                            {|/if|}
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">{|$translate_gruppi|}:</div>
+                                    <div class="el-value">
+                                        {|foreach from=$contactGroupArray key="i" item="e"|}
+                                            {|$e.name|}
+                                        {|/foreach|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <select multiple name="group[]" class="chzn-select">
+                                        {|foreach from=$groupArray item="e"|}
+                                            <option value="{|$e.id|}" {|if $contactGroupArray[$e.id]|} selected {|/if|}>{|$e.name|}</option>
+                                        {|/foreach|}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-caption">Code1c:</div>
+                                    <div class="el-value">
+                                        {|if $control_code1c|}
+                                            {|$control_code1c|}
+                                        {|/if|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <input type="text" name="code1c" rows="1" value="{|$control_code1c|}" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ob-block-element js-userform-layer">
+                            <div class="block-caption">{|$acl_comments|}</div>
+                            <div class="ob-data-element js-data-element">
+                                <div class="data-view">
+                                    <div class="el-value">
+                                        {|if $control_commentadmin|}
+                                            {|$control_commentadmin|nl2br|}
+                                        {|else|}
+                                            {|$translate_bez_kommentariev|}
+                                        {|/if|}
+                                        <a class="ob-link-edit" href="#"></a>
+                                    </div>
+                                </div>
+                                <div class="data-edit">
+                                    <a class="ob-link-delete" href="#"></a>
+                                    <a class="ob-link-accept" href="#"></a>
+                                    <textarea name="commentadmin" rows="1" class="js-autosize" {|if not $canEdit|} disabled {|/if|}>{|$control_commentadmin|}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        {|if $customFieldArray|}
+                            <div class="ob-block-element js-userform-layer">
+                                {|foreach from=$customFieldArray item="e" key="key"|}
+                                    {|if $e.type == 'text'|}
+                                        <div class="ob-data-element js-data-element">
+                                            <div class="data-view">
+                                                <div class="el-caption">{|$e.name|}:</div>
+                                                <div class="el-value">
+                                                    {|$e.value|nl2br|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="data-edit">
+                                                <a class="ob-link-delete" href="#"></a>
+                                                <a class="ob-link-accept" href="#"></a>
+                                                <textarea name="custom_{|$key|}">{|$e.value|}</textarea>
+                                            </div>
+                                        </div>
+                                    {|elseif $e.type == 'string'|}
+                                        <div class="ob-data-element js-data-element">
+                                            <div class="data-view">
+                                                <div class="el-caption">{|$e.name|}:</div>
+                                                <div class="el-value">
+                                                    {|$e.value|nl2br|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="data-edit">
+                                                <a class="ob-link-delete" href="#"></a>
+                                                <a class="ob-link-accept" href="#"></a>
+                                                <input type="text" name="custom_{|$key|}" value="{|$e.value|}" />
+                                            </div>
+                                        </div>
+                                    {|elseif $e.type == 'date'|}
+                                        <div class="ob-data-element js-data-element">
+                                            <div class="data-view">
+                                                <div class="el-caption">{|$e.name|}:</div>
+                                                <div class="el-value">
+                                                    {|$e.value|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="data-edit">
+                                                <a class="ob-link-delete" href="#"></a>
+                                                <a class="ob-link-accept" href="#"></a>
+                                                <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-date" />
+                                            </div>
+                                        </div>
+                                    {|elseif $e.type == 'datetime'|}
+                                        <div class="ob-data-element js-data-element">
+                                            <div class="data-view">
+                                                <div class="el-caption">{|$e.name|}:</div>
+                                                <div class="el-value">
+                                                    {|$e.value|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="data-edit">
+                                                <a class="ob-link-delete" href="#"></a>
+                                                <a class="ob-link-accept" href="#"></a>
+                                                <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-datetime" />
+                                            </div>
+                                        </div>
+                                    {|elseif $e.type == 'int'|}
+                                        <div class="ob-data-element js-data-element">
+                                            <div class="data-view">
+                                                <div class="el-caption">{|$e.name|}:</div>
+                                                <div class="el-value">
+                                                    {|$e.value|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="data-edit">
+                                                <a class="ob-link-delete" href="#"></a>
+                                                <a class="ob-link-accept" href="#"></a>
+                                                <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-int" />
+                                            </div>
+                                        </div>
+                                    {|elseif $e.type == 'float'|}
+                                        <div class="ob-data-element js-data-element">
+                                            <div class="data-view">
+                                                <div class="el-caption">{|$e.name|}:</div>
+                                                <div class="el-value">
+                                                    {|$e.value|}
+                                                    <a class="ob-link-edit" href="#"></a>
+                                                </div>
+                                            </div>
+                                            <div class="data-edit">
+                                                <a class="ob-link-delete" href="#"></a>
+                                                <a class="ob-link-accept" href="#"></a>
+                                                <input type="text" name="custom_{|$key|}" value="{|$e.value|}" class="js-float" />
+                                            </div>
+                                        </div>
+                                    {|elseif $e.type == 'bool'|}
+                                        <div class="ob-data-element">
+                                            <div class="data-view">
+                                                <div class="el-value">
+                                                    <label>
+                                                        <input type="checkbox" name="custom_{|$key|}" value="1" {|if $e.value|} checked {|/if|} />
+                                                        {|$e.name|}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {|/if|}
+                                {|/foreach|}
+                            </div>
+                        {|/if|}
+
+                        {|if $address|}
+                            <div class="ob-block-element">
+                                <div class="block-caption">{|$translate_lokatsiya|}</div>
+                                <div id="js-map-canvas" style="width: 100%; height: 200px;"></div>
+                                <div id="js-map-address" style="display: none;">{|$address|}</div>
+                                <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=true&callback=initializeMap"></script>
+                            </div>
+                        {|/if|}
+                    </div>
+
+                    <div class="block-zone">
+                        {|if $block_company|}
+                            {|$block_company|}
+                        {|/if|}
+
+                        {|if $block_statistic|}
+                            {|$block_statistic|}
+                        {|/if|}
+
+                        {|if $workflowArray|}
+                            <div class="ob-block-element">
+                                <div class="block-caption">{|$translate_nachat_biznes_protsess|}</div>
+                                <select class="chzn-select js-start-wf" placeholder="{|$translate_viberite_biznes_protsess|}">
+                                    <option value=""></option>
+                                    {|foreach from=$workflowArray item="e"|}
+                                        <option value="{|$e.url|}">{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+
+                                <script>
+                                    $j('.js-start-wf').change(function(){
+                                        document.location = $j(this).val();
+                                    });
+                                </script>
+                            </div>
+                        {|/if|}
+
+                        {|if $recommendTimeArray|}
+                            <div class="ob-recommended-time">
+                                <div class="head">{|$translate_vremya_udobnoe_dlya_svyazi|}:</div>
+                                <div class="line">
+                                    {|foreach from=$recommendWeekDayArray item="dayName" key="day"|}
+                                        <div class="day {|if $recommendWeekDayCurrent == $dayName|}current{|/if|}">
+                                            <span>{|$dayName|}</span>
+                                            {|if !$recommendTimeArray[$day]|}
+                                                <div class="time">-</div>
+                                            {|else|}
+                                                <div class="time">{|$recommendTimeArray[$day]|}</div>
+                                            {|/if|}
+                                        </div>
+                                    {|/foreach|}
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        {|if $block_workflow|}
+                            <div class="ob-block-element">
+                                {|$block_workflow|}
+                            </div>
+                        {|/if|}
+
+                        {|if $block_issue|}
+                            <div class="ob-block-element">
+                                {|$block_issue|}
+                            </div>
+                        {|/if|}
+
+                        {|if $block_charts|}
+                            <div class="ob-block-element">
+                                {|$block_charts|}
+                            </div>
+                        {|/if|}
+
+                        {|if $reportArray|}
+                            <div class="ob-block-element">
+                                <div class="block-caption">{|$translate_statistic|}</div>
+                                <script type="text/javascript">
+                                    google.load("visualization", "1", {packages:["corechart"]});
+                                    google.setOnLoadCallback(drawChart);
+                                    function drawChart() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ['{|$translate_date|}', '{|$translate_orders|}', '{|$translate_zadach|}', '{|$translate_proektov|}'],
+                                            {|foreach from=$dateArray item="date"|}
+                                            ['{|$date|}', {|$reportArray[$date].countOrder+0|}, {|$reportArray[$date].countIssue+0|}, {|$reportArray[$date].countProject+0|}],
+                                            {|/foreach|}
+                                        ]);
+
+                                        var options = {
+                                            chartArea: {'width': '90%', 'height': '80%'},
+                                            legend: { position: 'none' }
+                                        };
+
+                                        var chart = new google.visualization.LineChart(document.getElementById('chart_div_1'));
+                                        chart.draw(data, options);
+                                    }
+                                </script>
+
+                                <div id="chart_div_1" style="width: 100%; height: 200px;"></div>
+                            </div>
+                        {|/if|}
+
+                        {|if $orderCommentArray|}
+                            <div class="ob-block-element">
+                                <div class="block-caption">{|$translate_poslednie_aktivnosti|}</div>
+                                <div class="ob-list-point">
+                                    {|foreach from=$orderCommentArray item="c"|}
+                                        <div class="element">
+                                            <div class="inner">
+                                                {|if $c.url|}
+                                                    <a href="{|$c.url|}">{|$c.id|} {|if $c.cdate|}({|$c.cdate|}){|/if|}</a>
+                                                    {|if $c.name|}
+                                                        - <a href="{|$c.url|}">{|$c.name|}</a>
+                                                    {|/if|}
+                                                    {|if $c.manager && $c.parentName|}
+                                                        <br><span class="description">{|$c.manager|}, {|$c.parentName|}</span>
+                                                    {|elseif $c.manager && $c.parentName|}
+                                                        <br><span class="description">{|$c.manager|} {|$c.parentName|}</span>
+                                                    {|/if|}
+                                                {|else|}
+                                                    {|$c.id|}
+                                                    {|if $c.name|}
+                                                        - {|$c.name|}
+                                                    {|/if|}
+                                                    {|if $c.manager && $c.parentName|}
+                                                        <br><span class="description">{|$c.manager|}, {|$c.parentName|}</span>
+                                                    {|elseif $c.manager && $c.parentName|}
+                                                        <br><span class="description">{|$c.manager|} {|$c.parentName|}</span>
+                                                    {|/if|}
+                                                {|/if|}
+                                            </div>
+                                        </div>
+                                    {|/foreach|}
+                                </div>
+                            </div>
+                        {|/if|}
+
+                        {|if $predictionArray|}
+                            <div class="ob-block-element">
+                                <div class="block-caption">{|$translate_predskazanie_sobitiy|}</div>
+                                <div class="ob-block-prediction">
+                                    {|foreach from=$predictionArray item="e"|}
+                                        <div class="element">
+                                            <div class="probability {|if $e.probablity < '30'|}min{|elseif $e.probablity > '70'|}max{|/if|}">
+                                                {|$e.probablity|}%
+                                            </div>
+                                            <div class="info">
+                                                <div class="date {|if $e.isToday|}today{|/if|}">{|$e.pdate|}</div>
+                                                {|$e.comment|}
+                                            </div>
+                                        </div>
+                                    {|/foreach|}
+                                </div>
+                            </div>
+                        {|/if|}
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="aside-layer">
+                <div class="block-zone">
+                    <div class="ob-block-element">
+                        <div class="cnt-block-person-card">
+                            <div class="person-avatar">
+                                {|if $avatarimage|}<span class="nb-block-avatar" style="background-image: url('{|$avatarimage|}');"></span>{|/if|}
+                                {|if $srcimage|}
+                                    <a class="ob-link-clear js-image-remove" href="#"></a>
+                                    <input type="hidden" value="" name="deleteimage">
+                                {|/if|}
+                                <a class="ob-link-edit js-image-edit" href="#"></a>
+                                <input id="js-image-add" type="file" name="avatarimage" />
+                            </div>
+                            <strong class="name">
+                                {|$real_namelast|}
+                                {|$real_name|}
+                                {|$real_namemiddle|}
+                            </strong>
+
+                            {|if $companyArray|}
+                                {|foreach from=$companyArray item="e"|}
+                                    <a href="{|$e.url|}" title="{|$translate_prosmotret_kompaniyu|} {|$e.name|}">{|$e.name|}</a>
+                                {|/foreach|}
+                            {|else|}
+                                <strong class="name">{|$real_company|}</strong>
+                            {|/if|}
+                            <span class="light">{|$real_post|}</span>
+
+                            {|if $contactGroupArray|}
+                                {|foreach from=$contactGroupArray item="e"|}
+                                    <span class="group">{|$e.name|}</span>
+                                {|/foreach|}
+                            {|/if|}
+                        </div>
+                    </div>
+
+                    {|foreach from=$companyDataArray item="c"|}
+                        <div class="block-zone">
+                            <div class="ob-block-element js-userform-layer">
+                                <div class="block-caption">{|$translate_informatsiya_o_kompanii|} {|$c.name|}</div>
+                                <div class="ob-data-element">
+                                    <div class="data-view">
+                                        <div class="el-caption">{|$translate_company|}:</div>
+                                        <div class="el-value">
+                                            <a href="{|$c.url|}" title="{|$translate_prosmotret_kompaniyu|} {|$c.name|}">{|$c.name|}</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {|if $c.phoneArray|}
+                                    <div class="ob-data-element js-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">{|$translate_pozvonit|}:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$c.phoneArray item="e"|}
+                                                    {|if $box AND $canOriginate|}
+                                                        <a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="javascript:void(0);" data-phone="{|$e|}" title="{|$translate_pozvonit|} {|$e|}">{|$e|}</a>
+                                                    {|else|}
+                                                        <span class="ob-link-phone">{|$e|}</span>
+                                                    {|/if|}
+
+                                                    {|if $canSmsPhonesArray.$e|}
+                                                        &nbsp;
+                                                        <a class="ob-link-email ob-link-dashed js-tooltip" href="javascript:void(0);" onclick='sms_popup_open("{|$e|}");' title="{|$translate_napisat|} {|$e|}">SMS</a>
+                                                    {|/if|}
+                                                    <br />
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if $c.emailArray|}
+                                    <div class="ob-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">{|$translate_napisat|}:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$c.emailArray item="e"|}
+                                                    {|if $box|}
+                                                        <a class="ob-link-email ob-link-dashed js-email-write js-tooltip" href="javascript:void(0);" data-email="{|$e|}" title="{|$translate_napisat|} {|$e|}">{|$e|}</a>
+                                                    {|else|}
+                                                        <a href="mailto:{|$e|}" class="ob-link-email js-tooltip" title="{|$translate_napisat|} {|$e|}">{|$e|}</a>
+                                                    {|/if|}
+                                                    <br />
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if $c.skypeArray|}
+                                    <div class="ob-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">Skypes:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$c.skypeArray item="e"|}
+                                                    {|if $e|}<a class="ob-link-email ob-link-dashed js-tooltip" href="skype:{|$e|}?chat" title="{|$translate_napisat|} {|$e|}">{|$e|}</a> <br />{|/if|}
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if $c.jabberArray|}
+                                    <div class="ob-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">Jabber:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$c.jabberArray item="e"|}
+                                                    {|if $e|}<span class="ob-link-email">{|$e|}</span><br />{|/if|}
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if $c.whatsappArray|}
+                                    <div class="ob-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">WhatsApp:</div>
+                                            <div class="el-value">
+                                                {|foreach from=$c.whatsappArray item="e"|}
+                                                    {|if $e|}<span class="ob-link-email">{|$e|}</span><br />{|/if|}
+                                                {|/foreach|}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {|/if|}
+
+                                {|if $c.address|}
+                                    <div class="ob-data-element">
+                                        <div class="data-view">
+                                            <div class="el-caption">{|$translate_address_small|}:</div>
+                                            <div class="el-value">
+                                                {|*|}<span class="ob-link-adress">{|$c.address|}</span>{|*|}
+                                                {|$c.address|}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {|/if|}
+                            </div>
+                        </div>
+                    {|/foreach|}
+
+                    {|if $parentArray|}
+                        <div class="ob-block-element">
+                            <div class="block-caption">{|$translate_kanal_rekomendatsiy|}</div>
+                            <div class="ob-list-chain">
+                                {|foreach from=$parentArray item="e"|}
+                                    <div class="element">
+                                        <div class="inner">
+                                            <div class="date">{|$e.cdate|}</div>
+                                            <a href="{|$e.url|}">{|$e.name|}</a>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
+                                {|/foreach|}
+                            </div>
+                        </div>
+                    {|/if|}
+
+                    {|if $childArray|}
+                        <div class="ob-block-element">
+                            <div class="block-caption">{|$translate_porekomendoval|}: {|$childArray|@count|}</div>
+                            <div class="ob-list-point">
+                                {|foreach from=$childArray item="e"|}
+                                    <div class="element">
+                                        <div class="inner">
+                                            <div class="date">{|$e.cdate|}</div>
+                                            <a href="{|$e.url|}" class="js-contact-preview" data-id="{|$e.id|}">{|$e.name|}</a>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
+                                {|/foreach|}
+                            </div>
+                        </div>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        {|$block_notify|}
+
+        {|if $canEdit|}
+            <input type="hidden" name="ok" value="ok" />
+            <div class="ob-button-fixed">
+                <input type="submit" value="{|$translate_save|}" id="user-form-submit" class="ob-button button-green" onclick="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_kontakta|}.');" />
+                {|if $block_notify|}
+                    <a class="ob-button button-red" href="#" onclick="popupOpen('.js-notify-message');">{|$translate_uvedomleniya|}: {|$block_notify|@count|}</a>
+                {|/if|}
+            </div>
+            <div class="ob-button-fixed-place"></div>
+        {|/if|}
+    </form>
+
+    <script type="text/javascript">
+        {|if "company" == $control_typesex|}
+        $j('.nb-block-tabs .js-type-user-fields').hide();
+        $j('.nb-block-tabs .js-type-company-fields').show();
+        {|else|}
+        $j('.nb-block-tabs .js-type-company-fields').hide();
+        $j('.nb-block-tabs .js-type-user-fields').show();
+        {|/if|}
+
+        $j(function() {
+            $j('.js-type-change').change(function(){
+                tagCompany();
+                if($j(this).val() != 'company'){
+                    $j('.js-type-user-fields').show();
+                    $j('.js-type-company-fields').hide();
+                    $j('.js-post-title').text('{|$translate_post|}');
+                }else{
+                    $j('.js-type-user-fields').hide();
+                    $j('.js-type-company-fields').show();
+                    $j('.js-post-title').text('{|$translate_spacialization|}');// // устанавливаем поле специализация
+                }
+
+                var cardAvatar = $j('.shop-block-usermaininfo .avatar img').attr('src');
+                var avatarMan = '/media/shop/stub-man.jpg';
+                var avatarWoman = '/media/shop/stub-woman.jpg';
+                var avatarCompany = '/media/shop/stub-company.jpg';
+                if($j(this).val() === 'man'){
+                    $j('.shop-block-usermaininfo').addClass('user');
+                    $j('.shop-block-usermaininfo').removeClass('user-w');
+                    if (cardAvatar == avatarWoman || cardAvatar == avatarCompany) {
+                        $j('.shop-block-usermaininfo .avatar img').attr('src', avatarMan);
+                    }
+                }else if($j(this).val() === 'woman'){
+                    $j('.shop-block-usermaininfo').removeClass('user');
+                    $j('.shop-block-usermaininfo').addClass('user-w');
+                    if (cardAvatar == avatarMan || cardAvatar == avatarCompany) {
+                        $j('.shop-block-usermaininfo .avatar img').attr('src', avatarWoman);
+                    }
+                }else{
+                    $j('.shop-block-usermaininfo').removeClass('user');
+                    $j('.shop-block-usermaininfo').removeClass('user-w');
+                    if (cardAvatar == avatarMan || cardAvatar == avatarWoman) {
+                        $j('.shop-block-usermaininfo .avatar img').attr('src', avatarCompany);
+                    }
+                }
+            });
+
+            // avatar add/edit
+            $j('.js-image-remove').click(function(){
+                $j(this).next().val('delete');
+                $j('#user-form-submit').click();
+                return false;
+            });
+
+            $j('.js-image-edit').click(function(){
+                $j('#js-image-add').click();
+                return false;
+            });
+
+            $j('#js-image-add').change(function(){
+                $j('#user-form-submit').click();
+            });
+        });
+    </script>
+{|/if|}

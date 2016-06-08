@@ -1,0 +1,75 @@
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        {|foreach from=$ppArray item="e"|}
+            <div class="pp-item {|if $e.selected|}selected{|/if|}">
+                <a href="{|$e.url|}" class="name">{|$e.name|}</a>
+                <br />
+                <a href="{|$e.link|}" target="_blank" title="{|$e.link|}">{|$e.link|}</a>
+                <br />
+                <a href="{|$e.urlview|}" class="view">{|$translate_product_list_view|}</a>
+            </div>
+        {|/foreach|}
+        <br />
+
+        <div class="info">
+            {|$translate_mark_for_export|}.
+            {|$translate_mark_for_export_do|}
+            <a href="/admin/shop/products/">{|$translate_many_products|}</a>
+            {|$translate_mark_for_export_and|}.
+        </div>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $url|}
+            <div class="ob-block-element">
+                {|$translate_priceplace_link|}:
+                <a href="{|$url|}">{|$url|}</a><br />
+                {|$translate_refresh_rate|}.<br />
+            </div>
+        {|/if|}
+
+        {|if $categoryArray|}
+            <a href="#" class="js-selectall-pplaces">{|$translate_check_all_small|}</a> /
+            <a href="#" class="js-unselectall-pplaces">{|$translate_uncheck_small|}</a>
+            <br />
+            <br />
+
+            <form action="" method="post">
+                {|foreach from=$categoryArray item="e"|}
+                    <label>
+                        {|section name=foo start=0 loop=$e.level|}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {|/section|}
+                        <input type="checkbox" name="category[]" value="{|$e.id|}" {|if $e.selected|} checked {|/if|} />
+                        {|$e.name|} #{|$e.id|}
+                    </label>
+                    <br />
+                {|/foreach|}
+
+                <div class="ob-button-fixed">
+                    <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+                </div>
+                <div class="ob-button-fixed-place"></div>
+            </form>
+        {|else|}
+            <div class="shop-message-info">{|$translate_viberite_prays_ploshchadku|}.</div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+<br />
+<br />
+
+<script>
+    $j('.js-selectall-pplaces').click(function(){
+        $j('form :checkbox').attr('checked','checked');
+        return false;
+    });
+    $j('.js-unselectall-pplaces').click(function(){
+        $j('form :checkbox').removeAttr('checked');
+        return false;
+    });
+</script>

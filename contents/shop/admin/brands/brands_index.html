@@ -1,0 +1,81 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/brands/" class="selected">{|$translate_brands|}</a></div>
+        <div class="tab-element"><a href="./add/">{|$translate_brands_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="hidden" name="filter1_key" value="name" />
+                <input type="hidden" name="filter1_type" value="search" />
+                <input type="text" name="filter1_value" value="{|$control_filter1_value|}" class="help-hint-filter-login" placeholder="{|$translate_the_brand_name|}" />
+            </div>
+
+            <input class="ob-button button-orange help-hint-filter-submit" type="submit" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+    {|$table|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="nb-right-sidebar disable">
+    <div class="toggle"></div>
+    <form class="inner" action="" method="post">
+        <input type="hidden" id="id-brand" name="moveids" />
+
+        <div class="element">
+            {|$translate_top_brend|}:
+            <select class="chzn-select" name="topbrand">
+                <option value="-1">---</option>
+                <option value="0">{|$translate_ubrat|}</option>
+                <option value="1">{|$translate_add|}</option>
+            </select>
+        </div>
+        <div class="element">
+            <br />
+            <input class="ob-button" type="submit" name="movetop" value="{|$translate_user_change|}" />
+        </div>
+
+        <div class="element">
+            {|$translate_tip_prosmotra|}:
+            <select class="chzn-select" name="showtype">
+                <option value="0">---</option>
+                <option value="thumbs">{|$translate_pictures_by_default|}</option>
+                <option value="table">{|$translate_list_default_table|}</option>
+                <option value="thumbsonly">{|$translate_only_pictures|}</option>
+                <option value="tableonly">{|$translate_only_list_table|}</option>
+                <option value="subcategory">{|$translate_the_default_sub_categories|}</option>
+                <option value="subcategoryonly">{|$translate_only_subcategories|}</option>
+            </select>
+        </div>
+        <div class="element">
+            <br />
+            <input class="ob-button" type="submit" name="changeshowtype" value="{|$translate_perform|}" />
+        </div>
+
+        <div class="element">
+            {|$translate_skrit_otkrit|}:
+            <select class="chzn-select" name="hiddenbrand">
+                <option value="-1">---</option>
+                <option value="0">{|$translate_open|}</option>
+                <option value="1">{|$translate_skrit|}</option>
+            </select>
+        </div>
+        <div class="element">
+            <br />
+            <input class="ob-button" type="submit" name="changehidden" value="{|$translate_user_change|}" />
+        </div>
+        <div class="element"></div>
+    </form>
+</div>

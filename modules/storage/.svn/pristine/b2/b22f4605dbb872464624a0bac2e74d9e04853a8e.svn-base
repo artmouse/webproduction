@@ -1,0 +1,66 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/motionlog/" >{|$translate_motion_log|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_motion_log_product|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h2>{|$translate_motion_log_product|}</h2>
+<div class="ob-block-details">
+    <div class="flex-wrap">
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_product|}:
+                </div>
+                <div class="el-value">
+                    <a href="{|$productURL|}" class="js-product-preview" data-id="{|$productid|}">#{|$productid|}</a>
+                    - {|$productname|}
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_incoming_date|}:
+                </div>
+                <div class="el-value">
+                    {|$cdate|}
+                </div>
+            </div>
+        </div>
+
+        <div class="ob-data-element">
+            <div class="data-view">
+                <div class="el-caption">
+                    {|$translate_price_purchase|}:
+                </div>
+                <div class="el-value">
+                    {|$price|} {|$currency|}
+                </div>
+            </div>
+        </div>
+
+        {|if $shipment|}
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_batch_code|}
+                    </div>
+                    <div class="el-value">
+                        {|$shipment|}
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+    </div>
+</div>
+
+{|$table|}

@@ -1,0 +1,197 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="order" {|if in_array('order', $typeArray)|}checked{|/if|}>
+                    {|$translate_ords|}
+                </label>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="project" {|if in_array('project', $typeArray)|}checked{|/if|}>
+                    {|$translate_proekti|}
+                </label>
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="issue" {|if in_array('issue', $typeArray)|}checked{|/if|}>
+                    {|$acl_issue|}
+                </label>
+            </div>
+
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_date_to|}" />
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="groupcompany" value="1" {|if $control_groupcompany|} checked {|/if|} />
+                    {|$translate_gruppirovat_po_kompaniyam|}
+                </label>
+            </div>
+
+            {|if $contractorArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="contractorid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$contractorArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <input type="hidden" name="clientid" value="{|$control_clientid|}"  id="js-user-filter-autocomplete-balance" style="width: 200px;" />
+                <script type="text/javascript">
+
+                    $j(function () {
+                        var tags = [
+                            {|foreach from=$clientArray item="e" name="foreach1"|}
+                                {'id':{|$e.id|}, 'text':'{|$e.text|}'}
+                                {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                            {|/foreach|}
+                        ];
+                        $j("#js-user-filter-autocomplete-balance").select2('data',tags);
+                    });
+                </script>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_balans_klientov|}</h1>
+
+        {|$translate_v_etom_otchete_uchitivayutsya_vse_platezhi_nezavisimo_ot_privyazok_k_zakazam|}.<br />
+        <span style="color: green;">{|$translate_esli_balans_polozhitelniy_to_dolzhni_dengi_mi|}.</span><br />
+        <span style="color: red;">{|$translate_esli_balans_otritsatelniy_to_dolzhni_nam|}.</span><br />
+        <br />
+
+        <div class="shop-overflow-table">
+            <table class="shop-table">
+                <thead>
+                <tr>
+                    <td width="30">№</td>
+                    <td>{|$translate_client_small|}</td>
+                    <td align="right">{|$translate_summa_obyazatelstv|} ({|$currency|})</td>
+                    <td align="right">{|$translate_summa_platezhey|} ({|$currency|})</td>
+                    <td align="right">{|$translate_balance|} ({|$currency|})</td>
+                </tr>
+                </thead>
+                {|assign var="index" value=1|}
+                {|if $clientempty|}
+                    {|foreach from=$reportArray item="e" key="clientID"|}
+                        <tr>
+                            <td>
+                                {|$index|}
+                                {|assign var="index" value=$index+1|}
+                            </td>
+                            <td>
+                                <a href="{|$e.clientURL|}" class="js-contact-preview"
+                                   data-id="{|$e.clientId|}">{|$e.clientName|}</a>
+                            </td>
+                            <td align="right">{|$e.orderSum|number_format:2|}</td>
+                            <td align="right">{|$e.paymentSum|number_format:2|}</td>
+                            <td align="right" style="{|if $e.diff < 0|} color: red; {|else|} color: green; {|/if|}">
+                                {|$e.diff|number_format:2|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                {|else|}
+                    {|foreach from=$clientArray item="c"|}
+                        {|foreach from=$reportArray item="e" key="clientID"|}
+                            {|if $c.id == $clientID|}
+                                <tr>
+                                    <td>
+                                        {|$index|}
+                                        {|assign var="index" value=$index+1|}
+                                    </td>
+                                    <td>
+                                        <a href="{|$e.clientURL|}" class="js-contact-preview"
+                                           data-id="{|$e.clientId|}">{|$e.clientName|}</a>
+                                    </td>
+                                    <td align="right">{|$e.orderSum|number_format:2|}</td>
+                                    <td align="right">{|$e.paymentSum|number_format:2|}</td>
+                                    <td align="right"
+                                        style="{|if $e.diff < 0|} color: red; {|else|} color: green; {|/if|}">
+                                        {|$e.diff|number_format:2|}
+                                    </td>
+                                </tr>
+                            {|/if|}
+                        {|/foreach|}
+                    {|/foreach|}
+                {|/if|}
+                <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="right">{|$totalOrder|number_format:2|}</td>
+                    <td align="right">{|$totalPayment|number_format:2|}</td>
+                    <td align="right" style="{|if $totalDiff < 0|} color: red; {|else|} color: green; {|/if|}">
+                        {|$totalDiff|number_format:2|}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        {|if 0 AND $reportArray|}
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_client_small|}', '{|$translate_the_number_of_orders|}'],
+                {|foreach from=$reportArray item="e"|}
+                    ['{|$e.clientName|}', {|$e.count|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_1'));
+                chart.draw(data, options);
+
+                // ---
+
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_client_small|}', '{|$translate_amount_of_orders|}', '{|$translate_payment_sum|}', '{|$translate_raznitsa|}'],
+                {|foreach from=$reportArray item="e"|}
+                    ['{|$e.clientName|}', {|$e.sum|round:2|}, {|$e.payed|round:2|}, {|$e.diffInvert|round:2|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_2'));
+                chart.draw(data, options);
+            }
+            </script>
+
+            <div id="chart_div_2" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div_1" style="width: 100%; height: 500px;"></div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

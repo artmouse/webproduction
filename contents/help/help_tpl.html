@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|if $title|}{|$title|} &mdash; {|/if|}CRM-система OneBox</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta property="og:title" content="{|if $title|}{|$title|} &mdash; {|/if|}CRM-система OneBox"/> <!--Название страници-->
+    <meta property="og:image" content="/_images/help/logo-og.png" /> <!--URL логотипа-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+
+    <link href='//fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+    {|$engine_includes|}
+</head>
+<body>
+    <div class="os-mainer">
+        <section class="os-content">
+            <div class="content-wrapper js-content-wrap">
+                <div class="os-crumbs">
+                    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/doc/" itemprop="url"><span itemprop="title">CRM-система OneBox</span></a>
+                    </div>
+                    {|if $pathArray|}&raquo;{|/if|}
+                    {|foreach name="pathForeach" from=$pathArray item="p"|}
+                        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="/doc/{|$p.key|}" itemprop="url"><span itemprop="title">{|$p.title|}</span></a>
+                        </div>
+                        {|if !$smarty.foreach.pathForeach.last|}
+                            &raquo;
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+
+                {|$content|}
+
+                {|if $selected|}
+                    <br />
+                    <br />
+                    <h2>
+                        Смотрите также:
+                    </h2>
+                    <ul>
+                    {|foreach from=$chapterLinks item="link"|}
+                        <li><a href="{|$link.url|}">{|$link.name|}</a></li>
+                    {|/foreach|}
+                    </ul>
+                {|/if|}
+                <br />
+            </div>
+        </section>
+
+        <header class="os-header">
+            <a href="/doc/" class="logo"><span>Documentation</span></a>
+            <div class="menu">
+                {|$menu|}
+            </div>
+        </header>
+        <div class="clear"></div>
+    </div>
+    <script type='text/javascript'>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

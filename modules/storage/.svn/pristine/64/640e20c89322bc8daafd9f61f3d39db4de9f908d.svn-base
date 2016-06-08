@@ -1,0 +1,38 @@
+{|if $urlPrint|}
+    <a href="{|$urlPrint|}">{|$urlPrint|}</a>
+    <br />
+    <br />
+
+    <script type="text/javascript">
+    $j(function () {
+        shop_product_barcode('{|$urlPrint|}');
+    });
+    </script>
+{|/if|}
+
+<form action="" method="get" class="ob-block-form">
+    Продукт: <strong>{|$name|}</strong><br />
+    {|if $info|}{|$info|}<br />{|/if|}
+    <br />
+    <table>
+        <tr>
+            <td>Код:</td>
+            <td><input type="text" name="code" value="{|$control_code|}" /></td>
+        </tr>
+        <tr>
+            <td>Цена:</td>
+            <td>
+                <input type="text" name="price" value="{|$control_price|}" />
+                {|$price|} {|$currency|}
+            </td>
+        </tr>
+        <tr>
+            <td>Количество:</td>
+            <td><input type="text" name="count" value="{|$control_count|}" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" name="ok" value="Печать" class="ob-button" /></td>
+        </tr>
+    </table>
+</form>

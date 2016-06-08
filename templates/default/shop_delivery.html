@@ -1,0 +1,24 @@
+{|foreach from=$deliveryArray item="e"|}
+    <div class="shop-block-terms">
+        <div class="element">
+            <div class="head">
+                <div><h2>{|$e.name|}</h2></div>
+                {|if $e.price|}
+                    <div class="price">
+                        <span class="os-price-available">{|$e.price|} {|$e.currency|}</span>
+                    </div>
+                {|/if|}
+            </div>
+            <div class="body">
+                {|if $e.image|}
+                    <div class="iamge"><img src="{|$e.image|}" alt="{|$e.name|}" title="{|$e.name|}" /></div>
+                {|/if|}
+                <div class="description">
+                    {|if $e.description|}
+                        {|$e.description|}
+                    {|/if|}
+                </div>
+            </div>
+        </div>
+    </div>
+{|/foreach|}

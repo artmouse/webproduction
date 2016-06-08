@@ -1,0 +1,120 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_single_category|}</div>
+                <select name="categoryid[]" multiple class="chzn-select">
+                    {|foreach from=$filterCategoryArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $categorySelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input class="js-date" name="startdate" type="text" value="{|$control_startdate|}" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input class="js-date" name="enddate" type="text" value="{|$control_enddate|}" placeholder="{|$translate_to|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_gruppirovat_po|}</div>
+                <select name="groupby" class="chzn-select">
+                    <option value="day" {|if $control_groupby == 'day'|} selected {|/if|}>{|$translate_dnyam|}</option>
+                    <option value="week" {|if $control_groupby == 'week'|} selected {|/if|}>{|$translate_nedelyam|}</option>
+                    <option value="month" {|if $control_groupby == 'month'|} selected {|/if|}>{|$translate_mesyatsam|}</option>
+                    <option value="year" {|if $control_groupby == 'year'|} selected {|/if|}>{|$translate_godam|}</option>
+                </select>
+            </div>
+
+            <input type="submit" name="ok" value="{|$translate_show|}" class="ob-button button-orange" />
+        </form>
+    </div>
+</div>
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $text|}
+            <p>{|$translate_report_last_two_weeks|}</p>
+        {|/if|}
+
+        <div class="shop-overflow-table">
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table table-filter">
+                <thead>
+                    <tr>
+                        <td>{|$translate_date|} / {|$translate_single_category|}</td>
+                        {|foreach from=$categoryArray item="c" key="ckey" name="foreach1"|}
+                            <td>{|$c.name|}</td>
+                        {|/foreach|}
+                        <td>{|$translate_sum|}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {|foreach from=$table item="e" key="key"|}
+                        <tr>
+                            <td>{|$key|}</td>
+                            {|foreach from=$categoryArray item="c" key="ckey"|}
+                                <td align="right">{|if $e.$ckey|}{|$e.$ckey|number_format:2|}{|else|}0.00{|/if|}&nbsp;{|$currency|}</td>
+                            {|/foreach|}
+                            <td align="right">{|$e.sum|number_format:2|}&nbsp;{|$currency|}</td>
+                        </tr>
+                    {|/foreach|}
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>{|$translate_in_total|}:</td>
+                        {|foreach from=$categoryArray item="c" key="ckey"|}
+                            <td align="right">{|$c.sum|number_format:2|}&nbsp;{|$currency|}</td>
+                        {|/foreach|}
+                        <td align="right">{|$sum|number_format:2|}&nbsp;{|$currency|}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="js-category-order" class="graph-block" style="display: block; width: 100%; " ></div>
+        <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart_categoryOrder);
+
+            function drawChart_categoryOrder() {
+                {|if $table AND $categoryArray|}
+                    var data = google.visualization.arrayToDataTable([
+                        ['{|$translate_date|}',
+                        {|foreach from=$categoryArray item="c" key="ckey" name="foreach1"|}
+                            '{|$c.name|}'{|if !$smarty.foreach.foreach1.last|},{|/if|}
+                        {|/foreach|}
+                        ],
+                        {|foreach from=$table item="e" key="key"|}
+                                ['{|$key|}',
+                                {|foreach from=$categoryArray item="c" key="ckey" name="foreach2"|}
+                                    {|if $e.$ckey|}{|$e.$ckey|}{|else|}0.00{|/if|}{|if !$smarty.foreach.foreach2.last|},{|/if|}
+                                {|/foreach|}
+                                ],
+                        {|/foreach|}
+                    ]);
+
+                    var options = {
+                        height: 600,
+                        animation: {duration: 1, easing: 'out'},
+                        fontSize: 11,
+                        chartArea: {
+                            left: 50,
+                            right: 50,
+                            top: 50,
+                            bottom: 50
+                        }
+                    };
+                    var chart = new google.visualization.ColumnChart(document.getElementById('js-category-order'));
+                    chart.draw(data, options);
+                {|/if|}
+                }
+        </script>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

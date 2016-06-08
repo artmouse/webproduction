@@ -1,0 +1,6 @@
+{|$block_menu|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    {|$block_payments|}
+    <br />
+</form>

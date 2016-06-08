@@ -1,0 +1,74 @@
+{|* @todo: deprecate nax! *|}
+
+{|if $nodata|}
+
+    <div class="forms-message-error">
+        <translate>forms-error-nodata</translate>
+    </div>
+
+{|else|}
+
+    {|if $datakeyexists|}
+        <h1><translate>forms-editing-record</translate> #{|$datakey|}</h1>
+    {|else|}
+        <h1><translate>forms-new-record</translate></h1>
+    {|/if|}
+
+    {|if $message == 'deleteok'|}
+        <div class="forms-message-ok">
+            <translate>forms-delete-ok</translate>
+        </div>
+    {|/if|}
+
+    {|if $message == 'deleteerror'|}
+        <div class="forms-message-error">
+            <translate>forms-delete-error</translate>
+        </div>
+    {|/if|}
+
+    {|if $message == 'updateok'|}
+        <div class="forms-message-ok">
+            <translate>forms-update-ok</translate>
+        </div>
+    {|/if|}
+
+    {|if $message == 'updateerror'|}
+        <div class="forms-message-error">
+            <translate>forms-update-error</translate>
+        </div>
+    {|/if|}
+
+    {|if $message == 'insertok'|}
+        <div class="forms-message-ok">
+            <translate>forms-insert-ok</translate>
+        </div>
+    {|/if|}
+
+    {|if $message == 'inserterror'|}
+        <div class="forms-message-error">
+            <translate>forms-insert-error</translate>
+        </div>
+    {|/if|}
+
+    {|if $message != 'deleteok'|}
+        <form action="" method="post" enctype="multipart/form-data">
+            {|foreach from=$controlsArray item="e"|}
+                {|$e|}
+            {|/foreach|}
+
+            {|if $datakey AND $allowUpdate|}
+                <input type="submit" name="formsUpdate" value="<translate>forms-save-record</translate> #{|$datakey|}" />
+            {|/if|}
+
+            {|if $allowInsert|}
+                <input type="submit" name="formsInsert" value="<translate>forms-insert-record</translate>" />
+                {|*|}<input type="submit" name="formsInsertView" value="Вставить новую запись и перейти на нее" />{|*|}
+            {|/if|}
+
+            {|if $datakey AND $allowDelete|}
+                <input type="submit" name="formsDelete" value="<translate>forms-delete-record</translate> #{|$datakey|}" onclick="return confirm('<translate>forms-confirm-delete</translate>');" />
+            {|/if|}
+        </form>
+    {|/if|}
+
+{|/if|}

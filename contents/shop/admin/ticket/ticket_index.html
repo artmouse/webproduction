@@ -1,0 +1,101 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">Support ticket</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if !$message == 'ok'|}
+    <div class="shop-message-info">
+        {|$translate_you_send_question_to_support|}{|if $branding|} {|$branding|}{|/if|}.
+    </div>
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_requests_sent_success|}.<br />
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_send_error|}.<br />
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'email'|}
+                {|$translate_profile_error_mail|}.<br />
+            {|/if|}
+            {|if $e == 'name'|}
+                {|$translate_enter_name|}.<br />
+            {|/if|}
+            {|if $e == 'message'|}
+                {|$translate_text_error|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+<form action="" method="post">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_kak_mi_mozhem_k_vam_obrashchatsya|}?</div>
+                    <input type="text" name="name" value="{|$control_name|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_na_kakoy_email_vam_prislat_otvet|}?</div>
+                    <input type="text" name="email" value="{|$control_email|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_mozhem_li_mi_vam_pozvonit|}?</div>
+                    <input type="text" name="phone" value="{|$control_phone|}" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_opishite_vash_vopros_ili_problemu|}</div>
+                    <textarea name="message">{|$control_message|}</textarea>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_prilozhite_fayli_esli_nuzhno|}</div>
+                    <div class="ob-block-attach js-droppable-zone">
+                        <a href="#" name="file[]" class="ob-button-attach js-uploader">{|$translate_prilozhit_fayli|}...</a>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+                $j(function() {
+                    // загрузка файлов
+                    var uploader = new DropUploader('.js-droppable-zone', '.js-uploader', 'fileid');
+                     $j('.js-phone-formatter').mask("+38 (999) 999-99-99");
+                     
+                });
+            </script>
+
+            <div class="right-column half">
+                <div class="form-element">
+                    {|$translate_esli_u_vas_est_kakaya_libo_problema_chto_to_ne_ponyatno_chto_to_ne_poluchaetsya_ili_kazhetsya_chto_rabotaet_ne_tak_mozhete_otpravit_vopros_nashey_tehnicheskoy_podderzhke|}.
+                    <br>
+                    {|$translate_mi_postaraemsya_vam_pomoch_kak_mozhno_bistree|}.
+                </div>
+                <div class="form-element">
+                    {|$translate_postaraytes_opisat_vash_vopros_ili_problemu_maksimalno_podrobno_esli_nuzhno_prilozhite_skrinshot_interfeysa|}.
+                    <br>
+                    {|$translate_tak_mi_smozhem_bistree_ponyat_chto_ne_tak_i_ustranit_problemu|}.
+                </div>
+                <div class="form-element">
+                    {|$translate_tak_zhe_u_nas_est|} <a href="/doc/">{|$translate_dokumentatsiya|}</a> {|$translate_i_spisok_samih_chasto_zadavaemih_voprosov_nashih_klientov_on_opublikovan_na_sayte|}
+                    <a href="http://onebox-system.com/">onebox-system.com</a>)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_send_request_to_technical_support|}" class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

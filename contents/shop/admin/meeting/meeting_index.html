@@ -1,0 +1,45 @@
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_error|}. {|$translate_takoy_vstrechi_ne_sushchestvuet|}.
+    </div>
+{|else|}
+    <h2>{|$translate_vstrecha|}</h2>
+    <div class="shop-meeting-content">
+        <div class="part">
+            <div class="element">
+                <div class="caption">{|$translate_initsiator|}:</div>
+                {|$meetingArray.fromuserid|}
+            </div>
+        </div>
+        <div class="part">
+            <div class="element">
+                <div class="caption">C{|$translate_pisok_uchastnikov|}:</div>
+                {|foreach from=$meetingArray.touserid item="e"|}
+                    {|$e|}
+                    <br />
+                {|/foreach|}
+            </div>
+        </div>
+        <div class="part">
+            {|if $meetingArray.cdate|}
+                <div class="element">
+                    <div class="caption">{|$translate_data_i_vremya_vstrechi|}:</div>
+                    {|$meetingArray.cdate|}
+                </div>
+            {|/if|}
+            {|if $meetingArray.location|}
+                <div class="element">
+                    <div class="caption">{|$translate_lokatsiya|}:</div>
+                    {|$meetingArray.location|}
+                </div>
+            {|/if|}
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    {|if $meetingArray.content|}
+        <div class="shop-meeting-description">
+            {|$meetingArray.content|}
+        </div>
+    {|/if|}
+{|/if|}

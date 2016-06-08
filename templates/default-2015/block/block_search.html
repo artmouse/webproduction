@@ -1,0 +1,13 @@
+<form class="def-search-top" action="/search/" method="get">
+    <select id="js_search_category" name="categoryid" style="display: none;">
+        <option value="-1" {|if !$categoryIdSelected || $categoryIdSelected == 0|}selected{|/if|}>Все категории</option>
+        {|foreach from=$categoryArray item=c|}
+            <option value="{|$c.id|}" {|if $categoryIdSelected == $c.id|}selected{|/if|}>{|$c.name|}</option>
+        {|/foreach|}
+    </select>
+    <input class="js-input-search" type="text" name="query" value="{|$control_query|}" placeholder="{|$translate_main_find|}..." />
+    <button class="search-button def-icon-search"></button>
+    {|*|}
+    <input type="submit" value="{|$translate_main_search|}" />
+    {|*|}
+</form>

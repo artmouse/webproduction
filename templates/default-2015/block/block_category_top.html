@@ -1,0 +1,41 @@
+{|if $subcategoriesArray|}
+    <div class="def-product-list">
+        <ul class="def-subcat-list small-block-grid-2 medium-block-grid-3 large-block-grid-3 xlarge-block-grid-4">
+            {|foreach from=$subcategoriesArray item="e"|}
+                <li>
+                    <div class="def-subcat-element">
+                        <div class="head">
+                            <h2>
+                                {|$e.name|}
+                                {|if !$e.childsArray|}
+                                    {|if $e.productCount|}
+                                        ({|$e.productCount|})
+                                    {|/if|}
+                                {|/if|}
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div class="image">
+                                {|if $e.image|}
+                                    <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|}" title="{|$e.name|}" /></a>
+                                {|else|}
+                                    <a href="{|$e.url|}"><img src="/media/shop/stub.jpg" alt="{|$e.name|}" title="{|$e.name|}" /></a>
+                                {|/if|}
+                            </div>
+
+                            <div class="list">
+                                {|foreach from=$e.childsArray item="s"|}
+                                    <a href="{|$s.url|}" >{|$s.name|}</a>{|if $s.productCount|}<span class="count">({|$s.productCount|})</span>{|/if|}<br />
+                                {|/foreach|}
+
+                                {|if $e.shortdesc|}
+                                    {|$e.shortdesc|}
+                                {|/if|}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {|/foreach|}
+        </ul>
+    </div>
+{|/if|}

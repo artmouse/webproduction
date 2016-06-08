@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|if $title|}{|$title|}{|if $shop_title|} &mdash; {|/if|}{|/if|}{|$shop_title|}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+    {|$engine_includes|}
+
+    <!--[if IE 8]><link rel="stylesheet" type="text/css" href="/contents/templates/ie8.css" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="/contents/templates/ie7.css" /><![endif]-->
+</head>
+<body>
+    <div class="js-loader"></div>
+
+    {|*|}
+    <div class="shop-wait">
+        <span>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br />
+            Lorem Ipsum has been the industry's <a href="#">standard dummy text</a> ever
+        </span>
+    </div>
+    {|*|}
+
+    <div class="shop-popup-block js-cache-confirm" style="display: none;">
+        <div class="dark">&nbsp;</div>
+        <div class="popupblock">
+            <a href="#" class="close js-cache-clear-no"></a>
+            <div class="shop-tabs">
+                <span>Сбросить кэш</span>
+            </div>
+            <div class="window-content window-form">
+                <h1>Вы действительно хотите сбросить кэш?</h1>
+                <label>
+                    <input type="checkbox" class="js-cache-image" name="" />
+                    Так же удалить все thumbnail-версии изображений (может занять до 10 минут)
+                </label>
+                <br /><br />
+                <input type="button" value="{|$translate_clear_cash|}" name="" class="ob-button button-green js-cache-clear-yes" />
+                <input type="button" value="{|$translate_cancel|}" name="" class="ob-button button-cancel js-cache-clear-no" />
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-popup-block js-cache-message" style="display: none;">
+        <div class="dark">&nbsp;</div>
+        <div class="popupblock">
+            <div class="shop-tabs">
+                <span>Сбросить кэш</span>
+            </div>
+            <div class="window-content window-form">
+                <div class="shop-message-success">
+                    Кэш успешно сброшен.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-popup-block js-issueadd-popup" style="display: none;">
+        <div class="dark">&nbsp;</div>
+        <div class="popupblock">
+            <a href="#" class="close" onclick="$j('.js-issueadd-popup').fadeToggle(); return false;"></a>
+            <div class="shop-tabs">
+                <span>Поставить задачу</span>
+            </div>
+            <div class="window-content window-form">
+                <div class="element fl-l" style="width: 49%;">
+                    Название задачи
+                    <input type="text" id="js-issue-name" name="" value="" />
+                </div>
+                <div class="element fl-r" style="width: 49%;">
+                    Проект
+                    <select name="" id="js-issue-type" class="chzn-select">
+                        {|foreach from=$projectArray item="e"|}
+                        <option value="{|$e.id|}">
+                            {|section name=foo start=0 loop=$e.level|}
+                                &nbsp;&nbsp;&nbsp;
+                            {|/section|}
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                    </select>
+                </div>
+                <div class="clear"></div>
+                <div class="element fl-l" style="width: 49%;">
+                    Бизнес-процесс
+                    <select name="" id="js-issue-process" class="chzn-select">
+                        {|foreach from=$categoryArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.selected|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+                <div class="element fl-r" style="width: 49%;">
+                    На кого назначена
+                    <select name="" id="js-issue-assigned" class="chzn-select">
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.selected|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+                <div class="clear"></div>
+                <div class="element">
+                    Что нужно сделать?
+                    <textarea name="" id="js-issue-content" cols="30" rows="10" style="max-height: 300px;"></textarea>
+                </div>
+                <input type="submit" id="js-issue-create" class="ob-button button-green" value="Создать" />
+                <input type="button" class="ob-button button-cancel" onclick="$j('.js-issueadd-popup').toggle();" value="Отмена" />
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-popup-block js-letteradd-popup" style="display: none;">
+        <div class="dark">&nbsp;</div>
+        <div class="popupblock">
+            <a href="#" class="close" onclick="return box_email_popup_close();"></a>
+            <div class="shop-tabs">
+                <span>Написать письмо</span>
+            </div>
+            <div class="window-content window-form">
+                <div class="element">
+                    <div class="el-caption">Кому</div>
+                    <div class="el-value"><input type="text" id="js-mail-to" name="" value="" placeholder="Введите E-mail" /></div>
+                </div>
+                <div class="element">
+                    <div class="el-caption">Тема письма</div>
+                    <div class="el-value"><input type="text" id="js-mail-subject" name="" value="" placeholder="Укажите тему" /></div>
+                </div>
+                <div class="clear"></div>
+                <div class="element">
+                    <textarea name="" id="js-mail-content" placeholder="Сообщение" cols="30" rows="15" style="height: 300px; max-height: 300px;"></textarea>
+                </div>
+                <div class="element">
+                    <div class="el-caption">Добавить файл</div>
+                    <div class="el-value"><input type="file" id="js-mail-files" multiple /></div>
+                </div>
+                <input type="submit" id="js-mail-send" class="ob-button button-green" value="Отправить" />
+                <input type="button" class="ob-button button-cancel" onclick="return box_email_popup_close();" value="Отмена" />
+            </div>
+        </div>
+    </div>
+
+    {|if $box|}
+        <div class="shop-popup-block js-start-popup" style="display: none;">
+            <div class="dark">&nbsp;</div>
+            <div class="popupblock">
+                <a href="#" class="close" onclick="$j('.js-start-popup').fadeToggle(); return false;"></a>
+                <div class="shop-tabs">
+                    <span>Добро пожаловать в OneBox!</span>
+                </div>
+                <div class="window-content window-fastlink">
+                    <input class="links-filter js-wf-search" type="text" name="" value="" placeholder="Поиск" />
+                    <div>
+                        <div class="start-list">
+                            <h2>Что Вы хотите сделать?</h2>
+                            <a class="add" href="/admin/shop/users/add/">Добавить контакт<span></span></a>
+                            <a class="add" href="/admin/shop/users/add/?typesex=company">Добавить компанию<span></span></a>
+                            <a class="order" href="/admin/issue/add/">Добавить заказ<span></span></a>
+                            <a class="add" href="/admin/shop/finance/payment/add/">Добавить платеж<span></span></a>
+                            <a class="mail" href="/admin/shop/ticket/support/">Написать в техподдержку<span></span></a>
+                            <a class="mail" href="#" onclick="$j('.js-start-popup').fadeToggle(); return box_email_popup_open();">Написать письмо<span></span></a><br />
+                            <a class="add" href="/admin/meeting/add/">Добавить встречу<span></span></a>
+                            <a class="issue" href="/admin/issue/add/" {|*|}onclick="$j('.js-issueadd-popup').fadeToggle(); return false;"{|*|}>Добавить задачу<span></span></a>
+                        </div>
+
+                        <div class="start-list js-wf-list">
+                            <h2>Какой бизнес-процесс начать?</h2>
+                            {|foreach from=$workflowArray item="e"|}
+                                <a class="add" href="{|$e.url|}">{|$e.name|}</a>
+                            {|/foreach|}
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {|/if|}
+
+    <div class="shop-admin-body">
+        <div class="shop-admin-navi">
+            <div class="head">
+                    <div class="name">
+                    <a href="/admin/">
+                        {|if $branding|}
+                            {|$branding|}
+                        {|else|}
+                            OneClick
+                        {|/if|}
+                    </a>
+                </div>
+                <div class="top-links">
+                    {|* переопределенное меню *|}
+                    {|foreach from=$menuArray item="name" key="url"|}
+                        <a href="{|$url|}">{|$name|}</a>
+                    {|foreachelse|}
+                        {|* обычное меню *|}
+                        {|if $acl.orders|}
+                            <a href="/admin/shop/orders/">{|$translate_ords|}</a>
+                        {|/if|}
+                        {|if $acl.users|}
+                            <a href="/admin/shop/users/">{|$translate_users|}</a>
+                        {|/if|}
+                        {|if $box|}
+                            {|if $acl.report_event|}
+                                <a href="/admin/shop/report/event/">События</a>
+                            {|/if|}
+                        {|/if|}
+                        {|if $isProjectBox|}
+                            {|if $acl.issue|}
+                                <a href="/admin/projects/">Проекты</a>
+                            {|/if|}
+                        {|/if|}
+                        {|if $acl.products|}
+                            <a href="/admin/shop/products/list-table/">{|$translate_many_products|}</a>
+                        {|/if|}
+                        {|if $acl.report_document|}
+                            <a href="/admin/shop/report/document/">{|$translate_docs|}</a>
+                        {|/if|}
+                    {|/foreach|}
+
+                    {|foreach from=$menu_section_top item="e"|}
+                        {|if $acl[$e.acl]|}
+                           <a href="{|$e.url|}">{|$e.name|}</a>
+                        {|/if|}
+                    {|/foreach|}
+                    <a href="#" data-name="reports">Отчеты</a>
+                    <a href="#" data-name="tools">Настройки</a>
+                    <a href="#" data-name="cabinet">{|if $user.login|}{|$user.login|}{|else|}admin{|/if|}</a>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="shop-fastlink-block js-fastlink">
+                    {|if not $box|}
+                        <div class="list" style="display: none;">
+                            <a href="/admin/shop/users/add/">Добавить контакт<span></span></a>
+                            <a href="/admin/shop/users/add/?typesex=company">Добавить компанию<span></span></a>
+                            <a href="/admin/shop/orders/add/">Добавить заказ<span></span></a>
+                            <a href="/admin/shop/finance/payment/add/">Добавить платеж<span></span></a>
+                            <a href="/admin/shop/ticket/support/">Написать в техподдержку<span></span></a>
+                        </div>
+                    {|/if|}
+                </div>
+
+                {|if $isProjectBox|}
+                    <input id="search-input" type="text" name="" value="" class="search-block  js-search-input"  autocomplete="on" />
+                {|/if|}
+            </div>
+            <div class="clear"></div>
+            <div class="blind">
+                <div class="inner reports">
+                    <ul class="part">
+                        <li><a href="/admin/shop/report/utm/">UTM</a></li>
+
+                        <li><a href="/admin/shop/report/image/">Отчет о фото</a></li>
+
+                        {|if $box AND $acl.report_summary|}
+                            <li><a href="/admin/shop/report/summary/">Сводный отчет</a></li>
+                        {|/if|}
+
+                        {|if $acl.report_topproducts|}
+                            <li><a href="/admin/shop/report/topproducts/">Самые заказываемые товары</a></li>
+                        {|/if|}
+
+                        {|*if $acl.report_productmatrix|}
+                            <li><a href="/admin/shop/orders/report/">{|$translate_matrix_products_customers|}</a></li>
+                        {|/if*|}
+
+                        {|if $box|}
+                            <li>&nbsp;</li>
+
+                            {|*if $acl.report_callcenter|}
+                                <li><a href="/admin/shop/callcenter/">Call-центр</a></li>
+                            {|/if*|}
+                            {|if $acl.report_eventdate|}
+                                <li><a href="/admin/shop/report/eventdate/">События по датам</a></li>
+                            {|/if|}
+                            {|if $acl.report_eventtree|}
+                                <li><a href="/admin/shop/report/eventtree/">Карта событий</a></li>
+                            {|/if|}
+                        {|/if|}
+                    </ul>
+
+                    {|if $box|}
+                        <ul class="part">
+                            {|if $acl.report_clientorder|}
+                                <li><a href="/admin/shop/report/clientorders/">Заказы клиентов</a></li>
+                            {|/if|}
+                            {|if $acl.report_orderdate|}
+                                <li><a href="/admin/shop/report/orderdate/">Заказы по датам</a></li>
+                            {|/if|}
+                            {|if $acl.report_orderstatus|}
+                                <li><a href="/admin/shop/report/orderstatus/">Этапы заказов</a></li>
+                            {|/if|}
+                            <!--<li><a href="/admin/shop/orders/report/funnel/">{|$translate_sales_funnel|}</a></li>-->
+
+                            <li>&nbsp;</li>
+
+
+                        </ul>
+                    {|/if|}
+
+                    {|if $box|}
+                        <ul class="part">
+                            {|if $acl.report_orderpayment|}
+                                <li><a href="/admin/shop/report/orderpayment/">Оплаты заказов</a></li>
+                            {|/if|}
+                            {|if $acl.report_clientbalance|}
+                                <li><a href="/admin/shop/report/clientbalance/">Баланс клиентов</a></li>
+                            {|/if|}
+                            <!--<li><a href="/admin/shop/report/paymentdate/">Оплаты по датам</a></li>-->
+
+                            <li>&nbsp;</li>
+
+                            {|if $acl.report_sourceorders|}
+                                <li><a href="/admin/shop/report/sourceorders/">Источники заказов</a></li>
+                            {|/if|}
+                            {|if $acl.report_sourceclients|}
+                                <li><a href="/admin/shop/report/sourceclients/">Источники контактов</a></li>
+                            {|/if|}
+                            {|if $acl.report_contacttree|}
+                                <li><a href="/admin/shop/report/contacttree/">Карта рекомендаций контактов</a></li>
+                            {|/if|}
+
+                            <li>&nbsp;</li>
+
+                            {|if $acl.report_managercompare|}
+                                <li><a href="/admin/shop/report/managercompare/">Сравнение менеджеров</a></li>
+                            {|/if|}
+
+                            {|if $acl.report_compareorderplan|}
+                                <li><a href="/admin/shop/report/compareorderplan/">Сравнение плана заказов</a></li>
+                            {|/if|}
+
+                            {|if $acl.report_notify|}
+                                <li><a href="/admin/shop/report/notify/">Уведомления системы</a></li>
+                            {|/if|}
+                        </ul>
+                    {|/if|}
+
+                    {|if $box|}
+                        <ul class="part">
+                            {|if $allowServiceBusy|}
+                                {|if $acl.report_servicebusy|}
+                                    <li><a href="/admin/shop/orders/report/servicebusy/">Сетка занятости</a></li>
+                                {|/if|}
+                                {|if $acl.report_servicebusy_statistic|}
+                                    <li><a href="/admin/shop/orders/report/servicebusy/statistic/">Отчет по сетке занятости</a></li>
+                                {|/if|}
+                            {|/if|}
+                            {|if $allowMonitoring|}
+                                {|if $acl.report_monitoring|}
+                                    <li><a href="/admin/shop/report/productmonitoring/">Мониторинг</a></li>
+                                {|/if|}
+                            {|/if|}
+                        </ul>
+                    {|/if|}
+
+                    <ul class="part">
+                        {|if $acl.activity|}
+                            <li><a href="/admin/shop/activity/">{|$translate_activity|}</a></li>
+                        {|/if|}
+                        {|if $acl.statistic|}
+                            <li><a href="/admin/shop/statistics/search/">{|$translate_statistics_search|}</a></li>
+                        {|/if|}
+                        {|if $acl.users_online|}
+                            <li><a href="/admin/shop/online/">{|$translate_users_online|}</a></li>
+                        {|/if|}
+                        {|if $acl.settings|}
+                            <li><a href="/admin/shop/smslog/">{|$translate_history_of_SMS|}</a></li>
+                        {|/if|}
+                    </ul>
+
+                    <div class="clear"></div>
+                </div>
+
+                <div class="inner tools">
+                    {|if NOT $denyShop|}
+                        <ul class="part">
+                            <li><a href="/admin/shop/settings/">{|$translate_shop_settings|}</a></li>
+                            {|if $acl.timework|}
+                                <li><a href="/admin/shop/timework/">{|$translate_timework|}</a></li>
+                            {|/if|}
+                            {|if $acl.logo|}
+                                <li><a href="/admin/shop/logo/">{|$translate_logo|}</a></li>
+                            {|/if|}
+                            {|if $acl.block|}
+                                <li><a href="/admin/shop/block/">{|$translate_blocks_control|}</a></li>
+                            {|/if|}
+                            {|if $acl.banner|}
+                                <li><a href="/admin/shop/banner/">{|$translate_banner|}</a></li>
+                            {|/if|}
+                            {|if $acl.faq|}
+                                <li><a href="/admin/shop/faq/">{|$translate_faq|}</a></li>
+                            {|/if|}
+                            {|if $acl.callback|}
+                                <li><a href="/admin/shop/callback/">{|$translate_callback_small|}</a></li>
+                            {|/if|}
+                        </ul>
+
+                        <ul class="part">
+                            {|if $acl.settings|}
+                                <li><a href="/admin/shop/currency/">{|$translate_currency|}</a></li>
+                            {|/if|}
+
+                            {|if $acl.priceplaces|}
+                                <li><a href="/admin/shop/priceplaces/">{|$translate_priceplaces|}</a></li>
+                            {|/if|}
+                            {|if $acl.delivery|}
+                                <li><a href="/admin/shop/delivery/">{|$translate_delivery|}</a></li>
+                            {|/if|}
+                            {|if $acl.box|}
+                                <li><a href="/admin/shop/box/">{|$translate_boxes|}</a></li>
+                            {|/if|}
+                            {|if $acl.feedback|}
+                                <li><a href="/admin/shop/feedback/">{|$translate_feedback|}</a></li>
+                            {|/if|}
+                            {|if $acl.guestbook|}
+                                <li><a href="/admin/shop/guestbook/">{|$translate_reviews_of_the_store|}</a></li>
+                            {|/if|}
+                            {|if $acl.marginrule|}
+                                <li><a href="/admin/shop/marginrule/">{|$translate_marginrule_system|}</a></li>
+                            {|/if|}
+                        </ul>
+
+                        <ul class="part">
+                            {|if $acl.payment|}
+                                <li><a href="/admin/shop/payment/">{|$translate_payment|}</a></li>
+                            {|/if|}
+                            {|if $acl.settings|}
+                                {|if $box|}
+                                    <li><a href="/admin/shop/source/">Источники заказов и клиентов</a></li>
+                                    <li><a href="/admin/shop/workflow/">Бизнес-процессы</a></li>
+                                    <li><a href="/admin/ignore/">Ограничения событий</a></li>
+                                {|/if|}
+                                <li><a href="/admin/shop/orderstatus/">{|$translate_orders_status|}</a></li>
+                                <li><a href="/admin/shop/orderproductstatus/">{|$translate_orderproduct_status|}</a></li>
+                            {|/if|}
+                            {|if $acl.products_noticeavailability|}
+                                <li><a href="/admin/shop/products/noticeavailability/">{|$translate_notice_availability|}</a></li>
+                            {|/if|}
+                            {|if $acl.products_icon|}
+                                <li><a href="/admin/shop/products/icon/">{|$translate_products_icon|}</a></li>
+                            {|/if|}
+                            {|if $acl.news|}
+                                <li><a href="/admin/shop/news/">{|$translate_news|}</a></li>
+                            {|/if|}
+                            {|if $acl.discount|}
+                                <li><a href="/admin/shop/discount/">{|$translate_discounts|}</a></li>
+                            {|/if|}
+                        </ul>
+
+                        <ul class="part">
+                            {|if $box|}
+                                <li><a href="/admin/settings/project/">Проекты</a></li>
+                            {|/if|}
+                            {|if $acl.documents|}
+                                <li><a href="/admin/shop/document/templates/">{|$translate_document_templates|}</a></li>
+                            {|/if|}
+                            {|if $acl.tax|}
+                                <li><a href="/admin/shop/tax/">{|$translate_tax|}</a></li>
+                            {|/if|}
+                            {|if $acl.contractors|}
+                                <li><a href="/admin/shop/contractors/">{|$translate_contractors|}</a></li>
+                            {|/if|}
+                            {|if $integration_li|}
+                                <li><a href="{|$urlLiveInternet|}" target="_blank">{|$translate_statistic|} LiveInternet</a></li>
+                            {|/if|}
+                            {|if $integration_ga|}
+                                <li><a href="http://google.com/analytics/" target="_blank">{|$translate_statistic|} Google Analytics</a></li>
+                            {|/if|}
+                            {|if $acl.gallery|}
+                                <li><a href="/admin/shop/gallery/">{|$translate_gallery|}</a></li>
+                            {|/if|}
+                            {|if $acl.redirect|}
+                                <li><a href="/admin/shop/redirect/">{|$translate_URL_and_redirects|}</a></li>
+                            {|/if|}
+                            {|if $acl.seo|}
+                                <li><a href="/admin/shop/seo/">SEO</a></li>
+                            {|/if|}
+                            {|foreach from=$menu_section_modules item="e"|}
+                                {|if $acl[$e.acl]|}
+                                    <li><a href="{|$e.url|}">{|$e.name|}</a></li>
+                                {|/if|}
+                            {|/foreach|}
+                            {|if $acl.users_groups|}
+                                <li><a href="/admin/shop/usergroups/">{|$translate_users_groups|}</a></li>
+                            {|/if|}
+                        </ul>
+
+                        {|if $acl.settings|}
+                            <ul class="part">
+                                {|if $acl.products_suppliers|}
+                                    <li><a href="/admin/shop/supplier/">{|$translate_suppliers|}</a></li>
+                                {|/if|}
+                                {|if $acl.users|}
+                                    <li><a href="#" class="js-clear-cache">{|$translate_cash_clear|}</a></li>
+                                {|/if|}
+                                <li><a href="/help/" target="_blank">{|$translate_help|}</a></li>
+                                <li class="pages"><a href="/admin/shop/textpages/">{|$translate_textpages|}</a></li>
+                            </ul>
+                        {|/if|}
+                    {|/if|}
+                    <div class="clear"></div>
+                </div>
+
+                <div class="inner cabinet">
+                    <ul class="part">
+                        <li><a href="/">{|$translate_shop|}</a></li>
+                    </ul>
+                    <ul class="part">
+                        <li><a href="/client/orders/">{|$translate_cabinet|} {|$translate_client|}</a></li>
+                    </ul>
+                    <ul class="part">
+                        <li><a href="/admin/shop/ticket/support/">{|$translate_technical_support|}</a></li>
+                    </ul>
+                    <ul class="part">
+                        <li><a href="/logout/">{|$translate_logout|}</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-message-container"></div>
+
+        <div class="shop-admin-content {|if $sidebarPlace|}sidebar-place{|/if|}">
+            {|$content|}
+        </div>
+    </div>
+
+    <div style="display: none;" class="js-usertextcomplete-mentions">{|$mentionsJSON|}</div>
+
+    {|if $box AND $allowAMI|}
+        <script type="text/javascript">
+        setTimeout(box_voip_call, 1000);
+        </script>
+    {|/if|}
+</body>
+</html>

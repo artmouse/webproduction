@@ -1,0 +1,145 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        {|if $urlBack|}
+            <div class="tab-element"><a href="{|$urlBack|}">&lsaquo; Назад</a></div>
+        {|else|}
+            <div class="tab-element"><a href="/admin/customorder/{|$type|}/">&lsaquo; {|$type|}</a></div>
+        {|/if|}
+
+        {|foreach from=$parentArray item="e"|}
+            <div class="tab-element"><a href="{|$e.url|}" {|if $e.id == $orderid AND $selected == 'view'|} class="selected" {|/if|}>{|$e.name|}</a></div>
+        {|/foreach|}
+
+        {|if $issueURL|}
+            <div class="tab-element"><a href="{|$issueURL|}" class="selected">{|$issueName|}</a></div>
+        {|/if|}
+
+        <div class="tab-element">
+            <form action="" style="display: inline-block;">
+                <input class="quick-jump js-quick-jump" type="text" name="" value="" placeholder="Заказ №..."/>
+                <input name="" type="hidden"/>
+
+                <script>
+                    $j('.js-quick-jump').on('change', function(){
+                        $j(this).closest('form').attr('action', '/admin/customorder/{|$type|}/'+ $j(this).val() +'/edit/');
+                    });
+                </script>
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if !$tabMenuArray.closed|}
+    <div class="ob-block-head js-block-head">
+        <div class="background" {|if $bigImage|}style="background-image: url('{|$bigImage|}');"{|/if|}>
+            {|if $menuColor|}<span style="background-color: {|$menuColor|};"></span>{|/if|}
+        </div>
+        <div class="head-wrap">
+            {|if $image|}
+                <div class="image">
+                    <a class="js-colorbox nb-block-avatar" {|if $bigImage|}href="{|$bigImage|}"{|else|}href="{|$image|}"{|/if|} style="background-image: url('{|$image|}');"></a>
+                </div>
+            {|/if|}
+
+            <div class="info">
+                <div class="caption">
+                    {|if $number|}
+                        <div class="tag">
+                            <span>#{|$number|}</span>
+                            {|if $statusName|}
+                                <span>
+                                    {|if $statusColor|}
+                                        <em class="status" style="background-color: {|$statusColor|};"></em>
+                                    {|/if|}
+                                    {|$statusName|}
+                                </span>
+                            {|/if|}
+                        </div>
+                    {|/if|}
+
+                    {|if !$isWatcher|}
+                        <a class="ob-link-follow js-tooltip" href="{|$urlWatch|}" title="Следить"></a>
+                    {|else|}
+                        <a class="ob-link-follow no js-tooltip" href="{|$urlWatch|}" title="Не следить"></a>
+                    {|/if|}
+
+                    <h1>{|$orderName|}</h1>
+
+                    {|if $fireIssue|}
+                        <div class="ob-icon-overdue"></div>
+                    {|/if|}
+
+                    <div class="clear"></div>
+                </div>
+
+                {|if $description|}
+                    <div class="description">
+                        {|$description|}
+                    </div>
+                {|/if|}
+            </div>
+        </div>
+
+        <div class="navigation {|if $menuAnimation|}js-ui-navigation{|/if|}">
+
+            {|if $tabMenuArray.parentTab && $projectUrl|}
+                <a href="{|$projectUrl|}">
+                    {|if $projectName|}
+                        {|$projectName|}
+                    {|else|}
+                        Проект
+                    {|/if|}
+                </a>
+            {|/if|}
+
+            <a href="/admin/customorder/{|$type|}/{|$orderid|}/edit/" {|if $selected == 'view'|} class="selected" {|/if|}>{|$typeName|} #{|$orderid|}</a>
+
+            {|foreach from=$typeWorkflowArray item="wt"|}
+                {|if $tabMenuArray[$wt.type]|}
+                    {|if $wt.type == 'order'|}
+                        <a href="/admin/customorder/{|$type|}/{|$orderid|}/order/" {|if $selected == 'order'|} class="selected" {|/if|}>
+                    {|else|}
+                        <a href="/admin/list/customorder/{|$type|}/{|$orderid|}/{|$wt.type|}/" {|if $selected == $wt.type|} class="selected" {|/if|}>
+                    {|/if|}
+                        {|$wt.name|}
+                        {|if $wt.count > 0|}
+                            <span class="ob-count-element">{|$wt.count|}</span>
+                        {|/if|}
+                    </a>
+                {|/if|}
+            {|/foreach|}
+
+            {|if $tabMenuArray.info|}
+                <a href="/admin/customorder/{|$type|}/{|$orderid|}/info/" {|if $selected == 'info'|} class="selected" {|/if|}>Информация</a>
+            {|/if|}
+
+            {|if $tabMenuArray.products|}
+                <a href="/admin/customorder/{|$type|}/{|$orderid|}/products/" {|if $selected == 'products'|} class="selected" {|/if|}>Продукты</a>
+            {|/if|}
+
+            {|foreach from=$moduleTabArray item="e"|}
+                <a href="{|$e.url|}" {|if $selected == $e.moduleName|} class="selected" {|/if|} >{|$e.name|}</a>
+            {|/foreach|}
+
+            {|if $canDelete|}
+                {|if $isDeleted|}
+                    <a href="/admin/customorder/{|$type|}/{|$orderid|}/restore/" {|if $selected == 'restore'|} class="selected" {|/if|}>Восстановить</a>
+                {|else|}
+                    <a href="/admin/customorder/{|$type|}/{|$orderid|}/delete/" {|if $selected == 'delete'|} class="selected" {|/if|}>Удалить</a>
+                {|/if|}
+            {|/if|}
+        </div>
+    </div>
+{|/if|}
+
+<script>
+    // инициализация просмотра картинок
+    $j('.js-colorbox').colorbox({
+        maxWidth: '95%',
+        maxHeight: '95%',
+        current: false,
+        returnFocus: false
+    });
+</script>

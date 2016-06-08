@@ -1,0 +1,39 @@
+{|$menu|}
+
+{|$table|}
+<br />
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|foreach from=$errorsArray  item="e"|}
+            {|if $e == 'duplicate'|}
+                {|$translate_not_add_item_to_the_related_self|}
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $table|}
+<form action="" method="post">
+    <div class="ob-block-element" id="id-form-delete" style="display: none;">
+        <label>
+            <input type="checkbox" name="delete" value="" id="id-checkboxes" />
+            {|$translate_products_list_delete_confirm|}
+        </label>
+    </div>
+
+    <div class="ob-block-element">
+        <strong>{|$translate_priceplace_product_add|}</strong> {|$translate_priceplace_product_declare_code|}
+        <br />
+        <br />
+
+        <textarea class="help-hint-related-products-add" name="codes" style="width: 100%; height: 50px;"></textarea>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="button" onclick="document.location='/admin/shop/products/'" name="ok" value="&lsaquo; {|$translate_product_list_run|}" class="ob-button" />
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+        <a href="/product/{|$productid|}/" target="_blank">{|$translate_review|}</a>
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+{|/if|}

@@ -1,0 +1,190 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element">
+            <a href="/admin/shop/storage/orders/{|$ordertype|}/" >
+                {|if $ordertype == 'incoming'|}
+                    {|$translate_orders_incoming|}
+                {|elseif $ordertype == 'transfer'|}
+                    {|$translate_orders_transfer|}
+                {|elseif $ordertype == 'production'|}
+                    {|$translate_orders_production|}
+                {|/if|}
+            </a>
+        </div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_ord|} #{|$orderid|}</a></div>
+        <div class="tab-element">
+            {|if !$isshipped|}
+                <a href="/admin/shop/storage/order/{|$orderid|}/to{|$ordertype|}/" {|if $canAction|} class="highlighted" {|/if|}>
+                    {|if $ordertype == 'incoming'|}
+                        {|$translate_incoming_do|}
+                    {|elseif $ordertype == 'transfer'|}
+                        {|$translate_order_to_transfer|}
+                    {|elseif $ordertype == 'production'|}
+                        {|$translate_order_to_production|}
+                    {|/if|}
+                </a>
+            {|/if|}
+        </div>
+        <div class="tab-element"><a href="/admin/shop/storage/order/{|$orderid|}/delete/">{|$translate_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $isshipped|}
+    <div class="shop-message-success">{|$translate_order_is_shipped|}.</div>
+{|/if|}
+
+<div id="js-message-div"></div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">{|$translate_order_update_success|}.</div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'storagenamefrom'|}
+                {|$translate_order_error_vendor_warehouse|}.<br />
+            {|/if|}
+            {|if $e == 'storagenameto'|}
+                {|$translate_storage_error_warehouse|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<h1>{|$translate_order_products|}</h1>
+
+<form action="" method="post" id="id-order-products">
+    <input type="hidden" name="orderid" value="{|$orderid|}" />
+
+    {|$productTable|}
+</form>
+
+{|if !$isshipped AND 0|}
+    <div class="shop-message-info">
+        Вы уже можете
+        <a href="/admin/shop/storage/order/{|$orderid|}/to{|$ordertype|}/">
+            {|if $ordertype == 'incoming'|}
+                {|$translate_incoming_do|}
+            {|elseif $ordertype == 'transfer'|}
+                {|$translate_order_to_transfer|}
+            {|elseif $ordertype == 'production'|}
+                {|$translate_order_to_production|}
+            {|/if|}
+        </a>
+    </div>
+{|/if|}
+
+{|if not $isshipped|}
+
+    <div class="ob-block-element">
+        <a href="#" onclick="$j('#js-add-block').toggle(); return false;" style="display: block; font-size: 18px;">{|$translate_order_product_add|}</a>
+
+        <div id="js-add-block" style="display: none;">
+            {|$addForm|}
+        </div>
+    </div>
+{|/if|}
+
+<br />
+
+<div class="shop-order">
+    <table>
+        <tr valign="top">
+            <td class="bg">
+                <div class="caption">
+                    Информация о заказе
+                </div>
+                <form action="" method="post" id="js-form">
+                    <table>
+                        <tr>
+                            <td align="right" width="190">
+                                <strong>{|$translate_date_and_time_ordering|}</strong>
+                            </td>
+                            <td>
+                                <input type="text" name="cdate" value="{|$control_cdate|}" id="id-cdate" />
+                                <script type="text/javascript">
+                                $j('#id-cdate').datepicker({
+                                    dateFormat: 'yy-mm-dd'
+                                });
+                                </script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <strong>
+                                    {|if $ordertype == 'incoming'|}
+                                        {|$translate_vendor|}
+                                    {|elseif $ordertype == 'transfer'|}
+                                        {|$translate_storage_transfer_from|}
+                                    {|elseif $ordertype == 'production'|}
+                                        {|$translate_storage_production_from|}
+                                    {|/if|}
+                                </strong>
+                            </td>
+                            <td>
+                                {|if $storagenamefromArray|}
+                                    <select name="storagenamefromid" class="chzn-select">
+                                        <option value="" >-</option>
+                                        {|foreach from=$storagenamefromArray item="e"|}
+                                            <option value="{|$e.id|}" {|if $e.id == $control_storagenamefromid|} selected {|/if|}>{|$e.name|}</option>
+                                        {|/foreach|}
+                                    </select>
+                                {|else|}
+                                    {|if $ordertype == 'incoming'|}
+                                        <div class="shop-message-info">
+                                            <a href="/admin/shop/storage/settings/vendors/">{|$translate_incoming_settings_vendors|}</a>
+                                        </div>
+                                    {|else|}
+                                        <div class="shop-message-info">
+                                            <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>
+                                        </div>
+                                    {|/if|}
+                                {|/if|}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <strong>
+                                    {|if $ordertype == 'incoming'|}
+                                        {|$translate_storage_incoming_to|}
+                                    {|elseif $ordertype == 'transfer'|}
+                                        {|$translate_storage_transfer_to|}
+                                    {|elseif $ordertype == 'production'|}
+                                        {|$translate_storage_production_to|}
+                                    {|/if|}
+                                </strong>
+                            </td>
+                            <td>
+                                {|if $storagenametoArray|}
+                                    <select name="storagenametoid" class="chzn-select">
+                                     <option value="" >-</option>
+                                        {|foreach from=$storagenametoArray item="e"|}
+                                            <option value="{|$e.id|}" {|if $e.id == $control_storagenametoid|} selected {|/if|}>{|$e.name|}</option>
+                                        {|/foreach|}
+                                    </select>
+                                {|else|}
+                                    <div class="shop-message-info">
+                                        <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>
+                                    </div>
+                                {|/if|}
+                            </td>
+                        </tr>
+                    </table>
+
+                    <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+                </form>
+            </td>
+            <td class="bg" width="50%" rowspan="2">
+                <div class="caption">
+                    Документы заказа
+                </div>
+                {|$block_documents|}
+            </td>
+        </tr>
+    </table>
+</div>

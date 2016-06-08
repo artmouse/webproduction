@@ -1,0 +1,6 @@
+{|if $urlShip|}
+    <a href="{|$urlShip|}">{|$actionType|}</a>
+{|/if|}
+{|if $urlControl|}
+    <a href="{|$urlControl|}">{|$urlControlName|}</a>
+{|/if|}

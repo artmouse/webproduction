@@ -1,0 +1,27 @@
+<h1>{|$translate_product_search|}</h1>
+
+<form action="" method="get" class="ob-block-form">
+    <table>
+        <tr>
+            <td>{|$translate_item_code|}:</td>
+            <td>
+                <input type="text" name="productid" id="id-value" value="{|$control_productid|}" />
+                <a href="#" id="id-product" style="display: none;">{|$translate_select_product|}</a>
+                <a href="#" id="id-product-name" class="ob-button">{|$translate_select_product|}</a>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input class="ob-button" type="submit" name="ok" value="{|$translate_search|}" /></td>
+        </tr>
+    </table>
+</form>
+
+{|if $table|}
+    <h1>#{|$productid|} - {|$productname|}</h1>
+    <div class="shop-overflow-table">
+        {|$table|}
+    </div>
+{|else|}
+    <div class="shop-message-info">{|$translate_product_not_found|}.</div>
+{|/if|}

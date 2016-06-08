@@ -1,0 +1,38 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <input class="js-int" type="text" name="{|$index|}_term" value="{|$term|}" style="width: 50px;" />
+        <select name="{|$index|}_period" class="{|$index|}-chzn-select inline" style="width: 80px;">
+            <option value="hour" {|if $period == 'hour'|} selected {|/if|}>{|$translate_chas|}</option>
+            <option value="day" {|if $period == 'day'|} selected {|/if|}>{|$translate_day|}</option>
+            <option value="week" {|if $period == 'week'|} selected {|/if|}>{|$translate_nedelya|}</option>
+            <option value="month" {|if $period == 'month'|} selected {|/if|}>{|$translate_month|}</option>
+        </select>
+    </div>
+</div>
+
+<script>
+    $j(function() {
+        $j('.js-int').on('keyup', function(){
+            $j(this).val($j(this).val().replace (/\D/, ''));
+        });
+        // select
+        $j('.{|$index|}-chzn-select').select2();
+    });
+</script>
+
+<style>
+    .select2-container.inline {
+        display: inline-block;
+        vertical-align: top;
+    }
+</style>

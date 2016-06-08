@@ -1,0 +1,77 @@
+.shop-mind-block {
+    position: relative;
+}
+
+.shop-mind-block .control {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.node {
+    cursor: pointer;
+    position: relative;
+}
+
+.current {
+    fill: red;
+}
+
+.overlay{
+    background-color: #ffffff;
+    width: 100% !important;
+}
+
+.node circle {
+    fill: #fff;
+    stroke: #007ecf;
+    stroke-width: 2px;
+}
+
+.current circle {
+    stroke: red;
+}
+
+.add-relation {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: url('/_images/admin/icon-plus.png');
+    margin: -50px 0 0 -30px;
+    cursor: pointer;
+}
+
+.node text {
+    font-size: 12px;
+}
+
+.node .add-rel {
+    fill: green;
+    stroke: green;
+    stroke-width: 2px;
+}
+
+.node .add-rel:hover {
+    fill: red;
+    stroke: red;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1px;
+}
+
+.templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 1px;
+}
+
+.ghostCircle.show{
+   display: block;
+}
+
+.ghostCircle, .activeDrag .ghostCircle{
+    display: none;
+}

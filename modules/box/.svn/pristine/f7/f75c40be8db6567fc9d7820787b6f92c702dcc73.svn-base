@@ -1,0 +1,21 @@
+{|$block_menu|}
+
+{|$block_issue|}
+
+<div class="js-create-order">
+    <a class="ob-button" href="/admin/order/add/?creatybyprojectid={|$orderid|}">{|$translate_create_order|}</a>
+</div>
+
+{|*|}
+<div class="js-issue-quickadd">
+    {|$block_issue_add_quick|}
+</div>
+{|*|}
+
+<script type="text/javascript">
+    $j('.js-create-order').appendTo('.shop-result-list .inner-list');
+
+    if ($j('.js-issue-quickadd').length) {
+        $j('.js-issue-quickadd').appendTo('.js-table-footer');
+    }
+</script>

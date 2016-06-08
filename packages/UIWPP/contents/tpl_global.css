@@ -1,0 +1,22 @@
+a {
+    color: #616161;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #3a6b80;
+}
+
+a:hover {
+    color: #59a5c6;
+    text-decoration: none;
+}
+
+a:active {
+    color: red;
+}
+
+body {
+    font-family: Arial, Verdana;
+    font-size: 14px;
+}

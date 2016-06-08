@@ -1,0 +1,18 @@
+<div class="shop-gallery-view">
+    <div class="date">{|$date|}</div>
+    <h1>{|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h1>
+    <div class="clear"></div>
+    <br />
+    
+    {|if $nextURL|}
+        <a href="{|$nextURL|}" class="fl-r">{|$nextName|} &rsaquo;</a>
+    {|/if|}
+    
+    {|if $prevURL|}
+        <a href="{|$prevURL|}" class="fl-l">&lsaquo; {|$prevName|}</a>
+    {|/if|}
+    <div class="clear"></div>
+    <br />
+    
+    {|$content|}
+</div>

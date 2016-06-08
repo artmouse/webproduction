@@ -1,0 +1,82 @@
+{|$menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_user_save_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_update_data_error|}.<br />
+        {|foreach from=$errorArray item="e"|}
+            {|$e|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $legalArray|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+        <thead>
+            <tr>
+                <td>{|$translate_product_name|}</td>
+                <td>{|$translate_format_rekvizitov|}</td>
+                <td>{|$translate_detali|}</td>
+                <td>&nbsp;</td>
+            </tr>
+        </thead>
+        {|foreach from=$legalArray item="e"|}
+            <tr valign="top">
+                <td>{|$e.name|}</td>
+                <td>{|$e.format|}</td>
+                <td>
+                    {|foreach from=$e.detailArray item="f"|}
+                        {|$f.name|}: {|$f.value|}<br />
+                    {|/foreach|}
+                    <br />
+                </td>
+                <td>
+                    <a href="{|$e.urldelete|}" onclick="return confirm('{|$translate_podtverzhdaete_udalenie|}?');">{|$translate_delete|}</a>
+                </td>
+            </tr>
+        {|/foreach|}
+    </table>
+
+    <br />
+    <br />
+{|/if|}
+
+<form action="" method="post" class="ob-block-element">
+    {|$translate_dobavit_yuridicheskie_rekviziti|}:<br />
+    <select name="format" class="js-format">
+        <option value="">---</option>
+        {|foreach from=$formatArray item="e" key="index"|}
+            <option value="{|$index|}">{|$index|}</option>
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+
+    {|foreach from=$formatArray item="e" key="index"|}
+        <div class="js-format-block js-format-{|$index|}" style="display: none;">
+            {|foreach from=$e item="name" key="key"|}
+                {|$name|}<br />
+                <input type="text" name="{|$index|}-{|$key|}" value="" style="width: 50%;" />
+                <br />
+                <br />
+            {|/foreach|}
+        </div>
+    {|/foreach|}
+
+    <br />
+    <br />
+    <input class="ob-button" type="submit" name="ok" value="{|$translate_add|}" />
+</form>
+
+<script type="text/javascript">
+$j('.js-format').change(function (event) {
+    var format = $j(event.target).val();
+    $j('.js-format-block').hide();
+    $j('.js-format-'+format).show();
+});
+</script>

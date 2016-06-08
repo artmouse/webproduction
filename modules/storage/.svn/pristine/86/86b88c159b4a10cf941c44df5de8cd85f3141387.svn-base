@@ -1,0 +1,41 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|$translate_barcode_printing|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if !$product|}
+    <form action="" method="get" class="ob-block-form">
+        <table>
+            <tr>
+                <td>{|$translate_barcode_select_product|}:</td>
+                <td>
+                    <input type="text" name="productid" value="{|$control_productid|}" id="js-product-autocomplete" style="width: 300px;" />
+                    <script type="text/javascript">
+                        $j(function () {
+                            product_autocomplete_init('js-product-autocomplete', false);
+                        });
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>{|$translate_barcode_amount|}:</td>
+                <td><input type="text" name="count" value="{|$control_count|}" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="ob-button" type="submit" name="select" value="{|$translate_select|}"  /></td>
+            </tr>
+        </table>
+    </form>
+{|/if|}
+
+{|if $product|}
+    <div class="shop-block">
+        {|$translate_product|}: <strong>#{|$product.id|} {|$product.name|}</strong> ({|$product.count|} {|$translate_barcodes|})
+    </div>
+
+    {|$block_documents|}
+{|/if|}

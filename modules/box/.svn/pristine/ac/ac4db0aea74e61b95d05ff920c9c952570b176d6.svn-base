@@ -1,0 +1,91 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="." class="selected">{|$translate_sravnenie_pokazateley_kpi_plan_fakt|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_employee|}</div>
+                <select name="userid[]" class="chzn-select" multiple>
+                    <option value="">&nbsp;</option>
+                    {|foreach from=$userArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $userIDArraySelected)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_pokazateli_kpi|}</div>
+                <select name="kpiid[]" class="chzn-select" multiple>
+                    <option value="">&nbsp;</option>
+                    {|foreach from=$kpiArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $kpiIDArraySelected)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date_from|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_date_to|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|foreach from=$reportArray item="kpi"|}
+            <h2>{|$kpi.name|}</h2>
+
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+                <thead>
+                    <tr>
+                        <td width="300">{|$translate_employee|}</td>
+                        <td width="50">{|$translate_plan|}</td>
+                        <td width="50">{|$translate_fakt|}</td>
+                        <td width="50">{|$translate_raznitsa_kolichestvennaya|}</td>
+                        <td width="50">{|$translate_raznitsa_protsentnaya|}</td>
+                    </tr>
+                </thead>
+                {|foreach from=$kpi.dataArray item="e"|}
+                    <tr>
+                        <td>
+                            <a href="{|$e.userURL|}">{|$e.userName|}</a>
+                        </td>
+                        <td align="right">{|$e.plan|}</td>
+                        <td align="right">{|$e.fact|}</td>
+                        <td align="right">
+                            {|if $e.diff >= 0|}
+                                <span style="color: green;">{|$e.diff|}</span>
+                            {|else|}
+                                <span style="color: red;">{|$e.diff|}</span>
+                            {|/if|}
+                        </td>
+                        <td align="right">
+                            {|if $e.diffPercent >= 0|}
+                                <span style="color: green;">{|$e.diffPercent|}%</span>
+                            {|else|}
+                                <span style="color: red;">{|$e.diffPercent|}%</span>
+                            {|/if|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </table>
+
+            <br />
+            <br />
+        {|/foreach|}
+    </div>
+</div>
+<div class="clear"></div>

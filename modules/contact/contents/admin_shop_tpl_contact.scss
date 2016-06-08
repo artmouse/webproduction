@@ -1,0 +1,131 @@
+$bodyBg: #f6f7f9;
+$colorLinkBase: #0375c2;
+$colorSuccess: #6ece26;
+$colorImportant: #f2596f;
+$colorDark: #515152;
+$colorSemiDark: #888888;
+$fontBase: 'Roboto', sans-serif;;
+$fontSizeBase: 14px;
+$lineHeightBase: 18px;
+
+@mixin box-sizing($boxsizing) {
+    -moz-box-sizing: $boxsizing;
+    -webkit-box-sizing: $boxsizing;
+    box-sizing: $boxsizing;
+}
+$bb: border-box;
+
+@mixin transition-duration($duration) {
+    -webkit-transition-duration: $duration;
+    -moz-transition-duration: $duration;
+    -o-transition-duration: $duration;
+    -ms-transition-duration: $duration;
+    transition-duration: $duration;
+}
+
+@mixin scale ($scale) {
+    -moz-transform: scale($scale, $scale);
+    -webkit-transform: scale($scale, $scale);
+    -o-transform: scale($scale, $scale);
+    -ms-transform: scale($scale, $scale);
+    transform: scale($scale, $scale);
+}
+
+@mixin column-count ($count) {
+    -webkit-column-count: $count;
+    -moz-column-count: $count;
+    column-count: $count;
+}
+
+@mixin translate ($x, $y) {
+    -webkit-transform: translate($x, $y);
+    -ms-transform: translate($x, $y);
+    transform: translate($x, $y);
+}
+
+@mixin blur ($blur) {
+    -webkit-filter: blur($blur);
+    -moz-filter: blur($blur);
+    -o-filter: blur($blur);
+    -ms-filter: blur($blur);
+    filter: blur($blur);
+}
+
+@mixin transition-property ($property) {
+    -webkit-transition-property: $property;
+    -moz-transition-property: $property;
+    -o-transition-property: $property;
+    -ms-transition-property: $property;
+    transition-property: $property;
+}
+
+.cnt-block-person-card {
+    text-align: center;
+    color: $colorDark;
+    line-height: 20px;
+
+    .person-avatar {
+        display: block;
+        margin: 0 auto 10px auto;
+        position: relative;
+        width: 100px;
+        min-height: 16px;
+
+        span {
+            width: 100px;
+            height: 100px;
+            display: block;
+        }
+
+        .ob-link-clear,
+        .ob-link-edit {
+            position: absolute;
+            top: 0;
+            padding: 2px;
+            line-height: 14px;
+            opacity: 0;
+            @include transition-duration(0.3s)
+        }
+
+        .ob-link-clear {
+            left: -10px;
+        }
+
+        .ob-link-edit {
+            right: -10px;
+        }
+
+        &:hover {
+            .ob-link-clear,
+            .ob-link-edit {
+                opacity: 1;
+            }
+        }
+
+        input[type="file"] {
+            left: -5000px;
+            visibility: hidden;
+            position: absolute;
+        }
+    }
+
+    .light {
+        color: $colorSemiDark;
+        font-weight: 300;
+        display: block;
+    }
+
+    .name {
+        display: block;
+        font-size: $fontSizeBase + 2;
+    }
+
+    .group {
+        background-color: rgba(0, 0, 0, 0.05);
+        font-weight: 300;
+        padding: 3px 10px;
+        margin: 0 0 4px 0;
+        display: inline-block;
+        border-radius: 5px;
+    }
+}

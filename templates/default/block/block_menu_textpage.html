@@ -1,0 +1,16 @@
+<ul class="list textpage-block-menu">
+    {|foreach from=$textpageArray item="e1"|}
+        <li>
+            <a href="{|$e1.url|}" {|if $e1.selected|}class="selected"{|/if|}>{|if $e1.btnName|}{|$e1.btnName|}{|else|}{|$e1.name|}{|/if|}</a>
+            {|if $e1.childArray|}
+               <ul class="sub">
+                    {|foreach from=$e1.childArray item="e2"|}
+                        <li>
+                            <a href="{|$e2.url|}" {|if $e2.selected|}class="selected"{|/if|}>{|if $e2.btnName|}{|$e2.btnName|}{|else|}{|$e2.name|}{|/if|}</a>
+                        </li>
+                    {|/foreach|}
+                </ul>
+            {|/if|}
+        </li>
+    {|/foreach|}
+</ul>

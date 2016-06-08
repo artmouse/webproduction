@@ -1,0 +1,294 @@
+.PREFIX-content {
+    color: gray;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.PREFIX-content a {
+    color: #00C0E3;
+    text-decoration: underline;
+}
+.PREFIX-content a:hover {
+    text-decoration: none;
+}
+
+.PREFIX-content-text {
+    font-family: Arial, Sans Serif;
+    line-height: 1.4;
+    font-size: 13px;
+}
+.PREFIX-content-text p {
+    margin-top: 1.2em;
+    margin-bottom: 0;
+}
+
+.PREFIX-content-gray {
+    color: black;
+    background-color: rgb(240,240,240);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.PREFIX-content-success {
+    background-color: #6CA635;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+.PREFIX-content-success a {
+    color: white;
+}
+
+.PREFIX-content-error {
+    background-color: #EE6A59;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+.PREFIX-content-error a {
+    color: white;
+}
+
+.PREFIX-hover:hover {
+    background-color: rgb(240,240,240);
+    color: black;
+}
+
+.PREFIX-rounded {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.PREFIX-h1,
+.PREFIX-h2,
+.PREFIX-h3,
+.PREFIX-h4,
+.PREFIX-h5,
+.PREFIX-h6,
+.PREFIX-content .h1 {
+    font-size: 22px;
+    font-family: Myriad, Arial;
+	font-weight: normal;
+	font-size: 24px;
+	padding: 0;
+	margin: 0;
+	color: black;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.PREFIX-h2 {
+    font-size: 18px;
+}
+.PREFIX-h3 {
+    font-size: 14px;
+}
+.PREFIX-h4,
+.PREFIX-h5,
+.PREFIX-h6 {
+    font-size: 12px;
+}
+
+.PREFIX-date {
+    color: gray;
+    font-size: 11px;
+}
+
+.PREFIX-button,
+.PREFIX-button:visited {
+    display: inline-block;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+    background-color: #59A5C6;
+    text-decoration: none;
+    text-align: center;
+}
+
+.PREFIX-button:hover {
+    color: white;
+    background-color: #00C0E3;
+    text-decoration: none;
+}
+
+.PREFIX-button:active {
+    background-color: red;
+}
+
+.PREFIX-link-add,
+.PREFIX-link-delete,
+.PREFIX-link-edit,
+.PREFIX-link-renew,
+.PREFIX-link-info,
+.PREFIX-link-move,
+.PREFIX-link-config,
+.PREFIX-link-check,
+.PREFIX-link-uncheck,
+.PREFIX-link-feed,
+.PREFIX-link-payment {
+    padding-left: 20px;
+    display: inline;
+    padding-top: 1px;
+}
+
+.PREFIX-link-add {
+    background:url('PATH/media/wpp-link-add.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-delete {
+    background:url('PATH/media/wpp-link-delete.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-edit {
+    background:url('PATH/media/wpp-link-edit.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-renew {
+    background:url('PATH/media/wpp-link-renew.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-info {
+    background:url('PATH/media/wpp-link-info.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-move {
+    background:url('PATH/media/wpp-link-move.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-config {
+    background:url('PATH/media/wpp-link-config.png') 0px 0px no-repeat;
+    padding-bottom:2px;
+}
+
+.PREFIX-link-check {
+    background:url('PATH/media/wpp-link-check.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-uncheck {
+    background:url('PATH/media/wpp-link-uncheck.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.PREFIX-link-feed {
+    background:url('PATH/media/wpp-link-feed.png') 0px 0px no-repeat;
+    padding-bottom:2px;
+}
+
+.PREFIX-link-payment {
+    background:url('PATH/media/wpp-link-payment.png') 0px 0px no-repeat;
+    padding-bottom:1px;
+}
+
+.wpp-link-logo-big {
+    background: url('PATH/media/wpp-logo.png') 0px 0px no-repeat;
+    font-size: 40px;
+    color: black;
+    text-decoration: none;
+    font-family: Arial, Verdana;
+    padding-left: 80px;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.wpp-link-logo-big:hover {
+    color: gray;
+}
+
+.PREFIX-icon-active {
+    background:url('PATH/media/wpp-icon-active.png') 0px 0px no-repeat;
+    width:16px;
+    display:inline;
+    padding-left:12px;
+    padding-top:1px;
+    padding-bottom:1px;
+}
+
+.PREFIX-icon-inactive {
+    background:url('PATH/media/wpp-icon-inactive.png') 0px 0px no-repeat;
+    width:16px;
+    display:inline;
+    padding-left:12px;
+    padding-top:1px;
+    padding-bottom:1px;
+}
+
+.PREFIX-icon-error {
+    background: url('PATH/media/wpp-icon-error.png') 0px 0px no-repeat;
+    width: 16px;
+    display: inline;
+    padding-left: 12px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.PREFIX-hide {
+    width: 0;
+    overflow: hidden;
+    display: inline-block;
+    padding-left: 16px;
+    margin-bottom: -2px;
+}
+
+.PREFIX-autoshow:hover {
+    padding-left: 20px;
+    width: auto;
+}
+
+.PREFIX-code {
+    font-family: Courier;
+    font-size: 13px;
+    color: black;
+    background-color: rgb(240,240,240);
+    padding: 5px;
+    border: 1px solid rgb(200,200,200);
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.PREFIX-width {
+	width: 999px;
+}
+
+.PREFIX-body {
+	background-color: #ffffff;
+	background-image: url('PATH/media/wpp-background.png');
+}
+
+.PREFIX-footer {
+    text-align: center;
+    color: gray;
+    font-size: 12px;
+}
+
+.PREFIX-table {
+
+}
+
+.PREFIX-table tr td {
+    padding: 5px;
+    border-bottom: 1px solid rgb(200,200,200);
+}
+
+.PREFIX-table tr:hover {
+    /*background-color: rgb(240,240,240);*/
+    background-color: #ffffff;
+}
+
+.PREFIX-input {
+    padding: 5px;
+    margin: 5px;
+    font-size: 14px;
+    font-family: Arial, Verdana;
+    color: black;
+}

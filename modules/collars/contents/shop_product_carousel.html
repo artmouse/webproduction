@@ -1,0 +1,43 @@
+{|if $productsArray|@count > 2|}
+    <div class="cl-product-list">
+        <ul class="small-block-grid-1 smaller-block-grid-3 medium-block-grid-4 sub-large-block-grid-4 large-block-grid-6">
+            {|foreach from=$productsArray item="p"|}
+                <li>
+                    <div class="cl-product-thumb">
+                        <div class="block-image">
+                            {|*|}
+                            {|if $p.iconImage|}
+                              <img src="{|$p.iconImage|}" alt="{|$p.iconName|escape|}" title="{|$p.iconName|escape|}" class="icon-image" />
+                            {|/if|}
+                            {|*|}
+                            <a href="{|$p.url|}"><img src="{|$p.image|}" alt="{|$p.name|escape|}" title="{|$p.name|escape|}" /></a>
+                        </div>
+                        <div class="hidden-descript">
+                            <div class="name">
+                                <a href="{|$p.url|}" title="{|$p.name|}">{|$p.name|}</a>
+                            </div>
+                            <div class="block-price">
+                                {|if $p.price == 0|}
+                                    <div class="os-price-specify">{|$translate_specify_a_price|}</div>
+                                {|else|}
+                                    {|if !$p.avail|}
+                                        <div class="os-price-unavailable">from {|$p.price|} {|$p.currency|}</div>
+                                    {|else|}
+                                        <div class="os-price-available">from {|$p.price|} {|$p.currency|}</div>
+                                    {|/if|}
+                                {|/if|}
+                            </div>
+                            <div class="block-button">
+                                <div class="js-shop-buy" data-productid="{|$p.id|}">
+                                    <a href="#" class="cl-button buy-button js-shop-buy-action">{|$translate_buy|}</a>
+                                </div>
+                                <a class="cl-favorite-button js-shop-favorite" href="javascript:void(0);" data-productid="{|$p.id|}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {|/foreach|}
+        </ul>
+    </div>
+{|/if|}
+

@@ -1,0 +1,68 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date|}: {|$translate_with|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_for|}" />
+            </div>
+
+            <div class="element">
+                <label>
+                    <input type="radio" name="status" value="0" {|if !$control_status|} checked {|/if|} />
+                    {|$translate_all_orders|}
+                </label>
+                <br />
+
+                {|foreach from=$statusArray item="e"|}
+                    <label>
+                        <input type="radio" name="status" value="{|$e.id|}" {|if $control_status == $e.id|} checked {|/if|} />
+                        {|$e.name|}
+                    </label>
+                    <br />
+                {|/foreach|}
+            </div>
+
+            <input class="ob-button" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $reportArray|}
+            <table class="shop-table">
+                <thead>
+                    <tr>
+                        <td>{|$translate_klient_tovar|}</td>
+                        {|foreach from=$productArray key="productID" item="productName"|}
+                            <td>{|$productName|}</td>
+                        {|/foreach|}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {|foreach from=$reportArray key="clientID" item="dataArray"|}
+                        <tr>
+                            <td><strong>{|$clientArray[$clientID]|}</strong></td>
+                            {|foreach from=$productArray key="productID" item="productName"|}
+                                <td align="right">
+                                    {|$dataArray[$productID]|number_format:2|}
+                                    {|$currencyName|}
+                                </td>
+                            {|/foreach|}
+                        </tr>
+                    {|/foreach|}
+                </tbody>
+            </table>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

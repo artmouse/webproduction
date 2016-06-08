@@ -1,0 +1,61 @@
+{|$menu|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_data_error|}.<br />
+        {|foreach from=$errorsArray item="e"|}
+            {|$e|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form  action="" method="post">
+    <table>
+        {|foreach from=$valuesArray item="e" key="index"|}
+            <tr>
+                <td width="300">
+                    <select name="filterid[]" class="chzn-select">
+                        <option value="0">---</option>
+                        {|foreach from=$filtersArray item="f"|}
+                            <option value="{|$f.id|}" {|if $f.id == $e.id|} selected {|/if|}>{|$f.name|} {|if $f.hidden|}({|$translate_hidden_small|}){|/if|}</option>
+                        {|/foreach|}
+                    </select>
+                </td>
+                <td>
+                    <input class="js-product-autocomplete-input" type="text"  name="filtervalue[]" value="{|$e.value|}"/>
+                </td>
+                <td>
+                    <label><input type="checkbox" name="filteruse{|$index|}" value="1" {|if $e.use|}checked{|/if|}/>{|$translate_available_in_filters|}</label><br />
+                    <label><input type="checkbox" name="filteractual{|$index|}" value="1" {|if $e.actual|}checked{|/if|}/>{|$translate_characteristics_Table|}</label><br />
+                </td>
+                <td>
+                    <label><input type="checkbox" name="filteroption{|$index|}" data-id="#markup{|$index|}" class="js_option" value="1" {|if $e.option|}checked{|/if|}/>{|$translate_order_option|}</label>
+                </td>
+                <td>
+                    <span {|if !$e.option|}style="display: none;"{|/if|} id="markup{|$index|}">
+                        <label>
+                            {|$translate_markup|} ({|$translate_the_amount_of|} {|$currency|})
+                            <input type="text" name="filtermarkup[]" value="{|$e.markup|}" />
+                        </label>
+                    </span>
+                    &nbsp;
+                </td>
+            </tr>
+        {|/foreach|}
+    </table>
+    <br />
+    <a href="{|$addFilteUrl|}" target="_blank" class="ob-button">{|$translate_products_filters_add|}</a>
+
+    <div class="ob-button-fixed">
+        <input type="button" onclick="document.location='/admin/shop/products/'" name="ok" value="&lsaquo; {|$translate_product_list_run|}" class="ob-button" />
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+        <a href="/product/{|$productid|}/" target="_blank">{|$translate_review|}</a>
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

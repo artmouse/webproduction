@@ -1,0 +1,133 @@
+<h1>Как создать модуль OneBox?</h1>
+В системе можна создавать свои модули, со своим функционалом.  <br /><br /> 
+<h2>Что такое модуль?</h2>
+Модуль - это часть дополнительного функционала, которая оформлена в виде отдельнных файлов, с отдельной структурой. <br /><br /> 
+<h2>Зачем нужны модуля?</h2>
+Модуля нужны для того чтобы не плодить функционал, который нужен не каждому клиенту.<br /> <br /> 
+<h2>Как создать свой модуль в движке OneBox?</h2><br />
+Для того чтобы создать свой модуль, нужно выполнить такие действия:
+<ol>
+    <li>Переходим в директорию <b>modules</b></li>
+    <li>В этой директории создаём свою директорию с названием модуля. К примеру <b>mymodule</b></li>
+    <li>В директории mymodule создаём файл <b>include.php</b></li>
+    <li>
+        Внутри файла <b>include.php</b> мы можем зарегистрировать классы с контентами, forms, api, переопределять методы, 
+        переопределять другие контенты, в общем то все что угодно. Например: <br /><br />
+        Если вам нужно api то мы, регистрируем всю директорию api  в файле include.php , для этого можно воспользоваться методом:<br/><br />
+<code><pre>
+PackageLoader::Get()->registerPHPDirectory(dirname(__FILE__).'/api/');
+</pre></code>
+<br />
+В директории api вы можете создавать свои классы и все они будут подключены.           
+<br />
+К примеру вам нужно из под модуля переопределить метод из Shop_ShopService , вы в своем модуле, в файле include.php
+пишите <br /><br />
+<code><pre>
+Shop_ShopService::Set('My_NewService');
+</pre></code>
+<br />
+В директории api создаёте класс My_NewService.class.php , в котором будете <a href="/doc/services_override">переопределять нужные методы.</a>
+<br />
+<br />
+
+Вернёмся к нашему примеру и зарегистрируем контент своего модуля.<br />
+Для этого воспользуемся методом registerContent и добавим класс регистрации контента. Создаём класс Mymodule_ContentLoadObserver и внутри его регистрируем контент: <br /><br />
+<code><pre>
+class Mymodule_ContentLoadObserver implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        Engine::GetContentDataSource()->registerContent('test-mymodule', array(
+            'url' => '/mymodule/',
+            'filephp' => dirname(__FILE__).'/contents/test_mymodule.php',
+            'filehtml' => dirname(__FILE__).'/contents/test_mymodule.html',
+        ), 'override');
+    }
+}
+</pre></code>
+<br /><br />
+<span style="color: red;">Если вам нужно добавить поле в какую-то из таблиц или добавить новую таблицу то вам нужно выполнить ряд действий: </span>
+<ul>
+    <li>Создать класс в корне модуля в котором вы будете добавлять поля или таблицы в бд, к примеру назовём его Mymodule_DB</li>
+    <li>Зарегистрировать наш класс Mymodule_DB.class.php в файле include.php</li>
+    <li>ДОписатся на событие SQLObject.build.before</li>
+</ul>
+<br />
+<br />
+Создаем класс Mymodule_DB: <br />
+<code><pre>
+class Mymodule_DB implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+        // настраиваемые поля для конатктов
+        $table = SQLObject_Config::Get()->addClass('XShopContactField', 'shopuserfield');
+        $table->addField('id', 'int(11)', 'auto_increment');
+        $table->addField('groupid', 'int(11)');
+        $table->addField('showinorder', 'tinyint(1)');
+        $table->addIndexPrimary('id');
+        // indexes
+        $table->addIndexUnique(array('idkey', 'groupid'), 'index_idkeygroupid');
+        $table->addIndexUnique(array('groupid', 'name'), 'index_namegroupid');       
+    }
+}
+</pre></code>
+<br />
+<span>Больше не нужно писать SQLObject_Config::Get()->process(),   событие SQLObject.build.before  вызовет его само.</span>
+<br />
+Регистрируем наш Mymodule_DB.class.php и дописываемся на событие SQLObject.build.before в файле include.php нашего модуля.
+<br />
+<code><pre>
+PackageLoader::Get()->registerPHPClass(dirname(__FILE__).'/Mymodule_DB.class.php');
+
+Events::Get()->observe(
+    'SQLObject.build.before',
+    'Mymodule_DB'
+);
+
+</pre></code>
+
+<br />
+В Вернёмся к нашим контентам файле include.php дописываемся на событие которое зарегистрирует наши контенты, а так же зарегистрируем наш класс с контентами. Пример:
+<code><pre>
+// регистрация контентов.
+class Mymodule_ContentLoadObserver implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        Engine::GetContentDataSource()->registerContent('test-mymodule', array(
+            'url' => '/mymodule/',
+            'filephp' => dirname(__FILE__).'/contents/test_mymodule.php',
+            'filehtml' => dirname(__FILE__).'/contents/test_mymodule.html',
+        ), 'override');
+    }
+}
+</pre></code>
+<br />
+Дописываемся к событию регистрации и регистрируем наш класс
+<code><pre>
+PackageLoader::Get()->registerPHPClass(dirname(__FILE__).'/Mymodule_ContentLoadObserver.class.php');
+
+// регистрируем контенты в движке
+Events::Get()->observe(
+    'afterContentLoad',
+    'Mymodule_ContentLoadObserver'
+);
+</pre></code>
+    <br />
+    </li>
+    <li>Открываем файл <b>engine.mode.php</b> и покдлючаем наш модуль <br />
+        Пример: <br /><br />
+<code><pre>
+Engine::Get()->setConfigField('shop-module', array('quiz', 'mymodule'));
+</pre></code>
+    <br />
+    </li>
+    <li>После этого запускаем updater.sh</li>
+</ol>
+<br />
+<b>Что произойдет дальше?</b><br /><br />
+Далее Движок (WebProduction Engine) сам создаст файлы test_mymodule.php и test_mymodule.html в папке contents. <br />
+В этих файлах вы можете что-то написать и перейдя по URL <b>/mymodule/</b> вы увидите то что получилось.
+<br />
+<br />
+
+Больше примеров создания и подключения модулей вы можете посмотреть, в репозитории (svn Webproduction) или перейдя в директорию modules, открыв там любой модуль и файл <b>include.php</b>

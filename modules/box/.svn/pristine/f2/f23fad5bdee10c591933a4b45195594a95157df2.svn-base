@@ -1,0 +1,38 @@
+<div class="nb-search-result-element">
+    <div class="elements-caption">{|$translate_proekti_i_zakazi|}</div>
+
+    {|if !$orderArray|}
+        <div class="no-result">
+            Ничего не нашлось.
+            <span>Попробуйте еще.</span>
+        </div>
+    {|/if|}
+
+    {|foreach from=$orderArray item="order"|}
+        <div class="element no-avatar-included {|if $order.closed|}closed{|/if|}">
+            <div class="marker" style="{|if $order.color|}background-color: {|$order.color|};{|else|}background-color: #fff;{|/if|}"></div>
+
+            <div class="data">
+                <div class="item">
+                    <a class="name" href="{|$order.url|}">{|$order.name|}</a>
+                </div>
+
+                {|if $order.clientName|}
+                    <div class="item">
+                        <div class="post">
+                            <a href="{|$order.clientURL|}">{|$order.clientName|}</a>
+                        </div>
+                    </div>
+                {|/if|}
+                {|if $order.managerName|}
+                    <div class="item">
+                        <div class="post">
+                            <a href="{|$order.managerURL|}">{|$order.managerName|}</a>
+                        </div>
+                    </div>
+                {|/if|}
+            </div>
+            <div class="clear"></div>
+        </div>
+    {|/foreach|}
+</div>

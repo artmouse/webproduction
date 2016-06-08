@@ -1,0 +1,27 @@
+Subject: Оставьте отзыв, о заказнных товарах
+
+Здравствуйте, {|$userName|}! <br />
+{|$cdate|} Вы оформляли у нас заказ #{|$orderNumber|}. Мы благодарны за покупку и просим Вас оставить отзывы на заказанные товары, если это возможно.
+<br />
+<br />
+<table style="width: 99%;">
+    <tr>
+    {|foreach from=$productsArray key="k" item="e"|}
+    <td style="width: 30%; padding: 10px; text-align: center; vertical-align: middle;">
+        <img src="{|$e.imageUrl|}" alt="{|$e.name|}" title="{|$e.name|}" style="max-width: 150px; max-height: 150px;"/>
+        <br />
+        <a href="{|$e.url|}">{|$e.name|}</a>
+    </td>
+
+        {|if $k % 3 == 0|}
+    </tr><tr>
+        {|/if|}
+    {|/foreach|}
+    </tr>
+</table>
+
+<br />
+<br />
+
+
+{|$signature|}

@@ -1,0 +1,219 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element">
+            <a class="selected" href="/admin/standards/">Все стандарты</a>
+        </div>
+
+        {|if $acl|}
+            <div class="tab-element">
+                <a href="{|$linkcreate|}">Создать стандарт</a>
+            </div>
+        {|/if|}
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="post">
+            <div class="element">
+                <input type="text" name="filtername" placeholder="Название" value="{|$control_filtername|}">
+            </div>
+
+            <div class="element">
+                <div class="caption-field">Автор</div>
+                <select class="chzn-select" name="filtercauthor" >
+                    <option value="0">---</option>
+                    {|foreach from=$cauthorArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_filtercauthor == $e.id|} selected {|/if|}>
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                 <input class="js-date" type="text" name="filterdatefromcreate" placeholder="Создан от"
+                        value="{|$control_filterdatefromcreate|}">
+            </div>
+
+            <div class="element">
+                 <input class="js-date" type="text" name="filterdatetocreate" placeholder="Создан до"
+                         value="{|$control_filterdatetocreate|}">
+            </div>
+
+            <div class="element">
+                <div class="caption-field">Последний редактировал</div>
+                <select class="chzn-select" name="filtermauthor">
+                    <option value="0">---</option>
+                    {|foreach from=$mauthorArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_filtermauthor == $e.id|} selected {|/if|}>
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="filterdatefromedit" placeholder="Редактирован от"
+                        value="{|$control_filterdatefromedit|}">
+            </div>
+
+            <div class="element">
+                <input class="js-date" type="text" name="filterdatetoedit" placeholder="Редактирован до"
+                       value="{|$control_filterdatetoedit|}">
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" value="1" name="filteractive" {|if $control_filteractive|} checked {|/if|}>
+                    Показывать не активные стандарты
+                </label>
+            </div>
+            <br />
+
+            <div class="js-standards-list">
+                <h1 class="ob-standard-title">Стандарты</h1>
+                <div class="element ob-standard-helper">
+                    <input class="js-standards-helper" type="text" placeholder="Быстрый поиск" name="">
+                </div>
+                <div class="ob-block-tree js-block-tree">
+                <ul>
+                    {|if $filtermenu|}
+                        {|foreach from=$filtermenu item="e"|}
+                            <li>
+                                <a href="{|$e.url|}">{|$e.name|}</a>
+                            </li>
+                        {|/foreach|}
+                    {|/if|}
+                    {|if $menu|}
+                        {|foreach from=$menu[0] item="e"|}
+                            <li>
+                                <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+                                {|if $acl|}
+                                    <a class="ob-link-edit ob-icon" href="{|$e.urledit|}" title="Редактировать"></a>
+                                {|/if|}
+                                {|if $menu[$e.id]|}
+                                    <span class="expand"></span>
+                                    <ul style="display: none;">
+                                        {|foreach from=$menu[$e.id] item="e2"|}
+                                            <li>
+                                                <a href="{|$e2.url|}" {|if $e2.selected|}class="selected"{|/if|}>{|$e2.name|}</a>
+                                                {|if $acl|}
+                                                    <a class="ob-link-edit ob-icon" href="{|$e2.urledit|}" title="Редактировать"></a>
+                                                {|/if|}
+                                                {|if $menu[$e2.id]|}
+                                                    <span class="expand"></span>
+                                                    <ul style="display: none;">
+                                                        {|foreach from=$menu[$e2.id] item="e3"|}
+                                                            <li>
+                                                                <a href="{|$e3.url|}" {|if $e3.selected|}class="selected"{|/if|}>{|$e3.name|}</a>
+                                                                {|if $acl|}
+                                                                    <a class="ob-link-edit ob-icon" href="{|$e3.urledit|}" title="Редактировать"></a>
+                                                                {|/if|}
+                                                                {|if $menu[$e3.id]|}
+                                                                    <span class="expand"></span>
+                                                                    <ul style="display: none;">
+                                                                        {|foreach from=$menu[$e3.id] item="e4"|}
+                                                                            <li>
+                                                                                <a href="{|$e4.url|}" {|if $e4.selected|}class="selected"{|/if|}>{|$e4.name|}</a>
+                                                                                {|if $acl|}
+                                                                                <a class="ob-link-edit ob-icon" href="{|$e4.urledit|}" title="Редактировать"></a>
+                                                                                {|/if|}
+                                                                                {|if $menu[$e4.id]|}
+                                                                                <span class="expand"></span>
+                                                                                <ul style="display: none;">
+                                                                                    {|foreach from=$menu[$e4.id] item="e5"|}
+                                                                                    <li>
+                                                                                        <a href="{|$e5.url|}" {|if $e5.selected|}class="selected"{|/if|}>{|$e5.name|}</a>
+                                                                                        {|if $acl|}
+                                                                                        <a class="ob-link-edit ob-icon" href="{|$e5.urledit|}" title="Редактировать"></a>
+                                                                                        {|/if|}
+                                                                                    </li>
+                                                                                    {|/foreach|}
+                                                                                </ul>
+                                                                                {|/if|}
+                                                                            </li>
+                                                                        {|/foreach|}
+                                                                    </ul>
+                                                                {|/if|}
+                                                            </li>
+                                                        {|/foreach|}
+                                                    </ul>
+                                                {|/if|}
+                                            </li>
+                                        {|/foreach|}
+                                    </ul>
+                                {|/if|}
+                            </li>
+                        {|/foreach|}
+                    {|/if|}
+                </ul>
+            </div>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="filter" value="Фильтровать">
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div class="ob-block-element js-standard-content">
+            {|if $content OR $cauthor OR $mauthor|}
+                <div class="ob-block-read">
+                    <h1 style="display: inline-block;">{|$control_name|}</h1>
+
+                    {|if $acl && $choice|}
+                        <a class="ob-link-edit ob-icon" href="{|$linkedit|}" title="Редактировать"></a>
+                    {|/if|}
+                    <br />
+                    <br />
+
+                    {|$content|}
+                </div>
+
+                {|if $cauthor OR $mauthor|}
+                    <div class="block-foot">
+                        {|if $cauthor|}
+                            Автор:
+                            <a class="js-contact-preview" data-id="{|$authorDataId|}" href="{|$urlViewAuthor|}">{|$cauthor|}</a> &mdash;
+                            {|$cdate|}
+                            <br />
+                        {|/if|}
+
+                        {|if $mauthor|}
+                            Последний редактировал:
+                            <a class="js-contact-preview" data-id="{|$mauthorDataId|}" href="{|$urlViewMauthor|}">{|$mauthor|}</a> &mdash;
+                            {|$mdate|}
+                            <br />
+                        {|/if|}
+                    </div>
+                {|/if|}
+            {|else|}
+                <script>
+                    $j('.js-standards-list').appendTo('.js-standard-content').find('h1').hide();
+                </script>
+            {|/if|}
+        </div>
+
+        {|if $childArray|}
+        <div class="ob-block-tree">
+            {|foreach from=$childArray item="e"|}
+            <ul>
+                <li>
+                    <a href="{|$e.url|}">{|$e.name|}</a>
+                    {|if $acl|}
+                    <a class="ob-link-edit ob-icon" href="{|$e.urledit|}" title="Редактировать"></a>
+                    {|/if|}
+                </li>
+            </ul>
+            {|/foreach|}
+        </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

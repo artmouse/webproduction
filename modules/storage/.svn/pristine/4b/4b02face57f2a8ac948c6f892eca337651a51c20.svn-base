@@ -1,0 +1,85 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="" class="selected">{|$translate_barcode_reading|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_products_add_to_basket|}.
+    </div>
+
+    {|if $urlredirect|}
+        <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+        </script>
+    {|/if|}
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <table width="100%">
+        <tr valign="top">
+            <td width="49%">
+                <strong>{|$translate_many_products|}:</strong>
+                <br />
+                <br />
+
+                <div class="shop-message-info" id="js-notice">
+                    {|$translate_barcode_enter|}.<br />
+                </div>
+
+                <div id="js-product-list"></div>
+
+                <hr />
+
+                {|if $incomingAllowed|}
+                    <input class="ob-button"  type="submit" name="toincoming" value="{|$translate_incoming_basket_add|}" />
+                    <hr />
+                {|/if|}
+
+                {|if $transferAllowed|}
+                    <strong>{|$translate_storage_from_what|}</strong><br />
+                    <select class="chzn-select" name="storagefromid">
+                        {|foreach from=$storagesfromArray item="e"|}
+                            <option value="{|$e.id|}">{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br />
+                    <input class="ob-button"  type="submit" name="totransfer" value="{|$translate_transfer_basket_add|}" />
+                    <hr />
+                {|/if|}
+
+                {|if $saleAllowed|}
+                    <strong>{|$translate_storage_from_what|}</strong><br />
+                    <select class="chzn-select" name="storagefromid">
+                        {|foreach from=$storageSaleArray item="e"|}
+                            <option value="{|$e.id|}">{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                    <br />
+                    <input class="ob-button"  type="submit" name="tosale" value="{|$translate_sale_basket_add|}" />
+                {|/if|}
+            </td>
+
+            <td width="20">&nbsp;</td>
+
+            <td>
+                <strong>{|$translate_item_barcodes|}:</strong><br />
+                <br />
+                <textarea id="barcode" name="barcode" style="width: 100%; height: 50px;"></textarea>
+                <br />
+
+                {|$translate_barcode_hint|}.<br />
+                {|$translate_barcode_hint_input|}.
+            </td>
+        </tr>
+    </table>
+</form>

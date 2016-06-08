@@ -1,0 +1,44 @@
+{|if $createOrderCount > 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">
+                <a href="/admin/shop/orders/?filterauthorid={|$userID|}&direction=in&filtershowclosed=1">{|$translate_sozdal_zakazov|}</a>:
+            </div>
+            <div class="el-value">
+                {|$createOrderCount|}
+                {|$translate_to_the_tune_of|}
+                {|$createOrderSum|number_format:2|} {|$totalCurrency|}
+            </div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $totalOrdersIn > 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">
+                <a href="/admin/shop/orders/?filterclientid={|$userID|}&direction=in&filtershowclosed=1">{|$translate_ords|}</a>:
+            </div>
+            <div class="el-value">
+                {|$totalOrdersIn|}
+                {|$translate_to_the_tune_of|}
+                {|$totalSumIn|number_format:2|} {|$totalCurrency|}
+            </div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $totalOrdersOut > 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">
+                <a href="/admin/shop/orders/?filterclientid={|$userID|}&direction=out">{|$translate_ishodyashchih_zakazov|}</a>:
+            </div>
+            <div class="el-value">
+                {|$totalOrdersOut|}
+                {|$translate_to_the_tune_of|}
+                {|$totalSumOut|number_format:2|} {|$totalCurrency|}
+            </div>
+        </div>
+    </div>
+{|/if|}

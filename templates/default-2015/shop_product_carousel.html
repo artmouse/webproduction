@@ -1,0 +1,51 @@
+{|if $productsArray|@count > 2|}
+    <div class="def-block-carousel-wrap js-carousel-slider-wrap">
+        <div class="def-block-slick-carousel js-carousel-slider">
+            {|foreach from=$productsArray item="p"|}
+                <div class="1">
+                    <div class="def-thumb-element">
+                        <div class="image">
+                            {|if $p.iconImage|}
+                                <img src="{|$p.iconImage|}" alt="{|$p.iconName|escape|}" title="{|$p.iconName|escape|}" class="icon-image" />
+                            {|/if|}
+
+                            <a href="{|$p.url|}">
+                                <img src="{|$p.image|}" alt="{|$p.name|escape|}" title="{|$p.name|escape|}" />
+                            </a>
+                        </div>
+                        <div class="block-rating">
+                            <div class="def-block-rating">
+                                <div class="inner-value" style="width: 30%;"></div>
+                            </div>
+                        </div>
+
+                        <a class="name" href="{|$p.url|}">{|$p.name|}</a>
+                        <div class="price-block">
+                            {|if $p.price == 0|}
+                                {|$translate_specify_a_price|}
+                            {|else|}
+                                <div class="def-price-available">
+                                    {|$p.price|} {|$p.currency|}
+                                    {|if $p.discount|}<sup>-{|$p.discount|}%</sup>{|/if|}
+                                </div>
+                                <div class="def-price-old"><s>$1,444</s></div>
+                            {|/if|}
+                        </div>
+
+                        <div class="block-buttons">
+                            <div class="js-shop-buy" data-productid="{|$p.id|}">
+                                <a class="float-btn buy def-icon-basket js-shop-buy-action" href="#"><span class="tooltip">{|$translate_buy|}</span></a>
+                            </div>
+                            <a class="float-btn buy def-icon-flash" href="javascript: void(0);" onclick="basket_order_quick('{|$p.id|}', '{|$p.name|}');"><span class="tooltip">{|$translate_buy_quick|}</span></a>
+                            <a class="float-btn like def-icon-heart" href="javascript:void(0);" style="margin-top: 138px;"><span class="tooltip">В желаемое</span></a>
+                            <a class="float-btn compare def-icon-shuffle" href="javascript:void(0);"><span class="tooltip">В сравнения</span></a>
+                        </div>
+                    </div>
+                </div>
+            {|/foreach|}
+        </div>
+
+        <div class="slider-prev def-icon-angle-left"></div>
+        <div class="slider-next def-icon-angle-right"></div>
+    </div>
+{|/if|}

@@ -1,0 +1,221 @@
+<h1>Как переопределять меню OneBox из под модулей? И как создать контент?</h1>
+В движке OneBox вы можете добавлять свои пункты меню, свои табы, создавать новые контенты. <br /><br />
+<h2>Что такое контент?</h2>
+Контент - это фрагмент функционала в движке. <br /><br />
+<h2>Зачем нужны контенты?</h2>
+Контенты нужны для того чтобы разделить фунционал разных сущностей друг от друга. <br /><br />
+<h2>Как создать свой контент?</h2>
+Для создания контента вам необходимо воспользоваться методом:
+<br />
+<br />
+<code><pre>
+Engine::GetContentDataSource()->registerContent($id, $fieldsArray);
+</pre></code>
+<br />
+<ul>
+    <li>id - индентификатор по которому можна будет вызвать ваш контент.</li>
+    <li>fieldsArray - массив параметров для вашего контента. </li>
+</ul>
+
+Пример:
+<br /><br />
+<code><pre>
+class Contact_ContentLoadObserver implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+        Engine::GetContentDataSource()->registerContent(
+            'shop-admin-user-tab-worktime',
+            array(
+                'title' => 'WorkTime',
+                'url' => array('/admin/shop/users/{id}/worktime/'),
+                'filehtml' => dirname(__FILE__).'/admin/contacts/tab/user_worktime.html',
+                'filephp' => dirname(__FILE__).'/admin/contacts/tab/user_worktime.php',
+                'filejs' => dirname(__FILE__).'/admin/contacts/tab/user_worktime.js',
+                'moveto' => 'shop-admin-tpl',
+                'moveas' => 'content',
+                'level' => '2',
+            ),
+            'override'
+        );
+    }
+}
+</pre></code>
+<ul>
+    <li>title - заголовок страницы </li>
+    <li>url - максив URL-ов по которым можна перейти на ваш контент </li>
+    <li>filehtml - html-файл вашего контента  </li>
+    <li>filephp - php-файл вашего контента </li>
+    <li>filejs - js-файл вашего контента </li>
+    <li>moveto - в какой контент отправлять</li>
+    <li>moveas - в какую переменную контента отправлять </li>
+    <li>level - уровень доступа (минимальный)</li>
+</ul>
+<br />
+<br />
+Дальше нужно дописаться к событию Contact_ContentLoadObserver в файле include.php . Например: 
+<br /><br />
+<code><pre>
+PackageLoader::Get()->registerPHPClass(dirname(__FILE__).'/Contact_ContentLoadObserver.class.php');
+
+// регистрируем контенты в движке
+Events::Get()->observe(
+    'afterContentLoad',
+    'Contact_ContentLoadObserver'
+);
+</pre></code>
+                
+После запуска updater.sh или режима build, движок создаст файлы 
+user_worktime.php, user_worktime.html, user_worktime.js по пути /admin/contacts/tab/, 
+относительно расположения файла include.php в котором это прописано
+
+<br /><br />
+<h2>Что такое меню OneBox?</h2>
+Подробнее о меню OneBox описано <a href="/doc/menu_onebox">тут</a><br /><br />
+Меню OneBox делиться на несколько типов: <br />
+<ol>
+    <li>Основное меню (Настройки, отчёты и тд)</li>
+    <li>Меню табов<br /><br />
+        <ul>
+            <li>
+                На странице редактирования продукта <br /><div style="overflow: hidden; height: 250px;"><img src="/docs/_images/product/product29.png"></div><br />
+            </li>
+            <li>
+                На странице редактирования заказа <br /><div style="overflow: hidden; height: 250px;"><img src="/modules/order/docs/_images/order25.png" alt=""></div><br />
+            </li>
+            <li>
+                На странице редактирования контакта <br /><div style="overflow: hidden; height: 250px;"><img src="/modules/api-docs/docs/_images/contacts001.png" alt=""></div><br />
+            </li>
+        </ul>     
+    </li>
+</ol>
+<br />
+<h2>Как дописать свой пункт меню в систему OneBox?</h2>
+Модули могут дописывать свои пункты в основное меню. Для этого необходимо зарегистрировать класс, дописатся к событию и воспользоваться методом:
+<br /><br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerTopMenuItem($name, $url)
+</pre></code>
+<br />
+<ul>
+    <li>name - Название вашего элемента в меню.</li>
+    <li>url - URL по которому перейдёт пользователь кликнув по нему.</li>
+</ul>
+<br />
+Пример: <br /><br />
+<code><pre>
+class Box_AdminMenu implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+        Shop_ModuleLoader::Get()->registerTopMenuItem(
+            'ПунктXXX',
+            '/itemxxx/'
+        );
+    }
+}
+</pre></code>
+<br />
+так же нужно зарегистрировать класс с нашим меню и  дописатся на событие регистрации меню (Box_AdminMenu) в файле include.php . Например:
+<code><pre>
+PackageLoader::Get()->registerPHPClass(dirname(__FILE__).'/Box_AdminMenu.class.php');
+
+// menu
+Events::Get()->observe(
+    'beforeBoxAdminMenuLoad',
+    'Box_AdminMenu'
+);
+</pre></code>
+<br />
+<strong>Что произойдёт?</strong><br />
+Система добавит в меню элемент  ПунктXXX , при клике на которой мы перейдём по URL /itemxxx/ . <br /><br />
+<img src="/modules/api-docs/docs/_images/registertopmenu01.png" alt="" />
+<br />
+<br /><br />
+<h2>Как добавить настройки модуля в меню настроек?</h2>
+Чтобы вынести настройки модуля в меню Настройки вам необходимо воспользоваться методом:
+<br /><br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerSettingMenuItem($name, $url)
+</pre></code>
+<br />
+Пример: <br /><br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerSettingMenuItem(
+    Shop::Get()->getTranslateService()->getTranslateSecure('translate_delivery_methods'), // данный метод вернёт слово "Способы доставки"
+    '/admin/shop/delivery/'
+);
+</pre></code>
+<br />
+<strong>Что произойдёт?</strong><br />
+Система добавит в меню настроек элемент  Способы доставки , при клике на которой мы перейдём по URL /admin/shop/delivery/. <br /><br />
+<img src="/modules/api-docs/docs/_images/settings_delivery.png" alt="" />
+<br />
+<br />
+<h2>Как добавить отчеты модуля в меню Отчеты?</h2>
+Чтобы добавить отчёты, которые есть в модуле в меню Отчётов, нужно использовать метод:
+<br /><br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerReportMenuItem($name, $url)
+</pre></code>
+<br />
+Пример: <br /><br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerReportMenuItem(
+    'Сводный отчет',
+    '/admin/shop/report/summary/'
+);
+</pre></code>
+<br />
+<strong>Что произойдёт?</strong><br />
+Система добавит в Отчётов, элемент  Сводный отчет, при клике на которой мы перейдём по URL /admin/shop/report/summary/. <br /><br />
+<img src="/modules/api-docs/docs/_images/settings_delivery.png" alt="" />
+<br />
+
+<h2>Как добавить таб на страницы товара, заказа, контакта?</h2>
+Если вы разрабатываете какой-то дополнительный функционал в модуле и он требует добавления 
+таба в меню товара, заказа или контакта, то вы можете воспользоваться методами:
+<br /><br />
+<code><pre>
+Shop_ModuleLoader::Get()->registerProductTabItem($name, $contentID, $moduleName)
+
+Shop_ModuleLoader::Get()->registerOrderTabItem($name, $contentID, $moduleName)
+
+Shop_ModuleLoader::Get()->registerUserTabItem($name, $contentID, $moduleName)
+</pre></code>
+<br />
+<ul>
+    <li>name - название вашего tab'a </li>
+    <li>contentID - id сонтента на который перейдёт пользователя кликнув на ваш таб</li>
+    <li>moduleName - имя нашего таба которое мы сможем отлавливать в php скрипте. </li>
+</ul>
+<br />
+Пример:
+<br /><br />
+<code><pre>
+// добавляем табы к продукту
+Shop_ModuleLoader::Get()->registerProductTabItem(
+    '3D',
+    'shop-admin-products-3d',
+    'product-3d'
+);
+
+// добавляем табы к заказу
+Shop_ModuleLoader::Get()->registerOrderTabItem(
+    'События',
+    'shop-admin-order-event',
+    'event'
+);
+
+// добавляем табы к контакту
+Shop_ModuleLoader::Get()->registerUserTabItem(
+    'Рабочий график',
+    'shop-admin-user-tab-worktime',
+    'worktime'
+);
+</pre></code>
+<br /><br />
+
+
+
+

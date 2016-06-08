@@ -1,0 +1,103 @@
+<div class="shop-block-popup" id="{|$windowID|}">
+    <div class="dark">&nbsp;</div>
+
+    <div class="popupblock full">
+        <a href="#" id="{|$windowID|}-close" class="close">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div id="{|$windowID|}-loading" class="loading" style="display: none;">&nbsp;</div>
+        <div class="head">Перемещение товара</div>
+        <div class="clear">&nbsp;</div>
+
+
+        <div class="window-content">
+            <div class="shop-block shop-storage-info">
+                <span class="caption">Перемещение товара:</span> <strong>{|$productname|}</strong><br />
+                <span class="caption">Уже привязано:</span> <strong>{|$linkedAmount|}</strong><br />
+            </div>
+
+            <div id="{|$windowID|}-message"></div>
+
+            {|if $linkArray|}
+                <h2>Уже привязанные товары:</h2>
+                <table cellpadding="0" cellspacing="0" border="0" class="shop-table">
+                    <thead>
+                        <tr>
+                            <td width="100">Склад</td>
+                            <td width="120">Дата оприходования товара</td>
+                            <td width="50">Код партии</td>
+                            <td width="100" align="right">Цена товара</td>
+                            <td width="100">Серийный номер</td>
+                            <td width="100" align="right">Количество</td>
+                            <td width="150">&nbsp;</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {|foreach from=$linkArray item="e"|}
+                            <tr>
+                                <td>{|$e.storageName|}</td>
+                                <td>{|$e.cdate|}</td>
+                                <td>{|$e.shipment|}</td>
+                                <td align="right">{|$e.price|} {|$currency|}</td>
+                                <td>{|$e.serial|}</td>
+                                <td align="right">{|$e.amount|}</td>
+                                <td>
+                                    <input type="hidden" value="{|$e.id|}" />
+                                    <a href="#" class="{|$windowID|}-link-delete">удалить</a>
+                                </td>
+                            </tr>
+                        {|/foreach|}
+                    </tbody>
+                </table>
+                <br />
+            {|/if|}
+
+
+            {|if $productArray|}
+                <form id="{|$windowID|}-link-form">
+                    <h2>Привязать товары:</h2>
+                    <table cellpadding="0" cellspacing="0" border="0" class="shop-table">
+                        <thead>
+                            <tr>
+                                <td width="100">Склад</td>
+                                <td width="120">Дата оприходования товара</td>
+                                <td width="50">Код партии</td>
+                                <td width="100" align="right">Цена товара</td>
+                                <td width="100">Серийный номер</td>
+                                <td width="100" align="right">Остаток на складе</td>
+                                <td width="150">Привязать (количество)</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {|foreach from=$productArray item="e"|}
+                                <tr>
+                                    <td>{|$e.storageName|}</td>
+                                    <td>{|$e.cdate|}</td>
+                                    <td>{|$e.shipment|}</td>
+                                    <td align="right">{|$e.price|} {|$currency|}</td>
+                                    <td>{|$e.serial|}</td>
+                                    <td align="right">{|$e.amount|}</td>
+                                    <td>
+                                        <input type="hidden" name="balanceid[]" value="{|$e.id|}" />
+                                        <input type="text" name="amount[]" />
+                                    </td>
+                                </tr>
+                            {|/foreach|}
+                        </tbody>
+                    </table>
+                </form>
+                <br />
+
+                <input type="button" id="{|$windowID|}-link-add-button" value="Привязать товар" class="ob-button button-green" />
+            {|else|}
+                <div class="shop-message-info">
+                    К сожалению, на складе больше нет товаров. Нет возможности привязать товары.
+                </div>
+            {|/if|}
+        </div>
+    </div>
+</div>

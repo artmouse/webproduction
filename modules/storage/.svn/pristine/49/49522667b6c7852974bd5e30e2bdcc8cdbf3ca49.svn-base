@@ -1,0 +1,16 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/settings/employees/">&lsaquo; {|$translate_employees|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_employee_add_edit|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'error'|}
+    <div class="shop-message-info">
+        {|$translate_employee_not_found|}.
+    </div>
+{|/if|}
+
+{|$form|}

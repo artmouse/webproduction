@@ -1,0 +1,39 @@
+{|if $error|}
+    <div class="os-message-error">
+        {|$translate_search_error|}.
+    </div>
+{|/if|}
+
+{|if $name|}
+    <h1 class="title">{|$name|} {|$pathAdditionalH1|}</h1>
+{|/if|}
+
+{|foreach from = $resultArray key = key item = r|}
+    <strong>
+        {|if $key == 'category' && $r|}
+            {|$translate_category|}
+        {|elseif $key == 'brand' && $r|}
+            {|$translate_brands|}
+        {|elseif $key == 'page' && $r|}
+        {|/if|}
+    </strong><br />
+
+    {|if $key == 'product'|}
+        {|$r|}
+    {|else|}
+        <div class="os-block-news">
+            {|foreach from=$r item="e"|}
+                <div class="element">
+                    {|if $e.image|}
+                        <div class="image"><img src="{|$e.image|}" alt="" /></div>
+                    {|/if|}
+                    <div class="text {|if !$e.image|}no-image{|/if|}">
+                        <a href="{|$e.url|}">{|$e.name|}</a>
+                        {|$e.description|}
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            {|/foreach|}
+        </div>
+    {|/if|}
+{|/foreach|}

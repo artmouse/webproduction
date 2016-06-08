@@ -1,0 +1,29 @@
+<div class="ob-block-element">
+    <div class="ob-data-element js-data-element js-noquickedit js-description" style="margin: 0;">
+        <div class="data-view">
+            <div class="el-value">
+                {|if $comments|}
+                    {|$comments|}
+                {|else|}
+                    {|$translate_opisanie_otsutstvuet|}.
+                {|/if|}
+                {|if $canEdit|}
+                    <a class="ob-link-edit" href="#"></a>
+                {|/if|}
+            </div>
+        </div>
+        <div class="data-edit">
+            <a class="ob-link-delete" href="#"></a>
+            <a class="ob-link-accept" href="#"></a>
+            <textarea class="js-disabled js-autosize" name="comments" cols="30" rows="10" style="min-height: 100px;">{|$control_comments|}</textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+    $j(function() {
+        $j('.js-description .ob-link-edit').click(function(){
+            $j('.js-description .js-autosize').trigger('autosize.resize');
+        });
+    });
+</script>

@@ -1,0 +1,131 @@
+<h1>
+    Определение контекстов для интеграции с телефонией
+</h1>
+
+<p>
+    У нас контексты для внутренних и внешних звонков полностью разделены для безопасности.
+</p>
+<br/>
+
+<h2>
+    Использование нашей телефонии
+</h2>
+
+<p>
+    Звоним через AMI с 402 на 405. Движок сначала вызывает канал SIP/402, он берет трубку и начинает звонить по
+    экстеншену 405, через контекст office-calls в котором содержаться номера вида ХХХ.
+    <br/>
+    Звоним с 402 на 380999553141. Движок сначала вызывает канал SIP/402, он берет трубку и начинает звонить по
+    экстеншену 380999553141, через контекст outgoing-calls в котором содержаться номера вида XXXXXXXXXXXX.
+    <br/>
+    Вот так должно это выглядеть:
+</p>
+<br/>
+
+<code>
+    <pre>
+Engine::Get()->setConfigField('asterisk-ami-context-in', 'office-calls');
+Engine::Get()->setConfigField('asterisk-ami-context-out', 'outgoing-calls');
+    </pre>
+</code>
+<br/>
+
+<p>
+    asterisk-ami-context-in - это internal, а не incoming.
+    <br/>
+    asterisk-ami-context-out - outgoing, тут логично.
+</p>
+<br/>
+
+<p>
+    Если написать наоборот:
+</p>
+<br/>
+
+<code>
+    <pre>
+Engine::Get()->setConfigField('asterisk-ami-context-in', 'outgoing-calls');
+Engine::Get()->setConfigField('asterisk-ami-context-out', 'office-calls');
+    </pre>
+</code>
+<br/>
+
+<p>
+    Вы не позвоните на 405 через контекст outgoing-calls, потому что в нем нету маршрутов на 3-значные номера, на
+    380999553141 не позвоните через office-calls, мартшрута на длинные номера нету.
+</p>
+<br/>
+
+<p>
+    Теперь по поводу FreePBX, AsteriskNOW, Elastix. Внутри они сделаны очень похоже, поэтому следующее правило правило
+    для них общее.
+    Они генерируют сложночитаемую лапшу для диалплана и в этой лапше абсолютно все звонки проходят через общий контекст
+    для всех номеров from-internal. А уже в этот контекст инклудятся всякие и факсы, почты, ivr и самое главное -
+    контекст outbound-calls.
+</p>
+<br/>
+
+
+<h2>
+    Использование чужой телефонии
+</h2>
+
+<p>
+    Звоним через AMI с 402 на 405. Движок сначала вызывает канал SIP/402, он берет трубку и начинает звонить по
+    экстеншену 405, через контекст from-internal в котором номера вида ХХХ стоят выше в очереди, чем XXXXXXXXXXXX.
+    <br/>
+    Звоним с 402 на 380999553141. Движок сначала вызывает канал SIP/402, он берет трубку и начинает звонить по
+    экстеншену 380999553141, через тот жеконтекст from-internal, но пропускает шаблон ХХХ, попадая в шаблон
+    XXXXXXXXXXXX.
+</p>
+<br/>
+
+<p>
+    То есть для чужой телефонии:
+</p>
+<br/>
+
+<code>
+    <pre>
+Engine::Get()->setConfigField('asterisk-ami-context-in', 'from-internal');
+Engine::Get()->setConfigField('asterisk-ami-context-out', 'from-internal');
+    </pre>
+</code>
+<br/>
+
+<p>
+    Весь смысл моей демагогии кроется тут в if, что в создании массива:
+</p>
+<br/>
+
+<code>
+    <pre>
+public function originateCall($from, $to) {
+    $contextIn = Engine::Get()->getConfigFieldSecure('asterisk-ami-context-in');
+    if (!$contextIn) {
+        $contextIn = 'office-calls';
+    }
+
+    $contextOut = Engine::Get()->getConfigFieldSecure('asterisk-ami-context-out');
+    if (!$contextOut) {
+        $contextOut = 'outgoing-calls';
+    }
+
+    $a = array();
+    $a['Channel'] = 'SIP/'.$from;
+    $a['Callerid'] = $from;
+    $a['Timeout'] = 20000;
+    $a['Exten'] = $to;
+    $a['Priority'] = 1;
+    $a['Async'] = 'yes';
+    if (strlen($to) <= 4) {
+        $a['Context'] = $contextIn;
+    } else {
+        $a['Context'] = $contextOut;
+    }
+
+    return $this->_amiCommand('Originate', $a);
+}
+    </pre>
+</code>
+<br/>

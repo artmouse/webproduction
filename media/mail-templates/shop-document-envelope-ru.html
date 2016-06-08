@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        {|$engine_includes|}
+        <style>
+            .envelope-body {
+                padding: 0;
+                margin: 0;
+                width: 800px;
+                height: 705px;
+                position: relative;
+                font-size: 21px;
+            }
+
+            .envelope-top, .envelope-bottom {
+                position: absolute;
+                padding: 0;
+                margin: 0;
+                width: 320px;
+            }
+
+            .envelope-top {
+                top: 150px;
+                left: 60px;
+            }
+            .envelope-bottom {
+                bottom: 160px;
+                right: 70px;
+            }
+
+            .inner-right{
+                float: right;
+            }
+            
+            .inner-left{
+                float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="envelope-body">
+            <div class="envelope-top">
+                <div class="inner-left">
+                    WebProduction<br />
+                    ФОП Мирошниченко<br /> 
+                    ул. Мстиславская 88/1<br />
+                    г. Чернигов <br />
+                    14005<br />
+                    Украина <br />
+                </div>
+            </div>
+            <div class="envelope-bottom">
+                <div class="inner-right">
+                    WebProduction<br />
+                    ФОП Мирошниченко <br />
+                    ул. Мстиславская 88/1<br />
+                    г. Чернигов <br />
+                    14005<br />
+                    Украина
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

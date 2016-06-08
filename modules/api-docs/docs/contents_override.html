@@ -1,0 +1,42 @@
+<h1>Подмена/переопределение контентов (contents) в OneBox</h1>
+
+После переопределения контента просто наследуетесь
+от нужного вам класса и делаете override для метода process().
+<br />
+<br />
+В файле где регистируем контенты, переопределяем нужные нам файлы.Ниже приведен пример для переопределение user_tile.<br />
+<br />
+
+<code><pre>
+class Lactusan_ContentLoadObserver implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+
+        Engine::GetContentDataSource()->registerContent(
+            'shop-user-tile', array(
+                'filehtml' => dirname(__FILE__).'/contents/user_tile.html',
+                'filephp' => dirname(__FILE__).'/contents/user_tile.php',
+            ), 'extend'
+        );
+    }
+}
+</pre></code>
+<br />
+<br />
+Ниже приведен пример для переопределение user_tile.<br />
+<br />
+
+<code><pre>
+class user_tile extends Engine_Class {
+
+    public function process() {
+        // my code here ...
+
+        parent::process();
+
+        // or here ...
+    }
+
+}
+</pre></code>

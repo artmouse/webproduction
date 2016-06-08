@@ -1,0 +1,257 @@
+<h1>{|$translate_checkout|}</h1>
+
+<div class="cl-crumbs">
+    <div>
+        <a href="/">{|$translate_main|}</a>
+    </div>
+    <div>
+        <a href="/basket/">{|$translate_my_basket|}</a>
+    </div>
+    <div>
+        <a href="#">{|$translate_checkout|}</a>
+    </div>
+</div>
+
+
+
+{|if $userIsNotAuthorithed|}
+    {|$translate__place_order_must_login|}
+    <a class="os-link-dashed" onclick="popupOpen('.js-popup-auth-block');" href="javascript: void(0);">{|$translate_sign_in|}</a>
+    {|$translate_or|}
+    <a class="os-link-dashed" href="/registration/">{|$translate_sing_up|}</a>.
+{|else|}
+    <div class="cl-makeorder-list">
+        <div class="inner-makeorder-list">
+            <table class="cl-table">
+                {|foreach from=$basketArray item="set" key="setid"|}
+                    {|if $setid > 0|}
+                        <tr>
+                            <td class="ta-center" colspan="4">
+                                <strong style="font-size: 15px">{|$translate_nabor|}</strong>
+                            </td>
+                        </tr>
+                    {|/if|}
+                    {|foreach from=$set item="p"|}
+                        <tr class="va-top">
+                            <td class="no-small-breakpoint"><img src="{|$p.image|}"></td>
+                            <td class="name"><a href="{|$p.pUrl|}">{|$p.name|}</a></td>
+                            <td class="ta-center">
+                                {|if $setid == 0|}
+                                <div class="count">
+                                    {|$p.count|} {|$p.unit|}
+                                </div>
+                                {|/if|}
+                            </td>
+                            <td>
+                                {|if $setid == 0|}
+                                {|if $p.sum == '0.00'|}
+                                <div class="os-price-specify">{|$translate_specify_price|}.</div>
+                                {|else|}
+                                <div class="os-price-available">{|$p.sum|} {|$p.currency|}</div>
+                                {|/if|}
+                                {|/if|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                    {|if $setid > 0|}
+                        <tr>
+                            <td>
+                                {|$translate_tsena_nabora|}
+                            </td>
+                            <td class="name">
+                                <div class="os-price-available">{|$setSumArray[$setid].one|} {|$currency|}</div>
+                            </td>
+                            <td class="ta-center">
+                                <div class="count">
+                                    {|$setSumArray[$setid].count|}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="os-price-available">{|$setSumArray[$setid].total|} {|$currency|}</div>
+                            </td>
+                        </tr>
+                    {|/if|}
+                {|/foreach|}
+                <tr class="total">
+                    <td class="ta-right" colspan="3">{|$translate_delivery|}:</td>
+                    <td class="ta-right nowrap">
+                        <div class="os-price-available"><span id="deliverySum"></span> {|$currency|}</div>
+                    </td>
+                </tr>
+                {|if $discountSum|}
+                    <tr class="total">
+                        <td class="ta-right" colspan="3">{|$translate_discount|}:</td>
+                        <td class="ta-right nowrap">
+                            <div class="os-price-available">{|$discountSum|} {|$currency|}</div>
+                        </td>
+                    </tr>
+                {|/if|}
+                <tr class="total">
+                    <td class="ta-right" colspan="3">{|$translate_in_total|}:</td>
+                    <td class="ta-right nowrap">
+                        <div class="os-price-available"><span id="allSum">{|$allSum|}</span> {|$currency|}</div>
+                        <input type="hidden" id="allSumClear" value="{|$allSum|}">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <form class="cl-makeorder-form" method="post">
+
+        {|if $message == 'error'|}
+            <div class="os-message-error">
+                {|if $errorEmail|}
+                    {|$translate_mail_error|}
+                {|/if|}
+            </div>
+        {|/if|}
+
+        <div class="js-makeorder-step">
+            {|if $clientsearch|}
+            <div class="cl-block-tabs">
+                <div class="tabs">
+                    <a href="#" class="settings-tab" data-rel="#settings-tab-0" onclick="return tab_me_click(); ">{|$translate_at_itself|}</a>
+                    <a href="#" class="settings-tab" data-rel="#settings-tab-1" onclick="return tab_client_click();" >{|$translate_at_client|}</a>
+                    <a href="#" class="settings-tab" data-rel="#settings-tab-2" onclick="return tab_addNewUser_click();" >{|$translate_create_client|}</a>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            {|/if|}
+
+            <div class="cl-block-form">
+                {|if $clientsearch|}
+                    <div id="settings-tab-1">
+                        <div class="form-element">
+                            <div class="descript">{|$translate_checkout_a_client|}:</div>
+                            <input type="text" name="client" value="{|$control_client|}" id="id-client"/>
+                            <span class="light">{|$translate_enter_client_name|}</span>
+
+                            <div class="JSPrototypeAutocomplete" id="id-client-autocomplete"></div>
+                        </div>
+                    </div>
+                {|/if|}
+
+                <div id="settings-tab-2">
+
+                </div>
+
+                <div>
+                    <input type="hidden" name="addnewuser" value="0" id="id-newuser" />
+
+                    <div class="form-element">
+                        <div class="descript">{|$translate_name_last|}<span class="important">*</span>:</div>
+                        <input class="js-required" type="text" id="usernamelast" name="namelast" value="{|$control_namelast|}" style="width: 160px;" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="descript">{|$translate_name_small|}<span class="important">*</span>:</div>
+                        <input class="js-required" type="text" id="username" name="name" value="{|$control_name|}" style="width: 160px;" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="descript">{|$translate_name_middle|}:</div>
+                        <input type="text" id="usernamemiddle" name="namemiddle" value="{|$control_namemiddle|}" style="width: 160px;" />
+                    </div>
+                </div>
+
+                <div class="form-element">
+                    <div class="descript"></div>
+
+                </div>
+
+                <div class="form-element">
+                    <div class="descript">Sex:</div>
+                    <label>
+                        <input type="radio" name="typesex" value="man" {|if $control_typesex == 'man'|}checked{|/if|}>
+                        {|$translate_user_man|}
+                    </label>
+                    &nbsp;
+                    <label>
+                        <input type="radio" name="typesex" value="woman" {|if $control_typesex == 'woman'|}checked{|/if|}>
+                        {|$translate_user_woman|}
+                    </label>
+                </div>
+
+                <div class="form-element">
+                    <div class="descript">{|$translate_phone|}<span class="important">*</span>:</div>
+                    <input type="text" id="userphone" name="phone" value="{|$control_phone|}" class="js-required js-phone-formatter"/>
+                    <span class="light">{|$translate_example|}: 380672345667</span>
+                </div>
+
+                <div class="form-element">
+                    <div class="descript">
+                        E-mail
+                        {|if $requiredEmail|}
+                        <span class="important">*</span>
+                        {|/if|}
+                        :
+                    </div>
+                    <input type="text" id="useremail" name="email"
+                           value="{|$control_email|}" {|if $requiredEmail|}class="js-required"{|/if|}/>
+                    <br/><span class="light"> {|$translate_makeorder_email_message|}</span>
+                </div>
+
+                {|if $deliveryArray|}
+                    <div class="form-element">
+                        <div class="descript">Shipping Info<span class="important">*</span>:</div>
+
+                        <ul class="delivery-ways">
+                            {|foreach from=$deliveryArray item="d"|}
+                            <li data-amount="{|$d.price|}" data-paydelivery="{|$d.paydelivery|}" data-id="{|$d.id|}" {|if $d.selected|}class="selected"{|/if|}>
+                            <span class="price">{|$d.price|number_format:2|} {|$currency|}</span>
+                            <a class="js-content-delivery-ajax js-select-delivery" data-amount="{|$d.price|}" data-paydelivery="{|$d.paydelivery|}" data-id="{|$d.id|}" href="javascript:void(0);" onclick="$j('#js-delivery').val($j(this).data('id'));">{|$d.name|}</a>
+                            </li>
+                            {|/foreach|}
+                        </ul>
+                        <input class="js-required" id="js-delivery" data-error="{|$translate_delivery_way|}" type="hidden" name="delivery" value="{|$deliveryDefault|}">
+                    </div>
+                {|/if|}
+
+                <div class="form-element" id="js-content-delivery-block"></div>
+
+                <div class="form-element">
+                    <div class="descript">{|$translate_makeorder_forpresent|}:</div>
+                    <input type="checkbox" name="gift" value="1">
+                </div>
+
+                {|if $paymentArray|}
+                    <div class="form-element">
+                        <div class="descript">{|$translate_payment_method|}:</div>
+                        {|foreach name=paymentForeach from=$paymentArray item="p" key="key"|}
+                            <select id="payment{|$key|}" name="payment" {|if !$smarty.foreach.paymentForeach.first|} style="display: none; width: 350px;" disabled{|/if|}>
+                                <option value="0">{|$translate_makeorder_waytopay|}</option>
+                                {|foreach from=$p item="p2" key="id"|}
+                                    <option value="{|$id|}" {|if $p2.selected|}selected{|/if|}>{|$p2.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        {|/foreach|}
+                    </div>
+                {|/if|}
+
+                <div class="form-element">
+                    <div class="descript">{|$translate_notes|}:</div>
+                    <textarea name="comments">{|$control_comments|}</textarea>
+                </div>
+
+                <div class="form-element">
+                    <input type="checkbox" {|if !$used_user_info|}style="display: none;"{|/if|} checked name="zakon" value="1" onclick="this.checked ? $j('#demail').removeAttr('disabled') : $j('#demail').attr('disabled', 'disabled');"/>
+                    <span class="light">{|$used_user_info|}</span>
+                </div>
+            </div>
+
+            <div class="makeorder-buttons">
+                <a href="/"> {|$translate_continue|} {|$translate_buying|}</a>
+                <input type="hidden" name="ajs" class="ajs" value="1"/>
+                <input class="cl-button green js-form-validation" type="submit" id="demail" name="makeorder" value="{|$translate_place_an_order|}" />
+            </div>
+        </div>
+    </form>
+    <div class="clear"></div>
+    <br />
+    <br />
+{|/if|}
+
+<script>
+    $j('.js-basket, nav').hide();
+</script>

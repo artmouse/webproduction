@@ -1,0 +1,39 @@
+<div id="contentJsonAddress" style="display:none;">{|$clientsArray|}</div>
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_menedzher_zakaza|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            <div class="element">
+                <input type="text" name="date" value="{|$control_date|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+            {|$block_workflow_filter|}
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <div class="wp-block-map">
+            <div id="map" style="width: 100%; height: 700px; overflow: hidden;"></div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

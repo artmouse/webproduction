@@ -1,0 +1,77 @@
+<?php
+class storage_order_status_action_block_reserve_auto extends Engine_Class {
+
+    public function process() {
+        $this->setValue('contentID', $this->getContentID());
+        $this->setValue('index', $this->getValue('index'));
+
+        $this->setValue('storagenameid_incoming', $this->getValue('data'));
+
+        $storageNamesIncoming = StorageNameService::Get()->getStorageNamesAll();
+        $storageNamesIncoming->setForsale(1);
+        $storageNameIncomingArray = array();
+        while ($storageNameIncoming = $storageNamesIncoming->getNext()) {
+            $storageNameIncomingArray[] = array(
+                'id' => $storageNameIncoming->getId(),
+                'name' => $storageNameIncoming->getName()
+            );
+        }
+        $this->setValue('storageNameIncomingArray', $storageNameIncomingArray);
+    }
+
+    public function processData() {
+        $index = $this->getValue('index');
+
+        WorkflowStatusLoader::Get()->addBlockData(
+            $this->_getStatus(),
+            $this->getContentID(),
+            $this->getValue('sort'),
+            $this->getArgumentSecure($index.'_storagenameid_incoming')
+        );
+    }
+
+    public function processStatus(Events_Event $event) {
+        // авторезервирование
+        StorageReserveService::Get()->addLinksReserveAuto(
+            $this->getUser(),
+            $this->_getOrder($event),
+            $this->getValue('data')
+        );
+    }
+
+    public function processOrderEditAfter(Events_Event $event) {
+        $this->processStatus($event);
+    }
+
+    /**
+     * Обертка
+     *
+     * @param Shop_Event_Order $event
+     *
+     * @return ShopOrder
+     */
+    private function _getOrder($event) {
+        return $event->getOrder();
+    }
+
+    /**
+     * Обертка
+     *
+     * @param Shop_Event_Order $event
+     *
+     * @return User
+     */
+    private function _getUser($event) {
+        return $event->getUser();
+    }
+
+    /**
+     * Обертка
+     *
+     * @return ShopOrderStatus
+     */
+    private function _getStatus () {
+        return $this->getValue('status');
+    }
+
+}

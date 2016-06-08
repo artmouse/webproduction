@@ -1,0 +1,80 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/currency/" class="selected">{|$translate_currency_setting|}</a></div>
+        <div class="tab-element"><a href="./add/">{|$translate_currency_add|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_data_success|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_data_error|}.
+    </div>
+{|/if|}
+
+<form action="" method="post">
+    <table class="shop-table">
+        <thead>
+            <tr>
+                <td></td>
+                <td>#</td>
+                <td>{|$translate_currency_small|}</td>
+                <td>{|$translate_symbol|}</td>
+                <td>{|$translate_rate|}</td>
+                <td>{|$translate_basic|}</td>
+                <td>{|$translate_hidden_big|}</td>
+                <td>{|$translate_auto_update|}</td>
+                <td>%</td>
+                <td>{|$translate_delete|}</td>
+            </tr>
+        </thead>
+        <tbody class="js-sortable-body">
+            {|foreach from=$currencyArray item="c"|}
+                <tr {|if $c.default|}class="blocked"{|/if|}>
+                    <td>
+                        <div class="move"></div>
+                        <input class="js-sort" type="hidden" name="sort[{|$c.id|}]"  value="{|$c.sort|}" >
+                    </td>
+                    <td>{|$c.id|}</td>
+                    <td>{|$c.name|}</td>
+                    <td>
+                        <input type="text" name="symbol[{|$c.id|}]" value="{|$c.symbol|}" />
+                    </td>
+                    <td>
+                        <input type="text" name="currency[{|$c.id|}]" value="{|$c.rate|}" />
+                    </td>
+                    <td><input type="radio" name="default[]" {|if $c.default|} checked {|/if|} value="{|$c.id|}" disabled> </td>
+                    <td><input type="checkbox" name="hidden[{|$c.id|}]"  value="1" {|if $c.hidden == 1|} checked {|/if|} ></td>
+                    <td><input type="text" name="autoupdate[{|$c.id|}]"  value="{|$c.autoupdate|}"></td>
+                    <td><input type="text" name="percent[{|$c.id|}]"  value="{|$c.percent|}"></td>
+                    <td>{|if $c.delete|}<input type="checkbox" name="delete[]"  value="{|$c.id|}">{|/if|}</td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+    </table>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_save|}" class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+<script>
+    $j('.js-sortable-body').sortable({
+        handle: ".move",
+        axis: "y",
+        update: function () {
+            var sortValue = 0;
+            $j('.js-sortable-body .js-sort').each(function () {
+                sortValue = sortValue + 1;
+                $j(this).val(sortValue);
+            });
+        }
+    });
+</script>

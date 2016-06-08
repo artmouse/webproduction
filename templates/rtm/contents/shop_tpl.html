@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|$title|}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="{|$shopname|}" />
+    <meta name="viewport" content="width=device-width" />
+    {|*|}<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />{|*|}
+    {|if $shopName|}<meta name="dcterms.rightsHolder" content="{|$shopName|}" />{|/if|}
+
+    {|if $canonicalUrl|}
+        <link rel="canonical" href="{|$canonicalUrl|}"/>
+    {|/if|}
+
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+
+    {|if $noIndexing|}
+        <meta name="robots" content="noindex, nofollow" />
+    {|/if|}
+
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+
+    {|$integration_google_wmt|}
+    {|$integration_yandex_wmt|}
+    {|$loginzaVerification|}
+
+    {|$engine_includes|}
+    <link rel="stylesheet" type="text/css" href="/templates/rtm/zoomer/jquery.jqzoom.css">
+    <script src="/templates/rtm/zoomer/jquery.jqzoom-core.js"></script>
+    <script src="/templates/rtm/fonts/dmenu.js"></script>
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    {|$integration_ga|}
+</head>
+<body>
+{|if $thanckyou && $productArray && $order|}
+    <script type="text/javascript">
+        var dataLayer = [];
+        var transactionId = "{|$order.id|}"; // string; unique transaction ID
+        var cartProducts = [];
+        var affil = '{|$host|}';
+
+        {|foreach from=$productArray item="e"|}
+        cartProducts.push({
+            'id': transactionId,
+            'sku': '{|$e.sku|}',        // string; product ID
+            'name': '{|$e.name|}',// string; product name
+            'category': '{|$e.category|}', // string; category name
+            'price': '{|$e.price|}',       // string; product price without tax and shipping
+            'quantity': '{|$e.quantity|}'         // string: item count
+        });
+        {|/foreach|}
+
+        dataLayer.push({
+            'transactionId' : transactionId,
+            'transactionAffiliation': affil,
+            'transactionTotal': '{|$order.transactionTotal|}',            // total price,
+            'transactionTax': '{|$order.transactionTax|}',               // float; celkova dan; number rounded to 2 decimal places
+            'transactionShipping': '{|$order.transactionShipping|}',          // float; shipping price; number rounded to 2 decimal places
+            'transactionProducts': cartProducts,
+            'event': 'trackTrans'});
+    </script>
+
+{|/if|}
+
+{|if $thanckyou && $urlredirect|}
+    <script type="text/javascript">
+        $j(document).ready(function () {
+            setTimeout( function() {
+                document.location = '{|$urlredirect|}';
+            }, 1000);
+        } );
+    </script>
+{|/if|}
+
+<div class="page-wrapper">
+<header>
+    <div class="inner" itemscope itemtype="http://schema.org/Organization">
+        <div class="rtm-menu-toggle js-menu-toggle"></div>
+        <span itemprop="name" style="display: none;">{|$shopName|}</span>
+        <a href="/" class="rtm-logo" itemprop="url">
+            <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}" itemprop="logo" />
+        </a>
+
+        <div class="rtm-topcontacts-block">
+            {|if $address|}
+                <span class="address" itemprop="address">{|$address|}</span>
+                <br />
+            {|/if|}
+            <span class="telephone-wrapp">
+                {|if $istat_span_0|}
+                    Телефоны: <br />
+                    {|$istat_span_0|}
+                {|else|}
+                    {|if $phone1|}Телефон: <br />
+                        <span itemprop="telephone">{|$phone1|}</span>, <span itemprop="telephone">{|$phone1|}</span><br />
+                    {|/if|}
+                    {|if $phone2|}
+                        <span itemprop="telephone">{|$phone1|}</span>, <span itemprop="telephone">{|$phone2|}</span><br />
+                    {|/if|}
+                {|/if|}
+            </span>
+            {|if $email|}
+               <a class="contact-mail" href="mailto:{|$email|}" itemprop="email">{|$email|}</a>
+            {|/if|}
+            <div class="social">
+                <a rel="nofollow" href="https://www.facebook.com/pages/%D0%AE%D0%B2%D0%B5%D0%BB%D0%B8%D1%80%D0%BD%D1%8B%D0%B9-%D0%B7%D0%B0%D0%B2%D0%BE%D0%B4-%D0%A0%D0%B5%D0%BC%D1%82%D0%BE%D1%87%D0%BC%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%BA%D0%B0/1415825245334394" class="vk"></a>
+                <a rel="nofollow" href="http://vk.com/public68496124" class="fb"></a>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="rtm-headerright-block">
+            {|$block_search|}
+            <div class="rtm-auth-block">
+                {|if $userlogin|}
+                    <a class="rtm-user" href="{|$main|}/client/profile/" title="{|$userlogin|}"><span><em>{|$userlogin|}</em></span></a>
+                    <a href="{|$main|}/logout/" rel="nofollow" class="rtm-submit small logout">{|$translate_logout|}</a>
+                {|else|}
+                    <a href="javascript:void (0);" onclick="popupOpen('.js-popup-auth-block');" class="rtm-submit small login js-focus-login">{|$translate_enter|}</a>
+                    <a href="javascript:void (0);" onclick="popupOpen('.js-popup-register-block');" class="rtm-submit small register js-focus-register">{|$translate_registration|}</a>
+                    <div class="clear"></div>
+                {|/if|}
+            </div>
+            <div class="js-basket"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    {|$block_menu_textpage|}
+</header>
+<div class="content-wrap">
+    <div class="inner">
+
+        {|$content|}
+
+        {|if $seocontent|}
+            <div class="rtm-seo-block">
+                {|$seocontent|}
+            </div>
+        {|/if|}
+        <br />
+        <br />
+    </div>
+</div>
+<div class="page-buffer">&nbsp;</div>
+</div>
+<div class="page-footer">
+    <div class="inner">
+        <div class="item">
+            <div class="head">Информация</div>
+            <a href="http://www.rtm-zoloto.com.ua/o-kompanii" class="menu-item">О компании</a><br />
+            <a href="/kontakty" class="menu-item">Контакты</a><br />
+            <a href="/oplata" class="menu-item">Оплата</a><br />
+            <a href="/dostavka" class="menu-item">Доставка</a><br />
+            <a href="/vozvrat" class="menu-item">Возврат</a><br />
+            <a href="http://www.rtm-zoloto.com.ua/skidki-i-bonusy" class="menu-item">Бонусные карты</a><br />
+            <a href="/sitemap.xml" class="menu-item">Карта сайта</a><br />
+        </div>
+        <div class="item">
+            {|if $mainCategoryArray|}
+                <div class="head">Каталог</div>
+                {|foreach from=$mainCategoryArray item="e"|}
+                    <a href="{|$e.url|}" class="menu-item">{|$e.name|}</a><br />
+                {|/foreach|}
+            {|/if|}
+        </div>
+        <div class="item">
+            <div class="head">Услуги</div>
+            <a href="http://www.rtm-zoloto.com.ua/uslugi/individualnyj-zakaz" class="menu-item">Индивидуальный заказ</a><br />
+            <a href="http://www.rtm-zoloto.com.ua/uslugi/remont" class="menu-item">Ремонт</a><br />
+            <a href="http://www.rtm-zoloto.com.ua/uslugi/prodazha" class="menu-item">Продажа</a><br />
+            <a href="http://www.rtm-zoloto.com.ua/uslugi/obmen" class="menu-item">Обмен</a><br />
+            <a href="http://www.rtm-zoloto.com.ua/uslugi/podarochnie-sertifikati" class="menu-item">Подарочные сертификаты</a><br />
+        </div>
+        <div class="item">
+            <div class="head">Координаты</div>
+            {|if $address|}
+                <div class="foot-address">
+                    {|$address|}
+                </div>
+            {|/if|}
+            {|if $istat_span_1|}
+                Телефоны: <br />
+                {|$istat_span_1|}<br />
+            {|else|}
+                {|if $phone1|}Телефон: <br />
+                    {|$phone1|}<br />
+                {|/if|}
+                {|if $phone2|}
+                    {|$phone2|}<br />
+                {|/if|}
+            {|/if|}
+
+            {|if $email|}
+                <a href="mailto:{|$email|}" class="footer-mail">{|$email|}</a><br />
+            {|/if|}
+            <div class="socials">
+                <a rel="nofollow" href="https://www.facebook.com/pages/%D0%AE%D0%B2%D0%B5%D0%BB%D0%B8%D1%80%D0%BD%D1%8B%D0%B9-%D0%B7%D0%B0%D0%B2%D0%BE%D0%B4-%D0%A0%D0%B5%D0%BC%D1%82%D0%BE%D1%87%D0%BC%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%BA%D0%B0/1415825245334394" class="fb"></a>
+                <a rel="nofollow" href="http://vk.com/public68496124" class="vk"></a>
+            </div>
+            Режим работы: <br />
+            пн-сб: 10:00 - 20:00; <br />
+            вс: 10:00 - 18:00 <br />
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="rtm-copy">
+        <div class="inner">
+            <a href="/">© 2014 Ювелирный завод «Ремточмеханика»</a>
+            <div class="wp">Создание интернет-магазинов на платформе <a href="http://webproduction.ua/">OneClick &reg;</a></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="os-loading">
+    <div class="dark">&nbsp;</div>
+    <div class="loader">&nbsp;</div>
+</div>
+
+<div class="rtm-popup-block js-popup-auth-block" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-popup-auth-block');">&nbsp;</div>
+    <div class="popup-block auth-block">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-auth-block');">&nbsp;</a>
+            {|$translate_authorization|}
+        </div>
+        <form method="post">
+            <div class="body">
+                <input class="rtm-check-fill04" name="auth_login" id="id-auth-login" type="text" /><br /> <br />
+                <input class="rtm-check-fill04" name="auth_password" id="id-auth-password" type="password" /><br />
+            </div>
+            <div class="foot">
+                <a class="forgotpass" rel="nofollow" href="/remindpassword/">{|$translate_forgot_password|}?</a>
+                <input type="submit" value="{|$translate_sign_in|}" class="rtm-submit rtm-submit-fill04" disabled="disabled" />
+                <div class="clear">&nbsp;</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+{|$integration_istat|}
+{|$integration_zhivosite|}
+</body>
+</html>

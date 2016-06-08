@@ -1,0 +1,601 @@
+
+<input type="hidden" id="productPage" value="{|$productID|}">
+
+{|if $message == "commentok"|}
+    <div class="os-message-success">
+        {|$translate_testimonials_success|}.
+    </div>
+{|/if|}
+
+{|if $message == "commenterror"|}
+    <div class="os-message-error">
+        {|$translate_testimonials_error|}.
+    </div>
+{|/if|}
+
+<div class="cl-product-info" itemscope itemtype="http://schema.org/Product">
+    <div class="block-head">
+        <h1 itemprop="name">
+            {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}
+
+            {|if $brand|}
+                <span>by</span>
+                <a class="brand-name" href="{|$brand.url|}" itemprop="brand">
+                    {|$brand.name|}
+                </a>
+            {|/if|}
+            <a href="javascript:void(0);" data-productid="{|$id|}" class="cl-favorite-button js-shop-favorite" ></a>
+        </h1>
+    </div>
+
+    <div class="cl-crumbs">
+        {|if $pathArray|}
+        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="/" itemprop="url">
+                <span itemprop="title">{|$storeTitle|}</span>
+            </a>
+        </div>
+        {|/if|}
+
+        {|foreach from=$pathArray item="e"|}
+        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="{|$e.url|}" itemprop="url">
+                <span itemprop="title">{|$e.name|}</span>
+            </a>
+        </div>
+        {|/foreach|}
+
+        <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="{|$url|}" itemprop="url">
+                <span itemprop="title">{|$name|}</span>
+            </a>
+        </div>
+    </div>
+    <br />
+    <br />
+
+    <div class="cl-product-code">
+        {|if $code|}
+            {|$translate_item_code|}: {|$code|}<br />
+        {|/if|}
+        {|if $barcode|}
+            {|$translate_item_barcode|}: {|$barcode|}<br />
+        {|/if|}
+    </div>
+    <br />
+    <br />
+
+    <form method="post" id="id-order">
+        <div class="left-layer">
+            <div class="cl-product-view">
+                <div class="description">
+                    <div class="inner-element">
+                        <div class="block-price">
+                            {|if $price == 0|}
+                                <div class="os-price-specify " itemprop="priceSpecification">
+                                    {|$translate_specify_a_price|}
+                                </div>
+                                <input type="hidden" id="canAddMarkup" value="">
+                            {|else|}
+                                {|if !$avail|}
+                                    <div class="os-price-unavailable">
+                                        <span itemprop="price" id="priceSpan">{|$price|}</span>
+                                        <span itemprop="priceCurrency">{|$currency|}</span>
+
+                                    </div>
+                                {|else|}
+                                    <div class="os-price-available {|if $priceold AND $priceold > $price|}new-price{|/if|}">
+                                        <span itemprop="price" id="priceSpan">{|$price|}</span>
+                                        <span itemprop="priceCurrency">{|$currency|}</span>
+                                        {|if $delivery_price|}
+                                            <div class="block-delivery">
+                                                <span style="font-family: Helvetica, Arial, sans-serif; color: #333333; font-size: 15px;">
+                                                    + Shipping Fees {|$delivery_price|} {|$currency|}
+                                                </span>
+                                                <a href="/delivery-details">Details</a>
+                                            </div>
+                                        {|/if|}
+                                    </div>
+                                {|/if|}
+
+                                <div class="js_personal_discount_check" data-productid="{|$id|}"></div>
+
+                                <input type="hidden" id="canAddMarkup" value="{|$price|}">
+                            {|/if|}
+
+                            {|if ($discount && $avail && !$canMakePreorder) || ($discount && $canMakePreorder && !$avail)  |}
+                                <div class="os-discount">-{|$discount|}%</div>
+                                <input type="hidden" id="dataDiscount" value="{|$discount|}">
+                            {|/if|}
+
+                            {|if $priceold AND $priceold > $price|}
+                                <div class="os-price-old">
+                                    {|$priceold|} {|$currency|}
+                                </div>
+                            {|/if|}
+                        </div>
+                        <div class="size-list">
+                            <a href="#">Size</a>
+                            1, 2, 3
+                        </div>
+
+                        {|if $delivery|}
+                            <div class="block-delivery">
+                                <div class="ta-center">
+                                    <strong>{|$translate_delivery|}</strong>
+                                </div>
+                                {|$delivery|}
+                            </div>
+                        {|/if|}
+
+                        {|if $warranty|}
+                            <div class="inner-element">
+                                <div class="ta-center">
+                                    <strong>{|$translate_warranty|}</strong>
+                                </div>
+                                {|$warranty|}
+                            </div>
+                        {|/if|}
+
+                        {|if $payment|}
+                            <div class="inner-element">
+                                <div class="ta-center">
+                                    <strong>{|$translate_payment|}</strong>
+                                </div>
+                                {|$payment|}
+                            </div>
+                        {|/if|}
+                    </div>
+
+                    {|if $descriptionshort|}
+                        <div class="inner-element" itemprop="description">
+                            {|$descriptionshort|}
+                        </div>
+                    {|/if|}
+
+                    {|if $rating > 0|}
+                        <div class="inner-element">
+                            <strong>Customers Reviews</strong><br />
+                                <div class="cl-block-rating" itemscope itemtype="http://data-vocabulary.org/Review-aggregate">
+                                    <div class="inner" itemprop="rating" itemscope itemtype="http://data-vocabulary.org/Rating" style="width: {|$rating*20|}%;">
+                                        <em itemprop="average">{|$rating|}</em>
+                                        <em itemprop="best">5</em>
+                                        <em itemprop="count">{|$ratingCount|}</em>
+                                    </div>
+                                </div>
+                        </div>
+                    {|/if|}
+
+                </div>
+
+                <div class="product-image">
+                    {|if $imagesArray|}
+                        <div class="cl-product-slide-for js-prod-slider-for">
+                            {|foreach from=$imagesArray item="e" key=k|}
+                                <div>
+                                    <a href="{|$e.originalUrl|}" class="colorbox" title="{|$name|}">
+                                        <img itemprop="image" src="{|$e.cropUrl|}" alt="{|$name|escape|}" title="{|$name|escape|}" />
+                                    </a>
+                                </div>
+                            {|/foreach|}
+                        </div>
+
+                        <div class="cl-product-slide-nav js-prod-slider-nav">
+                            {|foreach from=$imagesArray item="e"|}
+                                <div>
+                                    <div class="nav-element">
+                                        <a href="javascript:void(0);">
+                                            <img src="{|$e.cropUrl|}" alt="{|$name|escape|}" title="{|$name|escape|}" />
+                                        </a>
+                                    </div>
+                                </div>
+                            {|/foreach|}
+                        </div>
+                    {|/if|}
+                </div>
+
+                <div class="clear"></div>
+            </div>
+
+            <div class="about-product">
+
+                <div class="cl-block-tabs">
+                    <div class="tabs js-tabs">
+                        <a data-tab="1" href="javascript:void(0);" class="selected">Product Description</a>
+                        <a data-tab="2" href="javascript:void(0);">{|$translate_comments|}</a>
+                    </div>
+
+                    <div  class="tabs-content js-tab-1" style="display: block">
+
+                        {|if $description || $width || $length || $height || $weight |}
+                            <h3>{|$translate_item_info|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h3>
+                            <div class="os-editor-content js-ckEditor-container">
+                                {|$description|}
+                            </div>
+
+                            {|*параметры товара (длина, ширина, высота, вес)*|}
+                            {|if $width!=0|}
+                            <br/>{|$translate_width|}: <span>{|$width|}</span>
+                            {|/if|}
+                            {|if $height!=0|}
+                            <br/>{|$translate_height|}: <span>{|$height|}</span>
+                            {|/if|}
+                            {|if $length!=0|}
+                            <br/>{|$translate_length|}: {|$length|}
+                            {|/if|}
+                            {|if $weight!=0|}
+                            <br/>{|$translate_weight|}: <span>{|$weight|}</span>
+                            {|/if|}
+                        {|/if|}
+                        <br />
+                        <br />
+
+                        {|if $videoArray|}
+                            <h3>{|$translate_video|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h3>
+                            <div class="cl-video">
+                                {|foreach from=$videoArray item=v|}
+                                    {|$v|} <br />
+                                {|/foreach|}
+                            </div>
+                        {|/if|}
+                        <br />
+                        <br />
+
+                        {|if $characteristicsArray OR $characteristics|}
+                            <h3>{|$translate_features|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h3>
+                            <div class="os-block-productfeatures">
+                                {|if $characteristicsArray|}
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <td>{|$translate_properties|}</td>
+                                            <td>{|$translate_features|}</td>
+                                        </tr>
+                                        </thead>
+                                        {|foreach from=$characteristicsArray item="e" key="index"|}
+                                            <tr>
+                                                <td>{|$index|}</td>
+                                                <td>
+                                                    {|foreach from=$e item="i" key="k"|}
+                                                        {|if $i.characteristicColor|}
+                                                            <div style="background-color: {|$i.characteristicColor|}; display: inline-block; width: 30px;">
+                                                                &nbsp;
+                                                            </div>
+                                                        {|/if|}
+                                                        {|if $k > 0|},&nbsp;{|/if|}
+                                                        {|if $i.characteristicInfo|}
+                                                            <a href="{|$i.characteristicInfo.url|}" title="{|$translate_contacts_all|} {|$i.characteristicInfo.title|}">
+                                                                {|$i.characteristicValue|}
+                                                            </a>
+                                                        {|else|}
+                                                            {|$i.characteristicValue|}
+                                                        {|/if|}
+                                                    {|/foreach|}
+                                                </td>
+                                            </tr>
+                                        {|/foreach|}
+                                    </table>
+
+                                    {|if $characteristics_message|}
+                                        <br />{|$characteristics_message|}
+                                    {|/if|}
+                                {|else|}
+                                    {|$characteristics|}
+                                {|/if|}
+                            </div>
+                        {|/if|}
+                    </div>
+
+                    <div class="tabs-content js-tab-2" >
+                        <div class="questions">
+                            {|if $commentIntegration|}
+                                <h2 class="js-comments-block">{|$translate_many_comments|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                <div class="os-integrated-comment">
+                                    {|$commentIntegration|}
+                                </div>
+                            {|/if|}
+
+                            <div class="os-feedback-list">
+                                <h2 class="js-feedback-block">{|$translate_comments|} {|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h2>
+                                {|if $commentsArray|}
+                                    {|foreach from=$commentsArray item="e"|}
+                                        <div class="element" itemscope itemtype="http://schema.org/Review">
+                                            {|if !$e.rating == '0'|}
+                                                <div class="cl-block-rating" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                                                    <div class="inner" style="width: {|$e.rating*20|}%;">
+                                                        <meta itemprop="worstRating" content = "0"/>
+                                                        <em itemprop="ratingValue">{|$e.rating|}</em>
+                                                        <em itemprop="bestRating">5</em>
+                                                    </div>
+                                                </div>
+                                            {|/if|}
+
+                                            <span itemprop="reviewBody">
+                                                <a style="text-decoration: none;" href="{|$e.url|}" target="_blank" >
+                                                    {|$e.content|}
+                                                </a>
+                                            </span><br />
+
+                                            {|if $e.plus|}
+                                                <strong class="good-side">{|$translate_plus|}:</strong> {|$e.plus|}<br />
+                                            {|/if|}
+
+                                            {|if $e.minus|}
+                                                <strong class="bad-side">{|$translate_minus|}:</strong> {|$e.minus|}<br />
+                                            {|/if|}
+
+                                            {|if $e.imagecrop|}
+                                                <a href="{|$e.image|}" class="colorbox"><img src="{|$e.imagecrop|}"></a>
+                                                <br />
+                                            {|/if|}
+                                            {|if $e.answer|}
+                                                <div class="adminanswer">
+                                                    <br />
+                                                    <strong>{|$translate_answer_administration|}:</strong>
+                                                    <br />
+                                                    {|$e.answer|}
+                                                </div>
+                                            {|/if|}
+                                            <div class="info">
+                                                <span itemprop="datePublished" content="{|$e.datetime|}">{|$e.datetime|}</span>
+                                                <span itemprop="author">
+                                                   {|$translate_from_small|} {|$e.name|}
+                                                </span>
+                                                {|$translate_o|}
+                                                <span itemprop="itemReviewed">
+                                                    {|if $e.shopgb|}
+                                                        {|$storeTitle|}
+                                                    {|else|}
+                                                        {|$name|}
+                                                    {|/if|}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {|/foreach|}
+                                    <br />
+                                {|else|}
+                                    <div class="element">
+                                        <strong style="color:#808080">{|$translate_nocomments_message|}</strong>
+                                    </div>
+                                    <br />
+                                {|/if|}
+
+                                <a href="javascript: void(0);" class="cl-button green" onclick="popupOpen('.js-popup-comment-block');">{|$translate_reviews_of_the_store_add_simple|}</a>
+
+                                {|if $allowcomment|}
+                                    <div class="cl-block-popup js-popup-comment-block" style="display: none;">
+                                        <div class="dark" onclick="popupClose('.js-popup-comment-block');"></div>
+                                        <div class="block-popup">
+                                            <div class="head">
+                                                <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-comment-block');">&nbsp;</a>
+                                                {|$translate_write_a_review|}
+                                            </div>
+                                            <form method="post" enctype="multipart/form-data">
+                                                <div class="body">
+                                                    <div class="block-form">
+                                                        <div class="form-element">
+                                                            <div class="descript">{|$translate_review_big|}<span class="important">*</span>:</div>
+                                                            <textarea class="js-required" name="postcomment"></textarea>
+                                                        </div>
+                                                        <div class="form-element">
+                                                            <div class="descript">{|$translate_plus|}:</div>
+                                                            <textarea name="postplus"></textarea>
+                                                        </div>
+                                                        <div class="form-element">
+                                                            <div class="descript">{|$translate_minus|}:</div>
+                                                            <textarea name="postminus"></textarea>
+                                                        </div>
+                                                        <div class="form-element">
+                                                            <div class="descript">{|$translate_rating|}</div>
+                                                            <div class="cl-block-rating">
+                                                                <div class="inner"></div>
+                                                                <div class="rating-values js-block-rating">
+                                                                    <span data-count="1"></span>
+                                                                    <span data-count="2"></span>
+                                                                    <span data-count="3"></span>
+                                                                    <span data-count="4"></span>
+                                                                    <span data-count="5"></span>
+                                                                </div>
+                                                                <input name="commentrating" type="hidden" value="" />
+                                                                <div class="text js-rating-clear"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-element">
+                                                            <div class="descript">{|$translate_upload_image|}</div>
+                                                            <input type="file" name="upload_image" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="foot ta-center">
+                                                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                                                    <input class="js-form-validation cl-button green" type="submit" value="{|$translate_send|}" name="submitcomment" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {|else|}
+                                    {|$translate_rating_add_message|}
+                                    <a href="/registration/">{|$translate_sing_up|}</a>
+                                    {|$translate_or|}
+                                    <a href="/client/orders/">{|$translate_authorize|}</a>.
+                                {|/if|}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="right-layer">
+            <div class="cl-select-product">
+                {|if $optionArray|}
+                <div class="os-options-list">
+                    {|foreach from=$optionArray item="e"|}
+                        <div class="inner-element">
+                            <select name="option-{|$e.id|}" class="js-shop-buy-option chzn-select" data-optionid="{|$e.id|}">
+                                <option class="" value="">{|$translate_select_the|} {|$e.name|}</option>
+                                {|foreach from=$e.valueArray item="v"|}
+                                    <option id="{|$v[1]|}" value="{|$v[0]|escape|}">{|$v[0]|}</option>
+                                {|*|}
+                                    <option id="{|$v[0]|}" style="display: none;" value="{|$v[1]|}"></option>
+                                {|*|}
+                                {|/foreach|}
+                            </select>
+                            {|foreach from=$e.valueArray item="v"|}
+                                <input type="hidden" class="js-hash-input" id="option{|$e.id|}hidden{|$v[2]|}" value="{|$v[1]|}"/>
+                            {|/foreach|}
+                        </div>
+                    {|/foreach|}
+
+                    <script>
+
+                        $j(function() {
+
+                            var hash = [];
+                            $j('.js-hash-input').each(function(id, el){
+
+                                if ($j(el).attr('id').indexOf('custom-quantity') == 6) {
+
+                                    hash.push($j(el).attr('id'));
+                                }
+
+                            });
+                            var param1 = $j('select').attr('data-optionid');
+                            var base_price = parseFloat($j('#optioncustom-quantityhiddenc81e728d9d4c2f636f067f89cc14862c').val());
+                            var select_1 = {};
+                            var select_2 = {};
+                            select_1.id = param1;
+
+                            $j('select').change(function() {
+
+                                var current_id = $j(this).attr('data-optionid');
+
+                                if (current_id != 'custom-quantity') {
+
+
+                                    var val = $j("select[name=option-"+current_id+"] option:selected").attr('id');
+
+                                    if (select_1.id != current_id) {
+                                        select_2.id = current_id;
+                                        select_2.value = val;
+                                    } else {
+                                        select_1.value = val;
+                                    }
+
+                                    var val1 = parseFloat(select_1.value);
+                                    var val2 = parseFloat(select_2.value);
+                                    if(isNaN(val1)) val1 = 0;
+                                    if(isNaN(val2)) val2 = 0;
+                                    var sum = val1 + val2;
+                                    var result = base_price + sum;
+                                    for (var i = 0; i<hash.length; i++) {
+                                        if (i == 0) {
+                                          continue;
+                                        }
+
+                                        $j('#'+hash[i]).val(result*i);
+                                    }
+
+                                }
+
+                            });
+
+                        });
+                    </script>
+
+                </div>
+                {|/if|}
+
+                {|if $canbuy or $canMakePreorder|}
+                    <div class="block-button">
+
+                        <a class="cl-button  fl-l" href="javascript: void(0);" onclick="basket_order_quick('{|$productID|}', '{|$nameQuick|}');">Buy it Now</a>
+
+                        {|* кнопка покупки *|}
+                        <div class="js-shop-buy fl-r" data-productid="{|$id|}">
+                            <a href="#" class="js-shop-buy-action cl-button basket">Add to basket</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {|/if|}
+
+
+            </div>
+
+           {|if $advertise|}
+            <div class="cl-aside-block-text">
+                <div class="title">Advertise</div>
+                 {|$advertise|}
+            </div>
+            {|/if|}
+
+            {|if $faq|}
+            <div class="cl-block-answers">
+                <div class="head">answered questions</div>
+                <div class="body">
+                {|foreach from=$faq item ="i"|}
+                    <div class="item"><a style="text-decoration: none;" href="{|$i.url|}">{|$i.name|}</a></div>
+                {|/foreach|}
+                </div>
+            </div>
+            {|/if|}
+
+        </div>
+        <div class="clear"></div>
+    </form>
+
+</div>
+
+{|*|}
+{|if $actionSetArray|}
+    <div class="os-productaction-carousel js-action-carousel">
+        {|foreach from=$actionSetArray item = actionset|}
+        <div>
+            <div class="os-block-caption">
+                {|$translate_rekomenduem_kupit_komplekt_tovarov|}:
+            </div>
+            <div class="line">
+                {|foreach from=$actionset.productArray item = p|}
+                <div class="product-element">
+                    <div class="image">
+                        <a target="_blank" href="{|$p.url|}">
+                            <img src="{|$p.image|}">
+                        </a>
+                    </div>
+                    <div class="name">
+                        <a href="{|$p.url|}">
+                            {|$p.name|}
+                        </a>
+                    </div>
+                </div>
+                {|/foreach|}
+            </div>
+            <div class="block-buy">
+                {|$translate_tsena_dannogo_nabora|}:
+                <span class="os-price-available">{|$actionset.sum|} {|$currency|}</span>
+                {|if $canbuy|}
+                <div class="block-button">
+                    <div class="js-shop-buy" data-setid="{|$actionset.id|}">
+                        <a href="#" class="js-shop-buy-action os-submit green">{|$translate_to_basket|}</a>
+                    </div>
+                </div>
+                {|/if|}
+                <div class="clear"></div>
+            </div>
+        </div>
+        {|/foreach|}
+    </div>
+{|/if|}
+{|*|}
+
+{|foreach from=$listsArray item="e"|}
+    <div class="os-block-caption"><h3>{|$e.name|}</h3></div>
+    {|$e.html|}
+{|/foreach|}
+
+
+{|$seocontent|}
+
+{|$noticeOfAvailability|}

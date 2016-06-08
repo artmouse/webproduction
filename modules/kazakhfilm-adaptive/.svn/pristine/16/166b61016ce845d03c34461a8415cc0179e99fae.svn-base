@@ -1,0 +1,206 @@
+
+
+
+{|if $message == 'ok'|}
+<div class="kzh-modal-wrapp" style="display: block;">
+    <div class="modal-black-mask" style="position: fixed;">&nbsp;</div>
+    <div class="kzh-modal" style="margin-left: -273px; top: 100px;">
+        <div class="kzh-modal-content">
+            <div class="shop-message-success">
+                Заказ на бронирование номера отослан!<br />
+                В ближайшее время с Вами свяжется наш менеджер.
+
+            </div>
+        </div>
+    </div>
+</div>
+{|/if|}
+
+<div class="ks-block-transfer-form">
+    <div class="caption">Встреча в аеропорту, на вокзале <br> подача автомобился по <br> указаному месту</div>
+    <form>
+    <input name="Name" type="text" placeholder="Ваше имя" required>
+    <input name="Telephone" class="js-phone-formatter" type="text" placeholder="Ваш телефон" required>
+
+    <div class="buttons">
+        <input name="ok" class="kf-button" type="submit" value="Заказать услугу" />
+    </div>
+    </form>
+</div>
+
+
+<div class="ks-block-transfer-features">
+    <div class="inner">
+        <div class="cell">
+            <div class="image">
+                <a href="#">
+                    <img src="/templates/kazakhfilm-adaptive/_images/transfer/feature-1.jpg" alt="">
+                </a>
+            </div>
+
+            Водители <br>
+            стажем от  5 лет
+        </div>
+        <div class="cell">
+            <div class="image">
+                <a href="#">
+                    <img src="/templates/kazakhfilm-adaptive/_images/transfer/feature-2.jpg" alt="">
+                </a>
+            </div>
+
+            Без <br>
+            предоплаты
+        </div>
+        <div class="cell">
+            <div class="image">
+                <a href="#">
+                    <img src="/templates/kazakhfilm-adaptive/_images/transfer/feature-3.jpg" alt="">
+                </a>
+            </div>
+
+            Комфортабельыне автомобили
+        </div>
+    </div>
+</div>
+
+<div class="ks-block-transfer-text">
+    {|$seocontent|}
+</div>
+
+<div class="ks-block-transfer-pricelist">
+    <table>
+        <thead>
+        <tr>
+            <td>Направление</td>
+            <td>&nbsp;</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>Аэропорт - Гостиница</td>
+            <td><a href="#">Заказать</a></td>
+        </tr>
+        <tr>
+            <td>Вокзал 1 - Гостиница</td>
+            <td><a href="#">Заказать</a></td>
+        </tr>
+        <tr>
+            <td>Вокзал 2 - Гостиница</td>
+            <td><a href="#">Заказать</a></td>
+        </tr>
+        <tr>
+            <td>Автовокзал Сайран - гостиница</td>
+            <td><a href="#">Заказать</a></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+
+    <div class="buttons">
+        <a href="#" class="kzh-btn-default tiled">Расчитать стоимость по другому направлению</a>
+    </div>
+</div>
+
+<div class="ks-block-transfer-services">
+    <div class="caption">Дополнительные услуги</div>
+
+    <div class="ks-block-transfer-features">
+        <div class="inner">
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-1.jpg" alt="">
+                    </a>
+                </div>
+
+                Трезвый <br>
+                водитель
+            </div>
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-2.jpg" alt="">
+                    </a>
+                </div>
+
+                Такси <br>
+                за город
+            </div>
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-3.jpg" alt="">
+                    </a>
+                </div>
+
+                Встреча <br>
+                с аэропорта
+            </div>
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-4.jpg" alt="">
+                    </a>
+                </div>
+
+                Такси <br>
+                на час
+            </div>
+        </div>
+
+        <div class="inner">
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-5.jpg" alt="">
+                    </a>
+                </div>
+
+                Экскурсии по <br>
+                городу
+            </div>
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-6.jpg" alt="">
+                    </a>
+                </div>
+
+                Экскурсии за <br>
+                город
+            </div>
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-7.jpg" alt="">
+                    </a>
+                </div>
+
+                Автобусы
+            </div>
+            <div class="cell">
+                <div class="image">
+                    <a href="#">
+                        <img src="/templates/kazakhfilm-adaptive/_images/transfer/service-8.jpg" alt="">
+                    </a>
+                </div>
+
+                Минивэн
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a href="#" class="kzh-btn-default tiled">Заказать услугу</a>
+    </div>
+</div>
+
+<div class="ks-block-transfer-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis elit. Nullam egestas ante consequat
+    mattis hendrerit. Aenean ante tellus, laoreet in nibh eu, suscipit scelerisque velit. Ut imperdiet, nunc ut cursus
+    porta, orci orci blandit velit, eleifend pulvinar sem diam consequat libero. Vivamus faucibus metus at neque lacinia
+    convallis. Proin tincidunt libero sollicitudin fermentum laoreet. Donec a metus commodo, facilisis odio ac, varius
+    nibh. Nulla sollicitudin mauris aliquam quam dignissim mollis in nec lacus. Pellentesque habitant morbi tristique
+    senectus et netus et malesuada fames ac turpis egestas.
+</div>

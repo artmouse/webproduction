@@ -1,0 +1,38 @@
+<div class="ob-comment-add js-droppable-zone-write-letter">
+    <div class="block-caption">{|$translate_write_letter|}</div>
+    <div class="js-order-comment-div">
+        <input type="text" placeholder="{|$translate_vvedite_e_mail|}" value="{|$clientPostEmail|}" name="post_letter_email_write_letter" style="width: 100%;" />
+        <br />
+        <br />
+        <input type="text" placeholder="{|$translate_ukazhite_temu|}" value="" name="post_letter_subject_write_letter" style="width: 100%;" />
+        <br />
+        <br />
+
+        <textarea name="postcomment_write_letter" class="js-autosize js-usertextcomplete" placeholder="{|$translate_message|}"></textarea>
+
+        <div {|if $emailFromArray|@count < 2|}style="display: none;"{|/if|}>
+            Email {|$translate_otpravitelya|}:
+            <select class="chzn-select" name="post_letter_email_from_write_letter" >
+                {|foreach from=$emailFromArray item="em"|}
+                    <option value="{|$em|}">{|$em|}</option>
+                {|/foreach|}
+            </select>
+            <br>
+        </div>
+    </div>
+
+    <div class="ob-block-attach">
+        <a href="#" name="file_result[]" class="ob-button-attach js-uploader-write-letter">{|$translate_prilozhit_fayli|}...</a>
+    </div>
+
+    <br />
+    <input class="js-date" type="text" name="date_post_write_letter" value="" placeholder="{|$translate_dispatch_date|}" style="width: 100%;" />
+</div>
+
+
+<script>
+    $j(function() {
+        // загрузка файлов
+        var uploader = new DropUploader('.js-droppable-zone-write-letter', '.js-uploader-write-letter', 'fileid_write_letter');
+    });
+</script>

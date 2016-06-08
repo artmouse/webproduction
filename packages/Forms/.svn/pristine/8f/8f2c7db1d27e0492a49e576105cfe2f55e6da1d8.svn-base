@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <translate_forms_record_edit>Edit record</translate_forms_record_edit>
+    <translate_forms_record_add>Add new record</translate_forms_record_add>
+    <translate_forms_message_error>Error! Unable to obtain data on the requested key.</translate_forms_message_error>
+    <translate_forms_message_delete_ok>Record deleted successfully.</translate_forms_message_delete_ok>
+    <translate_forms_message_delete_error>An error occurred while deleting record.</translate_forms_message_delete_error>
+    <translate_forms_message_update_ok>Record saved successfully.</translate_forms_message_update_ok>
+    <translate_forms_message_update_error>An error occurred while saving record.</translate_forms_message_update_error>
+    <translate_forms_message_insert_ok>Record added successfully.</translate_forms_message_insert_ok>
+    <translate_forms_message_insert_error>An error occurred while adding record.</translate_forms_message_insert_error>
+    <translate_forms_record_insert>Add record</translate_forms_record_insert>
+    <translate_forms_record_update>Save record</translate_forms_record_update>
+    <translate_forms_record_delete>Delete record</translate_forms_record_delete>
+    <translate_forms_confirm_delete>Do you confirm deleting?</translate_forms_confirm_delete>
+    
+    <translate_download>Download</translate_download>
+    <translate_download_file>Download file</translate_download_file>
+    <translate_delete_file>Delete file</translate_delete_file>
+    <translate_current_file>Current file</translate_current_file>
+</form>

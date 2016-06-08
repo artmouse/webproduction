@@ -1,0 +1,92 @@
+<h1>{|$translate_ord|} #{|$orderid|}</h1>
+{|$translate_date_and_time_ordering|} {|$cdate|}<br />
+{|$translate_current_order_status|}: <strong>{|$status|}</strong><br />
+<br />
+{|$translate_total_order_amount|}: {|$allSum|} {|$currency|}<br />
+<br />
+{|if $payment|}
+    {|$translate_payment_method|}: {|$payment|}<br />
+    <br />
+{|/if|}
+
+{|if $clientname|}
+    {|$translate_client_small|}: {|$clientname|}<br />
+{|/if|}
+{|if $clientemail|}
+    Email: <a href="mailto:{|$clientemail|}">{|$clientemail|}</a><br />
+{|/if|}
+{|if $clientphone|}
+    {|$translate_phone|}: {|$clientphone|}<br />
+{|/if|}
+{|if $clientcontacts|}
+    {|$translate_contacts|}: {|$clientcontacts|}<br />
+{|/if|}
+{|if $comments|}
+    {|$translate_comment|}: {|$comments|}<br />
+{|/if|}
+<br />
+
+{|if $managername|}
+    {|$translate_manager|}: {|$managername|}<br />
+    Email: <a href="mailto:{|$manageremail|}">{|$manageremail|}</a><br />
+    {|$translate_phone|}: {|$managerphone|}<br />
+    <br />
+{|/if|}
+
+<table class="def-table sortable resizable">
+    <thead>
+        <tr>
+            <td>{|$translate_code_small|}</td>
+            <td>{|$translate_product|}</td>
+            <td>{|$translate_price|}</td>
+            <td>{|$translate_number|}</td>
+            <td>{|$translate_cost|}</td>
+            <td>&nbsp;</td>
+        </tr>
+    </thead>
+
+    {|foreach from=$productsArray item="e"|}
+        <tr>
+            <td>{|$e.productid|}</td>
+            <td>
+                {|$e.name|}<br />
+                {|$e.comment|}
+            </td>
+            <td>{|$e.price|} {|$e.currency|}</td>
+            <td>{|$e.count|} {|$e.unit|}</td>
+            <td>{|$e.sum|} {|$e.currency|}</td>
+            <td>
+                {|if $e.url|}
+                    <a href="{|$e.url|}">{|$translate_download|}...</a>
+                {|else|}
+                    &nbsp;
+                {|/if|}
+            </td>
+        </tr>
+    {|/foreach|}
+    <tfoot>
+        {|if $discountName|}
+            <tr>
+                <td colspan="4" align="right">
+                    {|$translate_discount|}: {|$discountName|}
+                </td>
+                <td><strong>-{|$discountSum|} {|$currency|}</strong></td>
+                <td></td>
+            </tr>
+        {|/if|}
+        {|if $dname|}
+            <tr>
+                <td colspan="4" align="right">
+                    {|$translate_delivery|}: {|$dname|}
+                </td>
+                <td><strong>{|$dprice|} {|$currency|}</strong></td>
+                <td></td>
+            </tr>
+        {|/if|}
+        <tr>
+            <td colspan="4" align="right">{|$translate_in_total|}:</td>
+            <td><strong>{|$allSum|} {|$currency|}</strong></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

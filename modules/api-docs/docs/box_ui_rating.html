@@ -1,0 +1,70 @@
+<h1>Рейтинг</h1>
+
+Рейтинг - показатель, отображающий важность или значимость определенного объекта.<br />
+<br />
+
+<h2>Статический вывод</h2>
+Статический вывод - вывод значений для просмотра, где для блока <div class="ui-class inline">.inner</div> задается значение в процентах.
+<br />
+<div class="ui-class">.ob-block-rating</div>
+<code>
+    <pre>
+&lt;div class="ob-block-rating"&gt;
+    &lt;div class="inner" style="width: 60%;"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 40px;">
+    <div class="ob-block-rating">
+        <div class="inner" style="width: 60%;"></div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Вывод с элементами управления</h2>
+Вывод с элементами управления позволяет устанавливать значение рейтингу, путем нажатия на соответствующую иконку.<br>
+В данном типе вывода присутствует дополнительный блок <div class="ui-class inline">.rating-values</div>, в котором находятся элементы управления и <div class="ui-class inline">input[type="hidden"]</div>, в который записываются значения после их установки.
+<br>
+<br>
+<div class="ui-class">.ob-block-rating</div>
+<code>
+    <pre>
+&lt;div class="ob-block-rating"&gt;
+    &lt;div class="inner"&gt;&lt;/div&gt;
+    &lt;div class="rating-values js-block-rating"&gt;
+        &lt;span data-count="1"&gt;&lt;/span&gt;
+        &lt;span data-count="2"&gt;&lt;/span&gt;
+        &lt;span data-count="3"&gt;&lt;/span&gt;
+        &lt;span data-count="4"&gt;&lt;/span&gt;
+        &lt;span data-count="5"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;input type="hidden" value="" /&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 40px;">
+    <div class="ob-block-rating">
+        <div class="inner"></div>
+        <div class="rating-values js-block-rating">
+            <span data-count="1"></span>
+            <span data-count="2"></span>
+            <span data-count="3"></span>
+            <span data-count="4"></span>
+            <span data-count="5"></span>
+        </div>
+        <input type="hidden" value="" />
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

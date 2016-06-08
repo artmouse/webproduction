@@ -1,0 +1,51 @@
+<form action="" method="post">
+    <h2>{|$translate_bistroe_sozdanie_zadachi|}</h2>
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_imya_zadachi|}</div>
+                    <input type="text" name="newname" value="" />
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_chto_nuzhno_sdelat|}?</div>
+                    <textarea name="newcontent" class="js-autosize" style="min-height: 53px;"></textarea>
+                </div>
+                <div class="form-element">
+                    <input class="ob-button" type="submit" name="addissueok" value="{|$translate_sozdat_zadachu|}" />
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_responsible|}</div>
+                    <select class="chzn-select" name="newmanagerid">
+                        <option value="0">---</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_newmanagerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_workflow|}</div>
+                    <select class="chzn-select" name="newworkflowid">
+                        <option value="0">---</option>
+                        {|foreach from=$workflowArray item="e"|}
+                            <option value="{|$e.id|}">{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_run_up|}</div>
+                    <input type="text" class="js-datetime" value="" name="newdateto" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {|*|}
+        <input type="text" name="parentid" value="{|$control_parentid|}" class="js-parentid" placeholder="{|$translate_podzadacha|}" style="width: 100px;" />
+    {|*|}
+</form>

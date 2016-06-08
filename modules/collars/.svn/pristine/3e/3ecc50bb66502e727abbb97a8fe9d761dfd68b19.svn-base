@@ -1,0 +1,10 @@
+{|foreach from=$carouselArray item="e"|}
+    {|if $e.html !== ""|}
+        <h2 class="ta-center">{|$e.name|}</h2>
+        {|$e.html|}
+    {|/if|}
+{|/foreach|}
+
+
+
+

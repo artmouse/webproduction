@@ -1,0 +1,7 @@
+<input  type="text"
+        name="{|$key|}"
+        value="{|$control_value|}"
+        {|if $cssclass|} class="{|$cssclass|}" {|/if|}
+        style="width: 80%; {|if not $valid|} border: 1px solid red; {|/if|}"
+        {|if $disabled|} disabled {|/if|}
+        />

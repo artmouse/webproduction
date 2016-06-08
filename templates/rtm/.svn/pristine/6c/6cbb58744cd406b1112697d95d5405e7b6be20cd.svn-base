@@ -1,0 +1,268 @@
+<div class="shop-tabs fixed">
+    <a href="/admin/shop/products/list-table/" class="selected">{|$translate_many_products|}</a>
+    <a href="/admin/shop/products/">{|$translate_many_products_inlist|}</a>
+    <a href="/admin/shop/products/add/">{|$translate_new_product|}</a>
+    <a href="/admin/shop/products/copy/">{|$translate_products_copy|}</a>
+    <a href="/admin/shop/products/exchange-xls/">{|$translate_import_and_export_excel|}</a>
+    <a href="/admin/shop/category/manage/">{|$translate_category|}</a>
+    <a href="/admin/shop/brands/">{|$translate_brands|}</a>
+    <a href="/admin/shop/products/filters/">{|$translate_products_filters|}</a>
+    <a href="/admin/shop/products/productslist/">{|$translate_products_list|}</a>
+    <a href="/admin/shop/comments/">{|$translate_many_comments|}</a>
+    <a href="/admin/shop/products/supplier/import/">{|$translate_download_the_price_list_provider|}</a>
+    <a href="/admin/shop/products/import/">{|$translate_product_load|}</a>
+    <div class="clear"></div>
+</div>
+<div class="shop-tabs-place">&nbsp;</div>
+{|if $message == 'ok'|}
+<div class="shop-message-success">
+    {|$translate_products_added_to_order|}.<br />
+    <a href="{|$urlredirect|}">{|$translate_go_to_order|}...</a>
+</div>
+{|/if|}
+{|* id текущей категории *|}
+<div hidden="" id="js-open-category-id" category-id="{|if $openCategoryId|}{|$openCategoryId|}{|else|} 0 {|/if|}"></div>
+
+<div class="shop-filter-panel">
+    <div class="filter-toggle {|if $filterpanelCookie|}close{|/if|}"></div>
+    <div class="inner-pannel" {|if $filterpanelCookie|}style="display: none;"{|/if|}>
+    <form action="" method="get">
+        <div class="element">
+            <div class="shop-productexplorer-toggle {|if $folderviewCookie|}line{|/if|}"></div>
+        </div>
+        <div class="element">
+            <input type="hidden" name="filter1_key" value="id" />
+            <input type="hidden" name="filter1_type" value="equals" />
+            <input type="text" name="filter1_value" value="{|$control_filter1_value|}" placeholder="{|$translate_code_small|}" />
+        </div>
+        <div class="element">
+            <input type="hidden" name="filter2_key" value="code1c"/>
+            <input type="hidden" name="filter2_type" value="equals" />
+            <input type="text" name="filter2_value" value="{|$control_filter2_value|}" placeholder="Артикул" />
+        </div>
+        <div class="element">
+            <input type="hidden" name="filter7_key" value="inventarnumber"/>
+            <input type="hidden" name="filter7_type" value="equals" />
+            <input type="text" name="filter7_value" value="{|$control_filter7_value|}" placeholder="Инвентарный номер" />
+        </div>
+        <div class="element">
+            <input type="hidden" name="filter3_key" value="name" />
+            <input type="hidden" name="filter3_type" value="search" />
+            <input type="text" name="filter3_value" value="{|$control_filter3_value|}" placeholder="{|$translate_title_short|}" />
+        </div>
+        <div class="element">
+            <input type="hidden" name="filter5_key" value="tags" />
+            <input type="hidden" name="filter5_type" value="search" />
+            <input type="text" name="filter5_value" value="{|$control_filter5_value|}" placeholder="{|$translate_tags|}" />
+        </div>
+        <div class="element ulist">
+            <label>{|$translate_show_deleted_products|}
+                <input type="checkbox" class="js-show-products" {|if $control_filter_show_deleted|}checked{|/if|} name="filter_show_deleted" value="{|$control_filter_show_deleted|}" />
+            </label>
+        </div>
+        <div class="element ulist">
+            <label>{|$translate_show_hidden_products|}
+                <input type="checkbox" class="js-show-products" {|if $control_filter_show_hidden|}checked{|/if|} name="filter_show_hidden" value="{|$control_filter_show_hidden|}" />
+            </label>
+        </div>
+        <input type="hidden" name="categoryid" value="{|$openCategoryId|}" />
+        {|if count($brandsArray) > 0|}
+        <div class="element">
+                    <span>
+                        {|$translate_brand|}
+                        <input type="hidden" name="filter4_key" value="brandid" />
+                        <input type="hidden" name="filter4_type" value="equals" />
+                        <select name="filter4_value" class="chzn-select">
+                            <option value="">{|$translate_all|}</option>
+                            {|foreach from=$brandsArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_filter4_value == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </span>
+        </div>
+        {|/if|}
+
+        <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" />
+        <div class="clear"></div>
+        <br />
+
+        <h1>{|$translate_many_products|}</h1>
+        <div class="element">
+            <input type="text" name="" placeholder="{|$translate_enter_category_name|}" id="id_search" />
+        </div>
+        <div class="list js-tree-menu">
+            <div class="item js-droppable"  js-data-id="0">
+                <a href=".">{|$translate_category_list|}</a>
+            </div>
+            <div class="item js-droppable"  js-data-id="0" >
+                <a href="./?categoryid=0">{|$translate_no_category|}</a>
+            </div>
+            {|foreach from=$categoryArray item="e"|}
+            {|if $e.level !== 0|}
+            <div data-parentid="{|$e.parentid|}" class="sub"  style="display: none;">
+                {|/if|}
+                <div class="item level_{|$e.level|} js-droppable" js-category-id="{|$e.id|}" js-data-id="{|$e.id|}" >
+                    <u data-id="{|$e.id|}">&nbsp;</u>
+                    <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+                </div>
+                {|if $e.level !== 0|}
+            </div>
+            {|/if|}
+            {|/foreach|}
+        </div>
+    </form>
+</div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}no-filter{|/if|}">
+        {|if $categoryProductCount|}
+        В категории {|$categoryProductCount|} товаров(а),
+        В том числе {|$categoryProductCountImage|} с фотографиями
+        {|elseif $noCategoryProductCount|}
+        {|$noCategoryProductCount|} товаров без категорий,
+        В том числе {|$noCategoryProductCountImage|} с фотографиями
+        {|/if|}
+        <div class="shop-productexplorer-list {|if $folderviewCookie|}line{|/if|}">
+            {|if $openCategory|}
+            <div class="element js-droppable" js-data-id="{|$openCategory.parentid|}">
+                <a href="{|$openCategory.url|}" class="image-folder back"></a>
+                <a href="{|$openCategory.url|}" class="name">
+                    {|if $openCategory.name|}
+                    {|$translate_back_in|} {|$openCategory.name|}
+                    {|else|}
+                    {|$translate_back|}
+                    {|/if|}
+                </a>
+            </div>
+            {|/if|}
+
+            {|foreach from=$categoryArrayForFolders item="e"|}
+            <div class="element js-draggable js-droppable {|if $e.hidden|}hidden{|/if|}" js-data-id="{|$e.id|}">
+                <a href="{|$e.url|}" class="image-folder"></a>
+                <acronym title="{|$e.name|}"><a href="{|$e.url|}" class="name">{|$e.name|}</a></acronym>
+            </div>
+            {|/foreach|}
+
+            <div class="element">
+                <a href="#" class="image-folder new js-add-new-category" js-data-id="{|$openCategoryId|}"></a>
+                <a href="#" class="name js-add-new-category" js-data-id="{|$openCategoryId|}">{|$translate_category_add|}</a>
+            </div>
+
+            {|if $productsArray|@count > 0 |}
+            {|foreach from=$productsArray item="e"|}
+            <div class="element js-draggable {|if $e.hidden|}hidden{|/if|} js-draggable-product "  js-data-id="{|$e.id|}">
+                <a href="{|$e.url|}" class="image"><span><img src="{|$e.image|}" alt="" /></span></a>
+                <acronym title="{|$e.name|}"><a href="{|$e.url|}" class="name">{|$e.name|}</a></acronym>
+                <label><input type="checkbox" name="id[]" class="checkbox-id" value="{|$e.id|}" /></label>
+            </div>
+            {|/foreach|}
+            {|else|}
+            {|if $categoryArrayForFolders|@count <= 0 && !$openCategory|}
+            <div> Товаров по вашему запросу не было найдено </div>
+            {|/if|}
+            {|/if|}
+            <!--do not remove-->
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <div class="empty"></div>
+            <!--do not remove end-->
+        </div>
+
+        <script type="text/javascript">
+            $j('.shop-productexplorer-list .js-droppable').droppable({
+                activeClass: "droppable",
+                hoverClass: "droppable-hover"
+            });
+            $j('.js-tree-menu .item').droppable({
+                activeClass: "droppable",
+                hoverClass: "droppable-hover"
+            });
+            $j('.shop-productexplorer-list .js-draggable').draggable({ revert: "invalid" });
+        </script>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="shop-right-sidebar">
+    <div class="toggle">&nbsp;</div>
+    <div class="element links">
+        <a href="#" class="js-select-all">{|$translate_sellect_all|}</a> /
+        <a href="#" class="js-unselect-all">{|$translate_deselect|}</a>
+    </div>
+
+    {|if $allowEdit|}
+    <form action="" method="post" class="help-hint-products-move js-replace">
+        <input type="hidden" id="id-category" name="moveids" />
+
+        <div class="element">
+            {|$translate_move_into_category|}:
+            <select name="movecategory">
+                <option value="0">---</option>
+                {|foreach from=$categoryArray item="e"|}
+                <option value="{|$e.id|}" {|if $e.id == $control_movecategory|} selected {|/if|}>
+                {|section name=foo start=0 loop=$e.level|}
+                &nbsp;&nbsp;&nbsp;
+                {|/section|}
+                {|$e.name|}
+                ({|$e.productcount|})
+                {|if $e.hidden|}
+                - {|$translate_hidden1_small|}
+                {|/if|}
+                </option>
+                {|/foreach|}
+            </select>
+        </div>
+
+        {|if count($brandsArray) > 0|}
+        <div class="element">
+            {|$translate_move_into_the_brand|}:
+            <select name="movebrand">
+                <option value="0">---</option>
+                {|foreach from=$brandsArray item="e"|}
+                <option value="{|$e.id|}" {|if $control_movebrand == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+        </div>
+        {|/if|}
+        <input class="ob-button" type="submit" name="move" value="{|$translate_move|}" />
+
+        <div class="element">
+            {|$translate_sync_not_sync|}
+            <select name="changesync">
+                <option value="-1">---</option>
+                <option value="0">{|$translate_synchronized|}</option>
+                <option value="1">{|$translate_not_synchronize|}</option>
+            </select>
+        </div>
+
+        <input class="ob-button" type="submit" name="sync" value="{|$translate_synchronize_big|}" /><br /><br /><br />
+        <input class="ob-button" type="submit" name="createorder" value="{|$translate_create_new_order|}"  />
+        <label><input type="checkbox" name="gotoorder" /><strong>{|$translate_go_to_order|}</strong></label>
+        <input class="ob-button" type="submit" name="addexistorder" value="{|$translate_add_to_existing_order|}"  />
+        <input type="text" name="orderid" value="" placeholder="id"  /><br /><br /><br />
+
+        <div class="element">
+            <input type="submit" name="hide" value="{|$translate_hide|}" class="ob-button fl-l" />
+            <input type="submit" name="unhide" value="{|$translate_open|}" class="ob-button fl-r" />
+            <div class="clear"></div>
+            <input type="submit" name="delete" value="{|$translate_delete|}" class="ob-button fl-l" />
+            <input type="submit" name="undelete" value="{|$translate_restore|}" class="ob-button fl-r" />
+            <div class="clear"></div>
+            <input type="submit" name="setavail" value="{|$translate_in_stock|}" class="ob-button fl-l" />
+            <input type="submit" name="setunavail" value="{|$translate_out_of_stock|}" class="ob-button fl-r" />
+            <div class="clear"></div>
+        </div>
+    </form>
+    {|/if|}
+    <div class="clear"></div>
+</div>

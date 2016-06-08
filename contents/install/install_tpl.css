@@ -1,0 +1,201 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    font-family: Segoe UI, arial;
+    font-size: 13px;
+}
+
+a {
+    color: #2e7ed3;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+input::-moz-focus-inner { border: 0; padding: 0; }
+
+body {
+    background: url('/_images/install-bg.png');
+}
+
+.clear {
+    clear: both;
+}
+
+.install-sccess-block {
+    width: 670px;
+    margin: 0 auto;
+}
+
+.install-sccess-block .shop-message-success {
+    width: 616px;
+    margin: 0 auto;
+}
+
+.shop-install-block {
+    width: 314px;
+    margin: 0 auto;
+}
+
+.shop-install-block form {
+    text-align: left;
+}
+
+.shop-install-block form .inner-content {
+    width: 263px;
+    margin: 0 auto;
+    padding: 20px 0 0 0;
+}
+
+
+
+.shop-install-block form label {
+    display: block;
+    padding: 0 0 18px 0;
+    position: relative;
+}
+
+.shop-install-block form strong {
+    font-size: 15px; 
+    color: #000000;
+    font-weight: normal;
+}
+
+.shop-install-block form small {
+    color: #666666;
+    font-size: 12px;
+}
+
+.shop-install-block form  input[type="text"],
+.shop-install-block form  input[type="password"],
+.shop-install-block form select {
+    border: 1px solid #d6d7d9;
+    border-bottom: 0;
+    background-color: #ffffff!important;
+    border-radius: 2px;
+    width: 255px;
+    border-right: 0;
+    padding: 7px 3px;
+    margin: 3px 0;
+    font-size: 12px;
+}
+
+.shop-install-block form select {
+    border-bottom: 1px solid #ffffff;
+    line-height:25px;
+    padding: 6px 3px;
+}
+
+.shop-install-block form .caption,
+.install-sccess-block .caption {
+    font-size: 22px;
+    font-family: Segoe UI, arial;
+    color: #2e7ed3;
+    padding: 0 0 19px 0;
+    background: url('/_images/caption-bg.png') repeat-x bottom left;
+    text-shadow: 0 1px 0 #ffffff;
+    text-align: center;
+}
+
+.shop-install-block form .install-submit {
+    -webkit-box-shadow: 0 1px 3px #2f2f2f;
+    -moz-box-shadow: 0 1px 3px #2f2f2f;
+    box-shadow: 0 1px 3px #2f2f2f;
+    border: 1px solid #196cab;
+    border-top: 1px solid #37a4c5;
+    border-bottom: 1px solid #034298;
+    float: left;
+    border-radius: 3px;
+    background-color: #2A77D0;
+    margin: 0 0 0 80px;
+}
+
+.shop-install-block form .install-submit input {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid #7ad7f9;
+    background-color: rgb(78,183,231);
+    background-image: linear-gradient(top, rgb(78,183,231) 0%, rgb(42,119,208) 100%);
+    background-image: -o-linear-gradient(top, rgb(78,183,231) 0%, rgb(42,119,208) 100%);
+    background-image: -moz-linear-gradient(top, rgb(78,183,231) 0%, rgb(42,119,208) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(78,183,231) 0%, rgb(42,119,208) 100%);
+    background-image: -ms-linear-gradient(top, rgb(78,183,231) 0%, rgb(42,119,208) 100%);
+    padding: 7px 0 7px 0;
+    width: 113px;
+    color: #ffffff;
+    text-shadow: 0px -1px 0px #1266A3;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.shop-install-block form .install-submit input:hover {
+    background-color: rgb(100,195,235);
+    background-image: linear-gradient(top, rgb(100,195,235) 0%, rgb(63,137,216) 100%);
+    background-image: -o-linear-gradient(top, rgb(100,195,235) 0%, rgb(63,137,216) 100%);
+    background-image: -moz-linear-gradient(top, rgb(100,195,235) 0%, rgb(63,137,216) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(100,195,235) 0%, rgb(63,137,216) 100%);
+    background-image: -ms-linear-gradient(top, rgb(100,195,235) 0%, rgb(63,137,216) 100%);
+}
+
+.shop-install-block form .install-submit:active {
+    border-bottom: 0;
+    border-left: 1px solid #1d4d76;
+    border-top: 1px solid #2b657f;
+    position: relative;
+    top: 1px;
+}
+
+.shop-install-block form .install-submit input:active {
+    background-color: rgb(68,160,202);
+    background-image: linear-gradient(top, rgb(68,160,202) 0%, rgb(37,105,183) 100%);
+    background-image: -o-linear-gradient(top, rgb(68,160,202) 0%, rgb(37,105,183) 100%);
+    background-image: -moz-linear-gradient(top, rgb(68,160,202) 0%, rgb(37,105,183) 100%);
+    background-image: -webkit-linear-gradient(top, rgb(68,160,202) 0%, rgb(37,105,183) 100%);
+    background-image: -ms-linear-gradient(top, rgb(68,160,202) 0%, rgb(37,105,183) 100%);
+    border-top: 1px solid #3c8db2;
+    border-left: 1px solid #2768a4;
+}
+
+.shop-install-block .shop-message-error {
+    color: #e30613;
+    font-size: 12px;
+    margin: -3px 0  15px 0;
+}
+
+.shop-install-block form  label .popup-notice {
+    position: absolute;
+    width: 178px;
+    right: -210px;
+    padding: 10px;
+    top: 20px;
+    display: block;
+    border:1px solid #dadfe5;
+    background: #ffffff;
+    font-size: 12px;
+    color: #666666;
+    display: none;
+    
+    
+}
+
+.shop-install-block form  label .popup-notice .index {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    left: -8px;
+    top: 8px;
+    background: url('/_images/install-index.png') no-repeat left top;
+}
+

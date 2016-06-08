@@ -1,0 +1,45 @@
+{|if count($myEmployeeArray) > 1|}
+    <div class="shop-filter-displace" style="padding: 10px 10px 0 10px; margin: -10px -10px 10px -10px;">
+        <div class="ob-list-usersthumb js-list-usersthumb">
+            {|foreach from=$myEmployeeArray item="e"|}
+                <div class="ob-list-usersthumb-element employee {|if $e.selected|}selected{|/if|} js-tooltip" data-id="{|$e.id|}" onclick="document.location='{|$e.url|}'" title="{|$translate_vipolneno|} {|$e.todayDone|} {|$translate_iz|} {|$e.todayAll|}">
+                    {|if $e.image|}
+                        <div class="image nb-block-avatar" style="background-image: url('{|$e.image|}');"></div>
+                    {|/if|}
+                    <div class="name">
+                        <a href="{|$e.url|}">{|$e.name|}</a>
+                    </div>
+                    <div class="info">
+                        {|if $e.roleArray|}
+                            {|foreach from=$e.roleArray item="r"|}
+                                {|$r|}
+                            {|/foreach|}
+                        {|/if |}
+                        {|assign var=issueProgress value=$e.todayDone/$e.todayAll*100|}
+                        <div class="ob-progressbar {|if $issueProgress == '0'|}red{|elseif $issueProgress < 50|}orange{|else|}green{|/if|}">
+                            <span style="width: {|if $issueProgress == '0'|}100{|else|}{|$issueProgress|}{|/if|}%;"></span>
+                        </div>
+                        {|if $e.noPriority > 0|}
+                            <span class="ob-icon-new"></span>
+                        {|/if|}
+                    </div>
+                </div>
+            {|/foreach|}
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="ob-list-usersthumb-empty"></div>
+            <div class="clear"></div>
+        </div>
+        <script>
+            animation('.js-list-usersthumb .ob-list-usersthumb-element', 'blind');
+        </script>
+    </div>
+{|/if|}
+
+{|$block_issue|}

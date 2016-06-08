@@ -1,0 +1,122 @@
+<h1>Подмена сервисов в OneBox</h1>
+
+<h2>Что такое подмена и зачем она нужна?</h2>
+
+Достаточно часть появляется необходимость поменять какой-то метод в сервисе.<br />
+Например, UserService::login()<br />
+<br />
+
+Если менять его "в лоб", то это создавать MyUserService extends UserService,
+а потом везде по всему коду проекта менять вызов на MyUserService. Не радужно, правда?<br />
+<br />
+Поэтому, мы придумали подмену сервиса: когда обращение к UserService::Get() реально может
+вернуть не настоящий UserService, а любой ваш класс, который будет унаследован от реального UserService.<br />
+В таком случае менять ничего по всему проекту не прийдется.<br />
+
+<br />
+<br />
+
+<h2>Новый способ подмена сервисов</h2>
+
+В движке изменился способ подмены сервисов.<br />
+Если раньше надо было писать так:<br />
+<br />
+
+<code><pre>
+Shop::Get()->setShopService('classname');
+</pre></code>
+<br />
+
+то сейчас надо писать так:
+<br />
+<br />
+
+<code><pre>
+Shop_ShopService::Set('classname');
+</pre></code>
+<br />
+<br />
+
+Это было сделано для того, чтобы постепенно уйти от класса Shop,
+а затем разнести сервисы по модулям.<br />
+<br />
+
+В ближайшее время сервисы будут переименованы (убрана приставка Shop_), а класс Shop будет помечен как @deprecated.<br />
+<br />
+
+Так же появилась возможность подменивать сервисы из модулей, например, IssueService, EventService, VoIPService, ...<br />
+<br />
+<br />
+
+
+<h2>Пример подмены сервисов</h2>
+<code><pre>
+
+class Yazz_UserService extends Shop_UserService {
+
+	public function test1() {
+
+	}
+
+	public function login($login, $password) {
+	    // my fucking code here ...
+	    $result = parent::login($login, $password);
+	    // my fucking code here ...
+	    return $result;
+	}
+
+}
+
+Shop_UserService::Set('Yazz_UserService');
+
+</pre></code>
+<br />
+<br />
+
+
+<h2>Как правильно сделать новый сервис, чтобы его можно было подменять?</h2>
+
+Если вы делаете новый сервис, то заранее позаботьтесь, чтобы его можно было подменять другим разработчикам.<br />
+Для этого просто используйте класс сервиса по этому шаблону:<br />
+<br />
+
+<code><pre>
+class MyService {
+
+    // my methods here
+
+    /**
+     * Получить сервис.
+     * Сервис можно подменивать через метод ::Set()
+     *
+     * @return MyService
+     */
+    public static function Get() {
+        if (!self::$_Instance) {
+            $classname = self::$_Classname;
+            if ($classname) {
+                self::$_Instance = new $classname();
+            } else {
+                self::$_Instance = new self();
+            }
+        }
+        return self::$_Instance;
+    }
+
+    /**
+     * Задать класс сервиса.
+     * override-метод.
+     *
+     * @param string $classname
+     */
+    public static function Set($classname) {
+        self::$_Classname = $classname;
+        self::$_Instance = null;
+    }
+
+    private static $_Instance = null;
+
+    private static $_Classname = false;
+
+}
+</pre></code>

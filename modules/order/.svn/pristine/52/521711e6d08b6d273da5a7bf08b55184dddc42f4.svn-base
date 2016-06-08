@@ -1,0 +1,236 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="order" {|if in_array('order', $typeArray)|}checked{|/if|}>
+                    {|$translate_ords|}
+                </label>
+            </div>
+            
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="project" {|if in_array('project', $typeArray)|}checked{|/if|}>
+                    {|$translate_proekti|}
+                </label>
+            </div>
+            
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="type[]" value="issue" {|if in_array('issue', $typeArray)|}checked{|/if|}>
+                    {|$acl_issue|}
+                </label>
+            </div>
+        
+            <div class="element ulist">
+                <label><input type="radio" name="direction" value="" {|if !$control_direction|}checked{|/if|}>{|$translate_all_orders|}</label>
+                <label><input type="radio" name="direction" value="in" {|if $control_direction == 'in'|}checked{|/if|}>{|$translate_ot_klientov_vhodyashchie_|}</label>
+                <label><input type="radio" name="direction" value="out" {|if $control_direction == 'out'|}checked{|/if|}>{|$translate_postavshchikam_ishodyashchie_|}</label>
+            </div>
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_zakaza_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_zakaza_do|}" />
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_gruppirovat|}</div>
+                <select name="groupby" class="chzn-select">
+                    <option value="day" {|if $control_groupby == 'day'|} selected {|/if|}>{|$translate_day|}</option>
+                    <option value="week" {|if $control_groupby == 'week'|} selected {|/if|}>{|$translate_nedelya|}</option>
+                    <option value="month" {|if $control_groupby == 'month'|} selected {|/if|}>{|$translate_month|}</option>
+                </select>
+            </div>
+
+            {|$block_workflow_filter|}
+
+            {|if $sourceArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_kanal_zakaza|}</div>
+                    <select name="sourceid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$sourceArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_sourceid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_menedzher_zakaza|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_avtor_zakaza|}</div>
+                    <select name="authorid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_authorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $contractorArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="contractorid" class="chzn-select">
+                        <option value="">{|$translate_all|}</option>
+                        {|foreach from=$contractorArray item="e"|}
+                            <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_zakazi_klientov|}</h1>
+
+        <div class="shop-overflow-table">
+            <table class="shop-table css-grid">
+                <thead>
+                <tr>
+                    <td>{|$translate_zakazi_data|}</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td>
+                            {|if $monthNameArray[$date]|}
+                                {|$monthNameArray[$date]|}
+                            {|else|}
+                                {|$date|}
+                            {|/if|}
+                        </td>
+                    {|/foreach|}
+                </tr>
+                </thead>
+                <tr>
+                    <td>{|$translate_kolichestvo_vhodyashchih_zakazov|}</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].countIn|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_kolichestvo_ishodyashchih_zakazov|}</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].countOut|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_vsego_zakazov|}</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].count|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_summa_vhodyashchih_zakazov|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].sumIn|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_summa_ishodyashchih_zakazov|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].sumOut|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_balance|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].sumIn-$reportArray[$date].sumOut|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_sum_margin|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].margin|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_sredniy_chek|} <br>{|$translate_vhodyashchie_zakazi|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].sumIn/$reportArray[$date].countIn|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_sredniy_chek|} <br>{|$translate_ishodyashchie_zakazi|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].sumOut/$reportArray[$date].countOut|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+                <tr>
+                    <td>{|$translate_sredniy_chek|} <br>{|$translate_sum_margin|} ({|$currency|})</td>
+                    {|foreach from=$dateArray item="date"|}
+                        <td align="right">{|$reportArray[$date].margin/$reportArray[$date].countIn|round:2|}</td>
+                    {|/foreach|}
+                </tr>
+            </table>
+        </div>
+
+        {|if $reportArray|}
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_date|}', '{|$translate_kolichestvo_vhodyashchih_zakazov|}', '{|$translate_kolichestvo_ishodyashchih_zakazov|}', '{|$translate_vsego_zakazov|}'],
+                {|foreach from=$dateArray item="date"|}
+                    ['{|$date|}', {|$reportArray[$date].countIn+0|}, {|$reportArray[$date].countOut+0|}, {|$reportArray[$date].count+0|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div_1'));
+                chart.draw(data, options);
+
+                var data = google.visualization.arrayToDataTable([
+                ['{|$translate_date|}', '{|$translate_summa_vhodyashchih_zakazov|}', '{|$translate_summa_ishodyashchih_zakazov|}', '{|$translate_balance|}', '{|$translate_sum_margin|}'],
+                {|foreach from=$dateArray item="date"|}
+                    ['{|$date|}', {|$reportArray[$date].sumIn+0|}, {|$reportArray[$date].sumOut+0|}, {|$reportArray[$date].sumIn-$reportArray[$date].sumOut+0|}, {|$reportArray[$date].margin+0|}],
+                {|/foreach|}
+                ]);
+
+                var options = {};
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div_2'));
+                chart.draw(data, options);
+            }
+            </script>
+
+            <div id="chart_div_1" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div_2" style="width: 100%; height: 500px;"></div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<style type="text/css">
+.css-grid tbody td {
+    border: 1px solid #dadada;
+}
+</style>
+
+<script>
+    filterOpen();
+</script>

@@ -1,0 +1,62 @@
+{|if $message == 'user-permission'|}
+    <div class="shop-message-error">
+        {|$translate_error|} <br>
+        {|$translate_permissions|}
+        <script>setTimeout("location='/admin/shop/users/{|$clientid|}/'",3000);</script>
+    </div>
+{|/if|}
+{|$block_menu|}
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_s|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_po|}" />
+            </div>
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+        
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+            <div class="shop-overflow-table">
+                <form action="" method="post">
+                <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+                    <thead>
+                        <tr>
+                            <td>{|$translate_datetime|}</td>
+                            {|foreach from=$dateArray item=date|}
+                                <td><span class="js-date-checked" data-date="{|$date|}">{|$date|}</span></td>
+                            {|/foreach|}
+                        </tr>
+                    </thead>
+                    <tbody>
+                         {|foreach from=$timeArray key=time item=value|}
+                            <tr>
+                                <td><span class="js-time-checked" data-time="{|$time|}">{|$time|}</span></td>
+                                {|foreach from=$value key=date item=checkbox|}                                                                      
+                                    <td align="center">
+                                        <input type="checkbox" class="js-input-check" name="checkActives[]" data-time="{|$time|}" data-date="{|$date|}" value="{|$date|} {|$time|}" {|if $checkbox|} checked {|/if|}>
+                                    </td>                                                                        
+                                {|/foreach|}
+                            </tr>
+                        {|/foreach|}
+      
+                    </tbody>
+                </table>
+                    <div class="ob-button-fixed">                   
+                        <input type="submit" name="addCheck" value="{|$translate_save|}" class="ob-button button-green" />
+                    </div>
+                    <div class="ob-button-fixed-place"></div>
+                </form>
+                <input type="hidden" id="id-checktime" name="moveids" />
+            </div>
+    </div>
+</div>
+<div class="clear"></div>
+

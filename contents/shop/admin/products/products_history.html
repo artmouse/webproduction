@@ -1,0 +1,78 @@
+{|$menu|}
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+
+            {|*|}
+            <div class="element">
+                <input type="hidden" name="filter1_key" value="id" />
+                <input type="hidden" name="filter1_type" value="equals" />
+                <input type="text" name="filter1_value" value="{|$control_filter1_value|}" placeholder="{|$translate_code_small|}" />
+            </div>
+
+            {|*|}
+
+            {|if $authorArray|}
+            <div class="element">
+                <div class="caption-field">Автор изменений</div>
+                <select name="userid" class="chzn-select">
+                    <option value="">{|$translate_all|}</option>
+                    {|foreach from=$authorArray item="e"|}
+                    <option value="{|$e.id|}" {|if $control_userid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            {|/if|}
+
+            <div class="element">
+                <label>
+                    Показывать системные изменения
+                    <input type="checkbox" name="systemchange" value="1" {|if $control_systemchange|}checked{|/if|}/>
+                </label>
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter2_key" value="valueold" />
+                <input type="hidden" name="filter2_type" value="search" />
+                <input type="text" name="filter2_value" value="{|$control_filter2_value|}" placeholder="Старое значение" />
+            </div>
+
+            <div class="element">
+                <input type="hidden" name="filter3_key" value="valuenew" />
+                <input type="hidden" name="filter3_type" value="search" />
+                <input type="text" name="filter3_value" value="{|$control_filter3_value|}"
+                       placeholder="Новое значение" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="fieldkey" value="{|$control_fieldkey|}"
+                       placeholder="Поле" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdatefrom" value="{|$control_filtercdatefrom|}" placeholder="{|$translate_data_sozdaniya_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdateto" value="{|$control_filtercdateto|}" placeholder="{|$translate_data_sozdaniya_do|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>История изменений</h1>
+        {|$form|}
+
+        <div class="ob-button-fixed">
+            <input type="button" onclick="document.location='/admin/shop/products/'" name="ok" value="&lsaquo; {|$translate_product_list_run|}" class="ob-button" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    </div>
+</div>
+<div class="clear"></div>

@@ -1,0 +1,23 @@
+Subject: Вам было написано письмо
+
+Имя:
+{|if $url|}
+    <a href="{|$userUrl|}">{|$name|}</a><br />
+{|else|}
+    {|$name|}<br />
+{|/if|}
+{|if $phone|}
+    Телефон: {|$phone|}<br />
+{|/if|}
+{|if $email|}
+    E-mail: <a href="mailto:{|$email|}">{|$email|}</a><br />
+{|/if|}
+{|if $ip|}
+    IP: {|$ip|}<br />
+{|/if|}
+Дата отзыва: {|$date|}<br />
+Сообщение: {|$message|}<br />
+<br/><br/>
+
+
+{|$signature|}

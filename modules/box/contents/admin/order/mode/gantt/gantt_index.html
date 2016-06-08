@@ -1,0 +1,214 @@
+<div class="ob-gantt-table">
+    <div class="row header">
+        <div class="block-issue">&nbsp;</div>
+        <div class="block-value js-gantt-value-block">
+            <div class="days-list" style="width: {|$lineWidth|}px;">
+                {|foreach from=$monthArray key="name" item="t"|}
+                    <div class="month-{|$t|}">{|$name|}</div>
+                {|/foreach|}
+            </div>
+        </div>
+    </div>
+    <div class="row header">
+        <div class="block-issue no-border">&nbsp;</div>
+        <div class="block-value js-gantt-value-block">
+            <div class="days-list" style="width: {|$lineWidth|}px;">
+                {|foreach from=$dayArray item="e"|}
+                    <div class="day">{|$e|}</div>
+                {|/foreach|}
+            </div>
+        </div>
+    </div>
+
+    <ol class="sortable-rows">
+        {|$block_row|}
+    </ol>
+
+    <div class="row scroll-row">
+        <div class="block-value js-gantt-scroll">
+            <div class="days-list" style="width: {|$lineWidth|}px;">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $j('.js-gantt-scroll').perfectScrollbar({
+        suppressScrollY : true
+    });
+    ganttScrollposition();
+    ganttScroll();
+
+    $j(window).bind('resize scroll', function() {
+        ganttScrollposition();
+    });
+
+    function ganttScrollposition(e){
+        var psMargin = 55; // отступ скролла снизу
+        var tablePosition = $j('.ob-gantt-table').position().top;
+        var tableHeight = $j('.ob-gantt-table').height();
+
+        if (e) {
+            var pagePositionTop = $j(e).scrollTop();
+            var psPosition = $j(e).height() - psMargin + pagePositionTop;
+        } else {
+            var pagePositionTop = $j(window).scrollTop();
+            var psPosition = $j(window).height() - psMargin + pagePositionTop - tablePosition;
+        }
+
+        if (tableHeight > psPosition) {
+            $j('.ob-gantt-table .scroll-row').css({
+                'top' : psPosition,
+                'bottom' : 'auto'
+            });
+        } else {
+            $j('.ob-gantt-table .scroll-row').css({
+                'top' : 'auto',
+                'bottom' : '-20px'
+            });
+        }
+    }
+
+    $j('.js-gantt-scroll').scroll(function() {
+        ganttScroll();
+    });
+
+    $j('.sortable-rows').nestedSortable({
+        forcePlaceholderSize: true,
+        handle: '.block-issue',
+        helper: 'clone',
+        items: 'li',
+        opacity: .6,
+        placeholder: 'placeholder',
+        revert: 120,
+        tabSize: 20,
+        tolerance: 'pointer',
+        toleranceElement: '> div',
+        expandOnHover: 700,
+        maxLevels: 5,
+        isTree: true,
+        expandOnHover: 700,
+        startCollapsed: true,
+        branchClass: 'branched',
+        collapsedClass: 'collapsed',
+        expandedClass: 'expanded',
+        axis: "y",
+        update: ganttScroll(),
+        stop: function (event, ui) {
+            var $item = $j(ui.item);
+            var $parent = $item.parents('.js-gantt-issue').first();
+            
+            if ($item.data('parentid') != $parent.data('id')) {
+    
+                // обновить parent задачи
+                $j.ajax({
+                    url: '/admin/gantt/update/parent/',
+                    type: 'post',
+                    data: {
+                        id: $item.data('id'),
+                        parentid: $parent.data('id')
+                    }
+                });
+            }
+        }
+    });
+    
+    function ganttScroll() {
+        var $scroll = $j('.js-gantt-scroll')
+        var scrollPosition = $scroll.scrollLeft();
+        $j('.js-gantt-value-block').scrollLeft(scrollPosition);
+    }
+    
+    $j('.js-expand').click(function(){
+        $j(this).closest('li').toggleClass('collapsed').toggleClass('expanded');
+        setTimeout("cookieFromGantt();", 2000);
+    });
+    
+    ganttFromCookie();
+    
+    function cookieFromGantt(){
+        var ch = [];
+        $j(".ui-sortable li").each(function(){
+            if($j(this).hasClass("expanded")){
+                ch.push($j(this).data("id"));
+            }
+        });
+        $j.cookie("ganttCookie", ch.join(','));
+    }
+    
+    function ganttFromCookie(){
+        if($j.cookie("ganttCookie") == null){
+            return;
+        }
+        var chMap = $j.cookie("ganttCookie").split(',');
+        for (var i in chMap) {
+            //alert(chMap[i]);
+            $j(".ui-sortable li[data-id='"+chMap[i]+"']").toggleClass('collapsed').toggleClass('expanded');
+        }
+    }
+</script>
+<br />
+<br />
+
+<div id="js-datefrom" style="display: none;">{|$dateFrom|}</div>
+<div id="js-dateto" style="display: none;">{|$dateTo|}</div>
+
+<script type="text/javascript">
+    $j(function () {
+        $j('.js-gantt-filter').prependTo('.shop-filter-panel .inner-pannel');
+
+        // выделение задачи
+        $j('.js-gantt-issuename').click(function (event) {
+            var id = $j(this).data('id');
+            $j('.js-parentid').val(id);
+            $j('.js-newname').focus();
+        });
+
+        // перетаскивание задачи
+        $j('.js-issue-line').resizable({
+            grid: 20,
+            handles: 'e', // left
+            stop: function (event, ui) {
+                var width = ui.element.width();
+                var issueID = $j(this).data('id');
+
+                // изменение ширины - это изменение даты окончания задачи
+                $j.ajax({
+                    url: '/admin/gantt/update/',
+                    data: {
+                        id: issueID,
+                        datefrom: $j('#js-datefrom').html(),
+                        dateto: $j('#js-dateto').html(),
+                        width: width
+                    },
+                    success: function (result) {
+
+                    }
+                });
+            }
+        });
+
+        $j('.js-issue-line').draggable({
+            grid: [ 20, 0 ],
+            stop: function (event, ui) {
+                var x = ui.position.left;
+                var issueID = $j(this).data('id');
+
+                // изменение позиции - это изменение даты старта задачи
+                $j.ajax({
+                    url: '/admin/gantt/update/',
+                    data: {
+                        id: issueID,
+                        datefrom: $j('#js-datefrom').html(),
+                        dateto: $j('#js-dateto').html(),
+                        x: x
+                    },
+                    success: function (result) {
+
+                    }
+                });
+            }
+        });
+    });
+</script>

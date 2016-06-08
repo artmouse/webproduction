@@ -1,0 +1,226 @@
+<h1>{|$translate_my_basket|}</h1>
+
+<div class="cl-crumbs">
+    <div>
+        <a href="/">{|$translate_main|}</a>
+    </div>
+    <div>
+        <a href="#">{|$translate_my_basket|}</a>
+    </div>
+</div>
+
+
+
+<form method="post" id="id-basket" enctype="multipart/form-data">
+    {|if not $basketArray|}
+        <div class="os-message-error">
+            <div class="caption">{|$translate_basket_is_empty|}</div>
+            <a href="/">{|$translate_empty_basket|}</a>.
+        </div>
+    {|else|}
+
+        <div class="cl-block-cart">
+
+            {|foreach from=$basketArray item="set" key="setid"|}
+                {|if $setid > 0|}
+                    <div class="block-row ta-center">
+                        <br />
+                        <br />
+                        <strong style="font-size: 16px">{|$translate_nabor|}</strong>
+                        <br />
+                        <br />
+                    </div>
+                {|/if|}
+                {|foreach from=$set item="b"|}
+                    <div class="block-row">
+                        <div class="cell-element image">
+                            <a href="{|$projecturl|}{|$b.pUrl|}" target="_blank">
+                                <img src="{|$b.image|}" alt="{|$b.name|escape|}" title="{|$b.name|escape|}" />
+                            </a>
+                        </div>
+
+                        <div class="cell-element name">
+                            <a class="product-name" href="{|$projecturl|}{|$b.pUrl|}" target="_blank">{|$b.name|}</a>
+                            <span class="small-font">by</span>
+                            <a href="{|$b.brand_url|}" class="brand">{|$b.brand_name|}</a>
+                            <a class="cl-favorite-button js-shop-favorite" data-productid="{|$b.id|}" href="javascript:void(0);"></a>
+                            {|if $b.option|}
+                            <div class="os-options-list">
+                                <div class="body">
+                                    {|foreach from=$b.option item="o"|}
+                                    {|$o.name|}: {|$o.value|}<br>
+                                    {|/foreach|}
+                                </div>
+                            </div>
+                            {|/if|}
+                        </div>
+
+                        <div class="cell-element no-small-breakpoint">&nbsp;</div>
+
+                        <div class="cell-element">
+                            {|if $setid == 0|}
+                                {|if $b.price == '0.00'|}
+                                    {|$translate_specify_price|}.
+                                {|else|}
+                                    {|$b.price|number_format:2|} {|$b.currency|}
+                                {|/if|}
+                            {|/if|}
+                        </div>
+
+                        <div class="cell-element ta-center">
+                            {|if $setid == 0|}
+                                <div class="count">
+                                    <a href="{|$b.urldelete|}" title="{|$translate_delete|escape|}" class="delete">&nbsp;</a>
+                                    {|if !$b.coupon|}
+                                    <input type="hidden" name="selproducts[]" value="{|$b.id|}" />
+                                    <input onkeydown="$j('#b{|$b.id|}').attr('checked', 'checked');" type="text" name="pcount_{|$b.id|}" value="{|$b.count|}" />
+                                    {|/if|}
+                                </div>
+                            {|/if|}
+                        </div>
+
+                        <div class="cell-element">
+                            {|if $setid == 0|}
+                                {|if $b.sum == '0.00'|}
+                                    {|$translate_specify_price|}.
+                                {|else|}
+                                    {|$b.sum|number_format:2|} {|$b.currency|}
+                                {|/if|}
+                            {|/if|}
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {|/foreach|}
+
+                {|if $setid > 0|}
+                    <div class="block-row">
+                        <div class="cell-element image">&nbsp;</div>
+
+                        <div class="cell-element name ta-center">
+                            {|$translate_tsena_nabora|}
+                        </div>
+
+                        <div class="cell-element no-small-breakpoint">&nbsp;</div>
+
+                        <div class="cell-element ta-center">
+                            {|$setSumArray[$setid].one|} {|$currency|}
+                        </div>
+
+                        <div class="cell-element ta-center">
+                            <div class="count">
+                                <a href="{|$b.urldelete|}" title="{|$translate_delete|escape|}" class="delete">&nbsp;</a>
+                                <input type="hidden" name="setproducts[]" value="{|$setid|}" />
+                                <input type="text" name="setcount_{|$setid|}" value="{|$setSumArray[$setid].count|}" />
+                            </div>
+                        </div>
+
+                        <div class="cell-element">
+                            {|$setSumArray[$setid].total|} {|$currency|}
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {|/if|}
+            {|/foreach|}
+
+            <div class="total-row">
+                <div class="item">
+
+                </div>
+                <div class="item">
+                    <table class="sum-table fl-r">
+                        {|if $discountName|}
+                            <tr>
+                                <td>
+                                    {|$translate_discount|}:
+                                    {|$discountName|}
+                                </td>
+                                <td>
+                                    -{|$discountSum|number_format:2|} {|$currency|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                        {|if $deliveryName|}
+                            <tr class="delivery">
+                                <td>
+                                    {|$translate_delivery|}:
+                                    {|$deliveryName|}
+                                </td>
+                                <td>
+                                    {|$deliveryPrice|number_format:2|} {|$currency|}
+                                </td>
+                            </tr>
+                        {|/if|}
+                        <tr class="total">
+                            <td>
+                                {|$translate_in_total|}:
+                            </td>
+                            <td>
+                                {|$allSum|number_format:2|} {|$currency|}
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="clear"></div>
+                    <div class="block-button ta-right">
+                        <input type="hidden" name="pchcount" value="{|$translate_calculate|}" />
+                        <a href="javascript:void(0);" onclick="if(confirm('{|$translate_baket_clear_confirm|}')) document.location='{|$urlclear|}';">{|$translate_clear|}</a>
+                        <br />
+                        <br />
+
+                        <input class="js-refresh" type="submit" name="refresh" value="{|$translate_calculate|}" style="display: none;" />
+                        <a class="cl-button continue" href="/" onclick="$j('.js-refresh').click();">Continue shopping</a>
+
+                        {|if $basketArray|}
+                        <input class="cl-button green small" type="submit" name="makeOrder" value="{|$translate_basket_nextstep|}" />
+                        {|/if|}
+                    </div>
+
+                </div>
+            </div>
+
+            {|if $authorizedFail|}
+                <br />
+                <div class="os-message-error">
+                    {|$translate_need_sign_in|} <a href="/registration/">{|$translate_sing_up|}</a>
+                </div>
+                <br />
+            {|/if|}
+        </div>
+
+    {|/if|}
+
+
+    {|if $recommendedArray|}
+        <div class="cl-additional-product">
+            <h2 class="title">{|$translate_our_recomendation|}</h2>
+
+            <div class="cl-product-list">
+                <ul class="small-block-grid-1 smaller-block-grid-3 medium-block-grid-4 sub-large-block-grid-4 large-block-grid-6">
+                    {|foreach from=$recommendedArray item="r"|}
+                        <li>
+                            <div class="cl-product-thumb">
+                                <div class="block-image">
+                                    <a href="{|$r.url|}"><img src="{|$r.image|}" alt="{|$r.name|}" title="{|$r.name|}"></a>
+                                </div>
+                                <div class="hidden-descript">
+                                    <div class="name">
+                                        <a href="{|$r.url|}" title="">{|$r.name|}</a>
+                                    </div>
+                                    <div class="block-button">
+                                        <a class="cl-button green small" href="{|$r.url|}">{|$r.price|} {|$r.currency|}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {|/foreach|}
+                </ul>
+            </div>
+        </div>
+    {|/if|}
+
+    {|if not $basketArray|}
+        {|foreach from=$carouselArray item="e"|}
+            <div class="os-block-caption"><h3>{|$e.name|}</h3></div>
+            {|$e.html|}
+        {|/foreach|}
+    {|/if|}
+</form>

@@ -1,0 +1,179 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="caption-field">{|$translate_ozhidaemaya_data_platezha|}</div>
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_platezha_ot|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_platezha_do|}" />
+            </div>
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_menedzher_zakaza|}</div>
+                    <select name="managerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_zayavitel_platezha|}</div>
+                    <select name="payerid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_payerid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+            
+            {|if $contractorArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_contractor|}</div>
+                    <select name="contractorid" class="chzn-select">
+                        <option value="">{|$translate_all_contractors|}</option>
+                        {|foreach from=$contractorArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_contractorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+
+        {|if $reportArray|}
+            <h1>{|$translate_oplati_zakazov_klientov|}</h1>
+
+            <span class="good">{|$translate_esli_summa_polozhitelnaya_to_dolzhni_dengi_nam|}.</span><br />
+            <span class="important">{|$translate_esli_summa_otritsatelnaya_to_dolzhni_mi|}.</span><br />
+            <br />
+            <div class="shop-overflow-table">
+                <table class="shop-table">
+                    <thead>
+                    <tr>
+                        <td width="30">№</td>
+                        <td width="80">{|$translate_date|}</td>
+                        <td>Получен</td>
+                        <td align="right">{|$translate_total|}</td>
+                        <td align="right">&nbsp;</td>
+                        <td>{|$translate_ord|}</td>
+                        <td>{|$translate_client_small|}</td>
+                        <td>{|$translate_user_access_manager|}</td>
+                        <td>{|$translate_legal_entity|}</td>
+                        <td>{|$translate_account|}</td>
+                    </tr>
+                    </thead>
+                    {|assign var="index" value=1|}
+                    {|foreach from=$reportArray item="e"|}
+                        <tr>
+                            <td>
+                                {|$index|}
+                                {|assign var="index" value=$index+1|}
+                            </td>
+                            <td>{|$e.pdate|}</td>
+                            <td align="center">
+                                <input data-id="{|$e.id|}" class="js-probation-payment" type="checkbox" value="1" {|if $e.received|}checked{|/if|}>
+                            </td>
+                            <td align="right">
+                                <span class="{|if $e.amount < 0|}important{|else|}good{|/if|}">{|$e.amount|}</span>
+                            </td>
+                            <td align="right">{|$e.currency|}</td>
+                            <td>
+                                {|if $e.orderId|}
+                                    <a href="{|$e.orderUrl|}" class="js-issue-preview"
+                                       data-id="{|$e.orderId|}">{|$e.orderName|}</a>
+                                {|else|}
+                                    {|$e.orderName|}
+                                {|/if|}
+                            </td>
+                            <td>
+                                <a href="{|$e.clientURL|}" class="js-contact-preview"
+                                   data-id="{|$e.clientID|}">{|$e.clientName|}</a>
+                            </td>
+                            <td>
+                                <a href="{|$e.managerURL|}" class="js-contact-preview"
+                                   data-id="{|$e.managerID|}">{|$e.managerName|}</a>
+                            </td>
+                            <td>{|$e.legalentity|}</td>
+                            <td>
+                                <a href="{|$e.account.url|}">{|$e.account.name|}</a>
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" align="right"><strong>{|$translate_in_total|}:</strong></td>
+                            <td align="right">
+                                <strong class="{|if $balanceSum < 0|} important{|else|}good{|/if|}">{|$balanceSum|number_format:2|}</strong>
+                            </td>
+                            <td align="right"><strong>{|$currencyName|}</strong></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <br />
+
+            <div class="ob-block-details">
+                <div class="single-wrap">
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption" style="width: 300px;">{|$translate_vsego_ozhidaemih_platezhey_na_summu|}:</div>
+                            <div class="el-value">{|$probation|} {|$currencyName|}</div>
+                        </div>
+                    </div>
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption" style="width: 300px;">{|$translate_polucheno_ozhidaemih_platezhey_na_summu|}:</div>
+                            <div class="el-value">{|$probationPay|} {|$currencyName|}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+
+    $j(function() {
+        $j('.js-probation-payment').click(function () {
+            var paymentId = $j(this).data('id');
+            var value = 0;
+
+            if ($j(this).prop("checked")) {
+                value = 1;
+            }
+
+            $j.ajax({
+                url: '/admin/shop/finance/probation/received/ajax/',
+                data: {
+                    paymentId: paymentId,
+                    value: value
+                },
+                dataType: 'json'
+            });
+        });
+    });
+</script>

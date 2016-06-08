@@ -1,0 +1,17 @@
+<div class="ob-comment-add js-droppable-zone-result">
+    <div class="block-caption">{|$translate_rezultat_zadachi|}</div>
+    <div class="js-order-comment-div">
+        <textarea name="postcomment_result" class="js-autosize js-usertextcomplete" placeholder="{|$translate_message|}"></textarea>
+    </div>
+
+    <div class="ob-block-attach">
+        <a href="#" name="file_result[]" class="ob-button-attach js-uploader-result">{|$translate_prilozhit_fayli|}...</a>
+    </div>
+</div>
+
+<script>
+    $j(function() {
+        // загрузка файлов
+        var uploader = new DropUploader('.js-droppable-zone-result', '.js-uploader-result', 'fileid_result');
+    });
+</script>

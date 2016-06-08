@@ -1,0 +1,18 @@
+.EngineDebug-Panel {
+    display: block;
+    position: absolute;
+    width: 90px;
+    text-align: center;
+    top: 0;
+    left: 100%;
+    margin-left: -150px;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    z-index: 999999;
+}
+
+.EngineDebug-Panel:hover {
+    background-color: darkred;
+}

@@ -1,0 +1,144 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/finance/" {|if $contentID == 'shop-finance-index'|}class="selected"{|/if|}>{|$translate_all_payments|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/payment/add/" {|if $contentID == 'shop-finance-payment-add'|}class="selected"{|/if|}>{|$translate_payment_new|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="shop-module-content">
+    <div class="module-content">{|$content|}</div>
+</div>
+<div class="shop-module-preview">
+    <div class="inner-preview">
+        {|if $categoryArray|}
+            <div class="shop-finance-table">
+                <table>
+                    <tr class="marked">
+                        <td><strong>{|$translate_fondi|}</strong></td>
+                        <td align="right">&nbsp;</td>
+                        <td style="width: 35px;">&nbsp;</td>
+                    </tr>
+                    {|foreach from=$categoryArray item="e"|}
+                        <tr>
+                            <td>
+                                <span class="element"><a href="{|$e.url|}">{|$e.name|}</a></span>
+                            </td>
+                            <td align="right">
+                                {|$e.balance|}
+                            </td>
+                            <td>
+                                {|$currencyTotal|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                </table>
+            </div>
+        {|/if|}
+        {|if $contractorArray|}
+            <div class="shop-finance-table">
+                <table>
+                    {|foreach from=$contractorArray item="contractor"|}
+                        <tr class="marked">
+                            <td>
+                                <a href="{|$contractor.url|}"><strong>{|$contractor.name|}</strong></a>
+                            </td>
+                            <td align="right">
+                                <strong>{|$contractor.balance|}</strong>
+                            </td>
+                            <td style="width: 35px;">
+                                <strong>{|$currencyTotal|}</strong>
+                            </td>
+                        </tr>
+                        {|foreach from=$contractor.accountArray item="e"|}
+                            <tr>
+                                <td>
+                                    <span class="element"><a href="{|$e.url|}">{|$e.name|}</a></span>
+                                </td>
+                                <td align="right">
+                                    {|$e.balance|}
+                                </td>
+                                <td>
+                                    {|$e.currency|}
+                                </td>
+                            </tr>
+                        {|/foreach|}
+                    {|/foreach|}
+                    <tfoot>
+                        <tr class="marked">
+                            <td>
+                                <a href="/admin/shop/finance/"><strong>{|$translate_account_all|}</strong></a>
+                            </td>
+                            <td align="right">
+                                <strong>{|$balanceTotal|}</strong>
+                            </td>
+                            <td>
+                                <strong>{|$currencyTotal|}</strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        {|/if|}
+        <div class="shop-finance-table">
+            <table>
+                <tr class="marked">
+                    <td><strong>{|$translate_exchange_rate|}</strong></td>
+                    <td align="right">&nbsp;</td>
+                    <td style="width: 35px;">&nbsp;</td>
+                </tr>
+                {|foreach from=$currencyArray item="c"|}
+                    <tr>
+                        <td>
+                            <span class="element">{|$c.name|}</span>
+                        </td>
+                        <td align="right">
+                            {|$c.rate|}
+                        </td>
+                        <td>
+                            {|$currencyTotal|}
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        </div>
+        {|if $probationArray|}
+            <div class="shop-finance-table">
+                <table>
+                    <tr class="marked">
+                        <td><strong>{|$translate_ozhidaemie_platezhi|}</strong></td>
+                        <td align="right">&nbsp;</td>
+                        <td style="width: 35px;">&nbsp;</td>
+                    </tr>
+                    {|foreach from=$probationArray item="p" key="date"|}
+                        <tr>
+                            <td>
+                                <span class="element">{|$date|}</span>
+                            </td>
+                            <td align="right">
+                                {|$p|round:2|}
+                            </td>
+                            <td>
+                                {|$currencyTotal|}
+                            </td>
+                        </tr>
+                    {|/foreach|}
+                    <tr>
+                        <td>
+                            <span class="element">{|$translate_in_total|}:</span>
+                        </td>
+                        <td align="right">
+                            {|$probationTotal|}
+                        </td>
+                        <td>
+                            {|$currencyTotal|}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+<div class="ob-button-fixed-place"></div>

@@ -1,0 +1,3 @@
+{|foreach from=$valueArray item="e"|}
+    {|$e|}
+{|/foreach|}

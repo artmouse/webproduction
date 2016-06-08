@@ -1,0 +1,105 @@
+<div class="index-about-text">
+    <h1>Отель Казахфильм, Казахстан, Алматы</h1>
+    <br />
+    <p>Отель находится в 10 минутах езды от международного аэропорта Алматы.</p>
+    <br />
+    <p>В 20 минутах езды от железнодорожного вокзала Алматы-2.</p>
+    <br />
+    <p>А до центра города можно доехать за 15 минут.</p>
+    <br />
+    {|$seocontent|}
+    <br />
+    <br />
+</div>
+<div class="contacts-big-map-block">
+    <div class="map-from-yandex" id="map-canvas">
+        {|*|}
+        <script type="text/javascript" charset="utf-8" src="//api-maps.yandex.ru/services/constructor/1.0/js/?sid=txn6rKArh41z8SCTxqRNWXTMaDrWbabq"></script>
+        {|*|}
+    </div>
+    <div class="contacts-big-map-caption">
+        <div class="contacts">
+            <strong>Круглосуточно:</strong><br />
+            <a class="tel" href="tel://{|$phone1|}">{|$phone1|}</a><br />
+            <a class="tel" href="tel://{|$phone2|}">{|$phone2|}</a><br />
+            (WhatsApp, Viber)<br />
+            <a href="mailto:{|$email|}">{|$email|}</a><br />
+            <a href="skype:{|$phone1|}?call" class="skype">skype: {|$skype|}</a>
+            <span>г. Алматы, <br />&nbsp;мкр. Казахфильм, 18а</span> <br />
+            <a href="/how-get/">Как добратся</a>
+        </div>
+        <div class="tpl-contacts-call-us-back backcall">
+            <div class="button" data-caption="callusModal"><span>ЗАКАЗАТЬ</span>
+обратный ЗВОНОК</div>
+            <!--Мы перезвоним в любую страну СНГ.-->
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<script>
+
+    //#66574 save old version
+//    $j(function() {
+//        var geocoder;
+//        var map;
+//        var hotelAddress = 'Алматы, мкр. Казахфильм, 18а';
+//        function initialize() {
+//            geocoder = new google.maps.Geocoder();
+//            var latlng = new google.maps.LatLng(-34.397, 150.644);
+//            var mapOptions = {
+//                zoom: 15
+//            }
+//            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+//            codeAddress();
+//        }
+//
+//        function codeAddress() {
+//            geocoder.geocode( { 'address': hotelAddress}, function(results, status) {
+//                if (status == google.maps.GeocoderStatus.OK) {
+//                    map.setCenter(results[0].geometry.location);
+//                    var marker = new google.maps.Marker({
+//                        map: map,
+//                        position: results[0].geometry.location
+//                    });
+//                } else {
+//                    alert('Geocode was not successful for the following reason: ' + status);
+//                }
+//            });
+//        }
+//
+//        google.maps.event.addDomListener(window, 'load', initialize);
+//    });
+
+    $j(function() {
+        var geocoder;
+        var map;
+        var hotelAddress = 'мой дом 18, Отель "Казахфильм", Алматы, Казахстан';
+        function initialize() {
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(-34.397, 150.644);
+            var mapOptions = {
+                zoom: 15
+            }
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            codeAddress();
+        }
+
+        function codeAddress() {
+            geocoder.geocode( { 'address': hotelAddress}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var tempCenter = new google.maps.LatLng(43.19506, 76.906564);
+                    map.setCenter(tempCenter);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: tempCenter
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    });
+</script>

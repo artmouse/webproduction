@@ -1,0 +1,76 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/doc/">&lsaquo; Документация</a></div>
+        <div class="tab-element"><a class="selected" href="">Редактор документации</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <h1>Страници</h1>
+        <div class="element">
+            <input class="js-menu-doc-helper" type="text" name="" value="" placeholder="Быстрый поиск">
+        </div>
+        <div class="doc-menu-overflow js-menu-overflow">
+            <div class="ob-block-tree js-block-tree">
+                <ul>
+                    {|foreach from=$newMenuArray[1] item="m" key="key"|}
+                        <li>
+                            <a href="{|$m.url|}" {|if $m.selected|}class="selected"{|/if|}>{|$m.name|}</a>
+                            {|if $newMenuArray[$m.key]|}
+                                <span class="expand"></span>
+                                <ul style="display: none;">
+                                    {|foreach from=$newMenuArray[$m.key] item="m2" key="key2"|}
+                                        <li>
+                                            <a href="{|$m2.url|}" {|if $m2.selected|}class="selected"{|/if|}>{|$m2.name|}</a>
+                                            {|if $newMenuArray[$m2.key]|}
+                                                <span class="expand"></span>
+                                                <ul style="display: none;">
+                                                    {|foreach from=$newMenuArray[$m2.key] item="m3" key="key3"|}
+                                                        <li>
+                                                            <a href="{|$m3.url|}" {|if $m3.selected|}class="selected"{|/if|}>{|$m3.name|}</a>
+                                                            {|if $newMenuArray[$m3.key]|}
+                                                                <span class="expand"></span>
+                                                                <ul style="display: none;">
+                                                                    {|foreach from=$newMenuArray[$m3.key] item="m4" key="key4"|}
+                                                                        <li>
+                                                                            <a href="{|$m4.url|}" {|if $m4.selected|}class="selected"{|/if|}>{|$m4.name|}</a>
+                                                                            {|if $newMenuArray[$m4.key]|}
+                                                                                <span class="expand"></span>
+                                                                                <ul style="display: none;">
+                                                                                    {|foreach from=$newMenuArray[$m4.key] item="m5" key="key5"|}
+                                                                                        <li>
+                                                                                            <a href="{|$m5.url|}" {|if $m5.selected|}class="selected"{|/if|}>{|$m5.name|}</a>
+                                                                                        </li>
+                                                                                    {|/foreach|}
+                                                                                </ul>
+                                                                            {|/if|}
+                                                                        </li>
+                                                                    {|/foreach|}
+                                                                </ul>
+                                                            {|/if|}
+                                                        </li>
+                                                    {|/foreach|}
+                                                </ul>
+                                            {|/if|}
+                                        </li>
+                                    {|/foreach|}
+                                </ul>
+                            {|/if|}
+                        </li>
+                    {|/foreach|}      
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|$content|}
+    </div>
+</div>
+<div class="clear"></div>

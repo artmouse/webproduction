@@ -1,0 +1,27 @@
+<form onsubmit="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_zadachi|}.');" method="post" action="">
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_poisk_zadachi|}</div>
+                    <input type="text" value="{|$control_parentid|}" name="parentid" id="js-parent-name" class="ui-autocomplete-input ui-autocomplete-loading" autocomplete="off">
+                </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="js-workflow-container"></div>
+    <input type="hidden" value="eventid">
+    <div class="ob-button-fixed">
+        <input type="submit" class="ob-button button-green" value="{|$translate_save|}" name="ok">
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+
+{|$block_event|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_oshibka_peredachi_pisma_v_zadachu|}.
+    </div>
+{|/if|}

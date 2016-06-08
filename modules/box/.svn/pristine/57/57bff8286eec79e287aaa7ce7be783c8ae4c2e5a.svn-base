@@ -1,0 +1,153 @@
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br/>
+        {|if $IdBusy|}
+            {|$translate_ne_udalos_pomenyat_nomer_zakaza_takoy_nomer_uzhe_ispolzuetsya|}.
+            <br/>
+        {|/if|}
+        {|$errorText|}
+    </div>
+{|/if|}
+
+<div class="ob-block-details">
+    <div class="flex-wrap">
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_nomer|}:</div>
+                <div class="el-value">
+                    {|$control_number|}
+                    {|if $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <input class="js-disabled" type="text" name="number"
+                       value="{|$control_number|}"/>
+            </div>
+        </div>
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_name_small|}:</div>
+                <div class="el-value">
+                    {|$control_name|}
+                    {|if $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <input class="js-disabled" type="text" name="name" value="{|$control_name|}"/>
+            </div>
+        </div>
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_etap|}:</div>
+                <div class="el-value">
+                    {|if $statusColor|}
+                        <div class="ob-wf-stage" style="background-color: {|$statusColor|};">{|$statusName|}</div>
+                    {|else|}
+                        {|$statusName|}
+                    {|/if|}
+                    {|if $statusNextArray && $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <select id="js-statusid" name="info_status_short" class="chzn-select js-disabled">
+                    {|foreach from=$statusNextArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_info_status_short|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+
+        {|if $deliveryArray|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_dostavka_zakaza|}:</div>
+                    <div class="el-value">
+                        {|foreach from=$deliveryArray item="d"|}
+                            {|if $d.id == $control_delivery|}{|$d.name|} {|$d.price|} {|$currency|}{|/if|}
+                        {|/foreach|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <select name="delivery" class="chzn-select js-disabled">
+                        <option value="">---</option>
+                        {|foreach from=$deliveryArray item="d"|}
+                            <option value="{|$d.id|}" {|if $d.id == $control_delivery|} selected {|/if|}>{|$d.name|} {|$d.price|} {|$currency|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            </div>
+        {|/if|}
+
+        {|if $paymentArray|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_oplati_zakaza|}:</div>
+                    <div class="el-value">
+                        {|foreach from=$paymentArray item="d"|}
+                            {|if $d.id == $control_payment|}
+                                {|$d.name|}
+                            {|/if|}
+                        {|/foreach|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <select name="payment" class="chzn-select js-disabled">
+                        <option value="">---</option>
+                        {|foreach from=$paymentArray item="d"|}
+                            <option value="{|$d.id|}" {|if $d.id == $control_payment|} selected {|/if|}>{|$d.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            </div>
+        {|/if|}
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_invoice_delivery|}:</div>
+                <div class="el-value">
+                    {|if $deliveryNoteUrl|}
+                        <a href="{|$deliveryNoteUrl|}">{|$control_deliveryNote|}</a>
+                    {|else|}
+                        {|$control_deliveryNote|}
+                    {|/if|}
+                    {|if $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <input class="js-disabled" type="text" name="deliveryNote" value="{|$control_deliveryNote|}"/>
+            </div>
+        </div>
+
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+    </div>
+</div>

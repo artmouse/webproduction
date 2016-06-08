@@ -1,0 +1,39 @@
+<div class="cl-block-popup js-popup-quickorder" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-popup-quickorder');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-quickorder');">&nbsp;</a>
+            {|$translate_quick_order|}: <samp id="quickOrderProductName">{|$productName|}</samp>?
+        </div>
+
+        <form method="post">
+            <div class="body">
+                <div class="block-form">
+                    <div class="form-element">
+                        <div class="descript">{|$translate_your_name|} <span class="important">*</span>:</div>
+                        <input class="js-required" id="qoname" type="text" name="qoname" value="{|$control_qoname|}" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="descript">{|$translate_phone|} <span class="important">*</span>:</div>
+                        <input class="js-required js-phone-formatter" id="qophone" type="text" name="qophone" value="{|$control_qophone|}" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="descript">
+                            E-mail {|if $requiredEmail|}<span class="important">*</span>{|/if|}:
+                        </div>
+                        <input type="text" data-error ="{|$translate_mail_error|}" name="qoemail" value="{|$control_qoemail|}" class="js-check-email {|if $requiredEmail|}js-required{|/if|}" />
+                    </div>
+                </div>
+            </div>
+            <div class="foot">
+                <input type="hidden" name="productid" value="{|$productID|}" />
+                <textarea id="option" name="productoption" style="display: none;"></textarea>
+                <input type="hidden" name="ajs" class="ajs" value="1" />
+                <input type="submit" name="qosubmit" value="{|$translate_ordering|}" class="cl-button green js-form-validation" />
+            </div>
+        </form>
+    </div>
+</div>
+

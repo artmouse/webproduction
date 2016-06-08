@@ -1,0 +1,23 @@
+<div class="rtm-503" style="display: none;">
+    <div class="caption">
+        Произошла ошибка 503. Сайт временно недоступен
+        <br />
+        <br />
+        Вы можете с нами связаться:
+    </div>
+    <div class="contacts-data">
+        03035, Киев, ул. Василия Липковского (урицкого), 1 <br />
+        +38 (067) 842-32-21 <br />
+        +38 (050) 447-95-30 <br />
+
+    </div>
+</div>
+
+<div class="rtm-404">
+    <div class="caption">
+        Извините, такой страницы не существует, возможно вы ищите:
+    </div>
+    <a href="http://www.rtm-zoloto.com.ua/">Каталог товаров</a>
+    <a href="http://www.rtm-zoloto.com.ua/servise/oplata">Как купить</a>
+    <a href="http://www.rtm-zoloto.com.ua/servise/dostavka">Как доставить товар</a>
+</div>

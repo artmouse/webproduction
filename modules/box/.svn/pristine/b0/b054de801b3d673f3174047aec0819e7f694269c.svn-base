@@ -1,0 +1,40 @@
+{|if $message != 'ok'|}
+    {|$block_menu|}
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$typeName|} {|$translate_uspeshno_udalen|}.<br />
+        {|if $orderReferer|}
+            {|$translate_redirection|}
+            <script>
+                setTimeout(function(){
+                    document.location = '{|$orderReferer|}';
+                }, 3000);
+            </script>
+        {|else|}
+            <a href="/admin/customorder/{|$type|}/">{|$translate_k_spisku|}</a>
+        {|/if|}
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_delete_error|}.
+        {|$translate_order_saled_probably|}.
+    </div>
+{|/if|}
+
+{|if $message != 'ok'|}
+    <div class="ob-block-element">
+        <form action="" method="post">
+            {|$translate_vi_deystvitelno_hotite_udalit|} {|$typeName|}
+
+            <strong>#{|$orderid|}</strong>?
+            <br />
+            <br />
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='{|$makeUrl|}';" />
+        </form>
+    </div>
+{|/if|}

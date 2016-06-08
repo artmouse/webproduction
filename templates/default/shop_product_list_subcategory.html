@@ -1,0 +1,35 @@
+{|if $subcategoriesArray|}
+    <div class="os-category-list">
+        {|foreach from=$subcategoriesArray item="e"|}
+            <div class="os-category-element">
+                <div class="head">{|$e.name|}</div>
+                <div class="body">
+                    <div class="image">
+                        {|if $e.image|}
+                            <a href="{|$e.url|}"><img src="{|$e.image|}" alt="{|$e.name|escape|}" title="{|$e.name|escape|}" /></a>
+                        {|else|}
+                            <a href="{|$e.url|}"><img src="/media/shop/stub.jpg" alt="{|$e.name|escape|}" title="{|$e.name|escape|}" /></a>
+                        {|/if|}
+                    </div>
+
+                    <div class="list">
+                        {|foreach from=$e.childsArray item="s"|}
+                            <a href="{|$s.url|}" >{|$s.name|}</a>{|if $s.productcount|}<span class="count">({|$s.productcount|})</span>{|/if|}<br />
+                        {|/foreach|}
+                        <a href="{|$e.url|}">{|$translate_all|} {|$e.name|}</a>{|if $e.productcount|}<span class="count">({|$e.productcount|})</span>{|/if|}<br />
+                        {|if $e.shortdesc|}{|$e.shortdesc|}{|/if|}
+                    </div>
+                </div>
+            </div>
+        {|/foreach|}
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+        <div class="os-category-empty"></div>
+    </div>
+{|else|}
+    <div class="os-message-noproducts">
+        {|$translate_noproducts_message|}.
+    </div>
+{|/if|}

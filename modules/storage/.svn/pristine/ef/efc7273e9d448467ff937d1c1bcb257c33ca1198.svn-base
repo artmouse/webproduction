@@ -1,0 +1,126 @@
+<form action="" method="post" class="js-storage-basket-table-form">
+    {|if $basketArray|}
+        <div class="shop-overflow-table">
+            <table class="shop-table" width="100%">
+                <thead>
+                <tr>
+                    <td>{|$translate_code|}</td>
+                    <td>{|$translate_product|}</td>
+                    <td>{|$translate_serial_number|}</td>
+                    <td>{|$translate_number|}</td>
+                    <td>&nbsp;</td>
+                    {|if $type == 'incoming'|}
+                        <td>{|$translate_price_purchase|}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>{|$translate_batch_code|}</td>
+                        <td>{|$translate_warranty|}</td>
+                    {|else|}
+                        <td>{|$translate_link_products_amount|}</td>
+                    {|/if|}
+                    <td>
+                        <label>
+                            <input type="checkbox" id="id-check-all" value="1"/>
+                            {|$translate_delete_small|}
+                        </label>
+                    </td>
+                </tr>
+                </thead>
+
+                <tbody>
+                {|foreach from=$basketArray item="e" |}
+                    <tr>
+                        <td>{|$e.productid|}</td>
+                        <td>{|$e.name|}</td>
+                        <td style="width: 160px;">
+                            <input type="text" name="serial{|$e.id|}" value="{|$e.serial|}" style="width: 155px;"/>
+                        </td>
+                        <td style="width: 85px;">
+                            <input type="text" name="count{|$e.id|}" value="{|$e.count|}" style="width: 80px;"/>
+                        </td>
+                        <td>{|$e.unit|}</td>
+                        {|if $type == 'incoming'|}
+                            <td style="width: 85px;">
+                                <input type="text" name="price{|$e.id|}" value="{|$e.price|}" style="width: 80px;"/>
+                            </td>
+                            <td style="width: 85px;">
+                                <select name="currencyid{|$e.id|}" style="width: 80px;">
+                                    {|foreach from=$currencyArray item="c"|}
+                                        <option value="{|$c.id|}" {|if $c.id == $e.currencyid|} selected {|/if|}>{|$c.symbol|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </td>
+                            <td style="width: 85px;">
+                                <label>
+                                    <input type="checkbox" name="tax{|$e.id|}" value="1" {|if $e.tax|} checked {|/if|}/>
+                                    с НДС
+                                </label>
+                            </td>
+                            <td style="width: 85px;">
+                                <input type="text" name="shipment{|$e.id|}" value="{|$e.shipment|}"
+                                       style="width: 80px;"/>
+                            </td>
+                            <td style="width: 160px;">
+                                <input type="text" name="warranty{|$e.id|}" value="{|$e.warranty|}"
+                                       style="width: 155px;"/>
+                            </td>
+                        {|else|}
+                            <td style="width: 250px;">
+                                <span id="id-linked-amount-{|$e.id|}">{|$e.linkedAmount|}</span><br/>
+                                <a href="#" id="{|$e.id|}" class="js-link">{|$translate_link_products_to_warehouse|}</a>
+                            </td>
+                        {|/if|}
+                        <td style="width: 85px;">
+                            <label>
+                                <input type="checkbox" name="delete{|$e.id|}" value="1" class="table-checkbox"/>
+                                {|$translate_delete_small|}
+                            </label>
+                        </td>
+                    </tr>
+                {|/foreach|}
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    {|if $type == 'incoming'|}
+                        <td align="right">{|$translate_in_total|}:</td>
+                        <td align="right"><strong>{|$sum|} {|$currency|}</strong></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    {|/if|}
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    {|if $type == 'incoming'|}
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    {|/if|}
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="left" colspan="3">
+                        <input type="hidden" name="saveok" value="1"/>
+                        <input type="hidden" name="type" value="{|$type|}"/>
+                        <input type="button" value="{|$translate_save_changes_small|}"
+                               class="ob-button button-green js-storage-basket-form-button-update"/>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    {|else|}
+        <div class="shop-message-info">
+            Корзина пуста.
+        </div>
+    {|/if|}
+    <br />
+</form>

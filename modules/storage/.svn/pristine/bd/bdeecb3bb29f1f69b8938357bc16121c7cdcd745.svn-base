@@ -1,0 +1,115 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/motionlog/" >{|$translate_motion_log|}</a></div>
+        <div class="tab-element"><a href="{|$urlMotion|}" >{|$translate_storage_log|}: {|$type|} {|if $isReturn|}({|$translate_return_small|}){|/if|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_motion_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_records_deleted|}.
+    </div>
+    
+    <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'user'|}
+                {|$translate_permission_denied|}.<br />
+            {|/if|}
+            {|if $e == 'production'|}
+                {|$translate_motion_delete_message_production|}<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $message != 'ok'|}
+    <h2>{|$translate_motion_delete|}: {|$type|} {|if $isReturn|}({|$translate_return_small|}){|/if|}</h2>
+    <div class="ob-block-details">
+        <div class="flex-wrap">
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_date_realization|}:
+                    </div>
+                    <div class="el-value">
+                        {|$date|}
+                    </div>
+                </div>
+            </div>
+
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_product|}:</span>
+                    </div>
+                    <div class="el-value">
+                        #{|$productid|} {|$productname|} &mdash; <a
+                                href="{|$productHistoryURL|}">{|$translate_motion_product_history|}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_where_from|}:
+                    </div>
+                    <div class="el-value">
+                        <a href="{|$storagenamefromURL|}">{|$storagenamefrom|}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ob-data-element">
+                <div class="data-view">
+                    <div class="el-caption">
+                        {|$translate_where_to|}:
+                    </div>
+                    <div class="el-value">
+                        <a href="{|$storagenametoURL|}">{|$storagenameto|}</a>
+                    </div>
+                </div>
+            </div>
+
+            {|if $username|}
+                <div class="ob-data-element">
+                    <div class="data-view">
+                        <div class="el-caption">
+                            {|$translate_operator|}:
+                        </div>
+                        <div class="el-value">
+                            {|$username|}
+                        </div>
+                    </div>
+                </div>
+            {|/if|}
+
+            <div class="ob-data-empty"></div>
+            <div class="ob-data-empty"></div>
+            <div class="ob-data-empty"></div>
+        </div>
+    </div>
+
+    <div class="shop-block">
+        <form action="" method="post">
+            {|$translate_motion_delete_warning|}<br />
+            <a href="{|$productHistoryURL|}" >{|$translate_motion_product_history_view|}</a><br />
+            {|$translate_motion_delete_confirm|}?
+            <br />
+            <br />
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='{|$urlcancel|}';" />
+        </form>
+    </div>
+{|/if|}

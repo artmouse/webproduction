@@ -1,0 +1,303 @@
+<h1>Дата блоки</h1>
+
+Дата блоки - это вариант разметки форм в системе OneBox, при которых выводится значение элемента с возможностью его редактирования.<br />
+Он позволяет выводить форму в табличном виде. Слева название элемента формы, справа - результат.<br />
+По умолчанию поле заголовка занимает 30% области, при использовании модификатора <div class="ui-class inline">.static</div> ширина заголовка становится 200px.<br />
+Для отображения дополнительно текста необходимо использовать <div class="ui-class inline">.light</div><br />
+<br />
+
+<div class="ui-class">.ob-data-element</div>
+<code>
+    <pre>
+&lt;div class="data-view"&gt;
+    &lt;div class="el-caption static"&gt;
+        Example caption
+        &lt;span class="light"&gt;example description&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="el-value"&gt;
+        Example value
+        &lt;a class="ob-link-edit" href="#"&gt;&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 70px;">
+    <div class="ob-data-element js-data-element">
+        <div class="data-view">
+            <div class="el-caption static">
+                Example caption
+                <span class="light">example description</span>
+            </div>
+            <div class="el-value">
+                Example value
+                <a class="ob-link-edit" href="#"></a>
+            </div>
+        </div>
+
+        <div class="data-edit" style="display: none;">
+            <a class="ob-link-delete" href="#"></a>
+            <a class="ob-link-accept" href="#"></a>
+            <input type="text" value="Example value">
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Группировка дата блоков</h2>
+Группировка дата блоков осуществляется с помощью логического блока "<a href="/doc/box_ui_block">блок деталей</a>", он позволяет выстаивать дата блоки и объединять их в формы.<br>
+<br>
+<div class="ui-class">ob-block-details</div>
+<code>
+    <pre>
+&lt;div class="ob-block-details"&gt;
+    &lt;div class="single-wrap"&gt;
+        &lt;div class="ob-data-element js-data-element"&gt;
+            &lt;div class="data-view"&gt;
+                &lt;div class="el-caption static"&gt;
+                    Example caption
+                &lt;/div&gt;
+                &lt;div class="el-value"&gt;
+                    Example value
+                    &lt;a class="ob-link-edit" href="#"&gt;&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="data-edit" style="display: none;"&gt;
+                &lt;a class="ob-link-delete" href="#"&gt;&lt;/a&gt;
+                &lt;a class="ob-link-accept" href="#"&gt;&lt;/a&gt;
+                &lt;select class="chzn-select"&gt;
+                    &lt;option value=""&gt;Example value 1&lt;/option&gt;
+                    &lt;option value=""&gt;Example value 2&lt;/option&gt;
+                    &lt;option value=""&gt;Example value 3&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="ob-data-element js-data-element"&gt;
+            &lt;div class="data-view"&gt;
+                &lt;div class="el-caption static"&gt;
+                    Example caption
+                &lt;/div&gt;
+                &lt;div class="el-value"&gt;
+                    Example value
+                    &lt;a class="ob-link-edit" href="#"&gt;&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="data-edit" style="display: none;"&gt;
+                &lt;a class="ob-link-delete" href="#"&gt;&lt;/a&gt;
+                &lt;a class="ob-link-accept" href="#"&gt;&lt;/a&gt;
+                &lt;input type="text" value="Example value"&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="ob-data-element js-data-element"&gt;
+            &lt;div class="data-view"&gt;
+                &lt;div class="el-caption static"&gt;
+                    Example caption
+                &lt;/div&gt;
+                &lt;div class="el-value"&gt;
+                    Example value
+                    &lt;a class="ob-link-edit" href="#"&gt;&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="data-edit" style="display: none;"&gt;
+                &lt;a class="ob-link-delete" href="#"&gt;&lt;/a&gt;
+                &lt;a class="ob-link-accept" href="#"&gt;&lt;/a&gt;
+                &lt;textarea&gt;Example value&lt;/textarea&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 180px;">
+    <div class="ob-block-details">
+        <div class="single-wrap">
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <select class="chzn-select">
+                        <option value="">Example value 1</option>
+                        <option value="">Example value 2</option>
+                        <option value="">Example value 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input type="text" value="Example value">
+                </div>
+            </div>
+
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <textarea>Example value</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Умная групировка дата блоков</h2>
+Умная группировка позволяет группировать дата блоки с учетом размера экрана, создавая колоночную структуру.<br>
+Для этого необходимо вместо обвертки single-wrap использовать <div class="ui-class inline">.flex-wrap</div><br>
+Блок <strong>ob-data-empty</strong>необходим для компенсации свободного места в некратных колонках.<br>
+<br>
+<div class="ui-class">ob-block-details</div>
+<code>
+    <pre>
+&lt;div class="ob-block-details"&gt;
+    &lt;div class="flex-wrap"&gt;
+        ...
+
+        &lt;div class="ob-data-empty"&gt;&lt;/div&gt;
+        &lt;div class="ob-data-empty"&gt;&lt;/div&gt;
+        &lt;div class="ob-data-empty"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="3" style="width: 100%; height: 200px;">
+    <div class="ob-block-details">
+        <div class="flex-wrap">
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <select class="chzn-select">
+                        <option value="">Example value 1</option>
+                        <option value="">Example value 2</option>
+                        <option value="">Example value 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input type="text" value="Example value">
+                </div>
+            </div>
+
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input type="text" value="Example value">
+                </div>
+            </div>
+
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption static">
+                        Example caption
+                    </div>
+                    <div class="el-value">
+                        Example value
+                        <a class="ob-link-edit" href="#"></a>
+                    </div>
+                </div>
+
+                <div class="data-edit" style="display: none;">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <textarea>Example value</textarea>
+                </div>
+            </div>
+
+            <div class="ob-data-empty"></div>
+            <div class="ob-data-empty"></div>
+            <div class="ob-data-empty"></div>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box; min-width: 0;}
+    </style>
+</boxui>

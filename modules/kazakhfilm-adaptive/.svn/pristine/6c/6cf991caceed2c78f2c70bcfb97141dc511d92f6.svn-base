@@ -1,0 +1,95 @@
+<div class="kzh-page-content">
+    <h1>Номера и цены</h1>
+
+    {|foreach from=$productsArray item=p key=k|}
+        <div class="kzh-room-preview-block">
+            <div class="room-preview-images">
+                <div class="fancy-bg">
+                    <a class="grup-{|$k+1|}" href="{|$p.images[0].originalUrl|}" rel="grup-{|$k+1|}">
+                        <img src="{|$p.images[0].mediumUrl|}" alt=""/>
+                    </a>
+                </div>
+
+                <div class="room-preview-additional-img">
+                    {|foreach from=$p.images item=im key=key|}
+                        {|if $key|}
+                            <a class="grup-{|$k+1|}" href="{|$im.originalUrl|}" rel="grup-{|$k+1|}">
+                                <img src="{|$im.cropUrl|}" width="90" height="60" alt=""/>
+                            </a>
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            </div>
+
+            <div class="room-preview-description">
+                <h2 class="room-preview-description-header">
+                    {|$p.name|}
+                </h2>
+                <div class="room-preview-description-text">
+                    {|$p.description|}
+                </div>
+
+                <div class="room-futures-block">
+                    {|foreach from=$p.characteristic item=characteristic|}
+                        <ul>
+                            <li class="room-futures-list-header">
+                                {|$characteristic.name|}:
+                            </li>
+                            {|foreach from=$characteristic.child item=ch|}
+                                {|if $ch|}
+                                    <li><span class="room-future-name">{|$ch|}</span></li>
+                                {|/if|}
+                            {|/foreach|}
+                        </ul>
+                    {|/foreach|}
+                    <div class="clear">&nbsp;</div>
+                </div>
+                <br />
+
+                <div class="room-preview-price-block">
+                    <div class="room-preview-price">
+                        <table>
+                            <tr style="display: block;" class="js-toggle-currency">
+                                <td>Цена:</td>
+                                <td>
+                                    <strong>{|$p.price|} {|$p.currency|}</strong> / сутки<br />
+                                    {|if $p.price_half|}
+                                    <strong>{|$p.price_half|} {|$p.currency|}</strong> / полсуток
+                                    {|/if|}
+                                </td>
+                            </tr>
+
+
+                            <tr style="display: none;" class="js-toggle-currency">
+                                <td>Цена:</td>
+                                <td>
+                                    <strong>{|$p.price_usd|} {|$p.currency_usd|}</strong> / сутки<br />
+                                    {|if $p.price_half_usd|}
+                                    <strong>{|$p.price_half_usd|} {|$p.currency_usd|}</strong> / полсуток
+                                    {|/if|}
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <div class="flags">
+                            <a href="javascript:void(0);" class="flag-kz js-toggle-currency-link"></a>
+                            <a href="javascript:void(0);" class="flag-usa js-toggle-currency-link"></a>
+                        </div>
+
+                    </div>
+                    <div class="booking-button-block">
+                        <a href="javascript: void(0)" class="kzh-btn-default backcall book-me"  data-caption="callusModal">Получить консультацию</a>
+                        <a href="javascript: void(0)" data-caption="bookingForm-1" class="kzh-btn-default book-me" data-id="{|$p.id|}">Забронировать номер</a>
+                        <div class="booking-notice">
+                            Бронирование и отмена<br />
+                            бронирования бесплатные!
+                        </div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+            <div class="clear">&nbsp;</div>
+        </div>
+    {|/foreach|}
+</div>

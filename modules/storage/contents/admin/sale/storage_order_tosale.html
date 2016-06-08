@@ -1,0 +1,102 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/sale/" >{|$translate_ords|}</a></div>
+        <div class="tab-element"><a href="{|$orderURL|}" >{|$translate_ord|} #{|$orderid|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_storage_ship|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'basketNotEmpty'|}
+    <div class="shop-message-info">
+        {|$translate_sale_basket_not_empty|}.<br />
+        <form action="" method="get">   
+            <input class="ob-button" type="submit" name="okempty" value="{|$translate_sale_basket_replace|}" />
+        </form>
+        <br />
+        <form action="/admin/shop/storage/sale/" method="post">    
+            <input class="ob-button" type="submit" name="go" value="{|$translate_sale_basket_finish|}" />
+        </form>
+        <br />
+    </div>
+
+{|/if|}
+
+{|if !$message|}    
+
+    {|if not $storagesfromArray|}
+        <div class="shop-message-error">
+            {|$translate_sale_todo|} <a href="/admin/shop/storage/settings/names/">{|$translate_incoming_settings_warehouses|}</a>.
+        </div>
+    {|/if|}
+    
+    <form action="" method="post" class="ob-block-element">
+        <strong>{|$translate_sale_warehouse_choose|}.
+        {|$translate_storage_no_change|}</strong><br />
+        <br />
+    
+        <strong>{|$translate_storage_from_what|}</strong><br />
+        <select name="storagefromid">
+            {|foreach from=$storagesfromArray item="e"|}
+                <option value="{|$e.id|}">{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+    
+        <input class="ob-button" type="submit" value="{|$translate_select|}" name="select" />
+    </form>
+    
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_sale_basket_redirect|}...
+    </div>
+{|/if|}
+
+{|if $message == 'alreadyInBasket'|}
+    <div class="shop-message-success">
+        {|$translate_sale_already_in_basket|}.
+    </div>
+{|/if|}
+
+{|if $message == 'noStorageName'|}
+    <div class="shop-message-error">
+        {|$translate_order_sale_message_warehouse|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_sale_message_error|}<br />
+        
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e.product|}
+                <strong>{|$translate_product|} {|$e.product|}</strong>:
+            {|/if|}
+            {|if $e.error == 'storagefrom'|}
+                {|$translate_sale_quick_error_warehouse|}.<br />
+            {|/if|}
+            {|if $e.error == 'user'|}
+                {|$translate_storage_error_permission|}<br />
+            {|/if|}
+            {|if $e.error == 'product'|}
+                {|$translate_box_error_product|}.<br />
+            {|/if|}
+            {|if $e.error == 'count'|}
+                {|$translate_box_error_amount|}.<br />
+            {|/if|}
+            {|if $e.error == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $urlredirect|}
+    <script type="text/javascript">
+    document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}

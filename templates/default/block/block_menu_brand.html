@@ -1,0 +1,20 @@
+{|if $allBrandsCount|}
+    <div class="nav-element">
+        <div class="element-inner">
+            <a href="{|$brandAllUrl|}"><span>{|$translate_brands|}</span></a>
+            {|if $brandsArray|}
+                <div class="sub">
+                    <ul class="js-category-list">
+                        {|foreach from=$brandsArray item="b"|}
+                            <li>
+                                <div class="level-1">
+                                    <a href="{|$b.url|}">{|$b.name|}</a>{|if $b.productCount|}<span class="count">({|$b.productCount|})</span>{|/if|}
+                                </div>
+                            </li>
+                        {|/foreach|}
+                    </ul>
+                </div>
+            {|/if|}
+        </div>
+    </div>
+{|/if|}

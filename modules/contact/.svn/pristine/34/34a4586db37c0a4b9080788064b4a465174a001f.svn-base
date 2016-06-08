@@ -1,0 +1,87 @@
+<div class="ob-list-usersthumb js-list-usersthumb">
+    {|foreach from=$userArray item="user"|}
+        <div class="ob-list-usersthumb-element js-contact-preview" data-id="{|$user.id|}">
+            <input class="checkbox-id js-checkbox" type="checkbox" name="id[]" value="{|$user.id|}"/>
+            <div class="image nb-block-avatar" style="background-image: url('{|$user.image|}');">
+                {|if $user.company|}
+                    <a href="{|$user.companyUrl|}"></a>
+                {|else|}
+                    <a href="{|$user.url|}"></a>
+                {|/if|}
+
+            </div>
+            {|if $user.name|}
+                <div class="name">
+                    <a href="{|$user.url|}">{|$user.name|}</a>
+                </div>
+            {|else|}
+                {|if $user.company|}
+                    <div class="name">
+                        <a href="{|$user.companyUrl|}">{|$user.company|}</a>
+                    </div>
+                {|/if|}
+            {|/if|}
+
+            <div class="info">
+                {|if $user.name|}
+                    {|if $user.company|}<a href="{|$user.companyUrl|}">{|$user.company|}</a><br />{|/if|}
+                {|/if|}
+                {|if $user.post|}{|$user.post|}<br />{|/if|}
+
+                {|if $user.phone|}<a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="#" data-phone="{|$user.phone|}" title="{|$translate_pozvonit|} {|$user.phone|}">{|$user.phone|}</a><br />{|/if|}
+                {|if $user.email|}<a class="ob-link-email ob-link-dashed js-email-write js-tooltip" href="#" data-email="{|$user.email|}" title="{|$translate_napisat|} {|$user.email|}">{|$user.email|}</a><br />{|/if|}
+            </div>
+        </div>
+    {|/foreach|}
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="ob-list-usersthumb-empty"></div>
+    <div class="clear"></div>
+</div>
+
+{|if count($pagesArray.pagesArray) > 1|}
+    <div class="ob-block-stepper">
+        {|if $pagesArray.urlprev|}
+            <a href="{|$pagesArray.urlprev|}" class="prev">&lsaquo; {|$translate_back|}</a>
+            {|if $pagesArray.hellip|}&hellip;{|/if|}
+        {|/if|}
+
+        {|foreach from=$pagesArray.pagesArray item="e"|}
+            <a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a>
+        {|/foreach|}
+
+        {|if $pagesArray.urlnext|}
+            {|if $pagesArray.hellip|}&hellip;{|/if|}
+            <a href="{|$pagesArray.urlnext|}" class="next">{|$translate_next|} &rsaquo;</a>
+        {|/if|}
+    </div>
+{|/if|}
+
+<script>
+    animation('.js-list-usersthumb .ob-list-usersthumb-element', 'blind', '70');
+
+    $j(function() {
+        $j('.js-list-usersthumb .ob-list-usersthumb-element').click(function(){
+            $checkbox = $j(this).find('input');   
+            if ($checkbox.is(':checked')) {
+                $checkbox.removeAttr('checked');
+                $checkbox.change();
+                $j(this).removeClass('selected');
+            } else {
+                $checkbox.attr('checked','checked');
+                $checkbox.change();
+                $j(this).addClass('selected');
+            }
+            sidebarCheck();
+        });
+        $j('.js-list-usersthumb input').click(function(){
+            $j(this).closest('.ob-list-usersthumb-element').click();
+        });
+    });
+</script>

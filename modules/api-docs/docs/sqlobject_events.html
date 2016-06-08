@@ -1,0 +1,332 @@
+<h1>SQLObject: события (events)</h1>
+
+SQLObject поддерживает события для INSERT, DELETE, UPDATE,
+а также специальные события на подмену полей getField и setField (об этом отдельное руководство для садистов).
+<br />
+<br />
+
+Чтобы прицепиться к какому-либо событию есть два варианта:<br /><br />
+
+<h2>Вариант А - прицепиться на все объекты</h2>
+Например,
+
+<code><pre>
+Events::Get()->addEvent('SQLObject.delete.before', 'SQLObject_Event'); // эта строчка ОБЯЗАТЕЛЬНА!
+Events::Get()->observe('SQLObject.delete.before', 'MyEventObserver');
+
+class MyEventObserver implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $object = $event->getObject();
+
+        // do someting
+    }
+
+}
+
+</pre></code>
+<br />
+<br />
+
+В таком варианте в $object будут попадать ВСЕ объекты на которые вызван метод delete().<br />
+<br />
+Доступные события:<br />
+<ol>
+<li>SQLObject.delete.before</li>
+<li>SQLObject.delete.after</li>
+<li>SQLObject.insert.before</li>
+<li>SQLObject.insert.after</li>
+<li>SQLObject.update.before</li>
+<li>SQLObject.update.after</li>
+</ol>
+<br />
+<br />
+
+<h2>Вариант Б - прицепиться на событие к конкретному классу.</h2>
+В примере ниже событие будет сгенерировано только при User->delete().<br />
+
+<code><pre>
+Events::Get()->addEvent('User.delete.before', 'SQLObject_Event'); // эта строчка ОБЯЗАТЕЛЬНА!
+Events::Get()->observe('User.delete.before', 'MyEventObserver');
+
+class MyEventObserver implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $object = $event->getObject();
+
+        // do someting
+    }
+
+}
+
+</pre></code>
+<br />
+<br />
+
+Доступные события:<br />
+<ol>
+<li>YourClassName.delete.before</li>
+<li>YourClassName.delete.after</li>
+<li>YourClassName.insert.before</li>
+<li>YourClassName.insert.after</li>
+<li>YourClassName.update.before</li>
+<li>YourClassName.update.after</li>
+</ol>
+
+Где вместо <strong>YourClassName</strong> напишите имя вашего класса. Например, User, ShopProduct, XUser, ShopOrder,
+XShopOrder и тд.<br />
+<br />
+
+<span style="color: red;">
+    Так же учтите, что если вы объявили событие для User, то для XUser оно не будет вызвано.<br />
+</span>
+<br />
+<br />
+
+<h2>Зачем объявлять событие?</h2>
+
+Как вы заметили, событие обявляется двумя строчками: объявление события и назначение на него обработчика.<br />
+Если вы не объявите событие - то SQLObject его не будет генерировать. Это сделано исключительно с целью максимальной производительности.<br />
+
+<code><pre>
+Events::Get()->addEvent('User.delete.before', 'SQLObject_Event'); // эта строчка ОБЯЗАТЕЛЬНА!
+Events::Get()->observe('User.delete.before', 'MyEventObserver');
+</pre></code>
+<br />
+<br />
+
+<br />
+<br />
+
+<h2>Реальный пример из модуля search-sphinx</h2>
+
+<code><pre>
+// на бренды вешаем обработчик удаления
+Events::Get()->addEvent('ShopBrand.delete.after', 'SQLObject_Event'); // эта строчка ОБЯЗАТЕЛЬНА!
+Events::Get()->observe('ShopBrand.delete.after', 'SphinxRT_BrandDelete');
+
+class SphinxRT_BrandDelete implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $object = $this->_getBrand($event);
+
+        try {
+            SQLObject::TransactionStart();
+
+            $sphinx = new XShopSphinx();
+            $sphinx->setType('brand');
+            $sphinx->setKey($object->getId());
+            if (!$sphinx->select()) {
+                $sphinx->setAction('delete');
+                $sphinx->insert();
+            } else {
+                $sphinx->setAction('delete');
+                $sphinx->update();
+            }
+
+            SQLObject::TransactionCommit();
+        } catch (Exception $ge) {
+            SQLObject::TransactionRollback();
+            throw $ge;
+        }
+    }
+
+    /**
+     * Метод-обертка для типизации
+     *
+     * @param Events_Event $event
+     *
+     * @return ShopBrand
+     */
+    private function _getBrand(Events_Event $event) {
+        return $event->getObject();
+    }
+
+}
+</pre></code>
+<br />
+<br />
+
+<h2>Правила именования событий в SQLObject</h2>
+
+Пример именования событий:<br />
+YourClassName.method.before<br />
+YourClassName.method.after<br />
+<br />
+где,<br />
+YourClassName - имя класса, к которому цепляемся.<br />
+method - имя метода в SQLObject. Например, insert, update, delete.
+В будущем еще что-нибудь добавиться.<br />
+after или before - прицепиться ДО вызова метода или ПОСЛЕ.<br />
+<br />
+<br />
+<h2>Задание конфигурации SQLObject (DB)</h2>
+1. Если вам нужно добавить таблицы или поля в базу данных то дописываемся к событию <strong>SQLObject.build.before</strong> <br />
+2. Если вам нужно добавить блок (addBlock), добавить что-то в настройки (addSettings), или вы используете синхронизатор (sync) то вам нужно создавть класс XXX_Sync и
+дописываться на событие <strong>SQLObject.build.after </strong>.
+
+Пример: <br />
+Возьмём модуль документов (document).
+<br />
+Создаём класс для перестройки базы данных Documents_DB. Пример:
+<br />
+<br />
+<code><pre>
+class Document_DB implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+        // шаблоны документов
+        $table = SQLObject_Config::Get()->addClass('XShopDocumentTemplate', 'shopdocumenttemplate');
+        $table->addField('id', 'int(11)', 'auto_increment');
+        $table->addIndexPrimary('id');
+        $table->addField('key', 'varchar(255)'); // ключ
+        $table->addField('name', 'varchar(255)'); // название
+        $table->addField('type', 'varchar(255)'); // к чему относится
+        $table->addField('groupname', 'varchar(255)'); // группа
+        $table->addField('direction', "enum('in','out','our')"); // направление
+        $table->addField('content', 'text');
+        $table->addField('hidden', 'tinyint(1)');
+        $table->addField('required', 'tinyint(1)'); // обязательный ли документ
+        $table->addField('period', 'int(11)'); // срок действия документа в днях
+        $table->addField('sort', 'int(11)'); // сортировка
+        $table->addField('numberprocessor', 'varchar(255)'); // процессор для определения нумерации
+        // indexes
+        $table->addIndex(array('sort', 'name'), 'index_sort');
+        $table->addIndex('groupname', 'index_groupname');
+
+        // документ
+        $table = SQLObject_Config::Get()->addClass('XShopDocument', 'shopdocument');
+        $table->addField('id', 'int(11)', 'auto_increment');
+        $table->addIndexPrimary('id');
+        $table->addField('number', 'varchar(255)'); // номер документа
+        $table->addField('name', 'varchar(255)'); // название документа
+        $table->addField('contractorid', 'int(11)');
+        $table->addField('templateid', 'int(11)');
+        $table->addField('userid', 'int(11)');
+        $table->addField('linkkey', 'varchar(255)');
+        $table->addField('cdate', 'datetime'); // дата создания документа
+        $table->addField('edate', 'datetime'); // дата окончания документа
+        $table->addField('sdate', 'datetime'); // дата отправки документа
+        $table->addField('bdate', 'datetime'); // дата получения документа
+        $table->addField('adate', 'datetime'); // дата помещения в архив
+        $table->addField('fileoriginal', 'varchar(255)'); // вложенный файл-оригинал, который может заменить контент
+        $table->addField('file', 'varchar(255)'); // вложенный файл (например, скан)
+        $table->addField('content', 'longtext');
+        $table->addField('deleted', 'tinyint(1)');
+        // indexes
+        $table->addIndex('contractorid', 'index_contractorid');
+        $table->addIndex('templateid', 'index_templateid');
+        $table->addIndex('userid', 'index_userid');
+        $table->addIndex('linkkey', 'index_linkkey');
+
+        // отдельные поля документов
+        $table = SQLObject_Config::Get()->addClass('XShopDocumentFieldValue', 'shopdocumentfieldvalue');
+        $table->addField('id', 'int(11)', 'auto_increment');
+        $table->addIndexPrimary('id');
+        $table->addField('documentid', 'int(11)');
+        $table->addField('name', 'varchar(255)'); // имя поле
+        $table->addField('value', 'text'); // значение поля
+        // indexes
+        $table->addIndex('documentid', 'index_documentid');
+
+    }
+
+}
+</pre></code>
+<br />
+Создаём класс для синхронизации настроек и других данных. Documents_Sync. Пример:
+<br />
+<br />
+<code><pre>
+class Document_Sync implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+        try {
+            SQLObject::TransactionStart();
+
+            $sync = new SQLObjectSync_Data(new XShopDocumentTemplate());
+
+            $languagesArray = array(
+                'ukr' => 'UA',
+                'ru' => 'RU',
+                'eng' => 'EN',
+            );
+
+            foreach ($languagesArray as $key => $name) {
+                $sync->addData(
+                    array(
+                        'key' => 'order-act-'.$key
+                    ),
+                    array(
+                        'name' => 'Акт выполненных работ ('.$name.')',
+                        'content' => 'file:/modules/document/media/shop-document-akt-'.$key.'.html',
+                        'type' => 'ShopOrder'
+                    )
+                );
+
+                $sync->addData(
+                    array(
+                        'key' => 'invoice-'.$key
+                    ),
+                    array(
+                        'name' => 'Счет-фактура ('.$name.')',
+                        'content' => 'file:/modules/document/media/shop-document-invoice-'.$key.'.html',
+                        'type' => 'ShopOrder'
+                    )
+                );
+
+                $sync->addData(
+                    array(
+                        'key' => 'salebill-'.$key
+                    ),
+                    array(
+                        'name' => 'Накладная заказа ('.$name.')',
+                        'content' => 'file:/modules/document/media/shop-document-salebill-'.$key.'.html',
+                        'type' => 'ShopOrder'
+                    )
+                );
+            }
+
+            $sync->sync();
+
+            SQLObject::TransactionCommit();
+        } catch (Exception $ge) {
+            SQLObject::TransactionRollback();
+            throw $ge;
+        }
+
+
+        Shop::Get()->getSettingsService()->addSetting(
+            'show-onebox-info-print',
+            'Показывать подпись OneBox в печати документов',
+            'Блоки, отображение, внешний вид',
+            'Показывать ли подпись CRM OneBox при печати документов или формировании pdf файла.',
+            1, // default value
+            'boolean'
+        );
+    }
+
+}
+</pre></code>
+<br />
+Регистрируем классы в файле include.php и дописываемся к событиям. Пример:
+<br />
+<code><pre>
+PackageLoader::Get()->registerPHPClass(dirname(__FILE__).'/Document_DB.class.php');
+PackageLoader::Get()->registerPHPClass(dirname(__FILE__).'/Document_Sync.class.php');
+
+
+Events::Get()->observe(
+    'SQLObject.build.before',
+    'Document_DB'
+);
+
+Events::Get()->observe(
+    'SQLObject.build.after',
+    'Document_Sync'
+);
+
+</pre></code>
+<br />

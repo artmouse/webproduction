@@ -1,0 +1,64 @@
+{|if $message == "ok"|}
+    <div class="os-message-success">
+        {|$translate_message_success|}.<br />
+        {|$translate_be_notified|}.
+    </div>
+{|/if|}
+
+{|if not $faqArray|}
+    <div class="os-message-notice">
+        {|$translate_message_notice|}
+    </div>
+{|/if|}
+
+{|if $message == "error"|}
+    <div class="os-message-error">
+        {|$translate_message_error|}.<br />
+        {|$translate_fill_a_field|}<br />
+    </div>
+{|/if|}
+
+<div class="os-block-faq">
+    {|foreach from=$faqArray item="f"|}
+        <div class="element">
+            <div class="identifier" style="background-color: {|$f.color|};"></div>
+            <div class="question" id="question{|$f.id|}">
+                {|$f.question|}
+                <div class="name">{|$translate_from_small|} {|$f.name|}</div>
+                <a href="/faq/{|$f.id|}/?prev_page={|$f.prevPage|}" class="more">{|$translate_read_answer|} &rarr;</a>
+            </div>
+        </div>
+    {|/foreach|}
+</div>
+
+{|if $isUserAuthorized|}
+    <a href="javascript: void(0);" class="os-submit" onclick="popupOpen('.js-popup-faq-block');">{|$translate_ask_the_administration|}</a>
+    <div id="form-order-id" class="os-block-popup js-popup-faq-block" style="display: none;">
+        <div class="dark" onclick="popupClose('.js-popup-faq-block');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-faq-block');">&nbsp;</a>
+                {|$translate_ask_the_administration|}
+            </div>
+            <form method="post">
+                <div class="body">
+                    <table>
+                        <tr>
+                            <td class="vtop">{|$translate_question|}<span class="important">*</span>:</td>
+                            <td><textarea class="js-required" type="text" name="question"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="foot">
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input class="js-form-validation os-submit" type="submit" name="faq" value="{|$translate_send_message|}" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+{|else|}
+     <div class="os-message-info">
+        {|$translate_must_register|}.
+    </div>
+{|/if|}

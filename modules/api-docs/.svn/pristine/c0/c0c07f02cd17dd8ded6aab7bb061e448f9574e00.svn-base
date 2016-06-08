@@ -1,0 +1,107 @@
+<h1>Радиогруппы</h1>
+
+Радиогруппы - это аналог <strong>input[type="radio"]</strong>, которые объединены в группы. <br />
+Дополнительный класс <div class="ui-class inline">.js-radio-group</div> используется для инициализации.<br />
+<br />
+<br />
+
+<h2>Стандартная радио группа</h2>
+<div class="ui-class">.ob-radio-group</div>
+<code>
+    <pre>
+&lt;div class="ob-radio-group js-radio-group"&gt;
+    &lt;label&gt;
+        Value 1
+        &lt;input type="radio" checked="" value="1" name="active"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;
+        Value 2
+        &lt;input type="radio" value="2" name="active"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;
+        Value 3
+        &lt;input type="radio" value="3" name="active"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;
+        Value 4
+        &lt;input type="radio" value="4" name="active"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;
+        Value 5
+        &lt;input type="radio" value="5" name="active"&gt;
+    &lt;/label&gt;
+    &lt;div class="clear"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 50px;">
+    <div class="ob-radio-group js-radio-group">
+        <label>
+            Value 1
+            <input type="radio" checked="" value="1" name="active">
+        </label>
+        <label>
+            Value 2
+            <input type="radio" value="0" name="active">
+        </label>
+        <label>
+            Value 3
+            <input type="radio" value="0" name="active">
+        </label>
+        <label>
+            Value 4
+            <input type="radio" value="0" name="active">
+        </label>
+        <label>
+            Value 5
+            <input type="radio" value="0" name="active">
+        </label>
+        <div class="clear"></div>
+    </div>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Радиогруппа с активным элементом</h2>
+Данную радиогруппу можно использовать для элементов "on/off", в радиогруппе происходит выделение активного элемента.<br>
+Активный элемент необходимо выделять добавочным классом <div class="ui-class inline">.success</div> для <strong>label</strong> элемента.<br>
+<br>
+<div class="ui-class">.ob-radio-group</div>
+<code>
+    <pre>
+&lt;div class="ob-radio-group js-radio-group"&gt;
+    &lt;label class="success"&gt;
+        Active
+        &lt;input type="radio" checked="" value="1" name="active"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;
+        Inactive
+        &lt;input type="radio" value="2" name="active"&gt;
+    &lt;/label&gt;
+    &lt;div class="clear"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 50px;">
+    <div class="ob-radio-group js-radio-group">
+        <label class="success">
+            Active
+            <input type="radio" checked="" value="1" name="active">
+        </label>
+        <label>
+            Inactive
+            <input type="radio" value="0" name="active">
+        </label>
+        <div class="clear"></div>
+    </div>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

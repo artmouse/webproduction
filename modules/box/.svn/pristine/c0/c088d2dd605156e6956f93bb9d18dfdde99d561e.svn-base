@@ -1,0 +1,162 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/workflow/">&lsaquo; {|$translate_biznes_protsessi|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflow/{|$categoryid|}/">{|$translate_workflow|} {|$categoryName|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/">{|$translate_etap|} {|$name|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/interface/" class="selected">{|$translate_interfeys|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/action/new/">{|$translate_motion|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $edit_ok|}
+    <div class="shop-message-success">
+        {|$translate_dannie_etapa_uspeshno_sohraneni|}.
+    </div>
+{|/if|}
+
+<form id="js-form" action="" method="post">
+    {|if $dynamic_workflow_menu|}
+        <div class="ob-block-wf-options">
+            <h2>Настройки интерфейса этапа {|$name|}</h2>
+            <label class="double">
+                <input type="checkbox" value="1" name="orderMenu" {|if $control_orderMenu|} checked {|/if|} />
+                {|$translate_pokazivat_knopki_zakaza_pechat_tekst_zakaza_|}
+            </label>
+
+            <label class="double">
+                <input type="checkbox" name="tabmenu[]" value="closed" {|if $menuArray.closed|}checked{|/if|}>
+                {|$translate_polnostyu_skrit_shapku_menyu|}
+            </label>
+
+            <label class="double">
+                <input class="js-menu-parent" type="checkbox" name="tabmenu[]" value="parent" {|if $menuArray.parent|}checked{|/if|}>
+                {|$translate_ispolzovat_menyu_roditelskih_proektov|}
+            </label>
+        </div>
+        <br />
+
+        <div class="js-other-menu">
+            <div class="ob-block-wf-options">
+                <h2>Настройки меню этапа {|$name|}</h2>
+                <label>
+                    <input type="checkbox" name="tabmenu[]" value="parentTab" {|if $menuArray.parentTab|}checked{|/if|}>
+                    {|$translate_roditel|}
+                </label>
+
+                {|foreach from=$workflowType item="m"|}
+                    <label>
+                        <input type="checkbox" name="tabmenu[]" value="{|$m.type|}" {|if $menuArray[$m.type]|}checked{|/if|}>
+                        {|$m.name|}
+                    </label>
+                {|/foreach|}
+
+                <label>
+                    <input type="checkbox" name="tabmenu[]" value="info" {|if $menuArray.info|}checked{|/if|}>
+                    {|$translate_timework_small|}
+                </label>
+                <label>
+                    <input type="checkbox" name="tabmenu[]" value="products" {|if $menuArray.products|}checked{|/if|}>
+                    {|$translate_many_products|}
+                </label>
+
+                {|foreach from=$moduleTabArray item="m"|}
+                    <label>
+                        <input type="checkbox" name="tabmenu[]" value="{|$m.contentID|}" {|if $m.selected|}checked{|/if|}>
+                        {|$m.name|}
+                    </label>
+                {|/foreach|}
+            </div>
+            <br />
+        </div>
+    {|/if|}
+
+    <h2>Структура отображения этапа {|$name|}</h2>
+    <div class="ob-grid-control">
+        <div class="control">
+            <div class="control-search">
+                <input class="js-block-helper" type="text" name="" value="" placeholder="{|$translate_bistriy_poisk|}" />
+            </div>
+            <div class="control-wrap js-block-list">
+                {|foreach from=$blocksArray item="b"|}
+                    <div data-id="{|$b.id|}" class="block-element">
+                        <span class="ob-link-delete ob-icon block-remove js-block-remove"></span>
+                        {|$b.name|}
+                    </div>
+                {|/foreach|}
+            </div>
+        </div>
+        <div class="grid">
+            <div class="ob-grid-default lighter">
+                <div class="main-layer">
+                    <div class="block-zone">
+                        <div class="temp-content js-droppable" data-id="2">
+                            {|foreach from=$blocksUsedStructureArray[2] item="b"|}
+                                <div data-id="{|$b.id|}" class="block-element">
+                                    <span class="ob-link-delete ob-icon block-remove js-block-remove"></span>
+                                    {|$b.name|}
+                                </div>
+                            {|/foreach|}
+                        </div>
+                    </div>
+
+                    <div class="double">
+                        <div class="block-zone">
+                            <div class="temp-content js-droppable" data-id="3">
+                                {|foreach from=$blocksUsedStructureArray[3] item="b"|}
+                                    <div data-id="{|$b.id|}" class="block-element">
+                                        <span class="ob-link-delete ob-icon block-remove js-block-remove"></span>
+                                        {|$b.name|}
+                                    </div>
+                                {|/foreach|}
+                            </div>
+                        </div>
+
+                        <div class="block-zone">
+                            <div class="temp-content js-droppable" data-id="4">
+                                {|foreach from=$blocksUsedStructureArray[4] item="b"|}
+                                    <div data-id="{|$b.id|}" class="block-element">
+                                        <span class="ob-link-delete ob-icon block-remove js-block-remove"></span>
+                                        {|$b.name|}
+                                    </div>
+                                {|/foreach|}
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="block-zone">
+                        <div class="temp-content js-droppable" data-id="5">
+                            {|foreach from=$blocksUsedStructureArray[5] item="b"|}
+                                <div data-id="{|$b.id|}" class="block-element">
+                                    <span class="ob-link-delete ob-icon block-remove js-block-remove"></span>
+                                    {|$b.name|}
+                                </div>
+                            {|/foreach|}
+                        </div>
+                    </div>
+                </div>
+                <div class="aside-layer">
+                    <div class="block-zone">
+                        <div class="temp-content js-droppable" data-id="1" style="min-height: 340px;">
+                            {|foreach from=$blocksUsedStructureArray[1] item="b"|}
+                                <div data-id="{|$b.id|}" class="block-element">
+                                    <span class="ob-link-delete ob-icon block-remove js-block-remove"></span>
+                                    {|$b.name|}
+                                </div>
+                            {|/foreach|}
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <input type="hidden" value="" name="block_structure" id="js-block-value"> 
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="send_edit" value="{|$translate_save|}" class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

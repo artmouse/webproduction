@@ -1,0 +1,80 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/activity/" class="selected">{|$translate_activity|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/online/">{|$translate_users_online|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/statistics/search/">{|$translate_statistics_search|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" placeholder="{|$translate_from_small|}" class="js-date" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" placeholder="{|$translate_to|}" class="js-date" />
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_user|}</div>
+                <select class="chzn-select" name="user">
+                    <option value="0">{|$translate_all|}</option>
+                    {|foreach from=$filterUsersArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_user|} selected {|/if|}>{|$e.login|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_show|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|foreach from=$activityArray item="list" key="date"|}
+            <table width="100%" class="shop-table">
+                <thead>
+                    <tr>
+                        <td colspan="3">{|$date|}</td>
+                    </tr>
+                </thead>
+                {|foreach from=$list item="e"|}
+                    <tr>
+                        <td width="50">{|$e.time|}</td>
+                        <td width="100">
+                            {|if not $e.user|}
+                                {|$translate_deleted|}
+                            {|/if|}
+                            {|if $e.user|}
+                                <a href="{|$e.user.url|}" class="js-contact-preview" data-id="{|$e.user.id|}">{|$e.user.login|}</a>
+                            {|else|}
+                                {|$e.user.login|}
+                            {|/if|}
+                        </td>
+                        <td>{|$e.content|}</td>
+                    </tr>
+                {|/foreach|}
+            </table>
+        {|/foreach|}
+
+        {|if $activitySummaryArray|}
+            <div class="ob-block-element">
+                <strong>{|$translate_summary_statistics|}:</strong>
+                <br />
+
+                {|foreach from=$activitySummaryArray item="e" key="id"|}
+                    {|$usersArray[$id].login|}: {|$e|}<br />
+                {|/foreach|}
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

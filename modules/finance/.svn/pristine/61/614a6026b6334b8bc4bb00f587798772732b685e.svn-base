@@ -1,0 +1,3 @@
+{|if $orderID|}
+    <a href="{|$orderURL|}">Заказ #{|$orderID|}</a> 
+{|/if|}

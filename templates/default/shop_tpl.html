@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|$title|}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="{|$shopname|}" />
+    <meta name="viewport" content="width=device-width" />
+    {|*|}<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />{|*|}
+    {|if $shopName|}<meta name="dcterms.rightsHolder" content="{|$shopName|}" />{|/if|}
+
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+
+    <link href='//fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+
+    {|$hreflang|}
+
+    {|$integration_google_wmt|}
+    {|$integration_gadwords|}
+    {|$integration_yandex_wmt|}
+    {|$loginzaVerification|}
+    
+    {|if $cssUrl|}
+        <link href="{|$cssUrl|}" rel="stylesheet" type="text/css">
+    {|/if|}
+    {|if $jsUrl|}
+        <script type="text/javascript" src="{|$jsUrl|}"> </script>
+    {|/if|}
+    {|$engine_includes|}
+    {|$integration_facebook_pixel_head|}
+    <!--[if IE 8]><script src="/_js/html5shiv.js"></script><![endif]-->
+</head>
+<body {|if $background|}style="background-image: url('{|$background|}');"{|/if|}>
+    <div class="os-content-wrapper">
+        <div class="wrapper-cell">
+       	    {|if $seocontent|}
+                <div class="os-seo">
+                    {|$seocontent|}
+                </div>
+            {|/if|}
+
+            <div class="os-mainer">
+                <div class="os-mainwrapper">
+                    {|$content|}
+
+                    {|if $contentID == 'index'|}
+                        {|$block_brand_alphabet|}
+                    {|/if|}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="os-header-wrapper">
+        <div class="wrapper-cell">
+            {|$block_position_global_top|}
+
+            <div class="os-block-preheader">
+                <div class="os-mainer">
+                    <ul class="list auth-block-menu">
+                        <li>
+                            <a href="" onclick="return false;"><span class="os-link-dashed">{|$translate_client_account|}</span></a>
+                            <ul class="sub right">
+                                {|if $userlogin|}
+                                    {|if $admin|}
+                                        <li><a href="{|$main|}/admin/">{|$translate_admin|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/client/orders/">{|$translate_my_orders|}</a></li>
+                                    {|if $balance|}
+                                        <li><a href="{|$main|}/client/cash/">{|$translate_balance|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/client/profile/">{|$translate_profile|}</a></li>
+                                    <li><a href="{|$main|}/client/products/viewed/">{|$translate_products_viewed|}</a></li>
+                                    {|if $countCompare|}
+                                        <li><a href="/compare/">{|$translate_products_compare|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/client/products/ordered/">{|$translate_products_ordered|}</a></li>
+                                    {|if $favoriteUrl|}
+                                        <li><a href="{|$main|}{|$favoriteUrl|}">{|$translate_wish|}</a></li>
+                                    {|/if|}
+                                    <li><a href="{|$main|}/logout/">{|$translate_logout|}</a></li>
+                                {|else|}
+                                    <li><a href="javascript: void(0);" onclick="popupOpen('.js-popup-auth-block');">{|$translate_enter|}</a></li>
+
+                                    {|if $loginzaURL|}
+                                        <script src="//loginza.ru/js/widget.js" type="text/javascript"></script>
+                                        <li><a href="{|$loginzaURL|}" class="loginza">{|$translate_login_via_social_network|}</a></li>
+                                    {|/if|}
+
+                                    <li><a href="{|$main|}/registration/">{|$translate_registration|}</a></li>
+                                {|/if|}
+                            </ul>
+                        </li>
+                    </ul>
+
+                    {|$block_menu_textpage|}
+                </div>
+            </div>
+
+            <div class="js-header-wrap">
+                <header class="js-header">
+                    <div class="os-mainer">
+                        <div class="os-mainwrapper">
+                            <div class="os-block-center-header">
+                                <div class="inner-center-header">
+                                    {|$block_search|}
+
+                                    <div class="os-block-contactsheader" itemscope itemtype="http://schema.org/Organization">
+                                        <span itemprop="name" style="display: none;">{|$shopName|}</span>
+                                        {|if $worktime|}
+                                            <div class="element worktime">
+                                                <div class="caption">{|$translate_working_hours|}:</div>
+                                                {|$worktime|}
+                                            </div>
+                                        {|/if|}
+                                        {|if $showHeaderPhone|}
+                                            <div class="element">
+                                                {|if $phone1|}
+                                                    <div class="phone" itemprop="telephone">{|$phone1|}</div>
+                                                {|/if|}
+                                                {|if $phone3|}
+                                                    <div class="phone" itemprop="telephone">{|$phone3|}</div>
+                                                {|/if|}
+                                                {|if $phone2|}
+                                                    <div class="phone" itemprop="telephone">{|$phone2|}</div>
+                                                {|/if|}
+                                                {|if $phone4|}
+                                                    <div class="phone" itemprop="telephone">{|$phone4|}</div>
+                                                {|/if|}
+
+                                                <div class="phone-link">
+                                                    {|if $callback|}
+                                                        <a class="os-link-dashed" href="javascript: void(0);" onclick="popupOpen('.js-popup-callblock');">{|$translate_call_back|}</a>
+                                                    {|/if|}
+                                                </div>
+                                            </div>
+                                            <div class="clear-l"></div>
+                                        {|/if|}
+
+                                        {|if $icq && $showHeaderIcq|}
+                                            <div class="element">
+                                                <span class="icq">{|$icq|}</span>
+                                            </div>
+                                        {|/if|}
+
+                                        {|if $skype && $showHeaderSkype|}
+                                            <div class="element">
+                                                <span class="skype">{|$skype|}</span>
+                                            </div>
+                                        {|/if|}
+                                        {|if $showHeaderEmail|}
+                                            <div class="element">
+                                                {|if $email|}
+                                                    <a class="email os-link-dashed" href="javascript: void(0);"
+                                                       onclick="popupOpen('.js-popup-mail-block');" itemprop="email">{|$email|}</a>
+                                                {|else|}
+                                                    {|if $feedback|}
+                                                        <a class="os-link-dashed" href="javascript: void(0);"
+                                                       onclick="popupOpen('.js-popup-mail-block');">{|$translate_write_letter|}</a>
+                                                    {|/if|}
+                                                {|/if|}
+                                            </div>
+                                        {|/if|}
+
+                                        {|if $address && $showHeaderAddress|}
+                                            <div class="element">
+                                                <span class="adress" itemprop="address">{|$address|}</span>
+                                            </div>
+                                        {|/if|}
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="os-basket-wrap js-basket">
+                                {|* baskets loads with ajax *|}
+                            </div>
+
+                            <div class="os-block-logoheader">
+                                {|if $contentID == 'index'|}
+                                    <span>
+                                        <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                                    </span>
+                                {|else|}
+                                    <a href="/" title="{|$shopName|}">
+                                        <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                                    </a>
+                                {|/if|}
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <div class="clear"></div>
+
+            <div class="os-mainer">
+                <div class="os-mainwrapper">
+                    <nav class="os-category-nav js-category-nav">
+                        <div class="nav-inner">
+                            {|$block_menu_category|}
+
+                            {|if $showMenuBrands|}
+                                {|$block_menu_brand|}
+                            {|/if|}
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            {|if $contentID == index|}
+                {|$block_banner_wide|}
+            {|/if|}
+        </div>
+    </div>
+
+    <div class="os-footer-wrapper">
+        <div class="wrapper-cell">
+            <footer>
+                <div class="os-mainer">
+                    <div class="contacts">
+                        <div class="footer-caption">{|$translate_contact_information|}</div>
+                        {|if $worktime|}
+                            <div class="element worktime">
+                                {|$translate_working_hours|}: {|$worktime|}
+                            </div>
+                        {|/if|}
+
+                        <div class="element">
+                            {|if $phone1|}
+                                <div class="phone">{|$phone1|}</div>
+                            {|/if|}
+                            {|if $phone3|}
+                                <div class="phone">{|$phone3|}</div>
+                            {|/if|}
+                            {|if $phone2|}
+                                <div class="phone">{|$phone2|}</div>
+                            {|/if|}
+                            {|if $phone4|}
+                                <div class="phone">{|$phone4|}</div>
+                            {|/if|}
+                            {|if $callback|}
+                                <a class="os-link-dashed" href="javascript: void(0);" onclick="popupOpen('.js-popup-callblock');">{|$translate_call_back|}</a>
+                            {|/if|}
+                        </div>
+
+                        {|if $icq|}
+                            <div class="element">
+                                <span class="icq">{|$icq|}</span>
+                            </div>
+                        {|/if|}
+
+                        {|if $skype|}
+                            <div class="element">
+                                <span class="skype">{|$skype|}</span>
+                            </div>
+                        {|/if|}
+
+                        <div class="element full">
+                            {|if $email|}
+                                <a class="email os-link-dashed" href="mailto:{|$email|}">{|$email|}</a>
+                            {|/if|}
+                            {|if $feedback|}
+                                <a class="os-link-dashed" href="javascript: void(0);" onclick="popupOpen('.js-popup-mail-block');">{|$translate_write_letter|}</a>
+                            {|/if|}
+                        </div>
+
+                        {|if $address|}
+                            <div class="element full">
+                                <span class="adress">{|$address|}</span>
+                            </div>
+                        {|/if|}
+                    </div>
+
+
+                    <div class="footer-menu">
+                        {|if $block_footer_textpage|}
+                            <div class="footer-caption">{|$translate_useful|}</div>
+
+                            {|$block_footer_textpage|}
+
+                            <br />
+                        {|/if|}
+
+                        <div class="js-async">
+                            {|$integration_yandex_counter|}
+                            {|$integration_ga|}
+                        </div>
+                        <script>
+                            var $asyncBlock = $j('.js-async')
+                            var asyncInfo = $asyncBlock.html();
+                            $asyncBlock.html('');
+
+                            $j(window).bind('load', function() {
+                                $asyncBlock.html(asyncInfo);
+                            });
+                        </script>
+                        {|$integration_liveinternet|}
+                        {|$integration_cloudim|}
+                        {|$integration_facebook_pixel_body|}
+                    </div>
+
+                    <div class="footer-menu">
+                        <div class="footer-caption">{|$translate_catalog|}</div>
+                        {|$block_footer_category|}
+                    </div>
+
+                    <div class="account">
+                        <div class="footer-caption">{|$translate_client_account|}</div>
+                        {|if $userlogin|}
+                            {|if $admin|}
+                                <a href="{|$main|}/admin/">{|$translate_admin|}</a> <br />
+                            {|/if|}
+                            <a href="{|$main|}/client/orders/">{|$translate_my_orders|}</a><br />
+                            {|if $balance|}
+                                <a href="{|$main|}/client/cash/">{|$translate_balance|}</a><br />
+                            {|/if|}
+                            <a href="{|$main|}/client/profile/">{|$translate_profile|}</a><br />
+                            <a href="{|$main|}/client/products/viewed/">{|$translate_products_viewed|}</a><br />
+                            {|if $countCompare|}
+                                <a href="/compare/">{|$translate_products_compare|}</a><br />
+                            {|/if|}
+                            <a href="{|$main|}/client/products/ordered/">{|$translate_products_ordered|}</a><br />
+                            <a href="{|$main|}/logout/">{|$translate_logout|}</a><br />
+                        {|else|}
+                            <a class="os-link-dashed" href="javascript: void(0);" onclick="popupOpen('.js-popup-auth-block');">{|$translate_enter|}</a><br />
+
+                            {|if $loginzaURL|}
+                                <script src="//loginza.ru/js/widget.js" type="text/javascript"></script>
+                                <a href="{|$loginzaURL|}" class="loginza">{|$translate_login_via_social_network|}</a><br />
+                            {|/if|}
+
+                            <a href="{|$main|}/registration/">{|$translate_registration|}</a><br />
+                        {|/if|}
+                    </div>
+                    <div class="clear"></div>
+
+                    <div class="footer-line">
+                        <div class="copy">
+                            {|$copyright|}
+                        </div>
+                        <div class="wps">
+                            <a href="http://webproduction.ua/">{|$translate_creating_online_shops|}</a>
+                            {|$translate_on_platform|}
+                            <a href="http://webproduction.ua/oneclick">OneBox &reg;</a>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    {|$block_position_global_bottom|}
+
+    <div class="os-loading">
+        <div class="dark"></div>
+        <div class="loader"></div>
+    </div>
+
+    <div class="os-block-popup js-popup-auth-block" style="display: none;">
+        <div class="dark" onclick="popupClose('.js-popup-auth-block');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-auth-block');">&nbsp;</a>
+                {|$translate_authorization|}
+            </div>
+            <form method="post">
+                <div class="body">
+                    <table>
+                        <tr>
+                            <td>{|$translate_login_email|}</td>
+                            <td><input name="auth_login" id="id-auth-login" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td>{|$translate_password_small|}</td>
+                            <td><input name="auth_password" id="id-auth-password" type="password" /></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><a href="/remindpassword/">{|$translate_forgot_password|}?</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="foot">
+                    {|if $loginzaURL|}
+                        <a href="{|$loginzaURL|}" class="loginza" title="{|$translate_login_via_social_network|}">&nbsp;</a>
+                    {|/if|}
+                    <input type="submit" value="{|$translate_sign_in|}" class="os-submit {|if $loginzaURL|}fl-r{|/if|}" />
+                    <div class="clear"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {|if $welcomeBannerId|}
+        <div class="os-block-popup js-popup-welcome-block" style="display: none" >
+            <div class="dark" onclick="popup_welcome_close({|$welcomeBannerId|});"></div>
+            <div class="block-popup welcome-popup">
+                <div class="head">
+                    <a href="javascript: void(0);" class="close" onclick="popup_welcome_close({|$welcomeBannerId|});"></a>
+                    {|$welcomeName|}
+                </div>
+                <img class="banner-image" src="{|$urlBannerWelcome|}" width="800" height="350" alt=""/>
+                <div class="foot">
+                    <a class="os-submit green" href="javascript: void(0);" onclick="popup_welcome_close({|$welcomeBannerId|});">{|$translate_to_website|}</a>
+                </div>
+            </div>
+            <input type="hidden" id="welcomeBannerId" value="{|$welcomeBannerId|}">
+        </div>
+    {|/if|}
+    
+    <div id="block_banner_pageinterval">
+        {|$block_banner_pageinterval|}   
+    </div>
+    
+    {|$block_callback|}
+
+    {|$block_feedback|}
+
+    {|$quickOrder|}
+
+    <div style="display: none;" class="js-phone-mask">{|$phone_mask|}</div>
+
+    <div class="os-gototop js-gototop"></div>
+</body>
+</html>

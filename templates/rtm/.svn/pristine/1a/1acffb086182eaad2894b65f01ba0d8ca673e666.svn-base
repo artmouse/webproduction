@@ -1,0 +1,48 @@
+{|$block_banner_top|}
+
+<div class="rtm-index-features">
+    <div class="element f-1">
+        <span>
+            Заводу 60 лет
+            <i class="grad"></i>
+        </span>
+
+    </div>
+    <div class="element f-2">
+        <span>
+            Цена доступна каждому
+             <i class="grad"></i>
+        </span>
+    </div>
+    <div class="element f-3">
+        <span>
+            Гарантия качества всех изделий
+             <i class="grad"></i>
+        </span>
+    </div>
+    <div class="element f-4">
+        <span>
+            Продажа от производителя
+             <i class="grad"></i>
+        </span>
+    </div>
+    <div class="element f-5">
+        <span>
+            Сделано в Украине
+             <i class="grad"></i>
+        </span>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="rtm-seo-indexpage">
+    {|if $seotextinindexpage|}
+        {|$seotextinindexpage|}
+    {|/if|}
+</div>
+
+{|$block_category_top|}
+
+{|foreach from=$carouselArray item="e"|}
+    {|$e.html|}
+{|/foreach|}

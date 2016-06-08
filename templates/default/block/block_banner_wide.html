@@ -1,0 +1,33 @@
+{|if $bannerArray|}
+    <div class="os-wrap-slider-full">
+        <div class="os-block-slider-full  js-block-slick-slider-full">
+            {|foreach from=$bannerArray item="b"|}
+                <div>
+                    <a href="{|$b.url|}" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                        <img src="{|$b.image|}" alt="">
+                    </a>
+                </div>
+
+
+            {|/foreach|}
+        </div>
+        {|if $bannerArray|@count > 1|}
+            <div class="prev-arrow"></div>
+            <div class="next-arrow"></div>
+        {|/if|}
+    </div>
+
+    <script>
+        $j(window).on('load resize', function(){
+            var $fulpageSlider = $j('.js-block-slick-slider-full');
+            var contentWidth = $j(window).width();
+            $fulpageSlider.width(contentWidth);
+
+            $fulpageSlider.slick({
+                prevArrow: $j('.os-wrap-slider-full .prev-arrow'),
+                nextArrow: $j('.os-wrap-slider-full .next-arrow'),
+                adaptiveHeight: true
+            });
+        });
+    </script>
+{|/if|}

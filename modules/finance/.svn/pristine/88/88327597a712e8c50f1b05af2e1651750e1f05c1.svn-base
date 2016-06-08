@@ -1,0 +1,40 @@
+{|if $paymentInCount > 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">
+                <a href="/admin/shop/finance/?clientid={|$userID|}&ok=1">{|$translate_vhodyashchih_platezhey|}</a>:
+            </div>
+            <div class="el-value">
+                {|$paymentInCount|}
+                {|$translate_to_the_tune_of|}
+                {|$paymentInSum|number_format:2|} {|$currency|}
+            </div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $paymentOutCount > 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">
+                <a href="/admin/shop/finance/?clientid={|$userID|}&ok=1">{|$translate_ishodyashchih_platezhey|}</a>:
+            </div>
+            <div class="el-value">
+                {|$paymentOutCount|}
+                {|$translate_to_the_tune_of|}
+                {|$paymentOutSum|number_format:2|} {|$currency|}
+            </div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $paymentInCount > 0 OR $paymentOutCount > 0 OR $balance != 0|}
+    <div class="ob-data-element">
+        <div class="data-view">
+            <div class="el-caption">{|$translate_balance|}:</div>
+            <div class="el-value">
+                <strong style="color: {|$balanceColor|}">{|$balance|number_format:2|}&nbsp;{|$currency|}</strong>
+            </div>
+        </div>
+    </div>
+{|/if|}

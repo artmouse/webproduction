@@ -1,0 +1,14 @@
+{|if $showmanager|}
+    <div class="os-block-caption">{|$translate_your_manager|}</div>
+    <div class="os-block-manager">
+        <div class="image"><img src="{|$manageravatar|}" width="35" alt="{|$managername|}" title="{|$managername|}" /></div>
+        <div class="text">
+            <div class="name">{|$managername|}</div>
+            {|if $managerphone|}
+                {|$managerphone|}<br />
+            {|/if|}
+            <a class="os-link-dashed" href="mailto:{|$manageremail|}">{|$translate_contact_by_mail|}</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+{|/if|}

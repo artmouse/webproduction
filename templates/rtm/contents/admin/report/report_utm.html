@@ -1,0 +1,81 @@
+<div class="shop-filter-panel">
+    <div class="filter-toggle {|if $filterpanelCookie|}close{|/if|}"></div>
+    <div class="inner-pannel" {|if $filterpanelCookie|}style="display: none;"{|/if|}>
+    <form action="" method="get">
+        <div class="element">
+            <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="Дата заказа от" />
+        </div>
+
+        <div class="element">
+            <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="Дата заказа до" />
+        </div>
+
+        utm-метки
+        <select name="utm" class="chzn-select">
+            <option value="">---</option>
+            {|foreach from=$reportArray item="r"|}
+            <option value="{|$r.level|}|#|{|$r.id|}" {|if $r.selected|}selected{|/if|}>
+            {|if $r.level == 1|}
+            &nbsp;&nbsp;
+            {|elseif $r.level == 2|}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {|/if|}
+            {|$r.name|}
+            </option>
+            {|/foreach|}
+        </select>
+
+        <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        <div class="clear"></div>
+        <br />
+    </form>
+</div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $tableArray|}
+        <h1>UTM</h1>
+
+        <table border="0" class="shop-table">
+            <thead>
+            <tr>
+                <td align="right">Заказ</td>
+                <td align="right">utm_source</td>
+                <td align="right">utm_medium</td>
+                <td align="right">utm_campaign</td>
+                <td align="right">utm_content</td>
+                <td align="right">utm_term</td>
+                <td align="right">utm_term</td>
+                <td align="right">Дата заказа</td>
+                <td align="right">Время реакции,<br>дней</td>
+            </tr>
+            </thead>
+            {|foreach from=$tableArray item="e" key="clientID"|}
+            <tr>
+                <td><a href="{|$e.url|}" class="js-issue-preview" data-id="{|$e.id|}">#{|$e.id|} {|$e.name|}</a></td>
+                <td align="right">{|$e.source|}</td>
+                <td align="right">{|$e.medium|}</td>
+                <td align="right">{|$e.campaign|}</td>
+                <td align="right">{|$e.content|}</td>
+                <td align="right">{|$e.term|}</td>
+                <td align="right">{|$e.utm_date|}</td>
+                <td align="right">{|$e.order_date|}</td>
+                <td align="right">{|$e.date|}</td>
+            </tr>
+            {|/foreach|}
+        </table>
+        {|if $productCount|}
+        <br>
+        <span>Всего:{|$productCount|}</span>
+        {|/if|}
+        {|else|}
+        Выберите utm-метку
+        {|/if|}
+
+    </div>
+
+</div>
+
+<div class="clear"></div>
+

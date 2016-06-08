@@ -1,0 +1,9 @@
+{|if $bannerRightArray|}
+    {|foreach from=$bannerRightArray item="b"|}
+        <div class="cl-aside-block-banner">
+            <a href="{|$b.url|}" class="item" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+            <img src="{|$b.image|}" alt="{|$b.name|}" title="{|$b.name|}"/>
+            </a>
+        </div>
+    {|/foreach|}
+{|/if|}

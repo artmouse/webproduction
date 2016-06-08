@@ -1,0 +1,55 @@
+$bodyBg: #f8f8f8;
+$colorLinkBase: #007ecf;
+$colorBorderBase: #e1e1e1;
+$fontSizeBase: 14px;
+$lineHeightBase: 18px;
+
+@mixin box-sizing($boxsizing) {
+    -moz-box-sizing: $boxsizing;
+    -webkit-box-sizing: $boxsizing;
+    box-sizing: $boxsizing;
+}
+$bb: border-box;
+
+.doc-wrap-control {
+    .column-preview {
+        float: left;
+        width: 100%;
+
+        .inner-column-preview {
+            margin: 0 0 0 420px;
+        }
+    }
+
+    .column-control {
+        float: left;
+        width: 400px;
+        margin: 0 0 0 -100%;
+
+        &.no-preview {
+            margin: 0;
+        }
+    }
+}
+
+.doc-block-iframe {
+    border: 1px solid $colorBorderBase;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.doc-block-download {
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid $colorBorderBase;
+
+    a {
+        font-size: $fontSizeBase + 4;
+    }
+}
+
+.doc-scan-preview {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}

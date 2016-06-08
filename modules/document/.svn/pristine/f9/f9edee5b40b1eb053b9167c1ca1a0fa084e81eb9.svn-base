@@ -1,0 +1,166 @@
+{|if $block_menu|}
+    {|$block_menu|}
+{|else|}
+    <div class="nb-top-nav-place js-top-nav-buffer"></div>
+    <div class="nb-top-nav js-top-nav">
+        <div class="nb-block-tabs">
+            <div class="tab-element"><a href="/admin/document/">&lsaquo; Документы</a></div>
+            <div class="tab-element"><a href="/admin/document/{|$documentID|}/control/" class="selected" >Редактировать документ</a></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+{|/if|}
+
+<h1>Редактировать документ {|$control_name|}</h1>
+<br />
+
+{|if $message == "ok"|}
+    <div class="shop-message-success">
+        Документ успешно обновлен.
+    </div>
+{|/if|}
+
+{|if $message == "error"|}
+    <div class="shop-message-error">
+        Ошибка сохранения документа.<br />
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'document-number'|}
+                Необходимо указать номер документа.<br />
+            {|elseif $e == 'document-name'|}
+                Необходимо заполнить хотя бы одно из двух полей: Название документа и/или Шаблон документа.<br />
+            {|elseif $e == 'document-cdate'|}
+                Необходимо указать дату создания документа.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form action="." method="post" enctype="multipart/form-data" class="js-document-form-edit">
+    <div class="doc-wrap-control">
+        <div class="column-preview">
+            <div class="inner-column-preview">
+                <div class="nb-block-tabs js-slide-tabs js-document-tabs">
+                    {|if $allowField|}
+                        <div class="tab-element"><a class="selected" data-div="document" href="#">Документ{|if $control_content|} <em class="ob-icon-done"></em>{|/if|}</a></div>
+                    {|/if|}
+                    {|if $allowEdit|}
+                        <div class="tab-element"><a data-div="editor" href="#">Редактор{|if $control_content|} <em class="ob-icon-done"></em>{|/if|}</a></div>
+                    {|/if|}
+                    <div class="tab-element"><a data-div="original" href="#">Оригинал{|if $urlFileOriginal|} <em class="ob-icon-done"></em>{|/if|}</a></div>
+                    <div class="tab-element"><a data-div="scan" href="#">Скан-копия{|if $scan OR $urlFile|} <em class="ob-icon-done"></em>{|/if|}</a></div>
+                    <span class="hover"></span>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="js-div-document">
+                    <iframe class="doc-block-iframe" id="js-document-iframe" height="700" src="{|$urlDocumentField|}"></iframe>
+                </div>
+
+                <div class="js-div-editor" style="display: none;">
+                    <iframe class="doc-block-iframe" id="js-editor-iframe" height="700"></iframe>
+                    <textarea name="content" id="js-editor" style="display: none;">{|$control_content|}</textarea>
+                </div>
+
+                <div class="js-div-original" style="display: none;">
+                    <input type="file" name="fileoriginal" /><br />
+                    (на замену автоматически генерируемому файлу)<br />
+                    <br />
+
+                    {|if $urlFileOriginal|}
+                        <div class="doc-block-download">
+                            <a class="ob-link-download" href="{|$urlFileOriginal|}">Скачать</a>
+                        </div>
+                    {|/if|}
+                </div>
+
+                <div class="js-div-scan" style="display: none;">
+                    <input type="file" name="file"  /><br />
+                    <br />
+
+                    {|if $scan|}
+                        <img class="doc-scan-preview" src="{|$scan|}" title="" alt="" />
+                    {|/if|}
+
+                    {|if $urlFile|}
+                        <div class="doc-block-download">
+                            <a class="ob-link-download" href="{|$urlFile|}">Скачать</a>
+                        </div>
+                    {|/if|}
+                </div>
+            </div>
+        </div>
+
+        <div class="column-control">
+            <strong>Номер документа</strong><br />
+            <input type="text" name="number" value="{|$control_number|}" style="width: 100%;" />
+            <br />
+            <br />
+
+            <strong>Название документа</strong><br />
+            <input type="text" name="name" value="{|$control_name|}" style="width: 100%;" />
+            <br />
+            <br />
+
+            <strong>Тип документа</strong><br />
+            <select class="chzn-select" name="templateid">
+                <option value="">---</option>
+                {|foreach from=$templateArray item="e"|}
+                    <option value="{|$e.id|}" {|if $e.id == $control_templateid|} selected{|/if|}>{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+            <br />
+
+            <strong>Дата создания документа</strong><br />
+            <input type="checkbox" name="new" value="1" {|if $control_cdate|}checked{|/if|} class="js-document-checkbox-date">
+            <input type="text" name="cdate" value="{|$control_cdate|}" class="js-date" />
+            <br />
+            <br />
+
+            <strong>Дата отправки документа</strong><br />
+            <input type="checkbox" name="sent" value="1" {|if $control_sdate|}checked{|/if|} class="js-document-checkbox-date">
+            <input type="text" name="sdate" value="{|$control_sdate|}" class="js-date" />
+            <br />
+            <br />
+
+            <strong>Дата получения документа обратно</strong><br />
+            <input type="checkbox" name="recieved" value="1" {|if $control_bdate|}checked{|/if|} class="js-document-checkbox-date">
+            <input type="text" name="bdate" value="{|$control_bdate|}" class="js-date" />
+            <br />
+            <br />
+
+            <strong>Дата архивации документа</strong><br />
+            <input type="checkbox" name="archive" value="1" {|if $control_adate|}checked{|/if|} class="js-document-checkbox-date">
+            <input type="text" name="adate" value="{|$control_adate|}" class="js-date" />
+            <br />
+            <br />
+
+            <strong>Срок окончания действия документа</strong><br />
+            <input type="text" name="edate" value="{|$control_edate|}" class="js-date" />
+            <br />
+            <br />
+
+            <strong>Автор документа</strong><br />
+            <input type="text" name="" value="{|$authorName|}" style="width: 100%;" disabled />
+            <br />
+            <br />
+
+            <strong>Юридическое лицо</strong><br />
+            <select class="chzn-select" name="contractorid">
+                {|foreach from=$contractorArray item="e"|}
+                    <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected{|/if|}>{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input class="ob-button button-green" type="submit" name="ok" value="Сохранить" />
+
+        {|if !$e.urlFileOriginal|}
+            <a href="{|$urlPrint|}" class="ob-button" target="_blank" >Печать</a>
+            <a href="{|$urlPDF|}" class="ob-button">PDF</a>
+        {|/if|}
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

@@ -1,0 +1,93 @@
+{|foreach from=$notificationArray item="orderIDArray" key="type"|}
+    <div class="js-notify-wrap">
+        {|if $orderIDArray AND $type|}
+            <div class="type-caption" {|if $type == 'comment'|}id='js-anchcor-comment'{|elseif $type == 'email'|}id='js-anchcor-email'{|elseif $type == 'call'|}id='js-anchcor-call'{|elseif $type == 'notify'|}id='js-anchcor-notify'{|elseif $type == 'change'|}id='js-anchcor-change'{|elseif $type == 'commentresult'|}id='js-anchcor-commentresult'{|/if|}>
+
+                {|if $type == 'comment'|}
+                    <div class="nb-icon-sms type">
+                        <svg viewBox="0 0 16 16">
+                            <use xlink:href="#icon-notify"></use>
+                        </svg>
+                    </div>
+                {|elseif $type == 'email'|}
+                    <div class="nb-icon-mail type">
+                        <svg viewBox="0 0 16 16">
+                            <use xlink:href="#icon-mail"></use>
+                        </svg>
+                    </div>
+                {|elseif $type == 'call'|}
+                    <div class="nb-icon-call type">
+                        <svg viewBox="0 0 16 16">
+                            <use xlink:href="#icon-call"></use>
+                        </svg>
+                    </div>
+                {|elseif $type == 'notify'|}
+                    <div class="nb-icon-warning type">
+                        <svg viewBox="0 0 16 16">
+                            <use xlink:href="#icon-warning"></use>
+                        </svg>
+                    </div>
+                {|elseif $type == 'change'|}
+                    <div class="nb-icon-changes type">
+                        <svg viewBox="0 0 16 16">
+                            <use xlink:href="#icon-changes"></use>
+                        </svg>
+                    </div>
+                {|elseif $type == 'commentresult'|}
+                    <div class="nb-icon-done type">
+                        <svg viewBox="0 0 16 16">
+                            <use xlink:href="#icon-done"></use>
+                        </svg>
+                    </div>
+                {|/if|}
+                {|$typeNameArray.$type|}
+            </div>
+        {|/if|}
+
+        {|foreach from=$orderIDArray item="orderID"|}
+            {|assign var=e value=`$orderArray.$orderID`|}
+            <div class="list-element js-notification-element">
+                <div class="remove-notification js-notification-close" data-id="{|$e.id|}" data-count="{|$e.commentCount|}">
+                    <div class="delete-icon-wrap">
+                        <span class="nb-icon-close">
+                            <svg viewBox="0 0 16 16">
+                                <use xlink:href="#icon-close"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <a href="#" onclick="smart_popup_open('{|$e.id|}'); return false;">
+                    <span class="identifier" style="background-color: {|$e.color|};"></span>
+                    <span class="element-head">
+                        <span class="name">
+                            {|if !$commentArray.$orderID|}
+                                <span class="date">{|$e.date|}</span>
+                            {|/if|}
+                            {|$e.name|}
+                            <span class="clear"></span>
+                        </span>
+                        {|$e.description|}
+                    </span>
+                    {|foreach from=$commentArray.$orderID item="comment"|}
+                        <span class="element-comment {|if !$comment.userImage|}no-avatar{|/if|}">
+                            <span class="name">
+                                {|if $comment.userImage|}
+                                    <span class="avatar nb-block-avatar" style="background-image: url('{|$comment.userImage|}');"></span>
+                                {|/if|}
+                                {|if $comment.user|}{|$comment.user|}{|/if|}
+                                <span class="date">{|$comment.date|}</span>
+                                <span class="clear"></span>
+                            </span>
+
+                            {|if $comment.toUser && $comment.contentWithOutUser|}
+                                <span class="marked">{|$comment.toUser|}</span>{|$comment.contentWithOutUser|}
+                            {|else|}
+                                {|$comment.text|}
+                            {|/if|}
+                        </span>
+                    {|/foreach|}
+                </a>
+            </div>
+        {|/foreach|}
+    </div>
+{|/foreach|}

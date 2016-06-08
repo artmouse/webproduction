@@ -1,0 +1,74 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/role/">{|$translate_spisok_roley|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h1>{|$translate_redaktirovanie_roli|}</h1>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <strong>{|$translate_nazvanie_roli|}</strong><br />
+    <input  type="text" name="name"  value="{|$control_name|}"  style="width: 80%; "  />
+    <br />
+    <br />
+    <strong>{|$translate_opisanie_roli|}</strong><br />
+    <textarea name="description" value="{|$control_description|}" style="width: 100%; height: 100px;" ></textarea>
+    <br />
+    <br />
+    <strong>{|$translate_cvet_bloka_roli|}</strong><br />
+    <input  type="text" name="blockcolor" value="{|$control_blockcolor|}"  style="width: 80%; "  />
+    <br />
+    <br />
+    <strong>{|$translate_podchinyaetsya|}</strong><br />
+    <select name="parentid" >
+        <option value="">---</option>
+        {|foreach from=$arrayRole item='e'|}
+            <option value="{|$e.id|}" {|if $e.id == $control_parentid|}selected{|/if|}>
+                {|section name=foo start=0 loop=$e.level|}
+                    &nbsp;&nbsp;&nbsp;
+                {|/section|}
+                {|$e.name|}
+            </option>
+ 
+        {|/foreach|}
+    </select>
+    <br />
+    <br />
+    {|foreach from=$arrayRoleControlValue key='id' item='k'|}
+        <strong>KPI{|$id|}</strong><br />
+        <select name="kpi{|$id|}id" >
+            <option value="0"  selected >---</option>
+            {|foreach from=$arrayKpi item='e'|}
+                <option value="{|$e.id|}"{|if $e.id == $k.kpiid|}selected{|/if|} >{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_parametr|}</strong><br />
+        <input  type="text" name="kpi{|$id|}param" value="{|$k.kpiparam|}" style="width: 80%; "/>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_fakticheskoe_znachenie|}</strong><br />
+        <input  type="text" name="kpi{|$id|}value" value="{|$k.kpivalue|}" style="width: 80%; "/>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_bp_dlya_zp|}</strong><br />
+        <select name="salary{|$id|}workflowid" >
+            <option value=""  selected >---</option>
+            {|foreach from=$arrayWorkflow item='e'|}
+                <option value="{|$e.id|}" {|if $e.id == $k.salaryworkflowid|}selected{|/if|} >{|$e.name|}</option>
+            {|/foreach|}
+        </select>
+        <br />
+        <br />
+        <strong>KPI{|$id|} {|$translate_koefitsient_dlya_zp|}</strong><br />
+        <input  type="text" name="salary{|$id|}koef"  value="{|$k.salarykoef|}" style="width: 80%; "/>
+        <br />
+        <br />   
+    {|/foreach|}
+
+    <input type="submit" name="formsUpdate" value="{|$translate_save|}" />
+    <input type="submit" name="formsDelete" value="{|$translate_delete|}" onclick="return confirm('{|$translate_podtverzhdaete_udalenie|}?');" />
+</form>

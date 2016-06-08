@@ -1,0 +1,286 @@
+<h1>
+    Интеграция OneBox и телефонии - история звонков (CDR, FTP, HTTP)
+</h1>
+
+<p>
+    Эта статья описывает какими способами можно настроить передачу информации о звонках в события OneBox.
+</p>
+<br/>
+
+<p>
+    CDR - call data row (запись о звонке) - это чисто технический термин в сфере телефонии.
+</p>
+<br/>
+
+<p>
+    Внутри OneBox аналог CDR - это объект ShopEvent (событие с типом type=call).
+    <br/>
+    Поэтому, когда требуется передача истории звонков в OneBox - это по сути просто вставка записей в таблицу ShopEvent
+    и вызов одно метода processEventParameters().
+</p>
+
+<p>
+    Ниже приведет пример вставки одного звонка в базу со всеми необходимыми полями:
+</p>
+
+<br/>
+<code>
+    <pre>
+try {
+    $call = EventService::Get()->addCall(...);
+} catch (Exception $ge) {
+    SQLObject::TransactionRollback();
+    print $ge;
+}
+    </pre>
+</code>
+<br/>
+
+<p>
+    Обязательные поля только:
+    <br/>
+    cdate - дата звонка
+    <br/>
+    from - номер от кого
+    <br/>
+    to - номер кому
+    <br/>
+    все остальные поля не обязательные
+</p>
+<br/>
+
+<h2>Способы получения звонков</h2>
+<p>
+    Когда клиент просит интегрировать телефонию с OneBox - наиболее часто бывают мы сталкиваемся с такими источниками
+    звонков:
+</p>
+
+<ul>
+    <li><strong>Таблица (MySQL/PgSQL) на стороне телефонии.</strong>
+        <br/>
+        Например, когда телефонию настраиваем мы, то лог звонков сразу пишется в таблицу CDR и OneBox по умолчанию пытается
+        ее прочитать.
+        <br/>
+        Для примера - смотрите метод processCallCDR() в сервисе EventService.
+    </li>
+
+    <li><strong>Файлы CDR</strong>, доступные по HTTP, FTP.<br />
+    Формат СDR - тот же CSV. Его можно просто открыть и прочитать preg_match-ами. Одна строка = один звонок.</li>
+</ul>
+<br/>
+
+<h2>
+    Способ 1: Записи звонков на FTP
+</h2>
+
+<p>
+    Тоже очень частый способ. По сути сводится к тому, что клиент дает FTP-аккаунт, на котором в одной или нескольких
+    папках лежат wav (реже mp3) файлы. Один звонок = один файл. Формат имени файла и структура папок меняется от проекта
+    к проекту, но в целом она похожа на: date_from_to.wav
+</p>
+
+<p>
+    Задача разработчика в таком случае - написать cron-обработчик, который будет раз в час подключаться к этому FTP и
+    вычитывать оттуда звонки.
+</p>
+<br/>
+
+<p>
+    Пример подключения по FTP:
+</p>
+
+<br/>
+<code>
+    <pre>
+$ftp = ftp_connect($ftpHost, $ftpPort, 10);
+ftp_login($ftp, $ftpLogin, $ftpPassword);
+ftp_pasv($ftp, true); // эта строка, обязательно после ftp_login
+
+// пример получения списка файлов в директории
+$a = ftp_nlist($ftp, '.');
+print_r($a);
+
+// перети в директорию
+ftp_chdir($ftp, 'test');
+
+// пример копирования файлов
+ftp_get($ftp, $fileSound_local, $ftpPath . $event->getFile(), FTP_BINARY);
+
+ftp_close($ftp);
+    </pre>
+</code>
+<br/>
+
+<p>
+    Важно: чаще чем раз в час подключаться и читать список файлов по FTP не нужно, потому что FTP работает не быстро.
+</p>
+<br/>
+
+<h2>
+    Способ 2: Записи звонков на HTTP
+</h2>
+
+<p>
+    Это особый вид извращений, когда вместо FTP нам дают HTTP доступ и говорят “читайте отсюда”. В таком случае задача
+    сводится к парсеру сайта, где через CURL + preg_match нужно получать список файлов.
+</p>
+<br/>
+
+<p>
+    Пример кода:
+</p>
+
+<br/>
+<code>
+    <pre>
+class Lactusan_Cron_CallRecord implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+        $event;
+
+        $url = 'http://95.158.4.190/replay/records/';
+        $login = 'xxxx';
+        $password = 'xxxx';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5 * 60);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        //var_dump($statusCode);
+        //var_dump($result);
+
+        if (preg_match_all('/&lt;a href=\"(.+?)\.wav\"/ius', $result, $r)) {
+
+            $numberProcessor=false;
+            try {
+                $numberProcessorClass=Engine::Get()->getConfigField('project-box-event-parser-call-processor');
+
+                if (class_exists($numberProcessorClass)) {
+                    $numberProcessor = new $numberProcessorClass();
+                }
+            } catch (Exception $e) {
+
+            }
+
+            foreach ($r[1] as $index => $x) {
+                $x = explode('-', $x);
+                print_r($x);
+
+                // кто звонит
+                $from = $x[3];
+
+                // на какой номер
+                $channel = $x[4];
+
+                $session = false;
+                $pickup = false;
+                $date = substr($x[1], 0, 4) . '-' . substr($x[1], 4, 2) . '-' . substr($x[1], 6, 2);
+                $date .= ' ';
+                $date .= substr($x[2], 0, 2) . ':' . substr($x[2], 2, 2) . ':' . substr($x[2], 4, 2);
+
+                //print $date;
+
+                /*if (preg_match("/^\d+$/ius", $pickup)) {
+                // если пикап это цифры - то это явно принятый звонок
+                $to = $pickup;
+                $status = 'ANSWER';
+                } else {
+                // иначе to - это канал
+                $to = $channel;
+
+                // а в поле пикап записан статус
+                $status = $pickup;
+                }*/
+
+                $status = 'ANSWER';
+                $to = $x[4];
+                if (!$to) {
+                    $status = 'CANCEL';
+                }
+
+                $from = str_replace('+', '', $from);
+                $to = str_replace('+', '', $to);
+                $channel = str_replace('+', '', $channel);
+
+                $duration = (int)@$x['duration'];
+                $file = $r[0][$index];
+
+                if (!$date) {
+                    continue;
+                }
+
+                if (!$from) {
+                    continue;
+                }
+
+                if (!$to) {
+                    continue;
+                }
+
+                if ($numberProcessor) {
+                    $from = $numberProcessor->process($from);
+                    $to = $numberProcessor->process($to);
+                    $channel = $numberProcessor->process($channel);
+                }
+
+                if (preg_match("/^0/", $from)) {
+                    $from = '38' . $from;
+                }
+                if (preg_match("/^0/", $to)) {
+                    $to = '38' . $to;
+                }
+
+                // формат с секундами, это важно
+                $date = DateTime_Object::FromString($date)->setFormat('Y-m-d H:i:s')->__toString();
+
+                /*if ($file) {
+                $file = '/'.substr($file, 0, 8).'/'.$file;
+                }*/
+
+                try {
+                    SQLObject::TransactionStart();
+
+                    EventService::Get()->addCall(
+                        $from,
+                        $to,
+                        $date,
+                        $file,
+                        $status,
+                        $channel,
+                        $session,
+                        $duration
+                    );
+
+                    SQLObject::TransactionCommit();
+                } catch (Exception $ge) {
+                    SQLObject::TransactionRollback();
+                    print $ge;
+                }
+            }
+        }
+    }
+
+}
+    </pre>
+</code>
+<br/>
+
+<h2>shopevent.file</h2>
+<p>
+    Наиболее частый вопрос у разработчиков - что писать в поле shopevent.file?
+    <br/>
+    <strong>Самый правильный способ</strong> - это писать туда путь на файл, полный путь на файл откуда вы его берете. Причем копировать
+    файл себе не надо!
+    <br/>
+    Например:
+    <br/>
+    ftp://xxx.com/myfile.wav
+    <br/>
+    http://xxx.com/myfile.wav
+</p>

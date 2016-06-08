@@ -1,0 +1,335 @@
+{|* begin: блок фильтров *|}
+<div class="rtm-filter-tabs js-filter-block">
+    <a href="javascript:void(0);" class="tab left-tab js-price-show active" data-type="js-pryce-type-1">Цена</a>
+    <a href="javascript:void(0);" class="tab right-tab js-price-show" data-type="js-pryce-type-2">Вес</a>
+</div>
+<div class="rtm-filter-toggle">
+    <span class="close js-filter-toggle"></span>
+    <span class="rtm-submit js-filter-toggle">Подбор по параметрам</span>
+</div>
+
+<div class="rtm-filter-block js-filter-block">
+    <form method="get" action="{|$currentURL|}" class="js-form-filters">
+        <div class="price-type js-pryce-type-1">
+            <div class="rtm-filter-toggler">
+                <span class="f-left js-f-left">за работу</span>
+                <i class="jsFilterToggle"></i>
+                <span class="f-right js-f-right">за изделие</span>
+                <div class="clear"></div>
+            </div>
+
+            <input type="hidden" id="check" name="check" value="0"/>
+            <div class="element no-border">
+                {|if $maxprice > 0|}
+                    <div class="name js-price-name">Цена</div>
+                    от
+                    <input type="text" id="minCost" name="filterpricefrom" value="{|$control_filterpricefrom|}" />
+                    до
+                    <input type="text" id="maxCost"  name="filterpriceto" value="{|$control_filterpriceto|}" />
+                    <br /><br />
+
+                    <div class="filter-slider js-slider-price" style="display: none;">
+                        <div id="sliderPrice"></div>
+                        <script type="text/javascript">
+                            jQuery("#sliderPrice").slider({
+                                min: 0,
+                                max: {|$maxprice|},
+                                values: [{|$filterpricefrom_value|},{|$filterpriceto_value|}],
+                                range: true,
+                                stop: function(event, ui) {
+                                minVal = ui.values[0];
+                                maxVal = ui.values[1];
+
+                                jQuery("input#minCost").val(minVal);
+                                jQuery("input#maxCost").val(maxVal);
+                            },
+                            slide: function(event, ui){
+                                minVal = ui.values[0];
+                                maxVal = ui.values[1];
+                                jQuery("input#minCost").val(minVal);
+                                jQuery("input#maxCost").val(maxVal);
+                            }
+                            });
+                        </script>
+                    </div>
+
+
+                    <div class="filter-slider js-slider-price-product">
+                        <div id="sliderProductPrice"></div>
+                        <script type="text/javascript">
+                            jQuery("#sliderProductPrice").slider({
+                                min: 0,
+                                max: {|$maxProductPrice|},
+                                values: [{|$filterpricefrom_value|},{|$filterpriceto_value|}],
+                                range: true,
+                                stop: function(event, ui) {
+                                minVal = ui.values[0];
+                                maxVal = ui.values[1];
+
+                                jQuery("input#minCost").val(minVal);
+                                jQuery("input#maxCost").val(maxVal);
+                            },
+                            slide: function(event, ui){
+                                minVal = ui.values[0];
+                                maxVal = ui.values[1];
+                                jQuery("input#minCost").val(minVal);
+                                jQuery("input#maxCost").val(maxVal);
+                            }
+                            });
+                        </script>
+                    </div>
+
+                {|/if|}
+            </div>
+        </div>
+
+        <div class="price-type js-pryce-type-2" style="display: none;">
+            <div class="element no-border">
+                {|if $maxWeight > 0|}
+                <div class="name js-weight-name">Вес изделия</div>
+                от
+                <input type="text" id="minWeight" name="filterweightfrom" value="{|$control_filterweightfrom|}" />
+                до
+                <input type="text" id="maxWeight"  name="filterweightto" value="{|$control_filterweightto|}" />
+                <br /><br />
+
+                <div class="filter-slider js-slider-weight">
+                    <div id="sliderWeight"></div>
+                    <script type="text/javascript">
+                        jQuery("#sliderWeight").slider({
+                                    min: 0,
+                                    max: {|$maxWeight|},
+                                    step: 0.01,
+                                values: [{|$filterWeightfrom_value|},{|$filterWeightto_value|}],
+                        range: true,
+                                stop: function(event, ui) {
+                            minVal = ui.values[0];
+                            maxVal = ui.values[1];
+
+                            jQuery("input#minWeight").val(minVal);
+                            jQuery("input#maxWeight").val(maxVal);
+                        },
+                        slide: function(event, ui){
+                            minVal = ui.values[0];
+                            maxVal = ui.values[1];
+                            jQuery("input#minWeight").val(minVal);
+                            jQuery("input#maxWeight").val(maxVal);
+                        }
+                        });
+                    </script>
+                </div>
+
+                {|/if|}
+            </div>
+        </div>
+
+        {|foreach from=$filtersArray item="e" key="index"|}
+
+            {|if $e.name == 'Вид изделия'|}
+                <div class="element">
+                    <div class="name">Категория</div>
+
+                    {|foreach from=$e.valuesArray item="v"|}
+                        <label class="rtm-checkbox-cat js-rtm-checkbox-cat js-rtm-filter-checkbox {|if $v.selected|} selected {|elseif $v.disabled|} disabled {|/if|}" data-url="{|$e.filterUrl|}">
+                            <input class="hidden" type="checkbox" value="{|$v.value|}">
+                            <span>{|$v.name|}</span>
+                        </label>
+                        <br class="no-320"/>
+                    {|/foreach|}
+
+                </div>
+            {|/if|}
+
+            {|if $e.name == 'Размер'|}
+                <div class="element">
+                    <div class="name">Размер</div>
+                    <div class="rtm-size-filters">
+                        {|foreach from=$e.valuesArray item="v"|}
+                            <label class="rtm-checkbox-size js-rtm-checkbox-size js-rtm-filter-checkbox {|if $v.selected|} selected {|elseif $v.disabled|} disabled {|/if|}" data-url="{|$e.filterUrl|}" >
+                                <input class="hidden" type="checkbox" value="{|$v.value|}">
+                                <span>{|$v.name|}</span>
+                            </label>
+                        {|/foreach|}
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            {|/if|}
+
+            {|if $e.name == 'Тип изделия'|}
+                <div class="element">
+                    <div class="name">Тип изделия</div>
+                    {|foreach from=$e.valuesArray item="v"|}
+                        <label class="rtm-checkbox-cat js-rtm-filter-checkbox js-rtm-checkbox-type{|if $v.selected|} selected {|elseif $v.disabled|} disabled {|/if|}" data-url="{|$e.filterUrl|}">
+                            <input class="hidden" type="checkbox" value="{|$v.value|}">
+                            <span>{|$v.name|}</span>
+                        </label>
+                        <br class="no-320"/>
+                    {|/foreach|}
+                </div>
+            {|/if|}
+
+            {|if $e.name == 'Цвет камня'|}
+                <div class="element">
+                    <div class="name">Цвет камня</div>
+                    <div class="rtm-color-filters">
+                        {|foreach from=$e.valuesArray item="v"|}
+                            <label class="{|$v.value|} js-rtm-filter-checkbox js-rtm-checkbox-color {|if $v.selected|} selected {|elseif $v.disabled|} disabled {|/if|}" title="{|$v.title|}" data-url="{|$e.filterUrl|}">
+                                <input class="hidden" type="checkbox" value="{|$v.value|}">
+                            </label>
+                        {|/foreach|}
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            {|/if|}
+        {|/foreach|}
+        <div class="buttons">
+            <input type="submit"  value="Применить" class="js-form-filters-submit rtm-submit small dark" />
+            <br class="no-320"/>
+            <a href="{|$currentURL|}{|if $control_query|}?query={|$control_query|}{|/if|}" class="rtm-submit small js-reset-filters">Сбросить </a>
+        </div>
+    </form>
+</div>
+
+{|* end: блок фильтров *|}
+
+<script type="text/javascript">
+    $j(function() {
+        filterTransform();
+
+        $j('.js-rtm-filter-checkbox').live('click', function (event) {
+            if( $j(event.target).is("input") ) {
+                if ( $j(this).hasClass('selected') ) {
+                    $j(this).removeClass('selected');
+                } else if ( !$j(this).hasClass('disabled') ) {
+                    $j(this).addClass('selected');
+                }
+            }
+        });
+
+        // обработчик кнопки применения фильтров
+        $j('.js-form-filters-submit').click( function() {
+            var url = '';
+            var tmpUrl = '';
+            // формируем урл фильтров для размеров
+            tmpUrl = makeFilterValues('.js-rtm-checkbox-size', ',');
+            if (tmpUrl != '') {
+                var filterUrl = getFilterUrl('.js-rtm-checkbox-size');
+                url += '_'+filterUrl+'='+tmpUrl;
+            }
+
+            // формируем урл фильтров для категорий
+            tmpUrl = makeFilterValues('.js-rtm-checkbox-cat', ',');
+            if (tmpUrl != '') {
+                var filterUrl = getFilterUrl('.js-rtm-checkbox-cat');
+                url += '_'+filterUrl+'='+tmpUrl;
+            }
+
+            // формируем урл фильтров для типов
+            tmpUrl = makeFilterValues('.js-rtm-checkbox-type', ',');
+            if (tmpUrl != '') {
+                var filterUrl = getFilterUrl('.js-rtm-checkbox-type');
+                url += '_'+filterUrl+'='+tmpUrl;
+            }
+
+            // формируем урл фильтров для цветов
+            tmpUrl = makeFilterValues('.js-rtm-checkbox-color', ',');
+            if (tmpUrl != '') {
+                var filterUrl = getFilterUrl('.js-rtm-checkbox-color');
+                url += '_'+filterUrl+'='+tmpUrl;
+            }
+
+            // цена от и до
+            if ($j('#minCost').val()) {
+                url += '_'+'price-from=' + Math.round($j('#minCost').val().replace(',', '.'));
+            }
+            if ($j('#maxCost').val()) {
+                url += '_'+'price-to=' + Math.round($j('#maxCost').val().replace(',', '.'));
+            }
+
+            // вес от и до
+            if ($j('#minWeight').val()) {
+                url += '_'+'weight-from='+$j('#minWeight').val().replace('.', '-').replace(',', '-');
+            }
+            if ($j('#maxWeight').val()) {
+                url += '_'+'weight-to='+$j('#maxWeight').val().replace('.', '-').replace(',', '-');
+            }
+
+            if ($j('#check').val() != 0) {
+                url += '_check='+$j('#check').val();
+            }
+
+            if (url != '') {
+                var pathname = location.pathname;
+                if (pathname.indexOf('/filter') != -1) { // фильтра уже есть
+                    var categoryUrl = pathname.substring(0, pathname.indexOf('/filter')); // получаем категорию
+                    url = categoryUrl+'/filter'+url;
+                } else {
+                    url = pathname+'/filter'+url;
+                }
+                url = url.replace('//', '/');
+                location.href = url;
+            } else {
+                location = $j('.js-reset-filters').attr('href');
+            }
+            return false;
+        });
+
+        // Переключатель скролингов для цены и веса
+        $j('.js-price-show').click(function() {
+
+            if (!$j(this).hasClass('active')) {
+                var weightClass = 'js-pryce-type-2';
+                var priceClass = 'js-pryce-type-1';
+                var dataClass = $j(this).data('type');
+                var otherClass = '';
+                if (dataClass == weightClass) {
+                    otherClass = priceClass;
+                    $j('#sliderWeight').show();
+                } else {
+                    otherClass = weightClass;
+                }
+                $j('a[data-type="'+otherClass+'"]').removeClass('active');
+                $j('.'+otherClass).hide();
+                $j('.' + $j(this).data('type')).show();
+                $j(this).addClass('active');
+
+            }
+
+        });
+
+        $j(document).ready( function() {
+            if(!$j('#maxCost').val() && $j('#maxWeight').val()) { // Показываем фильтр веса если фильтр цены не заполнен
+                $j('a[data-type="js-pryce-type-2"]').click();
+            }
+        });
+
+        /**
+         * Формирует набор значений фильтра разделенных delimiter
+         * @param elementIdentifier
+         * @param delimiter
+         * @returns {string}
+         */
+        function makeFilterValues(elementIdentifier, delimiter) {
+            var tmpUrl = '';
+            // формируем урл фильтров
+            $j(elementIdentifier).each( function() {
+                if ($j(this).hasClass('selected')) {
+                    var val = $j(this).find('input').val();
+                    if (val) {
+                        if (tmpUrl == '') {
+                            tmpUrl += val;
+                        } else {
+                            tmpUrl += delimiter+val;
+                        }
+                    }
+                }
+            });
+            return tmpUrl;
+        }
+
+        function getFilterUrl(elementIdentifier) {
+            return $j(elementIdentifier).data('url');
+        }
+    });
+</script>

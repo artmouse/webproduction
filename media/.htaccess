@@ -1,0 +1,6 @@
+RewriteEngine off
+RemoveType php
+
+<IfModule mod_php5>
+    php_flag engine 0
+</IfModule>

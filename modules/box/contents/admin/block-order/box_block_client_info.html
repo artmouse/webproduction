@@ -1,0 +1,317 @@
+<div class="ob-block-details">
+    <div class="flex-wrap">
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_contact|}:</div>
+                <div class="el-value">
+                    {|if $clientName|}
+                        <a href="{|if $clientURL|}{|$clientURL|}{|else|}#{|/if|}" class="js-contact-preview"
+                           data-id="{|$clientID|}">{|$clientName|}</a>
+                    {|/if|}
+                    {|if $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit" style="padding-right: 70px;">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <input type="text" id="id-user-name-client" value="{|$client|}" placeholder="{|$clientName|}"/>
+                <input class="js-disabled" type="hidden" name="changeuser" id="id-user-value-client"/>
+            </div>
+        </div>
+
+        <div class="js-user-view">
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_fio|}:</div>
+                    <div class="el-value">
+                        {|$control_clientname|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" onclick="$j('#update_user_card_client').show();" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input class="js-disabled" type="text" name="clientname" value="{|$control_clientname|}"/>
+                </div>
+            </div>
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">Email:</div>
+                    <div class="el-value">
+                        {|if $control_clientemail|}
+                            <a class="ob-link-email ob-link-dashed js-email-write js-tooltip tooltipstered"
+                               data-email="{|$control_clientemail|}"
+                               href="javascript:void(0);">{|$control_clientemail|}</a>
+                        {|/if|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" onclick="$j('#update_user_card_client').show();" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input class="js-disabled" type="text" name="clientemail" value="{|$control_clientemail|}"/>
+                </div>
+            </div>
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_phone|}:</div>
+                    <div class="el-value">
+                        {|if $control_clientphone|}
+                            <a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="#"
+                               data-phone="{|$control_clientphone|}"
+                               title="{|$translate_pozvonit|}">{|$control_clientphone|}</a>
+                        {|/if|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" onclick="$j('#update_user_card_client').show();" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input class="js-disabled" type="text" name="clientphone" value="{|$control_clientphone|}"/>
+                </div>
+            </div>
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_clientaddress|}:</div>
+                    <div class="el-value">
+                        {|$control_clientaddress|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" onclick="$j('#update_user_card_client').show();" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit js-data-element">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input class="js-disabled" type="text" name="clientaddress" value="{|$control_clientaddress|}"/>
+                </div>
+            </div>
+        </div>
+
+        {|if $orderClientCompany|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|if $control_direction|}{|$translate_menedzher_postavshchika|}{|else|}{|$translate_menedzher_klienta|}{|/if|} :
+                    </div>
+                    <div class="el-value">
+                        {|if $clientManagerName|}
+                            <a href="{|if $clientManagerURL|}{|$clientManagerURL|}{|else|}#{|/if|}"
+                               class="js-contact-preview"
+                               data-id="{|$clientManagerID|}">{|$clientManagerName|}</a>
+                        {|/if|}
+                        {|if $canEdit|}
+                            <a class="ob-link-edit" href="#"></a>
+                        {|/if|}
+                    </div>
+                </div>
+                <div class="data-edit">
+                    <a class="ob-link-delete" href="#"></a>
+                    <a class="ob-link-accept" href="#"></a>
+                    <input type="text" id="id-clientmanager-name-client" value="" placeholder="{|$clientManagerName|}"/>
+                    <input class="js-disabled" type="hidden" name="changeclientmanager"
+                           id="id-clientmanager-value-client"/>
+                </div>
+            </div>
+        {|/if|}
+
+        {|foreach from=$customFieldArray item="c"|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$c.name|}:</div>
+                    <div class="el-value">
+                        {|$c.value|}
+                    </div>
+                </div>
+            </div>
+        {|/foreach|}
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_sum|}:</div>
+                <div class="el-value">
+                    {|$sum|number_format:2|} {|$orderCurrency|}
+                </div>
+            </div>
+        </div>
+
+        {|if $finance|}
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_paid|}:</div>
+                    <div class="el-value">
+                        {|$paymentSum|number_format:2|} {|$orderCurrency|}
+                    </div>
+                </div>
+            </div>
+            <div class="ob-data-element js-data-element">
+                <div class="data-view">
+                    <div class="el-caption">{|$translate_balance|}:</div>
+                    <div class="el-value">
+                        {|if $paymentBalance|number_format:2 < 0|}
+                            <span class="important">{|$paymentBalance|number_format:2|} {|$orderCurrency|}</span>
+                        {|else|}
+                            <span class="good">{|$paymentBalance|number_format:2|} {|$orderCurrency|}</span>
+                        {|/if|}
+                    </div>
+                </div>
+            </div>
+        {|/if|}
+
+        <div class="ob-data-element js-data-element">
+            <div class="data-view">
+                <div class="el-caption">{|$translate_responsible|}:</div>
+                <div class="el-value">
+                    {|if $managerName|}
+                        <a href="{|if $managerURL|}{|$managerURL|}{|else|}#{|/if|}" class="js-contact-preview"
+                           data-id="{|$managerID|}">{|$managerName|}</a>
+                    {|/if|}
+                    {|if $canEdit|}
+                        <a class="ob-link-edit" href="#"></a>
+                    {|/if|}
+                </div>
+            </div>
+            <div class="data-edit">
+                <a class="ob-link-delete" href="#"></a>
+                <a class="ob-link-accept" href="#"></a>
+                <select name="manager" class="chzn-select js-disabled">
+                    <option value="">---</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+        <div class="ob-data-empty"></div>
+    </div>
+</div>
+
+<script>
+    $j(function() {
+        var query = '';
+        if ($j('#id-user-name-client').length) {
+            $j('#id-user-name-client').autocomplete({
+                delay: 500,
+                source: function( request, response ) {
+                    query = request.term;
+                    $j.ajax({
+                        url: "/admin/shop/users/ajax/autocomplete/select2/",
+                        dataType: "json",
+                        data:{
+                            name: request.term
+                        },
+                        success: function( data ) {
+                            if (data==null) response(null);
+                            response( $j.map( data, function( item ) {
+                                name = item.name;
+                                return {
+                                    id: item.id,
+                                    label: name,
+                                    value: name
+                                }
+                            }));
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $j('#id-user-value-client').val(ui.item.id);
+                },
+                minLength:3
+            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                ul.removeClass().addClass("ob-autocomplete");
+                var inner_html = '<span>'+item.label+'</span>';
+                if (item.id === 0) {
+                    inner_html = '<span class="ob-link-add ob-link-dashed">'+item.label+'</span>';
+                    return $j( "<li onclick='addUserOrderInSelectWindow(\""+query+"\")'></li>" )
+                            .data( "item.autocomplete", item )
+                            .append(inner_html)
+                            .appendTo( ul );
+                } else {
+                    return $j( "<li></li>" )
+                            .data( "item.autocomplete", item )
+                            .append(inner_html)
+                            .appendTo( ul );
+                }
+            };
+        }
+    });
+
+    $j(function() {
+        if ($j('#id-clientmanager-name-client').length) {
+            var query = '';
+            $j('#id-clientmanager-name-client').autocomplete({
+                delay: 500,
+                source: function( request, response ) {
+                    query = request.term;
+                    $j.ajax({
+                        url: "/admin/shop/users/ajax/autocomplete/select2/",
+                        dataType: "json",
+                        data:{
+                            name: request.term,
+                            onlyPerson: true
+                        },
+                        success: function( data ) {
+                            if (data==null) response(null);
+                            response( $j.map( data, function( item ) {
+                                name = item.name;
+                                return {
+                                    id: item.id,
+                                    label: name,
+                                    value: name
+                                }
+                            }));
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $j('#id-clientmanager-value-client').val(ui.item.id);
+                },
+                minLength:3
+            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                ul.removeClass().addClass("ob-autocomplete");
+                var inner_html = '<span>'+item.label+'</span>';
+                if (item.id === 0) {
+                    inner_html = '<span class="ob-link-add ob-link-dashed">'+item.label+'</span>';
+                    return $j( "<li onclick='addManagerInSelectWindow(\""+query+"\")'></li>" )
+                            .data( "item.autocomplete", item )
+                            .append(inner_html)
+                            .appendTo( ul );
+                } else {
+                    return $j( "<li></li>" )
+                            .data( "item.autocomplete", item )
+                            .append(inner_html)
+                            .appendTo( ul );
+                }
+            };
+        }
+    });
+
+
+    function addUserOrderInSelectWindow (name) {
+        selectwindow_init('w2', 'id-user-name-client', 'id-user-value-client', {
+            usersearch: true,
+            useradd: true,
+            selectedTab:1,
+            userAddDefault:name
+        });
+
+    }
+    function addManagerInSelectWindow (name) {
+        selectwindow_init('w3', 'id-clientmanager-name-client', 'id-clientmanager-value-cient', {
+            usersearch: true,
+            useradd: true,
+            selectedTab:1,
+            userAddDefault:name
+        });
+    }
+</script>

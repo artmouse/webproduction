@@ -1,0 +1,34 @@
+{|assign var=divider value=9|}
+{|assign var=line value=0|}
+{|foreach from=$categoryArray item="e1" key="key"|}
+    <div class="nav-element">
+        <div class="element-inner">
+            <a href="{|$e1.url|}"><span>{|$e1.name|}</span></a>
+            {|if $e1.childsArray|}
+                <div class="sub">
+                    <ul class="js-category-list">
+                        {|foreach from=$e1.childsArray item="e2" key="keye2"|}
+                            <li>
+                                <div class="level-1">
+                                    <a href="{|$e2.url|}">{|$e2.name|}</a>{|if not $e2.childsArray|}{|if $e2.productCount|}<span class="count">({|$e2.productCount|})</span>{|/if|}{|/if|}
+                                </div>
+                                {|if $e2.childsArray|}
+                                    {|foreach from=$e2.childsArray item="e3"|}
+                                        <div class="level-2">
+                                            <a href="{|$e3.url|}">{|$e3.name|}</a>{|if $e3.productCount|}<span class="count">({|$e3.productCount|})</span>{|/if|}
+                                        </div>
+                                    {|/foreach|}
+                                {|/if|}
+                            </li>
+                        {|/foreach|}
+                    </ul>
+                </div>
+            {|/if|}
+        </div>
+    </div>
+    {|if ($key+1) == (($line+1)*$divider)|}
+        {|assign var=line value=$line+1|}
+        </div>
+        <div class="nav-inner">
+    {|/if|}
+{|/foreach|}

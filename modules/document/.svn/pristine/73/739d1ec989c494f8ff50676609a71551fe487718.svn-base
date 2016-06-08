@@ -1,0 +1,6 @@
+{|$content|}
+{|if $onebox_text|}
+    <br />
+    <br />
+    <small>Документ автоматически сформирован в системе OneBox - больше чем CRM и ERP</small>
+{|/if|}

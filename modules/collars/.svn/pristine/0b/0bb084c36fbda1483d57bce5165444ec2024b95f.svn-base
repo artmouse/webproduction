@@ -1,0 +1,34 @@
+<div class="cl-crumbs">
+    <div><a href="/">{|$translate_main|}</a></div>
+    <div><a href="#">{|$translate_error|} 401</a></div>
+</div>
+
+<div class="cl-block-popup">
+    <div class="dark"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a class="close" href="/"></a>
+            {|$translate_error_need_authorization|}.
+        </div>
+        <form method="post">
+            <div class="body">
+                <div class="block-form">
+                    <div class="form-element">
+                        <div class="descript">{|$translate_login_small|}:</div>
+                        <input type="text" name="auth_login" value="{|$control_auth_login|}" />
+                    </div>
+                    <div class="form-element">
+                        <div class="descript">{|$translate_password_small|}:</div>
+                        <input type="password" name="auth_password" value="{|$control_auth_password|}" />
+                    </div>
+                    <div class="form-element">
+                        <a href="/remindpassword/">{|$translate_forgot_password|}?</a>
+                    </div>
+                </div>
+            </div>
+            <div class="foot ta-center">
+                <input type="submit" name="ok" value="{|$translate_sign_in|}" class="cl-button green" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<help>
+    <item>
+        <id>1</id>
+        <name>О системе</name>
+        <color>#47a3ad</color>
+        <url>page1.html</url>
+        <parentid>0</parentid>
+    </item>
+
+    <item>
+        <id>2</id>
+        <name>Как запустить OneBox</name>
+        <color>#e92828</color>
+        <url>page2.html</url>
+        <parentid>0</parentid>
+    </item>
+
+    <item>
+        <id>3</id>
+        <name>Складские операции</name>
+        <color>#ec8417</color>
+        <url>page3.html</url>
+        <parentid>0</parentid>
+    </item>
+
+    <item>
+        <id>4</id>
+        <name>Настройки</name>
+        <color>#a64307</color>
+        <url>page4.html</url>
+        <parentid>0</parentid>
+    </item>
+
+    <item>
+        <id>5</id>
+        <name>Заказы поставщикам/на перемещение/на производство</name>
+        <color>#47a3ad</color>
+        <url>page5.html</url>
+        <parentid>0</parentid>
+    </item>
+            
+    <item>
+        <id>6</id>
+        <name>Оприходование товаров</name>
+        <color>#b88c14</color>
+        <url>page6.html</url>
+        <parentid>0</parentid>
+    </item>
+    
+    <item>
+        <id>7</id>
+        <name>Перемещение/Выдача товаров</name>
+        <color>#CD5C5C</color>
+        <url>page7.html</url>
+        <parentid>0</parentid>
+    </item>           
+    
+    <item>
+        <id>8</id>
+        <name>Отгрузка заказа</name>
+        <color>#a64307</color>
+        <url>page8.html</url>
+        <parentid>0</parentid>
+    </item>  
+     
+    <item>
+        <id>9</id>
+        <name>Быстрая продажа</name>
+        <color>#32CD32</color>
+        <url>page9.html</url>
+        <parentid>0</parentid>
+    </item> 
+    
+    <item>
+        <id>10</id>
+        <name>Производство</name>
+        <color>#47a3ad</color>
+        <url>page10.html</url>
+        <parentid>0</parentid>
+    </item> 
+    
+    <item>
+        <id>11</id>
+        <name>Журнал</name>
+        <color>#a64307</color>
+        <url>page11.html</url>
+        <parentid>0</parentid>
+    </item>
+
+    <item>
+        <id>12</id>
+        <name>Баланс/Остатки</name>
+        <color>#e92828</color>
+        <url>page12.html</url>
+        <parentid>0</parentid>
+    </item>
+    
+    <item>
+        <id>13</id>
+        <name>Возврат товара</name>
+        <color>#32CD32</color>
+        <url>page13.html</url>
+        <parentid>0</parentid>
+    </item>
+        
+    <item>
+        <id>14</id>
+        <name>Редактирование/удаление записей</name>
+        <color>#b88c14</color>
+        <url>page14.html</url>
+        <parentid>0</parentid>
+    </item>            
+         
+    <item>
+        <id>15</id>
+        <name>Штрих-коды</name>
+        <color>#ec8417</color>
+        <url>page15.html</url>
+        <parentid>0</parentid>
+    </item>
+    
+</help>

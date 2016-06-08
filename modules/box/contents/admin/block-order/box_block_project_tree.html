@@ -1,0 +1,25 @@
+{|if $subIssueArray|}
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">{|$translate_struktura|}</div>
+        {|foreach from=$subIssueArray item="e"|}
+            <a class="shop-activity-preview js-issue-preview {|if $e.closed|}hidden{|/if|}" data-id="{|$e.id|}" href="{|$e.url|}" style="margin-left: {|math equation="x*20" x=$e.level|}px;">
+                <span class="activity-head">
+                    <span class="{|if $e.closed|}ob-icon-done{|elseif $e.fire|}ob-icon-overdue{|else|}ob-icon-list{|/if|} type-icon"></span>
+                    {|if $e.dateto || $e.managerName|}
+                        {|if $e.dateto|}<span class="date fl-r">{|$e.dateto|}</span>{|/if|}
+                        <span class="name">{|if $e.managerName|}{|$e.managerName|}{|else|}{|$translate_net_otvetstvennogo|}{|/if|}</span>
+                    {|/if|}
+                    <span class="clear"></span>
+                    <span class="subject">
+                        <div class="status" style="{|if $e.color|}background-color: {|$e.color|};{|/if|}">
+                            {|if $e.statusName|}
+                                {|$e.statusName|}
+                            {|/if|}
+                        </div>
+                        {|$e.name|} {|$e.status|}
+                    </span>
+                </span>
+            </a>
+        {|/foreach|}
+    </div>
+{|/if|}

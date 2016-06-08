@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<relinks>
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>crm-система</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>crm</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>OneBox</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>бокс</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>бизнес-процесс</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>KPI</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>erp-sistema-uchetnye-sistemy</relinkContent>
+        <relinkKey>erp</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>erp-sistema-uchetnye-sistemy</relinkContent>
+        <relinkKey>erp-система</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>voip-telefoniya</relinkContent>
+        <relinkKey>ip-телефония</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>voip-telefoniya</relinkContent>
+        <relinkKey>voip-телефония</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>voip-telefoniya</relinkContent>
+        <relinkKey>voip</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>voip-telefoniya</relinkContent>
+        <relinkKey>телефония</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>складской учет</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>финансовый учет</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>склады</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>финансы</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>crm-sistema</relinkContent>
+        <relinkKey>логистика</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>dvizhok-internet-magazina</relinkContent>
+        <relinkKey>интернет-магазин</relinkKey>
+    </relink>
+
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>dvizhok-internet-magazina</relinkContent>
+        <relinkKey>движок</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost>http://amazino.com</relinkHost>
+        <relinkContent></relinkContent>
+        <relinkKey>хостинг</relinkKey>
+    </relink>
+
+
+    <relink>
+        <relinkHost>http://amazino.com</relinkHost>
+        <relinkContent></relinkContent>
+        <relinkKey>сервер</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost>http://amazino.com</relinkHost>
+        <relinkContent></relinkContent>
+        <relinkKey>ssd</relinkKey>
+    </relink>
+
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>vnedrenie-crm</relinkContent>
+        <relinkKey>внедрение</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent>billingovaya-sistema</relinkContent>
+        <relinkKey>биллинг</relinkKey>
+    </relink>
+
+    <relink>
+        <relinkHost></relinkHost>
+        <relinkContent></relinkContent>
+        <relinkKey>OneBox</relinkKey>
+    </relink>
+</relinks>

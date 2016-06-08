@@ -1,0 +1,160 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/balance/warehouses/">{|$translate_storage_balance|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/balance/employees/" class="selected">{|$translate_balance_employees|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/report/motion/">{|$translate_storage_report_balance|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <div class="caption-field">{|$translate_employee|}</div>
+                <select name="storagenameid[]" multiple class="chzn-select">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $storagenameSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_product_category|}</div>
+                <select name="categoryid" class="chzn-select-tree">
+                    <option value="0">{|$translate_category_all|}</option>
+                    {|foreach from=$categoryArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_categoryid == $e.id|}selected{|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                        </option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <input type="text" name="productname" value="{|$control_productname|}" placeholder="Название / код продукта" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="serial" value="{|$control_serial|}" placeholder="{|$translate_product_serial_number|}" />
+            </div>
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="showdetailed" value="1" {|if $control_showdetailed|}checked{|/if|} />
+                    Детализированный баланс
+                </label>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $storageArray|}
+            {|if count($storageArray) > 1|}
+                <h1>{|$translate_in_total|}</h1>
+                <div class="shop-overflow-table">
+                    <table class="shop-table js-sortable" width="100%">
+                        <thead>
+                        <tr>
+                            <th width="50">&nbsp;</th>
+                            <th>{|$translate_storage|}</th>
+                            <th width="100" align="right">{|$translate_number|}</th>
+                            <th width="100" align="right">{|$translate_reserved|}</th>
+                            <th width="100" align="right">{|$translate_cost|}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {|foreach from=$storageArray item="storage"|}
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>{|$storage.storagename|}</td>
+                                <td align="right">{|$storage.amount|number_format:3|}</td>
+                                <td align="right">{|$storage.amountlinked|number_format:3|}</td>
+                                <td align="right">{|$storage.cost|number_format:2|} {|$currency|}</td>
+                            </tr>
+                        {|/foreach|}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td width="50">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td width="100" align="right"><strong>{|$totalArray.amount|number_format:3|}</strong></td>
+                            <td width="100" align="right"><strong>{|$totalArray.amountlinked|number_format:3|}</strong></td>
+                            <td width="100" align="right">
+                                <strong>{|$totalArray.cost|number_format:2|} {|$currency|}</strong></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <br />
+            {|/if|}
+
+            {|foreach from=$storageArray item="storage"|}
+                <h1>{|$storage.storagename|}</h1>
+                <div class="shop-overflow-table">
+                    <table class="shop-table js-sortable" width="100%">
+                        <thead>
+                        <tr>
+                            <th width="50">{|$translate_item_code|}</th>
+                            <th>{|$translate_category|}</th>
+                            <th>{|$translate_product|}</th>
+                            {|if $control_showdetailed|}
+                                <th>Серийный номер</th>
+                            {|/if|}
+                            <th width="100" align="right">{|$translate_number|}</th>
+                            <th width="100" align="right">{|$translate_reserved|}</th>
+                            <th width="100" align="right">{|$translate_cost|}</th>
+                        </tr>
+                        </thead>
+
+                        {|foreach from=$storage.productArray item="e" name='foreachproduct'|}
+                            <tr>
+                                <td><a href="{|$e.productURL|}" class="js-product-preview"
+                                       data-id="{|$e.productid|}">{|$e.productid|}</a></td>
+                                <td>{|$e.categoryname|}</td>
+                                <td>{|$e.productname|}</td>
+                                {|if $control_showdetailed|}
+                                    <td>{|$e.serial|}</td>
+                                {|/if|}
+                                <td align="right"><a href="{|$e.historyURL|}">{|$e.amount|}</a></td>
+                                <td align="right">{|if $e.amountlinked > 0|}<a
+                                            href="{|$e.reserveURL|}">{|/if|}{|$e.amountlinked|}{|if $e.amountlinked > 0|}</a>{|/if|}
+                                </td>
+                                <td align="right">{|$e.cost|number_format:2|} {|$currency|}</td>
+                            </tr>
+                        {|/foreach|}
+                        <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            {|if $control_showdetailed|}
+                                <td>&nbsp;</td>
+                            {|/if|}
+                            <td align="right">{|$translate_in_total|}:</td>
+                            <td align="right"><strong>{|$storage.amount|number_format:3|}</strong></td>
+                            <td align="right"><strong>{|$storage.amountlinked|number_format:3|}</strong></td>
+                            <td align="right"><strong>{|$storage.cost|number_format:2|} {|$currency|}</strong></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <br />
+            {|/foreach|}
+
+            <script type="text/javascript">
+                $j(function () {
+                    $j('.js-sortable').tablesorter();
+                });
+            </script>
+        {|else|}
+            <div class="shop-message-info">{|$translate_balance_no_data|}.</div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>

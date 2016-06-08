@@ -1,0 +1,8 @@
+<li class="foot-section js-foot-section">
+    <div class="foot-caption">{|$translate_useful|}</div>
+    <ul class="list">
+        {|foreach from=$textpageArray item="e"|}
+            <li><a href="{|$e.url|}"><span class="def-icon-angle-double-right"></span>{|$e.name|}</a></li>
+        {|/foreach|}
+    </ul>
+</li>

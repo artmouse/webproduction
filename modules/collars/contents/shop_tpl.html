@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{|$title|}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="{|$shopname|}" />
+    <meta name="viewport" content="width=device-width" />
+    {|*|}<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />{|*|}
+    {|if $shopName|}<meta name="dcterms.rightsHolder" content="{|$shopName|}" />{|/if|}
+
+    <link rel="icon" href="{|$favicon|}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{|$favicon|}" type="image/x-icon" />
+
+    {|$hreflang|}
+
+    {|$integration_google_wmt|}
+    {|$integration_yandex_wmt|}
+    {|$loginzaVerification|}
+
+    {|if $cssUrl|}
+    <link href="{|$cssUrl|}" rel="stylesheet" type="text/css">
+    {|/if|}
+    {|if $jsUrl|}
+    <script type="text/javascript" src="{|$jsUrl|}"> </script>
+    {|/if|}
+    {|$engine_includes|}
+    {|$integration_facebook_pixel_head|}
+    <!--[if IE 8]><script src="/_js/html5shiv.js"></script><![endif]-->
+</head>
+<body {|if $background|}style="background-image: url('{|$background|}');"{|/if|}>
+<div class="cl-content-wrapper">
+    <div class="wrapper-cell">
+
+
+        {|if $seocontent|}
+            <div class="cl-seo {|if $contentID == index|}index-seo{|/if|} js-append-seo">
+                {|$seocontent|}
+            </div>
+        {|/if|}
+
+
+        {|if $contentID == index|}
+            {|$block_banner_wide|}
+        {|/if|}
+
+        <div class="cl-mainer">
+            {|$content|}
+
+            <div class="js-seo-wrapper"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="cl-header-wrapper">
+    <div class="wrapper-cell">
+        {|$block_position_global_top|}
+
+        <header class="cl-header">
+            <div class="cl-mainer">
+                <div class="logo-image">
+                    {|if $contentID == 'index'|}
+                        <span class="inner-wrap">
+                            <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                        </span>
+                    {|else|}
+                        <a class="inner-wrap" href="/" title="{|$shopName|}">
+                            <img src="{|$logo|}" alt="{|$shopName|}" title="{|$shopName|}"/>
+                        </a>
+                    {|/if|}
+                </div>
+                <!--<div class="logo">-->
+                    <!--<a href="/">PetStuffMart</a>-->
+                <!--</div>-->
+
+                <a class="cl-nav-button js-toggle-nav-button" href="javascript:void(0);">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+
+                {|$block_search|}
+
+                <div class="basket-wrap js-basket">
+                    {|* baskets loads with ajax *|}
+                </div>
+
+                <div class="block-auth">
+
+                    {|if $userlogin|}
+                        {|if $admin|}
+                            <a class="no-small-breakpoint" href="{|$main|}/admin/">{|$translate_admin|}</a>
+                        {|/if|}
+                        <a class="no-small-breakpoint" href="{|$main|}/client/profile/">{|$userlogin|}</a>
+                    {|else|}
+                        <a class="enter-link" href="javascript: void(0);" onclick="popupOpen('.js-popup-auth-block');">Login</a>
+                        <a class="registr-link" href="{|$main|}/registration/">Sign In</a>
+                    {|/if|}
+                </div>
+
+
+                <div class="clear hidden"></div>
+
+                <div class="inner-wrapper js-mobile-nav">
+                    {|$block_menu_category|}
+
+                </div>
+                <div class="clear"></div>
+            </div>
+
+        </header>
+    </div>
+</div>
+
+<div class="cl-footer-wrapper">
+    <div class="wrapper-cell">
+        <footer class="cl-footer">
+            <div class="cl-mainer">
+                <div class="block-column">
+                    <div class="title">Shopping Help:</div>
+                    <a href="/client/profile/">Your Account</a><br />
+                    {|foreach from=$helpArray item="e"|}
+                    <a href="{|$e.url|}">{|$e.name|}</a><br />
+                    {|/foreach|}
+
+                </div>
+
+                    <div class="block-column">
+                        <div class="title">{|$translate_useful|}</div>
+                        {|foreach from=$companyArray item="e"|}
+                        <a href="{|$e.url|}">{|$e.name|}</a><br />
+                        {|/foreach|}
+                    </div>
+
+                <div class="block-column contact">
+                    <div class="title">Contacts</div>
+                    <strong>PetStuffMart</strong><br />
+                    {|if $address|}
+                        {|$address|}
+                    {|/if|}
+
+                    {|if $phone1|}
+                        {|$phone1|}<br />
+                    {|/if|}
+                    {|if $phone3|}
+                        {|$phone3|}<br />
+                    {|/if|}
+                    {|if $phone2|}
+                        {|$phone2|}<br />
+                    {|/if|}
+                    {|if $phone4|}
+                        {|$phone4|}<br />
+                    {|/if|}
+
+                    <strong>Manager</strong><br />
+                    <a class="mail" href="mailto:{|$email|}">{|$email|}</a>
+
+                    <div class="cl-social-links">
+                        <a class="soc-link-1" href="#"></a>
+                        <a class="soc-link-2" href="#"></a>
+                        <a class="soc-link-3" href="#"></a>
+                        <a class="soc-link-4" href="#"></a>
+                        <a class="soc-link-5" href="#"></a>
+                    </div>
+                </div>
+
+                {|*|}
+                <div class="block-column">
+                    <div class="title">{|$translate_client_account|}</div>
+                    {|if $userlogin|}
+                        {|if $admin|}
+                            <a href="{|$main|}/admin/">{|$translate_admin|}</a> <br />
+                        {|/if|}
+                        <a href="{|$main|}/logout/">{|$translate_logout|}</a><br />
+                    {|else|}
+                        <a class="cl-button small grey" href="javascript: void(0);" onclick="popupOpen('.js-popup-auth-block');">{|$translate_enter|}</a>
+                        <a class="cl-button small grey" href="{|$main|}/registration/">Sign up</a><br />
+                    {|/if|}
+                </div>
+                {|*|}
+
+                <div class="clear"></div>
+
+                <div class="dev">{|$copyright|}</div>
+
+            </div>
+        </footer>
+    </div>
+</div>
+
+{|$block_position_global_bottom|}
+
+<div class="os-loading">
+    <div class="dark"></div>
+    <div class="loader"></div>
+</div>
+
+<div class="cl-block-popup js-popup-auth-block" style="display: none;">
+    <div class="dark" onclick="popupClose('.js-popup-auth-block');"></div>
+    <div class="block-popup">
+        <div class="head">
+            <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-auth-block');">&nbsp;</a>
+            <span class="login-title">Login</span>
+        </div>
+        <form method="post">
+            <div class="body">
+                <div class="block-form">
+                    <div class="form-element">
+                        <div class="descript">Username</div>
+                        <input name="auth_login" id="id-auth-login" type="text" placeholder="Enter email" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="descript">Password</div>
+                        <input name="auth_password" id="id-auth-password" type="password" placeholder="Enter password" />
+                    </div>
+
+                    <div class="form-element">
+                        <button class="cl-button small green login" type="submit">
+                            <span></span> Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="foot">
+                <a class="cl-button small remove fl-l" href="#" onclick="popupClose('.js-popup-auth-block');">Cancel</a>
+                <div class="fl-r ta-right">
+                    Not a member? <a class="registr" href="{|$main|}/registration/">Sign Up</a><br /><br />
+                    Forgot <a class="remind" href="/remindpassword/">Password?</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{|*|}
+{|$block_callback|}
+
+{|$block_feedback|}
+{|*|}
+
+{|$quickOrder|}
+
+<div style="display: none;" class="js-phone-mask">{|$phone_mask|}</div>
+
+<a class="cl-to-top js-to-top" href="#"></a>
+{|$integration_gadwords|}
+</body>
+</html>

@@ -1,0 +1,518 @@
+<div class="shop-tabs fixed">
+    <a href="/admin/shop/products/">&lsaquo; {|$translate_many_products|}</a>
+    <a href="/admin/shop/products/add/" class="selected">{|$translate_product_add|}</a>
+    <a href="/admin/shop/products/copy/">{|$translate_products_copy|}</a>
+    <a href="/admin/shop/products/exchange-xls/">{|$translate_import_and_export_excel|}</a>
+    <a href="/admin/shop/category/manage/">{|$translate_category|}</a>
+    <a href="/admin/shop/brands/">{|$translate_brands|}</a>
+    <a href="/admin/shop/products/filters/">{|$translate_products_filters|}</a>
+    <a href="/admin/shop/products/productslist/">{|$translate_products_list|}</a>
+    <a href="/admin/shop/comments/">{|$translate_many_comments|}</a>
+    <div class="clear">&nbsp;</div>
+</div>
+<div class="shop-tabs-place">&nbsp;</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_product_create_success|}.<br />
+        <a href="{|$urlredirect|}">{|$translate_product_run_edit|}</a>
+        <input type="button" class="shop-button js-preview" value="{|$translate_see_product_on_the_website|}" data-href="{|$productURL|}">
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_product_create_error|}.
+        {|$translate_product_create_error_for|}.
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="shop-productright-layer">
+        <div class="inner">
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_product_general|}</a>
+                <div class="block">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr>
+                            <td width="50%">
+                                <div class="caption">{|$translate_single_category|}</div>
+                                <span class="important-field">
+                                    <select class="chzn-select" id="js-category" style="width: 98%;" name="category">
+                                        <option value="0">---</option>
+                                        {|foreach from=$categoryArray item="e"|}
+                                            <option value="{|$e.id|}" {|if $e.id == $control_category|} selected {|/if|}>
+                                                {|section name=foo start=0 loop=$e.level|}
+                                                    &nbsp;&nbsp;&nbsp;
+                                                {|/section|}
+                                                {|$e.name|}
+                                                (#{|$e.id|})
+                                                {|if $e.hidden|}
+                                                    - {|$translate_hidden1_small|}
+                                                {|/if|}
+                                            </option>
+                                        {|/foreach|}
+                                    </select>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="caption">{|$translate_title_short|}</div>
+                                <div class="js-formula">
+                                    <span class="important-field"><input type="text" name="name[]" value="{|$control_name|}" style="width: 97%;" class="help-hint-product-name" /></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td width="130">
+                                <div class="caption">{|$translate_unit|}</div>
+                                <input type="text" name="unit" value="{|$control_unit|}" style="width: 100px;" />
+                            </td>
+                            <td width="110">
+                                <div class="caption"><acronym title="только для услуг">Себестоимость</acronym></div>
+                                <input type="text" name="pricebase" value="{|$control_pricebase|}" style="width: 80px;" />
+                            </td>
+                            <td width="110">
+                                <div class="caption">Цена за работу</div>
+                                <input type="text" name="price" value="{|$control_price|}" style="width: 60px;" />
+                            </td>
+                            <td width="110">
+                                <div class="caption">Цена за изделие</div>
+                                <input type="text" name="price_product" value="{|$control_price_product|}" style="width: 60px;" />
+                            </td>
+                            <td width="230">
+                                <select name="currency">
+                                    {|foreach from=$currencyArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_currency|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+
+                                <select name="tax">
+                                    {|foreach from=$taxArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_tax|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </td>
+                            <td width="380">
+                                <div class="caption">Ювелир</div>
+                                <select name="jeweler">
+                                    <option value=""> --- </option>
+                                    {|foreach from=$jewelersArray item="e"|}
+                                    <option value="{|$e.id|}" {|if $e.id == $control_jeweler|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr>
+                            <td width="240">
+                                <div class="caption">Источник (тип товара)</div>
+                                <select name="source" style="width: 228px;">
+                                    <option value="">Склад или поставщик</option>
+                                    <option value="service" {|if $control_source == 'service'|} selected {|/if|}>Услуга (безлимитно тиражируемая)</option>
+                                    <option value="servicebusy" {|if $control_source == 'servicebusy'|} selected {|/if|}>Услуга с сеткой занятости</option>
+                                </select>
+                            </td>
+                            <td width="142">
+                                <div class="caption">{|$translate_term_product|}</div>
+                                <select name="term" style="width: 130px;">
+                                    <option value="unlimited"{|if $control_term == 'unlimited'|} selected {|/if|}>{|$translate_unlimited|}</option>
+                                    <option value="day" {|if $control_term == 'day'|} selected {|/if|}>{|$translate_day|}</option>
+                                    <option value="month" {|if $control_term == 'month'|} selected {|/if|}>{|$translate_month|}</option>
+                                    <option value="year" {|if $control_term == 'year'|} selected {|/if|}>{|$translate_year|}</option>
+                                </select>
+                            </td>
+                            <td width="140">
+                                <div class="caption"><acronym title="13 {|$translate_symbols|}, EAN, GS1">{|$translate_item_barcode|}</acronym></div>
+                                <input type="text" name="barcode" value="{|$control_barcode|}" style="width: 110px;" />
+                            </td>
+                            <td>
+                                <div class="caption">{|$translate_brand|}</div>
+                                <select name="brand" class="chzn-select" style="width: 100%;">
+                                    <option value="0">---</option>
+                                    {|foreach from=$brandsArray item="e"|}
+                                        <option value="{|$e.id|}" {|if $e.id == $control_brand|} selected {|/if|}>{|$e.name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+
+                    <div class="caption">{|$translate_description|}</div>
+                    <textarea name="description" style="width: 99%; height: 100px;" id="id">{|$control_description|}</textarea>
+                    <script type="text/javascript" src="/packages/CKEditor/ckeditor/ckeditor.js"></script>
+                    <script type="text/javascript">
+                        CKEDITOR.replace('id', {
+                            filebrowserBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html',
+                            filebrowserImageBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Images',
+                            filebrowserFlashBrowseUrl : '/packages/CKFinder/ckfinder/ckfinder.html?Type=Flash',
+                            filebrowserUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                            filebrowserImageUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                            filebrowserFlashUploadUrl : '/packages/CKFinder/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+                        });
+                    </script>
+                    <br />
+                    <br />
+                    <div class="caption">{|$translate_product_deacription|} {|$translate_product_deacription_term|}</div>
+                    <textarea name="descriptionshort" style="width: 99%; height: 60px;" id="id-descriptionshort">{|$control_descriptionshort|}</textarea>
+                    <br />
+                    <br />
+
+                    <div class="clear">&nbsp;</div>
+                    <br />
+
+
+                    <div class="caption">{|$translate_tags|}</div>
+                    <ul class="js-tags">
+                        <!-- Existing list items will be pre-added to the tags -->
+                    </ul>
+                    <script type="text/javascript">
+                        $j(document).ready(function() {
+                            $j(".js-tags").tagit();
+                        });
+                    </script>
+                    <br />
+                    <br />
+
+                    <label>
+                        <input type="checkbox" name="hidden" value="1" class="help-hint-product-hide" {|if $control_hidden|} checked {|/if|} />
+                        {|$translate_product_hidden|}
+                    </label>
+
+                    <label>
+                        <input class="help-hint-deleted" type="checkbox" name="deleted" value="1" {|if $control_deleted|} checked {|/if|} />
+                        {|$translate_product_deleted|}
+                    </label>
+
+                    <div class="caption">Видео</div>
+                    <input type="text" name="videoUrl" value="{|$control_videoUrl|}" style="width: 500px;"/>
+
+                    {|*<div class="caption">{|$translate_abouturl|}</div>
+                    <input type="text" name="abouturl" value="{|$control_abouturl|}" style="width: 500px;" />
+                    *|}
+
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_features|}</a>
+                <div class="block">
+                    <textarea name="characteristics" style="width: 99%; height: 80px;" >{|$control_characteristics|}</textarea>
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_presence_and_storage|}:</a>
+                <div class="block">
+                    <label>
+                        <input class="help-hint-no-available" type="checkbox" name="avail" value="1" {|if $control_avail|} checked {|/if|} />
+                        {|$translate_item_in_stock|}
+                    </label>
+
+                    {|$translate_in_stock_info|}
+                    <input class="help-hint-availability" type="text" name="availtext" value="{|$control_availtext|}" style="width: 300px;" />
+                    <br />
+                    <br />
+
+                    {|$translate_lifetime|} {|$translate_with|}
+                    <input type="text" name="datelifefrom" value="{|$control_datelifefrom|}" class="js-date" />
+                    {|$translate_for|}
+                    <input type="text" name="datelifeto" value="{|$control_datelifeto|}" class="js-date" />
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_actions_and_presents|}:</a>
+                <div class="block">
+                    {|$translate_discount|}
+                    <input type="text" name="discount" value="{|$control_discount|}" style="width: 50px;" /> %
+                    <br />
+                    <br />
+
+                    <label>
+                    <input type="checkbox" name="preorderDiscount" value="1"{|if $control_preorderDiscount|}checked value="1"{|/if|}  />
+                    {|$translate_discount_preorder|}
+                    </label>
+                    <br />
+
+                    {|$translate_action|}
+                    <input type="text" name="share" value="{|$control_share|}" style="width: 300px;" />
+                    <br />
+                    <br />
+
+                    {|$translate_crossed_out_price|}
+                    <input class="help-hint-old-price" type="text" name="priceold" value="{|$control_priceold|}" style="width: 60px;" /> {|$translate_crossed_out_price_description|}
+                    <br />
+                    <br />
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_order_options|}:</a>
+                <div class="block">
+                    {|$translate_divisibility|} {|$translate_divisibility_description|}
+                    <input type="text" name="divisibility" value="{|$control_divisibility|}" style="width: 50px;" />
+                    <br />
+                    <br />
+
+                    {|$translate_unit|}
+                    <input type="text" name="unit" value="{|$control_unit|}" style="width: 70px;" />
+                    {|$translate_pieces|}, {|$translate_liter|}, {|$translate_miter|}, ...
+                    <br />
+                    <br />
+
+                    <label>
+                        <input type="checkbox" name="denycomments" value="1" class="help-hint-products-comments-off" {|if $control_denycomments|} checked {|/if|} />
+                        {|$translate_denycomments|}
+                    </label>
+                    <br />
+                    <br />
+
+                    {|$translate_price_levels|}:<br />
+                    {|$translate_price|} 1 <input type="text" name="price1" value="{|$control_price1|}" />
+                    {|$translate_price|} 2 <input type="text" name="price2" value="{|$control_price2|}" />
+                    {|$translate_price|} 3 <input type="text" name="price3" value="{|$control_price3|}" />
+                    {|$translate_price|} 4 <input type="text" name="price4" value="{|$control_price4|}" />
+                    {|$translate_price|} 5 <input type="text" name="price5" value="{|$control_price5|}" />
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_all_features|}</a>
+                <div class="block">
+                    {|$translate_model|}
+                    <input type="text" name="model" value="{|$control_model|}" />
+                    <br />
+                    <br />
+
+                    {|if $collectionArray|}
+                        {|$translate_single_collection|}
+                        <select name="collection" class="chzn-select">
+                            <option value="0">---</option>
+                            {|foreach from=$collectionArray item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_collection|} selected {|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                        <br />
+                        <br />
+                    {|/if|}
+
+                    {|$translate_number_in_box|}
+                    <input type="text" name="unitbox" value="{|$control_unitbox|}" />
+                    <br />
+                    <br />
+
+                    {|$translate_width|}
+                    <input type="text" name="width" value="{|$control_width|}" style="width: 100px;" />
+                    {|$translate_length|}
+                    <input type="text" name="length" value="{|$control_length|}" style="width: 100px;" />
+                    {|$translate_height|}
+                    <input type="text" name="height" value="{|$control_height|}" style="width: 100px;" />
+                    {|$translate_weight|}
+                    <input type="text" name="weight" value="{|$control_weight|}" style="width: 100px;" />
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_downloadable_goods|}</a>
+                <div class="block">
+                    {|$translate_download_the_ZIP_format|}
+                    <br />
+
+                    <input type="file" name="downloadfile"/>
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">SEO</a>
+                <div class="block">
+                    SEO {|$translate_heading|} (title)
+                    <input type="text" name="seotitle" value="{|$control_seotitle|}" style="width: 300px;" />
+                    <br />
+                    <br />
+
+                    <div class="caption">SEO {|$translate_description_small|} (description)</div>
+                    <textarea name="seodescription" style="width: 99%; height: 80px;">{|$control_seodescription|}</textarea>
+                    <br />
+                    <br />
+
+                    <div class="caption">SEO {|$translate_seo_content|} (content)</div>
+                    <textarea name="seocontent" style="width: 99%; height: 80px;" class="rte-zone">{|$control_seocontent|}</textarea>
+                    <br />
+                    <br />
+
+                    <div class="caption">SEO {|$translate_seo_kaewords|} (kaewords)</div>
+                    <textarea name="seokeywords" style="width: 99%; height: 80px;">{|$control_seokeywords|}</textarea>
+                    <br />
+                    <br />
+
+                    {|*|}
+                    SEO {|$translate_seo_name|} 1
+                    <input type="text" name="name1" value="{|$control_name1|}" style="width: 300px;" />
+                    <br />
+                    <br />
+
+                    SEO {|$translate_seo_name|} 2
+                    <input type="text" name="name2" value="{|$control_name2|}" style="width: 300px;" />
+                    <br />
+                    <br />
+                    {|/*|}
+
+                    URL-{|$translate_prefix|}
+                    <input type="text" name="url" value="{|$control_url|}" style="width: 350px;" />
+                    {|$translate_prefix_description|}
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_sync_and_producer|}:</a>
+                <div class="block">
+                    {|$translate_code_small|} (ID)
+                    <input type="text" name="code" value="{|$control_code|}" style="width: 200px;" />
+                    {|$translate_optional|}
+                    <br />
+                    <br />
+
+                    <label>
+                        <input type="checkbox" name="syncable" value="1" {|if $control_syncable|} checked {|/if|} />
+                        {|$translate_synchronized|} (1C, {|$translate_etc|})
+                    </label>
+
+                    {|$translate_code_small|} 1C
+                    <input type="text" name="code1c" value="{|$control_code1c|}" style="width: 200px;" />
+                    <br />
+                    <br />
+
+
+                </div>
+            </div>
+
+            <div class="shop-toggle-block">
+                <a href="#" class="toggle">{|$translate_warranty_dilivery_payment|}:</a>
+                <div class="block">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr>
+                            <td width="33%">
+                                <div class="caption">{|$translate_warranty|}</div>
+                                <textarea name="warranty" style="width: 93%; height: 80px;">{|$control_warranty|}</textarea>
+                            </td>
+                            <td>
+                                <div class="caption">{|$translate_delivery_terms|}</div>
+                                <textarea name="delivery" style="width: 93%; height: 80px;">{|$control_delivery|}</textarea>
+                            </td>
+                            <td width="33%">
+                                <div class="caption">{|$translate_payment_terms|}</div>
+                                <textarea name="payment" style="width: 93%; height: 80px;">{|$control_payment|}</textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    {|$translate_wdp_description|}.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shop-productleft-layer">
+        <div class="shop-toggle-block">
+            <a href="#" class="toggle">{|$translate_main_image_small|}:</a>
+            <div class="block">
+                <strong>{|$translate_main_image|}</strong>
+                <div class="shop-photos-block">
+                    <div class="main">
+                        <div class="item">
+                            {|*|}
+                            <input type="file" name="image" />
+                            {|*|}
+                            {|$cropper|}
+                        </div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-toggle-block">
+            <a href="#" class="toggle">{|$translate_item_icon|}:</a>
+            <div class="block">
+                <div class="shop-photos-block">
+                    <div class="main">
+                        <div class="item">
+                            <select name="icon" class="chzn-select" style="min-width: 150px;">
+                                <option value="0">---</option>
+                                {|foreach from=$iconsArray item="e"|}
+                                    <option value="{|$e.image|}" {|if $e.image == $control_icon|} selected {|/if|}>{|$e.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear">&nbsp;</div>
+
+    <div class="shop-button-fixed">
+        <input type="button" onclick="document.location='/admin/shop/products/'" name="ok" value="&lsaquo; {|$translate_product_list|}" class="right"  class="help-hint-back-to-products" />
+        <input type="submit" name="ok" value="{|$translate_create_new_product|}" class="shop-button-green" />
+    </div>
+
+    <script type="text/javascript">
+        $j(function() {
+            $j(".rte-zone").htmlarea({
+                css: '/_css/jquery.htmlarea.editor.css'
+            });
+        });
+    </script>
+
+
+</form>
+
+
+<div class="js-add-filter-popup" id="shop-popup-filter-block" style="display: none;">
+    <div class="dark" onclick="$j('#shop-popup-filter-block').toggle();">&nbsp;</div>
+    <div class="popup-block">
+        <a href="#" class="close" onclick="$j('.js-add-filter-popup').toggle(); return false;">&nbsp;</a>
+        <div class="shop-admin-content">
+            <h1>{|$translate_creating_a_new_filter|}</h1>
+            <form action="" method="post" enctype="multipart/form-data">
+                <strong>{|$translate_filter_name|}</strong><br />
+                <input type="text" name="add_name_filter" value="" style="width: 80%;"/>
+                <br />
+                <br />
+                <strong>{|$translate_type_of_filter|}</strong><br />
+                <select name="type_filter">
+                    <option value="interval" >{|$translate_interval_short|}</option>
+                    <option value="select" >{|$translate_drop_down_list|}</option>
+                    <option value="checkbox" >{|$translate_checkmark|} (checkbox)</option>
+                    <option value="radiobox" >{|$translate_switches|} (radiobox)</option>
+                </select>
+                <br />
+                <br />
+                <strong>{|$translate_hidden1|}</strong><br />
+                <input type="checkbox" name="hidden_filter" value="1"   />
+                <br />
+                <br />
+                <strong>{|$translate_sort_the_numbers|}</strong><br />
+                <input type="checkbox" name="sorttype" value="1"   />
+                <br />
+                <br />
+                <input type="submit" name="formsInsert" value="{|$translate_insert_the_new_filter|}" />
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+.chzn-container {
+    vertical-align:middle;
+}
+</style>
+<br />
+<br />

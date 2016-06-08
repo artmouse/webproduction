@@ -1,0 +1,9 @@
+<input type="text" name="{|$key|}" class="js-calendar-{|$key|}" value="{|$value|}" style="width: 150px;" {|if $disabled|} disabled {|/if|} />
+
+<script type="text/javascript">
+jQuery(function() {
+    jQuery('.js-calendar-{|$key|}').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+</script>

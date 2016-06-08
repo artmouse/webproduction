@@ -1,0 +1,323 @@
+//colors
+$brandColor: #ea3a3c;
+$colorImportant: #ea3a3c;
+$colorSuccess: #0cb061;
+$darkColor: #444;
+$semiDarkColor: #dddddd;
+$textColor: #666666;
+
+//breakpoints
+$small-breakpoint:  640px;
+$medium-breakpoint: 1024px;
+$large-breakpoint: 1280px;
+$xlarge-breakpoint: 1920px;
+
+//typography
+$baseFont: 'Noto Sans', sans-serif;
+$baseFontSize: 13px;
+$baseLineHeight: 20px;
+
+//mixin
+@mixin box-sizing($boxsizing) {
+    -moz-box-sizing: $boxsizing;
+    -webkit-box-sizing: $boxsizing;
+    box-sizing: $boxsizing;
+}
+$bb: border-box;
+
+@mixin transition-duration($duration) {
+    -webkit-transition-duration: $duration;
+    -moz-transition-duration: $duration;
+    -o-transition-duration: $duration;
+    -ms-transition-duration: $duration;
+    transition-duration: $duration;
+}
+
+@mixin translate ($x, $y) {
+    -moz-transform: translate($x, $y);
+    -webkit-transform: translate($x, $y);
+    -o-transform: translate($x, $y);
+    -ms-transform: translate($x, $y);
+    transform: translate($x, $y);
+}
+
+@mixin translateX ($x) {
+    -moz-transform: translateX($x);
+    -webkit-transform: translateX($x);
+    -o-transform: translateX($x);
+    -ms-transform: translateX($x);
+    transform: translateX($x);
+}
+
+@mixin translateY ($y) {
+    -moz-transform: translateY($y);
+    -webkit-transform: translateY($y);
+    -o-transform: translateY($y);
+    -ms-transform: translateY($y);
+    transform: translateY($y);
+}
+
+@mixin rotate($x) {
+    -moz-transform: rotate($x);
+    -webkit-transform: rotate($x);
+    -o-transform: rotate($x);
+    -ms-transform: rotate($x);
+    transform: rotate($x);
+}
+
+@mixin elementScale ($scale) {
+    -moz-transform: scale($scale, $scale);
+    -webkit-transform: scale($scale, $scale);
+    -o-transform: scale($scale, $scale);
+    -ms-transform: scale($scale, $scale);
+    transform: scale($scale, $scale);
+}
+
+//reset default
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    min-width: 600px;
+    text-decoration: none;
+    background-color: #ffffff;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: table;
+}
+
+body, form, div, p, a, img, h1, h2, h3, h4, h5, h6, table, table tr, table td {
+    border: none;
+    color: $textColor;
+    font-family: $baseFont;
+    font-size: $baseFontSize;
+    line-height: $baseLineHeight;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+textarea,
+select {
+    outline: none;
+    font-family: $baseFont;
+    font-size: $baseFontSize;
+    @include box-sizing($bb);
+    display: inline-block;
+    vertical-align: middle;
+    color: $textColor;
+}
+
+select {
+    height: 30px;
+}
+
+input[type=text],
+input[type=password],
+input[type=tel],
+input[type=search]{
+    padding: 0 5px;
+    height: 30px;
+    outline: none !important;
+    -webkit-appearance: none;
+}
+
+textarea,
+select,
+input[type=text],
+input[type=password],
+input[type=tel],
+input[type=search]{
+    width: 100%;
+    border: 1px solid $semiDarkColor;
+    -webkit-box-shadow: none !important;
+    -webkit-border-radius: 0px !important;
+}
+
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0
+}
+
+::-webkit-scrollbar {
+    background-color: rgba($brandColor, 0.2);
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: $brandColor;
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255, 0.5);
+}
+
+acronym {
+    border-bottom: 1px dotted #000000;
+}
+
+samp {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.def-sep {
+    margin: 30px 0;
+    border: none;
+    height: 1px;
+    background-color: $semiDarkColor;
+}
+
+.def-submit {
+    border: none;
+    background-color: $brandColor;
+    color: #ffffff;
+    font-weight: normal;
+    text-transform: uppercase;
+    height: 40px;
+    display: inline-block;
+    padding: 0 10px;
+    min-width: 90px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    @include box-sizing($bb);
+    -webkit-appearance: none;
+    @include transition-duration(.3s);
+
+    &:hover {
+        background-color: darken($brandColor, 5%);
+        text-shadow: rgba(0, 0, 0, 0.30) 0 1px 0;
+        box-shadow: 4px 4px 0 darken($semiDarkColor, 15%);
+        color: #fff;
+    }
+
+    &:active {
+        box-shadow: 2px 2px 0 darken($semiDarkColor, 15%);
+        color: #fff;
+    }
+
+    &:visited {
+        color: #ffffff;
+        &:hover {
+            color: #fff;
+        }
+    }
+}
+
+a.def-submit {
+    line-height: $baseLineHeight + 20;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: $textColor;
+
+    &:hover {
+        text-decoration: none;
+        color: $brandColor;
+    }
+
+    &:visited {
+        color: lighten($textColor, 10%);
+
+        &:hover {
+            color: $brandColor;
+        }
+    }
+
+    > span {
+        font-family: $baseFont;
+    }
+}
+
+.def-link-dashed {
+    text-decoration: none;
+    position: relative;
+
+    &:after {
+        border-bottom: 1px dashed;
+        bottom: 1px;
+        content: '';
+        height: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+    }
+
+    &:hover:after {
+        border-bottom: none;
+    }
+
+    &:hover {
+        text-decoration: none !important;
+    }
+}
+
+h1, h2 {
+    font-size: $baseFontSize + 10;
+    color: $textColor;
+    line-height: $baseLineHeight + 4;
+    margin: 0 0 20px 0;
+}
+
+h3 {
+    font-size: $baseFontSize + 8;
+    color: $textColor;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+}
+
+.clear {
+    clear: both;
+    font-size: 0;
+    line-height: 0;
+    height: 0;
+    display: block;
+}
+
+.clear-l {
+    @extend .clear;
+    clear: left;
+}
+
+.clear-r {
+    @extend .clear;
+    clear: right;
+}
+
+.fl-l {
+    float: left;
+}
+
+.fl-r {
+    float: right;
+}
+
+.important {
+    color: rgba(255, 0, 0, 0.70);
+}
+
+.ta-center {
+    text-align: center;
+}
+
+.ta-left {
+    text-align: left;
+}
+
+.ta-right {
+    text-align: right;
+}
+
+.nowrap {
+    white-space: nowrap;
+}

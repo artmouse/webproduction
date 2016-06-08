@@ -1,0 +1,129 @@
+<h1>Работа с cron-скриптами в OneBox</h1>
+В движке есть три cron'a которые запускаються через определённое время. <br /><br />
+<h2>Что такое cron?</h2>
+Cron – программа-демон, предназначенная для выполнения заданый через определённый промежуток времени.
+<br /><br />
+<h2>Зачем нужен cron?</h2>
+Cron нужен для того чтобы выполнять некоторые действия в определенное время, или через определенные промежутки времени. 
+<br /><br />
+<h2>Какие cron-бывают в OneBox?</h2>
+<ol>
+    <li>
+        CronMinute - крон который запускаеться каждую минуту и выполняет определённые действия. <br />  <br />
+    </li>
+    <li>
+        CronHour - крон который запускаеться каждый час.<br /> <br />
+    </li>
+    <li>
+        CronDay - крон который запускаеться раз в день.<br /> <br />
+    </li>
+</ol>
+<br />
+
+<h2>Как написать свой обработчик в cron?</h2>
+<ul>
+    <li> Чтобы написать свой обработчик который выполнялся бы раз в минуту 
+        (CronMinute) и делал действие необходимое вам, нужно на него дописаться. Это можна сделать так:<br />
+        <code><pre>
+// дописываемся в cronMinute
+Events::Get()->observe(
+    'afterCronMinute',
+    'MyClass_CronMinuteTest'
+);
+        </pre></code>
+        <br />
+        <b>Что произойдёт?</b>
+        Запуститься обработчик в классе MyClass_CronMinute который реализует интерфейс Events_IEventObserver. <br /><br />
+        Пример:<br />
+        <code><pre>
+class MyClass_CronMinute implements Events_IEventObserver{
+    
+    public function notify(Events_Event $event) {
+
+        // Your code here
+
+    }   
+}
+        </pre></code>
+        <br />
+        В итоге код который мы напишем в методе notify(), каждую минуту.
+        <br /><br /><br />
+    </li>
+    <li> 
+        Если вам нужно чтобы действия выполнялись каждый час, то дописаться к cronHour можна так:
+<code><pre>
+// дописываемся в cronHour
+Events::Get()->observe(
+    'afterCronHour',
+    'MyClass_CronHour'
+);
+</pre></code>
+        <br/>
+        <b>Что произойдёт?</b>     
+        В данном варианте, каждый час у нас будет запускаться код в классе MyClass_CronHour. (Реализация точто такая же как в примере выше).
+        <br /><br /><br />
+    </li>
+    <li>
+        Если вам нужно чтобы действия выполнялись каждый день, то дописаться к cronDay можна так:
+        <code><pre>
+// дописываемся в cronDay
+Events::Get()->observe(
+    'afterCronDay',
+    'MyClass_CronDayTest'
+);
+    </pre></code>
+        <br />
+        <b>Что произойдёт?</b>
+        Запуститься обработчик в классе MyClass_CronDayTest (метод proccess()) который реализует интерфейс Events_IEventObserver.
+        <br />
+    </li>
+</ul>
+<br />
+<br />
+
+<h2>Реальный пример работы с cron</h2>
+<ol>
+    <li>Дописываемся на cronMinute <br />
+<code><pre>
+Events::Get()->observe(
+    'afterCronMinute',
+    'City_CronMinute'
+);
+</pre></code><br />
+    </li>
+    <li>
+        Пишем действия которые будут выполняться каждую минуту. К примеру в данном примере мы будем забирать с xml цены для товаров.
+    <br />
+<code><pre>
+
+class City_CronMinute implements Events_IEventObserver {
+
+    public function notify(Events_Event $event) {
+
+        $event = $event;
+
+        $xml = simplexml_load_file('http://city.com.ua/tmp/onebox_downloads/products_prices.xml');
+        $xmlProduct = (array) $xml;
+
+        foreach ($xmlProduct['items'] as $item) {
+            $item = (array) $item;
+            try {
+                $product = Shop::Get()->getShopService()->getProductByCode1c($item['id_product']);
+                $product->setPrice($item['price']);
+                $product->update();
+            } catch (Exception $e) {
+                
+            }
+        }
+    }
+}
+</pre></code><br />
+    </li>
+    <li>На выходе у нас будет такой результат: cron каждую минуту будет обраться к xml файлу брать с него цену и менять её в OneBox.</li>
+</ol>
+<br />
+<br />
+Больше примеров вы можете посмотреть в модулях product-margin, product-supplierprice, box.
+<br />
+
+<br />

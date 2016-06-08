@@ -1,0 +1,51 @@
+<div class="rtm-crumbs">
+    <a href="/">{|$translate_main|}</a> &rarr;
+    Контакты
+</div>
+
+<div class="rtm-contacts">
+    <div class="text">
+        <h1>Контакты</h1>
+        <strong style="font-size: 18px;">Завод ювелирных изделий «Ремточмеханика»</strong>
+        <br /><br />
+        {|if $address|}
+            Адрес: {|$address|} <br />
+        {|/if|}
+        {|if $istat_span_2|}
+            Телефоны: <br />
+            {|$istat_span_2|}<br />
+        {|else|}
+            {|if $phone1|}Телефон: <br />
+                {|$phone1|}<br />
+            {|/if|}
+            {|if $phone2|}
+                {|$phone2|}<br />
+            {|/if|}
+        {|/if|}
+
+        {|if $email|}
+            Почта:{|$email|}  <br /><br />
+        {|/if|}
+
+        {|if $worktime|}
+            Режим работы торгового зала: <br />
+            {|$worktime|}
+            <br />
+        {|/if|}
+        По вопросам сложных ремонтов изделий,  индивидуальных заказов,<br />
+        гарантии  просьба обращаться  с 10-00 до 16-00 с понедельника по пятницу. <br />
+    </div>
+    {|$content|}
+    <div class="rtm-feedback-block">
+        <div class="head">
+            Обратная связь
+        </div>
+        <div class="body">
+            {|$block_feedback|}
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="rtm-map-block">
+        <script type="text/javascript" charset="utf-8" src="//api-maps.yandex.ru/services/constructor/1.0/js/?sid=r6G3uHNrKCAZYUkpMPnYHvPUnm0eCIrS&width=100%&height=474"></script>
+    </div>
+</div>

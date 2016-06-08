@@ -1,0 +1,29 @@
+{|if $productsArray|@count > 2|}
+    <div class="rtm-index-carousel">
+        <div class="head">{|$name|}</div>
+        <div class="line" data-auto="{|$autoplay|}">
+            <ul>
+                {|foreach from=$productsArray item="p"|}
+                <li>
+                    <a href="{|$p.url|}">
+                        <img src="{|$p.image|}" alt="{|$p.alt|escape|}" title="{|$p.title|escape|}"/>
+
+                    </a>
+                    <span class="price">
+                        {|if $p.productPrice == 0|}
+                            <span class="specify">{|$translate_specify_a_price|}</span>
+                        {|else|}
+                            {|$p.productPrice|number_format:0|} {|$p.currency|}
+                            {|if $p.productPriceOld|}
+                                <span class="old-price"><s>{|$p.productPriceOld|} {|$p.currency|}</s></span>
+                            {|/if|}
+                        {|/if|}
+                    </span>
+                </li>
+                {|/foreach|}
+            </ul>
+        </div>
+        <span class="prev"></span>
+        <span class="next"></span>
+    </div>
+{|/if|}

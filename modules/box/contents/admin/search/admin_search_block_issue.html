@@ -1,0 +1,49 @@
+<div class="nb-search-result-element">
+    <div class="elements-caption">{|$acl_issue|}</div>
+
+    {|if !$issueArray|}
+        <div class="no-result">
+            Ничего не нашлось.
+            <span>Попробуйте еще.</span>
+        </div>
+    {|/if|}
+    <div class="list">
+        {|foreach from=$issueArray item="issue"|}
+            <div class="element no-avatar-included {|if $issue.closed|}closed{|/if|}">
+                <div class="marker" style="{|if $issue.color|}background-color: {|$issue.color|};{|else|}background-color: #fff;{|/if|}"></div>
+
+                <div class="data">
+                    <div class="item">
+                        <a class="name" href="{|$issue.url|}">{|$issue.name|}</a>
+                    </div>
+
+                    {|if $issue.clientName|}
+                        <div class="item">
+                            <div class="post">
+                                <a href="{|$issue.clientURL|}">{|$issue.clientName|}</a>
+                            </div>
+                        </div>
+                    {|/if|}
+
+                    {|if $issue.managerName|}
+                        <div class="item">
+                            <div class="post">
+                                <a href="{|$issue.managerURL|}">{|$issue.managerName|}</a>
+                            </div>
+                        </div>
+                    {|/if|}
+
+                    {|if $issue.projectName|}
+                        <div class="item">
+                            <div class="post">
+                                {|$translate_proekt|}:
+                                <a href="{|$issue.projectURL|}">{|$issue.projectName|}</a>
+                            </div>
+                        </div>
+                    {|/if|}
+                </div>
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+    </div>
+</div>

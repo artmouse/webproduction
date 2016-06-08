@@ -1,0 +1,11 @@
+{|if $bannerRightArray|}
+    <div class="def-block-slick-slider js-aside-slider">
+        {|foreach from=$bannerRightArray item="b"|}
+            <div>
+                <a href="{|$b.url|}" class="item" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                    <img src="{|$b.image|}" width="100%" alt="{|$b.name|}" title="{|$b.name|}"/>
+                </a>
+            </div>
+        {|/foreach|}
+    </div>
+{|/if|}

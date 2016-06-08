@@ -1,0 +1,46 @@
+{|if $message != 'ok'|}
+    {|$block_menu|}
+{|/if|}
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_order_delete_success|}.<br />
+        {|if $orderReferer|}
+            {|$translate_redirection|}
+            <script>
+                setTimeout(function(){
+                    document.location = '{|$orderReferer|}';
+                }, 3000);
+            </script>
+        {|else|}
+            <a href="/admin/shop/orders/">{|$translate_order_list|}</a>
+        {|/if|}
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_order_delete_error|}.
+        {|$translate_order_saled_probably|}.
+    </div>
+{|/if|}
+
+{|if $message != 'ok'|}
+    <div class="ob-block-element">
+        <form action="" method="post">
+            {|if $isProject|}
+                {|$translate_project_confirm|}
+            {|elseif $isIssue|}
+                {|$translate_issue_confirm|}
+            {|else|}
+                {|$translate_order_confirm|}
+            {|/if|}
+
+            <strong>#{|$orderid|}</strong>?
+            <br />
+            <br />
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='../';" />
+        </form>
+    </div>
+{|/if|}

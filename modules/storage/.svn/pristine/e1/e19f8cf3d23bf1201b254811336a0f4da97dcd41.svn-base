@@ -1,0 +1,51 @@
+{|*|}
+    <div class="shop-help-hint bottom-arrow">
+        {|$translate_help_hint|}:
+    </div>
+{|*|}
+
+<div class="shop-help-main">
+    <div class="header">
+        <span style="color: #38a5eb;">OneBox Inventory Management: {|$translate_help|}</span>
+    </div>
+    <div class="content">
+    	<div class="menu">
+            {|if $menuArray|}
+                <ol>
+                    {|foreach from=$menuArray item="m"|}
+                        <li {|if $m.color|} style="color: {|$m.color|};" {|/if|} >
+                            <a href="{|$m.url|}" {|if $m.selected|} class="selected" {|/if|} >{|$m.name|}</a>
+                            {|if $m.childsArray|}
+                                <ol>
+                                {|foreach from=$m.childsArray item="c"|}
+                                    <li><a href="{|$c.url|}" {|if $c.selected|} class="selected" {|/if|}>{|$c.name|}</a></li>
+                                {|/foreach|}
+                                </ol>
+                            {|/if|}
+                        </li>
+                    {|/foreach|}
+                </ol>
+            {|/if|}
+
+            {|*|}
+                {|if $files|}
+                    {|foreach from=$files item="f"|}
+                        {|if $f !== 'index.html'|}
+                            <a href="/help/docs/{|$f.file|}/" {|if $f.file == $select|}class="selected"{|/if|}>{|$f.name|}</a><br />
+                        {|/if|}
+                    {|/foreach|}
+                {|/if|}
+            {|*|}
+        </div>
+        <div class="info">
+        	{|if $text|}
+                {|$text|}
+            {|/if|}
+        </div>
+        <div class="clear">&nbsp;</div>
+    </div>
+    <div class="shop-help-hfooter">&nbsp;</div>
+</div>
+<div class="shop-help-footer">
+    <a href="http://webproduction.ua/">webproduction.ua</a>
+</div>

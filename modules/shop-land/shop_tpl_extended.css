@@ -1,0 +1,15 @@
+.os-editor-content table {
+    border: 1px outset #808080;
+}
+.os-editor-content table td, .os-editor-content table th {
+    border: 1px inset #808080;
+}
+
+.os-block-productdescription table {
+    border: 1px outset #808080;
+}
+.os-block-productdescription table td, .os-block-productdescription table th {
+    border: 1px inset #808080;
+}
+
+/*# sourceMappingURL=shop_tpl_extended.css.map */

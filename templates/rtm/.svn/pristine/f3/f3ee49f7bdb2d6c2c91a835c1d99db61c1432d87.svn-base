@@ -1,0 +1,135 @@
+<div class="rtm-crumbs">
+    <a href="/">{|$translate_main|}</a>
+    {|foreach from=$pathArray item=p name=foo|}
+        &rarr;<a href="{|$p.url|}">{|$p.name|}</a>
+    {|/foreach|}
+    &rarr;{|$name|}
+</div>
+
+<h1>{|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h1>
+{|$date|}<br />
+<br />
+
+{|*
+{|if $id|}
+    <form method="post" action="" id="id-order" class="os-news-product">
+        <div class="os-productthumb-list">
+            <div class="element">
+                <div class="image">
+                    <a href="{|$url|}"><img src="{|$image|}" alt="{|$name|escape|}" title="{|$name|escape|}" /></a>
+                </div>
+                <div class="name">
+                    <a href="{|$url|}">{|$name|}</a>
+                </div>
+                <div class="option">{|if $code|}{|$translate_code_small|}: {|$code|}{|/if|}</div>
+                <div class="option js-shop-compare" data-productid="{|$id|}">
+                    <a href="#" class="js-shop-compare-action">{|$translate_shop_compare_action|}</a>
+                </div>
+                <div class="clear"></div>
+                <div class="price">
+                    {|if $price == 0|}
+                        <span class="specify">{|$translate_specify_a_price|}</span>
+                    {|else|}
+                        {|if $priceold AND $priceold != 0|}<s>{|$priceold|} {|$currency|}</s><br />{|/if|}
+                        {|$price|} {|$currency|}
+                    {|/if|}
+                </div>
+
+                {|if $discount|}<div class="discount">-{|$discount|}%</div>{|/if|}
+                <div class="avail">
+                    {|if $avail|}
+                        {|if $availtext|}
+                            {|$availtext|}
+                        {|/if|}
+                    {|else|}
+                        {|if $availtext|}
+                            <span class="no">
+                                {|$availtext|}
+                            </span>
+                        {|/if|}
+                    {|/if|}
+                </div>
+                {|if $canbuy|}
+                    <div class="button js-shop-buy" data-productid="{|$id|}">
+                        <a href="#" class="js-shop-buy-action os-submit">{|$translate_buy|}</a>
+                    </div>
+                {|/if|}
+
+                {|if $descriptionshort|}
+                    <div class="description">
+                        {|$descriptionshort|}
+                    </div>
+                {|/if|}
+            </div>
+        </div>
+    </form>
+{|/if|}
+*|}
+
+<div class="rtm-wrap-tpage">
+
+    {|$content|}
+    <div class="rtm-share-block">
+        <div class="fb" onclick="Share.facebook(
+            '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+            '{|$name|}',//название
+            '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+            ''//описание
+            )">
+        </div>
+        <div class="vk" onclick="Share.vkontakte(
+            '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+            '{|$name|}',//название
+            '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+            ''//описание
+            )">
+        </div>
+    </div>
+
+    <script>
+        Share = {
+            vkontakte: function(purl, ptitle, pimg, text) {
+                url  = 'http://vkontakte.ru/share.php?';
+                url += 'url='          + encodeURIComponent(purl);
+                url += '&title='       + encodeURIComponent(ptitle);
+                url += '&description=' + encodeURIComponent(text);
+                url += '&image='       + encodeURIComponent(pimg);
+                url += '&noparse=true';
+                Share.popup(url);
+            },
+            odnoklassniki: function(purl, text) {
+                url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+                url += '&st.comments=' + encodeURIComponent(text);
+                url += '&st._surl='    + encodeURIComponent(purl);
+                Share.popup(url);
+            },
+            facebook: function(purl, ptitle, pimg, text) {
+                url  = 'http://www.facebook.com/sharer.php?s=100';
+                url += '&p[title]='     + encodeURIComponent(ptitle);
+                url += '&p[summary]='   + encodeURIComponent(text);
+                url += '&p[url]='       + encodeURIComponent(purl);
+                url += '&p[images][0]=' + encodeURIComponent(pimg);
+                Share.popup(url);
+            },
+            twitter: function(purl, ptitle) {
+                url  = 'http://twitter.com/share?';
+                url += 'text='      + encodeURIComponent(ptitle);
+                url += '&url='      + encodeURIComponent(purl);
+                url += '&counturl=' + encodeURIComponent(purl);
+                Share.popup(url);
+            },
+            mailru: function(purl, ptitle, pimg, text) {
+                url  = 'http://connect.mail.ru/share?';
+                url += 'url='          + encodeURIComponent(purl);
+                url += '&title='       + encodeURIComponent(ptitle);
+                url += '&description=' + encodeURIComponent(text);
+                url += '&imageurl='    + encodeURIComponent(pimg);
+                Share.popup(url)
+            },
+
+            popup: function(url) {
+                window.open(url,'','toolbar=0,status=0,width=626,height=436');
+            }
+        };
+    </script>
+</div>

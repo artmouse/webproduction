@@ -1,0 +1,19 @@
+{|if $bannerBottomArray|}
+    <div class="shop-bottom-banner-carousel block-banners">
+        <a href="#" class="prev">&nbsp;</a>
+        <a href="#" class="next">&nbsp;</a>
+        <div class="line-s">
+            <div class="line-b banner-carousel">
+                <ul>
+                    {|foreach from=$bannerBottomArray item="b"|}
+                        <li>
+                            <a href="{|$b.url|}" class="item" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                                <img src="{|$b.image|}" width="300" height="250" alt="{|$b.name|}" title="{|$b.name|}" />
+                            </a>
+                        </li>
+                    {|/foreach|}
+                </ul>
+            </div>
+        </div>
+    </div>
+{|/if|}

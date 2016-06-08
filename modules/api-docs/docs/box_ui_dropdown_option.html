@@ -1,0 +1,63 @@
+<h1>Выпадающие опции</h1>
+
+Выпадающие опции - блок с элементами управления, который может использовать как в отдельном блоке, таки внутри контента.<br />
+Выпадающий блок позволяет скрывать функционал за иконкой, позволяет экономить место на странице.<br />
+<br />
+
+<div class="ui-class">ob-options-dropdown</div>
+<code>
+    <pre>
+&lt;div class="ob-options-dropdown"&gt;
+    &lt;div class="toggle"&gt;&lt;/div&gt;
+    &lt;div class="dropdown"&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="ob-options-dropdown"&gt;
+    &lt;div class="toggle"&gt;&lt;/div&gt;
+    &lt;div class="dropdown right"&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+        &lt;a class="nowrap" href="#"&gt;Example link&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 120px;">
+    <div class="ob-options-dropdown fl-r">
+        <div class="toggle"></div>
+        <div class="dropdown right">
+            <a class="nowrap" href="#">Example link</a>
+            <a class="nowrap" href="#">Example link</a>
+            <a class="nowrap" href="#">Example link</a>
+            <a class="nowrap" href="#">Example link</a>
+        </div>
+    </div>
+
+    <div class="ob-options-dropdown">
+        <div class="toggle"></div>
+        <div class="dropdown">
+            <a class="nowrap" href="#">Example link</a>
+            <a class="nowrap" href="#">Example link</a>
+            <a class="nowrap" href="#">Example link</a>
+            <a class="nowrap" href="#">Example link</a>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br />
+<br />
+
+Выпадающий блок может позиционироваться как слева так и справа.
+Для позиционирования выпадающего блока справа необходимо использовать модификатор <div class="ui-class inline">.right</div> для блока
+<strong>dropdown</strong>.

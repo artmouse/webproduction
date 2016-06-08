@@ -1,0 +1,111 @@
+
+
+{|if $newsArray|}
+    <div class="rtm-blog-block">
+        {|foreach from=$newsArray item="e"|}
+            <div class="element">
+                <div class="date">{|$e.date|}</div>
+                <div class="name">
+                    <a href="{|$e.url|}">{|$e.name|}</a>
+                </div>
+
+                <div class="text-short">
+                    {|$e.contentPreview|strip_tags|}
+
+                    <a class="see-more" href="{|$e.url|}">Подробнее...</a>
+                </div>
+
+                <div class="clear"></div>
+                {|if $e.image|}
+                    <div class="image">
+                        <img src="{|$e.image|}" alt="" />
+                    </div>
+                    <div class="clear"></div>
+                {|/if|}
+
+                <div class="rtm-share-block">
+                    <div class="fb" onclick="Share.facebook(
+                '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+                '{|$name|}',//название
+                '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+                ''//описание
+                )">
+                    </div>
+                    <div class="vk" onclick="Share.vkontakte(
+                '{|$mainUrl|}{|$totalUrl|}',//урл страницы
+                '{|$name|}',//название
+                '{|if $imagesArray[0]|}{|$mainUrl|}{|$imagesArray[0].cropUrl|}{|/if|}',//картинка
+                ''//описание
+                )">
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        {|/foreach|}
+
+        {|if count($pagesArray) > 1|}
+            <br />
+            <br />
+            <div class="rtm-paginator">
+                <a href="{|$urlprev|}" data-rel="prev" id="back" class="prev f-left">&laquo;</a>
+                {|foreach from=$pagesArray item="e" key="key"|}
+                    <a href="{|$e.url|}" data-key="{|$key|}" {|if !$e.visible|} style="display:none" {|/if|} {|if $e.selected|}class="active"{|/if|}>{|$e.name|}</a>
+                {|/foreach|}
+                <a href="{|$urlnext|}" data-rel="next" id="next" class="next f-right">&raquo;</a>
+            </div>
+        {|/if|}
+
+    </div>
+{|else|}
+    <div class="os-message-notice">
+        {|$translate_no_news|}.
+    </div>
+{|/if|}
+
+<script>
+    Share = {
+        vkontakte: function(purl, ptitle, pimg, text) {
+            url  = 'http://vkontakte.ru/share.php?';
+            url += 'url='          + encodeURIComponent(purl);
+            url += '&title='       + encodeURIComponent(ptitle);
+            url += '&description=' + encodeURIComponent(text);
+            url += '&image='       + encodeURIComponent(pimg);
+            url += '&noparse=true';
+            Share.popup(url);
+        },
+        odnoklassniki: function(purl, text) {
+            url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+            url += '&st.comments=' + encodeURIComponent(text);
+            url += '&st._surl='    + encodeURIComponent(purl);
+            Share.popup(url);
+        },
+        facebook: function(purl, ptitle, pimg, text) {
+            url  = 'http://www.facebook.com/sharer.php?s=100';
+            url += '&p[title]='     + encodeURIComponent(ptitle);
+            url += '&p[summary]='   + encodeURIComponent(text);
+            url += '&p[url]='       + encodeURIComponent(purl);
+            url += '&p[images][0]=' + encodeURIComponent(pimg);
+            Share.popup(url);
+        },
+        twitter: function(purl, ptitle) {
+            url  = 'http://twitter.com/share?';
+            url += 'text='      + encodeURIComponent(ptitle);
+            url += '&url='      + encodeURIComponent(purl);
+            url += '&counturl=' + encodeURIComponent(purl);
+            Share.popup(url);
+        },
+        mailru: function(purl, ptitle, pimg, text) {
+            url  = 'http://connect.mail.ru/share?';
+            url += 'url='          + encodeURIComponent(purl);
+            url += '&title='       + encodeURIComponent(ptitle);
+            url += '&description=' + encodeURIComponent(text);
+            url += '&imageurl='    + encodeURIComponent(pimg);
+            Share.popup(url)
+        },
+
+        popup: function(url) {
+            window.open(url,'','toolbar=0,status=0,width=626,height=436');
+        }
+    };
+</script>

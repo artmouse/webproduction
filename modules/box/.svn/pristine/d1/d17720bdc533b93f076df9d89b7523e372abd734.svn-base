@@ -1,0 +1,75 @@
+<div class="filter-hidden"></div>
+<div class="shop-filter-panel open">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_data_s|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_data_po|}" />
+            </div>
+            <div class="element">
+                <input type="text" name="ip" value="{|$control_ip|}" placeholder="IP {|$translate_adres|}" />
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_employee|}</div>
+                <select name="userid" class="chzn-select">
+                    <option value="">&nbsp;</option>
+                    {|foreach from=$userArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_userid == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list filter-reserve">
+        {|if $dateArray|}
+            <h1>{|$translate_otchet_po_rabochemu_vremeni_sotrudnika|}: {|$name|}</h1>
+
+            <div class="shop-overflow-table">
+                <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+                    <thead>
+                        <tr>
+                            <td>{|$translate_datetime|}</td>
+                            {|foreach from=$dateArray item="date"|}
+                                <td>{|$date|}</td>
+                            {|/foreach|}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {|foreach from=$timeArray item="time"|}
+                            <tr>
+                                <td>
+                                    <strong>{|$time|}:00</strong>
+                                </td>
+                                {|foreach from=$dateArray item="date"|}
+                                    {|if $reportArray[$date][$time].color1 == 0 && $reportArray[$date][$time].color2 == 0|}
+                                    <td align="center">
+                                        {|$reportArray[$date][$time].start|}
+                                        -
+                                        {|$reportArray[$date][$time].end|}
+                                    </td>
+                                    {|else|}
+                                    <td align="center" style="background-color: red;">
+                                        {|$reportArray[$date][$time].start|}
+                                        -
+                                        {|$reportArray[$date][$time].end|}
+                                    </td>
+                                    {|/if|}
+                                {|/foreach|}
+                            </tr>
+                        {|/foreach|}
+                    </tbody>
+                </table>
+            </div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+

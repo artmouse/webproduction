@@ -1,0 +1,87 @@
+{|if $message == "ok"|}
+<div class="shop-message-success">
+    Сохранено.
+</div>
+{|/if|}
+
+{|if $message == "error"|}
+<div class="shop-message-error">
+    Ошибка сохранения. Введите название стандарта.<br />
+</div>
+{|/if|}
+
+{|if $message == "delete"|}
+<div class="shop-message-success">
+    Успешно удалено.<br />
+</div>
+<script>
+    setTimeout("window.location.replace('{|$redirLinkAll|}');", 600);
+</script>
+{|/if|}
+
+<form action="" method="post">
+    <div class="nb-top-nav-place js-top-nav-buffer"></div>
+    <div class="nb-top-nav js-top-nav">
+        <div class="nb-block-tabs">
+            <div class="ob-radio-group js-radio-group">
+                <label class="success">
+                    Активный
+                    <input type="radio" name="active" value="1" {|if $active=="1"|} checked {|/if|}>
+                </label>
+                <label>
+                    Неактивный
+                    <input type="radio" name="active" value="0" {|if $active=="0"|} checked {|/if|}>
+                </label>
+                <div class="clear"></div>
+            </div>
+
+            <div class="tab-element">
+                <a href="/admin/standards/">&lsaquo; Все стандарты</a>
+            </div>
+            <div class="tab-element">
+                <a class="selected" href="">Редактирование стандарта</a>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="ob-block-standard-head js-block-standard-head">
+        <div class="wrap">
+            <div class="name">
+                <input type="text" name="name" placeholder="Название" value="{|$control_name|}">
+            </div>
+            <div class="category">
+                <select class="chzn-select-tree" name="parentid">
+                    <option value="0">---</option>
+                    {|foreach from=$parentArray item="e"|}
+                    <option value="{|$e.id|}"
+                        {|if $e.id == $currentStandard|} disabled {|/if|}
+                        {|if $control_parentid|}
+                            {|if $e.id == $control_parentid|} selected {|/if|} data-level="{|$e.level|}">
+                        {|else|}
+                            {|if $e.id == $parentCategory|} selected {|/if|} data-level="{|$e.level|}">
+                        {|/if|}
+                        {|$e.name|}
+                    </option>
+                    {|/foreach|}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <textarea class="js-editor js-standard-area" name="content" style="width: 100%; height: 600px;" id="js-standard-edit">
+        {|if $control_text|}
+            {|$control_text|}
+        {|else|}
+            {|$text|}
+        {|/if|}
+    </textarea>
+
+    <div class="ob-button-fixed">
+        <input class="ob-button button-green" type="submit" name="ok" value="{|$translate_save|}">
+        <input class="ob-button" type="submit" name="delete" value="{|$translate_delete|}"
+               onclick="return confirm('{|$translate_to_delete|}');">
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

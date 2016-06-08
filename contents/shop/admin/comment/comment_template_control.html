@@ -1,0 +1,42 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/comment/template/">&lsaquo;  {|$translate_comment_template|}</a></div>
+        <div class="tab-element"><a href="/admin/comment/template/{|$id|}/" class="selected">{|$translate_redaktirovat_shablon|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_shablon_uspeshno_otredaktirovan|}. {|$translate_redirection|}...
+    </div>
+
+    <script type="text/javascript">
+        document.location = '/admin/comment/template/';
+    </script>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_oshibka_redaktirovaniya_shablona|}. {|$translate_proverte_pravilnost_dannih|}.
+    </div>
+{|/if|}
+
+<form action="" method="post" enctype="multipart/form-data">
+    <strong>{|$translate_nazvanie_shablona|}</strong><br />
+    <input type="text" name="name" value="{|$control_name|}" style="width: 100%;" />
+    <br />
+    <br />
+
+    <strong>{|$translate_tekst|}</strong><br />
+    <textarea rows="10" name="text" style="width: 100%;">{|$control_text|}</textarea>
+    <br />
+    <br />
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_redaktirovat_shablon|}" class="ob-button button-green" />
+        <input type="submit" name="del" value="{|$translate_udalit_shablon|}" class="ob-button button-orange" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>

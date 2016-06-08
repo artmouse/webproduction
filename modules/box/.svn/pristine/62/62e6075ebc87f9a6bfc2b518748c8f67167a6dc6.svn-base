@@ -1,0 +1,68 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+
+
+            <div class="element">
+                <input type="text" name="paymentfrom" value="{|$control_paymentfrom|}" class="js-date" placeholder="{|$translate_data_platezha_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="paymentto" value="{|$control_paymentto|}" class="js-date" placeholder="{|$translate_data_platezha_do|}" />
+            </div>
+
+            {|$block_workflow_filter|}
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+            <div class="clear"></div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+
+        {|if $reportArray|}
+            <h1>{|$translate_ispolniteli|} {|$translate_zakazov|}</h1>
+            <br />
+            <div class="shop-overflow-table">
+                <table class="shop-table">
+                    <thead>
+                        <tr>
+                            <td>{|$translate_proekt|}</td>
+                            {|foreach from=$managerArray item="e"|}
+                                   <td align="center">{|$e|}</td>
+                            {|/foreach|}
+                        </tr>
+                    </thead>
+                    {|foreach from=$reportArray item="e" key="k"|}
+                        <tr>
+                            <td>
+                                <a href="{|$e.orderUrl|}">#{|$k|} {|$e.orderName|}</a>
+                            </td>
+                           {|foreach from=$managerArray item="m" key="mkey"|}
+                                {|if $e.data[$mkey].amount|}
+                                     <td align="center">{|$e.data[$mkey].amount|}</td>
+                                {|else|}
+                                     <td align="center">0</td>
+                                {|/if|}
+                                   
+                            {|/foreach|}
+                            
+                        </tr>
+                    {|/foreach|}
+                    
+                </table>
+            </div>
+
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

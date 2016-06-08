@@ -1,0 +1,95 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-date" placeholder="{|$translate_date|} {|$translate_with|}" />
+                <script type="text/javascript">
+                    Calendar.setup({
+                        dateField      : 'id-datefrom',
+                        triggerElement : 'id-datefrom'
+                    })
+                </script>
+            </div>
+
+            <div class="element">
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-date" placeholder="{|$translate_for|}" />
+                <script type="text/javascript">
+                    $j(function () {
+                        $j('.js-date').datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                    });
+                </script>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_storage|}</div>
+                <select name="storagenameid" class="chzn-select">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_storagenameid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        <h1>{|$translate_storage_motion|}</h1>
+
+        {|if $motionsArray|}
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table sortable">
+                <thead>
+                <tr>
+                    <th width="100">{|$translate_code_small|}</th>
+                    <th>{|$translate_product|}</th>
+                    <th align="right" width="100">{|$translate_initial_quantity|}</th>
+                    <th align="right" width="100">{|$translate_initial_amount|}</th>
+                    <th align="right" width="100">{|$translate_came_number|}</th>
+                    <th align="right" width="100">{|$translate_came_sum|}</th>
+                    <th align="right" width="100">{|$translate_out_number|}</th>
+                    <th align="right" width="100">{|$translate_out_sum|}</th>
+                    <th align="right" width="100">{|$translate_balance_number|}</th>
+                    <th align="right" width="100">{|$translate_balance_sum|}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {|foreach from=$motionsArray item="e"|}
+                    <tr
+                            {|if $e.hidden|}
+                                bgcolor="#DADADA"
+                            {|else|}
+                                {|if $e.green|}
+                                    bgcolor="#ACD88D"
+                                {|/if|}
+                                {|if $e.red|}
+                                    bgcolor="#FFCACE"
+                                {|/if|}
+                            {|/if|}
+                            >
+                        <td>{|$e.productid|}</td>
+                        <td>{|$e.productname|}</td>
+                        <td align="right">{|$e.was|}</td>
+                        <td align="right">{|$e.was_sum|} {|$e.currency|}</td>
+                        <td align="right">{|$e.plus|}</td>
+                        <td align="right">{|$e.plus_sum|} {|$e.currency|}</td>
+                        <td align="right">{|$e.minus|}</td>
+                        <td align="right">{|$e.minus_sum|} {|$e.currency|}</td>
+                        <td align="right" style="font-weight: bold;">{|$e.became|}</td>
+                        <td align="right" style="font-weight: bold;">{|$e.became_sum|} {|$e.currency|}</td>
+                    </tr>
+                {|/foreach|}
+                </tbody>
+            </table>
+        {|elseif $arg_ok|}
+            <div class="shop-message-info">{|$translate_motion_error_storage|}.</div>
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+

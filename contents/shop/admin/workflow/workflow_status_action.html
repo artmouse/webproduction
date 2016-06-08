@@ -1,0 +1,278 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/workflow/">&lsaquo; {|$translate_biznes_protsessi|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflow/{|$categoryid|}/">{|$translate_workflow|} {|$categoryName|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/">{|$translate_etap|} {|$name|}</a></div>
+        {|if $box|}
+            <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/interface/">{|$translate_interfeys|}</a></div>
+        {|/if|}
+        <div class="tab-element"><a href="/admin/shop/workflowstatus/{|$statusid|}/action/" class="selected">{|$translate_motion|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $edit_ok|}
+<div class="shop-message-success">
+    {|$translate_dannie_etapa_uspeshno_sohraneni|}.
+</div>
+{|/if|}
+
+<h1>{|$translate_redaktirovanie_etapa|}</h1>
+<br />
+<form id="js-form" action="" method="post">
+<div class="ob-block-doubleform">
+    <div class="wrap">
+        <div class="left-column">
+            {|if $box|}
+                <div class="double">
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_otvetstvennaya_rol|}</div>
+                        <select name="roleid" class="chzn-select-tree">
+                            <option value="0">---</option>
+                            {|foreach from=$roleArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_roleid|} selected {|/if|} data-level="{|$e.level|}">
+                            {|$e.name|}
+                            </option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_konkretniy_otvetstvenniy_sotrudnik|}</div>
+                        <select name="managerid" class="chzn-select">
+                            <option value="0">---</option>
+                            <option value="-1" {|if $control_managerid == -1|} selected {|/if|}>{|$translate_avtor_zadachi|}</option>
+                            {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>
+                            {|$e.name|}
+                            </option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-element">
+                    <label>
+                        <input type="checkbox" name="jumpmanager" value="1" {|if $control_jumpmanager|} checked {|/if|} />
+                        {|$translate_pri_perehode_v_etot_etap_menyat_otvetstvennogo|}. {|$translate_po_umolchaniyu_beretsya_otvetstvenniy_iz_zadachi_inache_konkretniy_vibranniy_sotrudnik|}.
+                    </label>
+                </div>
+            {|/if|}
+
+            <div class="form-element">
+                <a class="ob-link-dashed" href="javascript:void(0);"  onclick="$j('.js-notify_sms_client').slideToggle();">{|$translate_otpravlyat_uvedomlenie_po_sms_klientu|}</a>
+                <div class="js-notify_sms_client" {|if !$control_text_notify_sms_client|}style="display: none;"{|/if|}>
+                <textarea cols="40" rows="5" name="text_notify_sms_client">{|$control_text_notify_sms_client|}</textarea>
+            </div>
+        </div>
+
+        <div class="form-element">
+            <a class="ob-link-dashed" href="javascript:void(0);"  onclick="$j('.js-notify_sms_admin').slideToggle();">{|$translate_otpravlyat_uvedomlenie_po_sms_menedzheru|}</a>
+            <div class="js-notify_sms_admin" {|if !$control_text_notify_sms_admin|}style="display: none;"{|/if|}>
+            <textarea cols="40" rows="5" name="text_notify_sms_admin">{|$control_text_notify_sms_admin|}</textarea>
+        </div>
+    </div>
+
+    <div class="form-element">
+        <a class="ob-link-dashed" href="javascript:void(0);"  onclick="$j('.js-notify_email_client').slideToggle();">{|$translate_otpravlyat_uvedomlenie_po_email_klientu|}</a>
+        <div class="js-notify_email_client" {|if !$control_text_notify_email_client|}style="display: none;"{|/if|}>
+        <textarea style="height: 200px;" cols="40" rows="5" name="text_notify_email_client">{|$control_text_notify_email_client|}</textarea>
+    </div>
+</div>
+
+<div class="form-element">
+    <a class="ob-link-dashed" href="javascript:void(0);"  onclick="$j('.js-notify_email_admin').slideToggle();">{|$translate_otpravlyat_uvedomlenie_po_email_menedzheru|}</a>
+    <div class="js-notify_email_admin" {|if !$control_text_notify_email_admin|}style="display: none;"{|/if|}>
+    <textarea style="height: 200px;" cols="40" rows="5" name="text_notify_email_admin">{|$control_text_notify_email_admin|}</textarea>
+</div>
+</div>
+
+{|if $box|}
+<div class="form-element">
+    <div class="element-caption">{|$translate_avtomaticheski_vipolnyat_perehod_na_sleduyushchiy_etap_po_istecheniyu_sroka_etapa|}</div>
+    <select name="autonextstatusid" class="chzn-select">
+        <option value="">&nbsp;</option>
+        {|foreach from=$statusArray item="s"|}
+        <option value="{|$s.id|}" {|if $s.id == $control_autonextstatusid|} selected {|/if|}>
+        {|$s.name|}
+        </option>
+        {|/foreach|}
+    </select>
+</div>
+{|/if|}
+
+<div class="double">
+    <div class="form-element">
+        <div class="element-caption">{|$translate_izmenit_biznes_protsess_na|}</div>
+        <select name="nextworkflowid" id="js-nextworkflowid" class="chzn-select">
+            <option value="0">---</option>
+            {|foreach from=$nextWorkflowArray item="w"|}
+            <option value="{|$w.id|}" {|if $w.id == $control_nextworkflowid|} selected {|/if|}>
+            {|$w.name|}
+            </option>
+            {|/foreach|}
+        </select>
+    </div>
+
+    <div class="form-element">
+        <div class="element-caption">{|$translate_izmenit_status_na|}</div>
+        <input type="hidden" value="{|$control_nextstatusid|}" id="js-nextstatusid-value">
+        <select name="nextstatusid" id="js-nextstatusid" class="chzn-select">
+            <option value="0">{|$translate_viberite_biznes_protsess|}</option>
+        </select>
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<div class="right-column">
+    <div class="form-element">
+        <div class="element-caption">{|$translate_srok|}</div>
+        <table>
+            <tr>
+                <td>
+                    <input type="text" name="term" value="{|$control_term|}" style="width: 50px;" />
+                </td>
+                <td>
+                    <select name="period" class="chzn-select" style="width: 80px;">
+                        <option value="hour" {|if $control_period == 'hour'|} selected {|/if|}>{|$translate_chas|}</option>
+                        <option value="day" {|if $control_period == 'day'|} selected {|/if|}>{|$translate_day|}</option>
+                        <option value="week" {|if $control_period == 'week'|} selected {|/if|}>{|$translate_nedelya|}</option>
+                        <option value="month" {|if $control_period == 'month'|} selected {|/if|}>{|$translate_month|}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {|if $box|}
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="onlyauto" value="1" {|if $control_onlyauto|} checked {|/if|} />
+            {|$translate_etap_nelzya_vibirat_vruchnuyu|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="onlyissue" value="1" {|if $control_onlyissue|} checked {|/if|} />
+            {|$translate_s_etapa_nelzya_uhodit_poka_ne_resheni_vse_podzadachi_dannogo_etapa|}
+        </label>
+    </div>
+    {|/if|}
+
+    {|if not $issue && $box|}
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="need_payment" value="1" {|if $control_need_payment|} checked {|/if|} />
+            {|$translate_dolzhna_bit_oplata|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="need_prepayment" value="1" {|if $control_need_prepayment|} checked {|/if|} />
+            {|$translate_dolzhna_bit_predoplata|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="need_content" value="1" {|if $control_need_content|} checked {|/if|} />
+            {|$translate_neobhodimo_soderzhanie|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="need_document" value="1" {|if $control_need_document|} checked {|/if|} />
+            {|$translate_neobhodimi_dokumenti|}
+        </label>
+    </div>
+    {|/if|}
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="done" value="1" {|if $control_done|} checked {|/if|} />
+            {|$translate_ozhidaet_proverki|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="closed" value="1" {|if $control_closed|} checked {|/if|} />
+            {|if $issue|}
+            {|$translate_schitat_zadachu_zakritoy|}
+            {|else|}
+            {|$translate_schitat_zakaz_zakritim|}
+            {|/if|}
+        </label>
+    </div>
+
+    {|if NOT $issue|}
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="saled" value="1" {|if $control_saled|} checked {|/if|} />
+            {|$translate_schitat_zakaz_prodannim|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="shipped" value="1" {|if $control_shipped|} checked {|/if|} />
+            {|$translate_schitat_zakaz_otgruzhennim|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="orderxml" value="1" {|if $control_orderxml|} checked {|/if|} />
+            {|$translate_vigruzhat_zakaz_v_xml|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="checkbox" name="ordercsv" value="1" {|if $control_ordercsv|} checked {|/if|} />
+            {|$translate_vigruzhat_zakaz_v_csv|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="radio" name="orderSupplier" value="" {|if !$control_orderSupplier|} checked {|/if|} />
+            {|$translate_ne_sozdavat_zakaz_postashchiku_avtomaticheski|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="radio" name="orderSupplier" value="create" {|if $control_orderSupplier == 'create'|} checked {|/if|} />
+            {|$translate_avtomaticheski_sozdat_zakaz_postavshchiku|}
+        </label>
+    </div>
+
+    <div class="form-element">
+        <label>
+            <input type="radio" name="orderSupplier" value="cancel" {|if $control_orderSupplier == 'cancel'|} checked {|/if|} />
+            {|$translate_otmenit_zakaz_postavshchiku_esli_zakaz_eshche_v_pervom_sostoyanii_|}
+        </label>
+    </div>
+    {|/if|}
+</div>
+</div>
+</div>
+
+{|$block_module_additions|}
+<br />
+
+
+
+
+
+<div class="ob-button-fixed">
+    <input type="submit" name="send_edit" value="{|$translate_save|}" class="ob-button button-green" />
+</div>
+<div class="ob-button-fixed-place"></div>
+</form>

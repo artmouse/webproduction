@@ -1,0 +1,110 @@
+{|if $position_y_max > 0 AND $statusArray|}
+    <h2>{|$translate_workflow|}</h2>
+    {|* "canvas" для расстановки элементов *|}
+    <div class="onebox-workflow-layout" style="height: {|$position_y_max|}px;">
+        {|foreach from=$statusArray item='e'|}
+            <div id="js-wfe-{|$e.id|}"
+                 data-id="{|$e.id|}"
+                 class="onebox-workflow-element
+                        {|if $e.statusAllow|}onebox-workflow-element-allow{|/if|}
+                        {|if $e.id == $status_id|}onebox-workflow-element-current{|/if|}"
+                 style="left: {|$e.positionx|}px; top: {|$e.positiony|}px; width: {|$e.width|}px; height: {|$e.height|}px; {|if $e.colour|} background-color: {|$e.colour|}; {|/if|} {|if !$e.next|}cursor: default;{|/if|}">
+                <span class="inner">
+                    <span class="inner-wrap">
+                        <span class="cell name">{|$e.name|}</span>
+                        {|if $e.fireIssue|}
+                            <span class="cell"><span class="ob-icon-overdue"></span></span>
+                        {|/if|}
+                        {|if $e.allClosed|}
+                            <span class="cell"><span class="ob-icon-done"></span></span>
+                        {|/if|}
+                    </span>
+                </span>
+                <a class="tools" href="javascript:void(0);" onclick="settings_stage_popup({|$orderid|}, {|$e.id|});">{|$translate_setting|}</a>
+            </div>
+        {|/foreach|}
+        <div class="clear"></div>
+    </div>
+
+    <script type="text/javascript">
+    $j(function() {
+        jsPlumb.importDefaults({
+            DragOptions : { cursor: "pointer", zIndex: 2000 },
+            HoverClass: "connector-hover"
+        });
+
+        var stateMachineConnector = {
+            connector: "StateMachine",
+            paintStyle: {
+                lineWidth: 2,
+                strokeStyle: "#888888"
+            },
+            hoverPaintStyle:{strokeStyle:"#ff0000"},
+            endpoint:"Blank",
+            anchor:"Continuous",
+            overlays:[ ["PlainArrow", {location: 1, width: 5, length: 5} ]]
+        };
+
+        var stateMachineConnectorAllow = {
+            connector: "StateMachine",
+            paintStyle: {
+                lineWidth: 3,
+                strokeStyle: "green"
+            },
+            hoverPaintStyle:{strokeStyle:"#ff0000"},
+            endpoint:"Blank",
+            anchor:"Continuous",
+            overlays:[ ["PlainArrow", {location: 1, width: 10, length: 10} ]]
+        };
+
+        {|foreach from=$statusArray item='e1'|}
+        {|foreach from=$statusArray item='e2'|}
+        {|if $changeArray[$e1.id][$e2.id]|}
+        jsPlumb.connect({
+            source: "js-wfe-{|$e1.id|}",
+            target: "js-wfe-{|$e2.id|}"
+        }, stateMachineConnector);
+        {|/if|}
+        {|/foreach|}
+        {|/foreach|}
+
+        $j('.onebox-workflow-element').click(function (e) {
+            if ($j(e.target).hasClass('onebox-workflow-element')) {
+                var statusID = $j(e.target).data('id');
+            } else {
+                var statusID = $j(e.target).closest('.onebox-workflow-element').data('id');
+            }
+
+            $j("#js-statusid [value='"+statusID+"']").attr("selected", "selected");
+            //$j('#js-statusid').val(statusID);
+            $j('#js-statusid').change();
+        });
+
+        $j('#js-statusid').change(function (e) {
+            var statusID = $j('#js-statusid').val();
+            $j('#js-issue-input-statusid').val('');
+            // убираем все current-классы
+            $j('.onebox-workflow-element-current').removeClass('onebox-workflow-element-current');
+
+            // добавляем current class
+            $j('#js-wfe-'+statusID).addClass('onebox-workflow-element-current');
+            $j('#js-issue-input-statusid').val(statusID);
+        });
+    });
+    </script>
+{|/if|}
+
+<div class="shop-block-popup js-settings-stage-popup" style="display: none;">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a href="javascript:void(0);" class="close" onclick="popupClose('.js-settings-stage-popup');">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="head">{|$translate_nastroyki_etapa|}</div>
+        <div class="window-content window-form">
+            <div id="js-settings-stage-popup-content"></div>
+        </div>
+    </div>
+</div>

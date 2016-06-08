@@ -1,0 +1,32 @@
+<div class="shop-tabs fixed">
+    {|if not $isIssue|}
+        <a href="/admin/shop/orders/">&lsaquo; Заказы</a>
+    {|/if|}
+    {|if $box|}
+        <a href="/admin/projects/">&lsaquo; Проекты</a>
+        <a href="{|$projectURL|}">&lsaquo; {|$projectName|}</a>
+    {|/if|}
+    <a href="/admin/shop/orders/{|$orderid|}/" {|if $selected == 'view'|} class="selected" {|/if|}><em>{|$translate_ord|} {|$orderName|}</em></a>
+    {|if $isFinance|}
+        <a href="/admin/shop/orders/{|$orderid|}/payment/" {|if $selected == 'payment'|} class="selected" {|/if|}>Платежи</a>
+    {|/if|}
+    <a href="/admin/shop/orders/{|$orderid|}/document/" {|if $selected == 'document'|} class="selected" {|/if|}>Документы</a>
+    {|if $box|}
+        <a href="/admin/shop/orders/{|$orderid|}/employer/" {|if $selected == 'employer'|} class="selected" {|/if|}>Исполнители</a>
+        <a href="/admin/shop/orders/{|$orderid|}/log/" {|if $selected == 'log'|} class="selected" {|/if|}>История</a>
+    {|/if|}
+    {|if not $isIssue|}
+        {|if $urlStorageIncoming|}
+            <a href="{|$urlStorageIncoming|}">Приходовать заказ на склад</a>
+        {|/if|}
+        {|if $urlStorageSale|}
+            <a href="{|$urlStorageSale|}">Отгрузить заказ со склада</a>
+        {|/if|}
+    {|/if|}
+    <a href="/admin/shop/orders/{|$orderid|}/utm/" {|if $selected == 'utm-label'|} class="selected" {|/if|}>UTM</a>
+    {|if $canEdit|}
+        <a href="/admin/shop/orders/{|$orderid|}/delete/" {|if $selected == 'delete'|} class="selected" {|/if|}>Удалить</a>
+    {|/if|}
+    <div class="clear"></div>
+</div>
+<div class="shop-tabs-place">&nbsp;</div>

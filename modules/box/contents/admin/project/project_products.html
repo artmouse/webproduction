@@ -1,0 +1,13 @@
+{|$block_menu|}
+
+<form action="" method="post">
+    {|$block_product_list|}
+
+    {|if $canEdit|}
+        <div class="ob-button-fixed">
+            <input type="hidden" name="ok" value="1" />
+            <input type="submit" value="{|$translate_save|}" class="ob-button button-green" onclick="shopWaitShow('{|$translate_vipolnyaetsya_sohranenie_zakaza|}.');" />
+        </div>
+        <div class="ob-button-fixed-place"></div>
+    {|/if|}
+</form>

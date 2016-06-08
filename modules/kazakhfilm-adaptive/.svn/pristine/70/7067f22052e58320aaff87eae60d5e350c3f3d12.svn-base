@@ -1,0 +1,19 @@
+{|if $guestBookArray|}
+    <h2>Отзывы</h2>
+    <br />
+    {|foreach from=$guestBookArray item = g|}
+        <div class="ks-review-element">
+            {|if $g.image|}
+                <div class="image">
+                    <img src={|$g.image|} alt="">
+                </div>
+            {|/if|}
+
+            <div class="data {|if !$g.image|}no-image{|/if|}">
+                <div class="name"><u>{|$g.name|}</u> {|$g.cdate|}</div>
+                {|$g.response|}
+            </div>
+            <div class="clear"></div>
+        </div>
+    {|/foreach|}
+{|/if|}

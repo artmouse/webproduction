@@ -1,0 +1,42 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success visible">
+        {|$translate_passport_of_product|} #{|$id|}: <strong>{|$name|}</strong> {|$translate_production_added_to_basket|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error visible">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'product'|}
+                {|$translate_box_error_product|}.
+            {|/if|}
+            {|if $e == 'count'|}
+                {|$translate_box_error_amount|}.
+            {|/if|}
+            {|if $e == 'storagefrom'|}
+                {|$translate_storage_error_warehouse|}.
+            {|/if|}
+            {|if $e == 'divisibility'|}
+                {|$translate_incoming_error_divisibility|}.
+            {|/if|}
+            {|if $e == 'passport'|}
+                {|$translate_production_error_passport_not_found|}.
+            {|/if|}
+            {|if $e == 'passportNotValid'|}
+                {|$translate_production_error_passport_not_valid|}.
+            {|/if|}
+            {|if $e == 'user'|}
+                {|$translate_storage_error_permission|}
+            {|/if|}
+            <br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $messagesave == 'ok'|}
+    <div class="shop-message-success visible">
+        {|$translate_message_success_update|}.
+    </div>
+{|/if|}

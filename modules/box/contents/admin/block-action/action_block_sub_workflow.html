@@ -1,0 +1,44 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element separate">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+                <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+    </div>
+
+    <div class="double">
+        <div class="form-element separate">
+            <input type="text" name="{|$index|}_subName" value="{|$subName|}" placeholder="{|$translate_imya_zadachi|}" style="width: 100%;"/>
+        </div>
+
+        <div class="form-element separate">
+            <select name="{|$index|}_subworkflowId" class="{|$index|}-chzn-select" style="width: 100%;">
+                <option value="0">{|$translate_workflow|}</option>
+                {|foreach from=$workflowArray item="name" key="id"|}
+                    <option value="{|$id|}" {|if $id == $subworkflowId|} selected {|/if|}>{|$name|}</option>
+                {|/foreach|}
+            </select>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-element separate">
+        <textarea name="{|$index|}_subDescription" class="js-autosize-{|$index|}" rows="5" style="width: 100%;" placeholder="{|$translate_description|}">{|$subDescription|}</textarea>
+    </div>
+
+    <div class="form-element">
+        <input type="text" name="{|$index|}_subDate" value="{|$subDate|}" placeholder="{|$translate_smeshchenie_v_dnyah|}" />
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        $j('.{|$index|}-chzn-select').select2();
+        $j('.js-autosize-{|$index|}').autosize();
+    });
+</script>

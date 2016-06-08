@@ -1,0 +1,1071 @@
+<?php
+class shop_product extends Engine_Class {
+
+    public function process() {
+        $storeName = Shop::Get()->getSettingsService()->getSettingValue('shop-name');
+
+        $this->setValue('storeTitle', $storeName);
+
+        try {
+            // получаем товар по ID
+            $product = Shop::Get()->getShopService()->getProductByID(
+                $this->getArgument('id')
+            );
+
+            $this->setValue('advertise', $product->getAdvertise());
+            try {
+                $x = new XShopFaq();
+                $x->setLimitCount(4);
+                $x->setOrder('id', 'DESC');
+                $a = array();
+                while ($y = $x->getNext()) {
+
+                    if (!$y->getAnswer()) {
+
+                        continue;
+
+                    }
+                    $a [] = array(
+                        "name" => $y->getQuestion(),
+                        "url" => '/faq/'.$y->getId().'/?prev_page=/faq'
+                    );
+
+                }
+
+                $this->setValue('faq', $a);
+
+            } catch (Exception $e) {
+
+
+            }
+
+            // скрытые товары показываем только админу
+            if ($product->getHidden()) {
+                if (!$this->getUserSecure()) {
+                    throw new ServiceUtils_Exception('hidden');
+                }
+            }
+
+            // issue #35572
+            try {
+                $category = $product->getCategory();
+            } catch (Exception $categoryEx) {
+                $category = false;
+            }
+
+            if (!empty($category) && $category->isHidden()) {
+                if (!$this->getUserSecure()) {
+                    throw new ServiceUtils_Exception('hidden');
+                }
+            }
+
+        } catch (Exception $e) {
+            Engine::Get()->getRequest()->setProductContentNotFound();
+            return;
+
+            // бросаем exception для 404
+            //$e->setCode(404);
+            //throw $e;
+        }
+
+        // товар с группировкой или нет?
+        $isGrouped = false;
+
+        try {
+            // если группа с группировкой товаров
+            if ($product->getCategory()->getShowtype() == 'thumbsgrouped'
+                || $product->getCategory()->getShowtype() == 'tablegrouped') {
+                $groupBy = Shop::Get()->getShopService()->getProductsGroup($product);
+                // и у продукта поле группировки не пустое
+                if ($product->getField($groupBy)) {
+                    $isGrouped = true;
+                    // заменяем html
+                    $this->setField(
+                        'filehtml',
+                        PackageLoader::Get()->getProjectPath().'/templates/'.
+                        Engine::Get()->getConfigFieldSecure('shop-template').'/shop_product_grouped.html'
+                    );
+                }
+            }
+        } catch (Exception $ge) {
+
+        }
+
+        try {
+            $seo = Shop::Get()->getSEOService()->getSEOByURL(
+                Engine::GetURLParser()->getTotalURL()
+            );
+
+            if ($seo->getSeoh1()) {
+                $this->setValue('seoh1', $seo->getSeoh1());
+            }
+        } catch (Exception $seoEx) {
+
+        }
+
+        // ------------------------------------------------- //
+
+        if (@isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            $h = 'https://';
+        } else {
+            $h = 'http://';
+        }
+
+        if ($categorySubdomain = $product->getCategorySubdomain()) {
+            $e = explode('.', Engine::GetURLParser()->getHost());
+            if ($e[0] != $categorySubdomain) {
+                $u = $h.$categorySubdomain.'.'.
+                    Engine::Get()->getProjectHost().Engine::GetURLParser()->getTotalURL();
+                header('HTTP/1.1 301 Moved Permanently');
+                header('Location: '.$u);
+                exit();
+            }
+        }
+
+        // проверяем, есть ли у товара специфический URL
+        // и делаем редирект
+        $url = Engine_URLParser::Get()->getTotalURL();
+        if ($product->getUrl() && preg_match("/^\/product\/(\d+)\/$/ius", $url)) {
+            header('HTTP/1.1 301 Moved Permanently');
+            header('Location: '.$product->makeURL());
+            exit();
+        }
+
+        // ------------------------------------------------- //
+
+        // проверяем, есть ли в конце URL'a слеш - если нет - делаем редирект
+        $url = Engine::GetURLParser()->getTotalURL();
+        if (!preg_match("/\/$/ius", $url)) {
+            $url .= '/';
+            header('HTTP/1.1 301 Moved Permanently');
+            header('Location: '.$url);
+            exit();
+        }
+
+        // ------------------------------------------------- //
+
+        // meta-ключевые слова
+        $metaKeywords = $product->getSeokeywords();
+
+        if (!$metaKeywords) {
+            // строим ключевые слова на основе характеристик
+
+            try {
+                $metaKeywords = $product->getCategory()->makePathName(', ');
+                $metaKeywords .= ', ';
+            } catch (Exception $categoryEx) {
+
+            }
+
+            if ($product->getTags()) {
+                $metaKeywords .= $product->getTags().', ';
+            }
+
+            $metaKeywords .= $product->getName();
+
+            $filters = Shop::Get()->getShopService()->getProductFilterValues($product);
+            while ($filter = $filters->getNext()) {
+                try {
+                    $filterID = $filter->getFilterid();
+                    $filterValue = $filter->getFiltervalue();
+
+                    if (!$filterValue) {
+                        continue;
+                    }
+
+                    $filter = Shop::Get()->getShopService()->getProductFilterByID($filterID);
+                    if ($filter->getHidden()) {
+                        continue;
+                    }
+
+                    $metaKeywords .= ', ';
+                    $metaKeywords .= $filter->getName();
+                    $metaKeywords .= ' ';
+                    $metaKeywords .= $filterValue;
+                } catch (Exception $filterEx) {
+
+                }
+            }
+        }
+
+        Engine::GetHTMLHead()->setMetaKeywords(
+            htmlspecialchars($metaKeywords)
+        );
+
+        // meta-описание
+        $metaDescription = $product->getSeodescription();
+
+        if (!$metaDescription) {
+            $metaDescription = Shop::Get()->
+            getSettingsService()->getSettingValue('seo-meta-description-product');
+        }
+
+        if (!$metaDescription) {
+            $metaDescription = $product->getDescription();
+            $metaDescription = strip_tags($metaDescription);
+            $metaDescription = StringUtils_Object::Create($metaDescription)->limit(200)->__toString();
+        }
+
+        $metaDescription = $this->_processKeywords($metaDescription, $product);
+
+        Engine::GetHTMLHead()->setMetaDescription(
+            htmlspecialchars($metaDescription)
+        );
+
+        // title
+        $title = $product->getSeotitle();
+        if (!$title) {
+            $title = Shop::Get()->getSettingsService()->getSettingValue('seo-title-product');
+        }
+
+        $title = $this->_processKeywords($title, $product);
+
+        Engine::GetHTMLHead()->setTitle(
+            htmlspecialchars($title)
+        );
+
+        // ------------------------------------------------- //
+
+
+        // SEO tags
+        $tags = new XShopProduct2Tag();
+        $tags->setProductid($product->getId());
+        $tags->setOrderByRAND();
+        $tags->setLimitCount(10);
+        $a = array();
+        while ($x = $tags->getNext()) {
+            try {
+                $tag = Shop::Get()->getShopService()->getProductTagByID($x->getTagid());
+
+                $a[] = array(
+                    'name' => $tag->makeName(),
+                    'url' => $tag->makeURL(),
+                );
+            } catch (Exception $e) {
+
+            }
+        }
+        $this->setValue('tagArray', $a);
+
+        // ------------------------------------------------- //
+
+        // open graph tags
+        $image = $product->makeImageThumb(100);
+        if ($image) {
+            Engine::GetHTMLHead()->setMetaTag('og:image', Engine::Get()->getProjectURL().$image);
+        }
+        Engine::GetHTMLHead()->setMetaTag('og:title', $product->getName());
+        Engine::GetHTMLHead()->setMetaTag(
+            'og:description', htmlspecialchars(strip_tags($product->getDescription()))
+        );
+
+        if ($product->getCategoryid()) {
+            // отправляем в шаблон указание, какая категория выбрана
+            $block = Engine::GetContentDriver()->getContent('shop-tpl-column');
+            $block->setValue('categorySelected', $product->getCategoryid());
+        }
+
+        // +1 view counter
+        HistoryService::Get()->viewProduct($product);
+
+        // для корзины
+        $this->setValue('productID', $product->getId());
+
+        $currencyDefault = Shop::Get()->getCurrencyService()->getCurrencySystem();
+
+        $this->setValue('id', $product->getId());
+        $this->setValue('code', $product->makeCode());
+        $this->setValue('paymentid', $product->getId() . time());
+        $this->setValue('name', htmlspecialchars($product->getName()));
+        $nameQuick = str_replace("'", "\'", $product->makeName());
+        $this->setValue('nameQuick', $nameQuick);
+        $description = Shop_ShopService::Get()->relinkSeo($product->getDescription());
+        $this->setValue('description', $description);
+        if ($product->getWidth() != 0) {
+            $this->setValue('width', $product->getWidth());
+        }
+        if ($product->getHeight() != 0) {
+            $this->setValue('height', $product->getHeight());
+        }
+        if ($product->getLength() != 0) {
+            $this->setValue('length', $product->getLength());
+        }
+        if ($product->getWeight() != 0) {
+            $this->setValue('weight', $product->getWeight());
+        }
+
+        $this->setValue('url', $product->makeUrl());
+        $this->setValue('ordered', $product->getOrdered());
+        $this->setValue('price', $product->makePrice($currencyDefault, true));
+        $this->setValue('delivery_price', $product->getDelivery_price());
+        $this->setValue('priceold', $product->makePriceOld($currencyDefault), $product->getDiscount());
+        $this->setValue('discount', $product->getDiscount());
+        $this->setValue('pricediscount', $product->makePrice($currencyDefault));
+        $this->setValue('currency', $currencyDefault->getSymbol());
+        $this->setValue('model', htmlspecialchars($product->getModel()));
+        $this->setValue('unit', htmlspecialchars($product->getUnit()));
+        $this->setValue('count', (($product->getDivisibility()>0) ? ((float) $product->getDivisibility()) : 1));
+        $this->setValue('avail', $product->getAvail());
+        $this->setValue(
+            'buynotavail',
+            Shop::Get()->getSettingsService()->getSettingValue('product-cansale-unavail')
+        );
+        $this->setValue('availtext', htmlspecialchars($product->getAvailtext()));
+        $this->setValue('canbuy', $product->getCanBuy());
+        $this->setValue('share', $product->getShare());
+        $this->setValue('canMakePreorder', $product->getPreorderDiscount());
+        $this->setValue('seriesname', $product->getSeriesname());
+        $this->setValue('unitbox', $product->getUnitbox());
+
+        if (Shop_ModuleLoader::Get()->isImported('product-video')) {
+            $this->setValue('videoArray', VideoService::Get()->getVideoArrayByProduct($product));
+        }
+        if (!$product->getAvail()) {
+            $this->setValue(
+                'sameModelProductArray',
+                Shop::Get()->getShopService()->getSameModelProductArray($product, $currencyDefault)
+            );
+        }
+        $imagesArray = array();
+        // метка для кропа, кроп для первой фотки
+        $cropImageAdd = false;
+        $format = Shop::Get()->getSettingsService()->getSettingValue('image-format');
+        $format = strtolower($format);
+
+        // Please not delete this line
+        if ($format != 'jpg' && $format != 'png') {
+            $format = 'png';
+        }
+        foreach ($product->getImagesArray() as $image) {
+            // Если нету файла на диске, то идем дальше
+            if (!file_exists(PackageLoader::Get()->getProjectPath().'/media/shop/'.$image)) {
+                continue;
+            }
+            $size = getimagesize(PackageLoader::Get()->getProjectPath().'/media/shop/'.$image);
+
+            if ($size[0] < 800) {
+                $originalUrl = Shop_ImageProcessor::MakeThumbProportional(
+                    PackageLoader::Get()->getProjectPath().'/media/shop/'.$image, $size[0], false, $format
+                );
+                $originalUrl = str_replace(PackageLoader::Get()->getProjectPath(), '', $originalUrl);
+            } else {
+                $originalUrl = Shop_ImageProcessor::MakeThumbProportional(
+                    PackageLoader::Get()->getProjectPath().'/media/shop/'.$image, 800, false, $format
+                );
+                $originalUrl = str_replace(PackageLoader::Get()->getProjectPath(), '', $originalUrl);
+            }
+            if ($product->getImagecrop() && !$cropImageAdd) {
+                $cropUrl = Shop_ImageProcessor::MakeThumbProportional(
+                    PackageLoader::Get()->
+                    getProjectPath().'/media/shop/'.$product->getImagecrop(), 800, 800, $format
+                );
+                $cropImageAdd = true;
+            } else {
+                $cropUrl = Shop_ImageProcessor::MakeThumbProportional(
+                    PackageLoader::Get()->getProjectPath().'/media/shop/'.$image,
+                    800,
+                    800,
+                    $format
+                );
+                $cropImageAdd = true;
+            }
+            $cropUrl = str_replace(PackageLoader::Get()->getProjectPath(), '', $cropUrl);
+
+            $imagesArray[] = array (
+                'originalUrl' => $originalUrl,
+                'cropUrl' => $cropUrl
+            );
+        }
+        $this->setValue('imagesArray', $imagesArray);
+
+        // SEO-контекнт передаем в shop-tpl
+        $tpl = Engine::GetContentDriver()->getContent('shop-tpl');
+        $tpl->setValue('seocontent', $product->getSeocontent());
+
+        // иконка к товару
+        try {
+            $icon = $product->getIcon();
+
+            $this->setValue('iconImage', $icon->makeImage());
+            $this->setValue('iconName', $icon->makeName());
+            $this->setValue('iconURL', $icon->getUrl());
+        } catch (Exception $e) {
+
+        }
+
+        // landing
+        if (Shop_ModuleLoader::Get()->isImported('product-landing') && $product->getLanding()) {
+            if ($product->getLandingBanner1()) {
+                $this->setValue('landingBannerName1', $product->getLandingBannerName1());
+                $this->setValue('landingBanner1', '/media/shop/'.$product->getLandingBanner1());
+            }
+            if ($product->getLandingBanner2()) {
+                $this->setValue('landingBannerName2', $product->getLandingBannerName2());
+                $this->setValue('landingBanner2', '/media/shop/'.$product->getLandingBanner2());
+            }
+            if ($product->getLandingBanner3()) {
+                $this->setValue('landingBannerName3', $product->getLandingBannerName3());
+                $this->setValue('landingBanner3', '/media/shop/'.$product->getLandingBanner3());
+            }
+            if ($product->getLandingBanner4()) {
+                $this->setValue('landingBannerName4', $product->getLandingBannerName4());
+                $this->setValue('landingBanner4', '/media/shop/'.$product->getLandingBanner4());
+            }
+            if ($product->getLandingBanner5()) {
+                $this->setValue('landingBannerName5', $product->getLandingBannerName5());
+                $this->setValue('landingBanner5', '/media/shop/'.$product->getLandingBanner5());
+            }
+            if ($product->getLandingBanner6()) {
+                $this->setValue('landingBannerName6', $product->getLandingBannerName6());
+                $this->setValue('landingBanner6', '/media/shop/'.$product->getLandingBanner6());
+            }
+            $advantage = $product->getLandingAdvantage();
+            if (trim($advantage)) {
+                $advantage = explode("\n", $advantage);
+                $this->setValue('landingAdvantage', $advantage);
+            }
+
+        }
+
+        // 3d
+        if (Shop_ModuleLoader::Get()->isImported('product-3d')) {
+            try {
+                $three = new XShopProduct3D();
+                $three->setProductid($product->getId());
+                $three->addWhere('image', '', '<>');
+                $threeArray = array();
+                while ($x = $three->getNext()) {
+                    $threeArray[] = '/media/shop/'.$x->getImage();
+                }
+
+                $this->setValue('threeArray', $threeArray);
+            } catch (Exception $eee) {
+
+            }
+        }
+
+        $this->setValue('siteurl', $product->getSiteurl());
+        $descriptionshort = Shop_ShopService::Get()->relinkSeo($product->getDescriptionshort());
+        $this->setValue('descriptionshort', $descriptionshort);
+
+        // показывать ли штрих-код
+        if (Shop::Get()->getSettingsService()->getSettingValue('product-barcode-show')) {
+            $this->setValue('barcode', $product->getBarcode());
+        }
+
+        if (Shop::Get()->getSettingsService()->getSettingValue('found-cheaper')) {
+            $render = Engine::GetContentDriver()->getContent('shop-products-found-cheaper');
+            $render->setValue('productName', $product->getName());
+            $render->setValue('productID', $product->getId());
+            $this->setValue('foundcheaper', $render->render());
+        }
+
+        $this->setValue('rating', round($product->getRating()));
+
+        // количество голосов, на основе которых был построен рейтинг
+        $ratingCount = $product->getRatingcount();
+        if (!$ratingCount && $product->getRating()) {
+            $ratingCount = $product->getOrdered();
+        }
+        $this->setValue('ratingCount', $ratingCount);
+
+        // показывать ли кнопки соц. сетей
+        if (Shop::Get()->getSettingsService()->getSettingValue('social-button')) {
+            $this->setValue('showSocial', 1);
+        }
+
+        // Показывать блок "Сообщите когда появится"
+        if (!$product->getAvail() &&
+            Shop::Get()->getSettingsService()->getSettingValue('products-notice-of-availability')) {
+            $render = Engine::GetContentDriver()->getContent('shop-products-notice-of-availability');
+            $render->setValue('id', $product->getId());
+            $this->setValue('noticeOfAvailability', $render->render());
+        }
+
+        $render = Engine::GetContentDriver()->getContent('shop-tpl-column');
+        $warranty = $product->getWarranty();
+        $payment = $product->getPayment();
+        $delivery = $product->getDelivery();
+        if (empty($warranty)) {
+            $warranty = Shop::Get()->getSettingsService()->getSettingValue('warranty');
+        }
+        if (empty($payment)) {
+            $payment = Shop::Get()->getSettingsService()->getSettingValue('payment');
+        }
+        if (empty($delivery)) {
+            $delivery = Shop::Get()->getSettingsService()->getSettingValue('delivery');
+        }
+        $render->setValue('warranty', $warranty);
+        $render->setValue('payment', $payment);
+        $render->setValue('delivery', $delivery);
+
+        $this->setValue('warranty', $warranty);
+        $this->setValue('payment', $payment);
+        $this->setValue('delivery', $delivery);
+
+        // поставщики и баланс
+        try {
+            if (!$this->getUser()->isAdmin()) {
+                throw new ServiceUtils_Exception();
+            }
+
+            if (Shop_ModuleLoader::Get()->isImported('storage')) {
+                // считаем количество на складе
+                $storageArray = array();
+
+                $balance = StorageBalanceService::Get()->getBalanceByProductAndStoragesForSale(
+                    $this->getUser(),
+                    $product
+                );
+
+                while ($s = $balance->getNext()) {
+                    try {
+                        $storageArray[] = array(
+                            'name' => $s->getStorageName()->getName(),
+                            'count' => round($s->getAmount(), 3),
+                            'price' => $s->getPrice(),
+                            'currency' => Shop::Get()->getCurrencyService()->getCurrencyByID(
+                                $s->getCurrencyid()
+                            )->getName(),
+                            'cdate' => $s->getCdate(),
+                        );
+                    } catch (Exception $balanceEx) {
+
+                    }
+                }
+                $this->setValue('storageArray', $storageArray);
+            }
+
+            // информация о поставщиках
+            $a = array();
+
+            $productSuppliers = Shop::Get()->getSupplierService()->getProductSupplierFromProduct($product);
+            while ($p = $productSuppliers->getNext()) {
+                $supplierID = $p->getSupplierid();
+                $supplierCode = $p->getCode();
+                $supplierPrice = $p->getPrice();
+                $supplierCurrencyID = $p->getCurrencyid();
+                $supplierDate = $p->getDate();
+                $supplierAvail = $p->getAvail();
+
+                if (Checker::CheckDate($supplierDate)) {
+                    $supplierDate = DateTime_Formatter::DateTimePhonetic($supplierDate);
+                } else {
+                    $supplierDate = false;
+                }
+
+                try {
+                    $supplierName = Shop::Get()->getShopService()->getSupplierByID($supplierID)->makeName();
+
+                    $a[] = array(
+                        'supplierID' => $supplierID,
+                        'supplierName' => $supplierName,
+                        'supplierCode' => htmlspecialchars($supplierCode),
+                        'supplierPrice' => $supplierPrice.' '.
+                            Shop::Get()->getCurrencyService()->getCurrencyByID($supplierCurrencyID)->getName(),
+                        'supplierCurrencyID' => $supplierCurrencyID,
+                        'supplierDate' => $supplierDate,
+                        'supplierAvail' => $supplierAvail,
+                    );
+                } catch (Exception $supplierNameEx) {
+
+                }
+            }
+            $this->setValue('supplierArray', $a);
+        } catch (Exception $supplierEx) {
+
+        }
+
+        $this->setValue('characteristics', nl2br(htmlspecialchars($product->getCharacteristics())));
+
+        // характеристики по данному товару;
+        // одновременно строим массив опций
+        $a = array();
+        $optionIDArray = array();
+        $filterArray = array();
+        $filterNameArray = array();
+
+        $filters = Shop::Get()->getShopService()->getProductFilterValues($product);
+        while ($objFilter = $filters->getNext()) {
+            try {
+                $filterID = $objFilter->getFilterid();
+                $filter = Shop::Get()->getShopService()->getProductFilterByID($filterID);
+                if ($filter->getHidden()) {
+                    continue;
+                }
+
+                // запоминаем характеристику, может понадобиться
+                // для модельного ряда
+                $filterArray[] = $filter;
+
+                if ($objFilter->getFilteractual()) {
+
+                    $filterValue = $objFilter->getFiltervalue();
+
+                    if ($objFilter->getFilteractual() && $filterValue) {
+                        $filterColor = '';
+
+                        if (preg_match("/^color:(.+?)(?:\s+)(.+?)$/ius", $filterValue, $r)) {
+                            // фильтр по цветам
+                            $filterValue = $r[2];
+                            $filterColor = $r[1];
+                        } else {
+                            // обычный фильтр
+                            $filterValue = htmlspecialchars($filterValue);
+                        }
+
+                        $charsInfo = false;
+                        if ($category && $objFilter->getFilteruse()) {
+                            $charsInfo = array(
+                                'url' => $category->makeURL().
+                                    "filter{$filter->getId()}=".urlencode($filterValue).'/',
+                                'title' => $category->getName().' '.$filterValue
+                            );
+                        }
+                        $a[$filter->getName()][] = array(
+                            'characteristicValue' => $filterValue,
+                            'characteristicColor' => $filterColor,
+                            'characteristicInfo' => $charsInfo,
+                        );
+                    }
+
+                }
+                if ($objFilter->getFilteroption()) {
+                    $optionIDArray[] = $filter->getId();
+                }
+
+
+            } catch (Exception $e) {
+
+            }
+        }
+
+        $this->setValue('characteristicsArray', $a);
+
+        // опции товара
+        $optionIDArray = array_unique($optionIDArray);
+        $optionArray = array();
+        foreach ($optionIDArray as $filterID) {
+            $filter = Shop::Get()->getShopService()->getProductFilterByID(
+                $filterID
+            );
+
+            // допустимые значения для данного товара
+            $valueArray = array();
+            $filters = Shop::Get()->getShopService()->getProductFilterValues($product);
+            while ($objFilter = $filters->getNext()) {
+                if ($objFilter->getFilterid() == $filter->getId()
+                    && $objFilter->getFilteroption()
+                ) {
+                    $valueArray[] = array(
+                        $objFilter->getFiltervalue(),
+                        $objFilter->getFiltermarkup(),
+                        md5($objFilter->getFiltervalue())
+                    );
+                }
+
+            }
+
+            if (!$valueArray) {
+                continue;
+            }
+
+
+            if (strcmp("Quantity", $filter->getName()) == 0) {
+                $pr = $product->makePrice($currencyDefault, true);
+                $valueArray = array();
+
+                for ($i =1; $i <= 100; $i++) {
+                    $k = $i -1;
+                    if ($i == 1) {
+                        $valueArray[] = array(
+                          $i,
+                          0,
+                          md5(1)
+                        );
+                        continue;
+                    }
+
+                    if ($i == 2) {
+                        $valueArray[] = array(
+                          $i,
+                          $pr,
+                          md5(2)
+                        );
+                        continue;
+                    }
+
+                    $valueArray[] = array(
+                        $i,
+                        $k*$pr,
+                        md5($i)
+                    );
+                }
+
+
+                $optionArray[] = array(
+                    'id' => 'custom-quantity',
+                    'name' => $filter->getName(),
+                    'valueArray' => $valueArray,
+                );
+
+
+                continue;
+
+            }
+
+
+            $optionArray[] = array(
+                'id' => $filter->getId(),
+                'name' => $filter->getName(),
+                'valueArray' => $valueArray,
+            );
+        }
+
+        $this->setValue('optionArray', $optionArray);
+
+        if ($category && $category->getImageInModel()) {
+            $this->setValue('imageInModel', true);
+        }
+
+        // модельный ряд
+        if ($product->getSeriesname()) {
+            $products = Shop::Get()->getShopService()->getProductsAll();
+            $products->setHidden(0);
+            $products->setDeleted(0);
+            $products->setSeriesname($product->getSeriesname());
+            $a = array();
+            $filterValueArray = array();
+            while ($x = $products->getNext()) {
+                foreach ($filterArray as $filter) {
+                    try {
+                        $filterNameArray[$filter->getId()] = $filter->getName();
+                        $filterValueArray[$filter->getId()][$x->getId()] = $x->getFilterValue($filter, true);
+                    } catch (Exception $e) {
+
+                    }
+                }
+
+                $modelName = $x->getModel();
+                if (!$modelName) {
+                    $modelName = $x->makeName();
+                }
+
+                $tmpImage = false;
+                if ($category && $category->getImageInModel()) {
+                    $tmpImage = $x->makeImageThumb(200);
+                }
+
+                $a[] = array(
+                    'id' => $x->getId(),
+                    'name' => $modelName,
+                    'url' => $x->makeURL(),
+                    'price' => $x->makePrice($currencyDefault, true),
+                    'avail' => $x->getAvail(),
+                    'availtext' => $x->getAvailtext(),
+                    'image' => $tmpImage
+                );
+            }
+
+            // убираем полные дубликаты, если без группировки
+            if (!$isGrouped) {
+                foreach ($filterValueArray as $filterID => $x) {
+                    $diffed = false;
+
+                    $xtmp = -1;
+                    foreach ($x as $tmp) {
+                        if ($xtmp === -1) {
+                            $xtmp = $tmp;
+                        }
+
+                        if ($tmp != $xtmp) {
+                            $diffed = true;
+                        } else {
+                            $xtmp = $tmp;
+                        }
+                    }
+
+                    if (!$diffed) {
+                        unset($filterNameArray[$filterID]);
+                    }
+                }
+            } else {
+                // убираем пустые
+
+                foreach ($filterValueArray as $filterID => $x) {
+                    $diffed = false;
+
+                    foreach ($x as $tmp) {
+                        if ($tmp) {
+                            $diffed = true;
+                            break;
+                        }
+                    }
+
+                    if (!$diffed) {
+                        unset($filterNameArray[$filterID]);
+                    }
+                }
+            }
+
+            $this->setValue('seriesArray', $a);
+            $this->setValue('filterValueArray', $filterValueArray);
+            $this->setValue('filterNameArray', $filterNameArray);
+        }
+
+        Engine::GetContentDriver()->getContent('shop-tpl-column')->setValue('productSelected', true);
+
+        try {
+            $this->setValue('brand', $product->getBrand()->makeInfoArray());
+        } catch (Exception $e) {
+
+        }
+
+        try {
+            if ($this->getUser()->isAdmin()) {
+                $this->setValue('urledit', $product->makeURLEdit());
+            }
+        } catch (Exception $e) {
+
+        }
+
+        $this->setValue(
+            'orderurl',
+            Engine::GetLinkMaker()->makeURLByContentIDParam($this->getContentID(), $product->getId())
+        );
+
+        // новости по товару
+        try {
+            $news = Shop::Get()->getNewsService()->getNewsByProduct(
+                $product
+            );
+
+            $a = array();
+            while ($x = $news->getNext()) {
+                $a[] = array(
+                    'id' => $x->getId(),
+                    'name' => htmlspecialchars($x->getName()),
+                    'date' => DateTime_Formatter::DatePhonetic($x->getCdate()),
+                    'url' => Engine::GetLinkMaker()->makeURLByContentIDParam('shop-news-view', $x->getId()),
+                );
+            }
+            $this->setValue('productnewsArray', $a);
+        } catch (Exception $e) {
+
+        }
+
+
+        // блок комментариев
+        $commentBlock = Engine::GetContentDriver()->getContent('shop-block-comment-product');
+        $commentBlock->setValue('productid', $product->getId());
+        $commentBlock->process();
+        $a = $this->getValue('commentsArray');
+        foreach ($a as $key => $value) {
+
+            $a[$key]['url'] = Engine::GetLinkMaker()->makeURLByContentIDParam('review-page', $value['id']);
+
+        }
+        //print_r($a);
+        $this->setValue('commentsArray', $a);
+        $this->setValue('allowcomment', $this->getValue('allowcomment'));
+        $this->setValue('ratingArray', $this->getValue('ratingArray'));
+        $this->setValue('message', $this->getValue('message'));
+
+
+        // интеграция с внешней системой комментариев
+        $integration = Shop::Get()->getSettingsService()->getSettingValue('integration-comments');
+        $integration = trim($integration);
+        $this->setValue('commentIntegration', $integration);
+
+        // путь к товару (хлебные крошки)
+        $a = array();
+        for ($i = 1; $i <= 10; $i++) {
+            try {
+                $category = Shop::Get()->getShopService()->getCategoryByID(
+                    $product->getField('category'.$i.'id')
+                );
+
+                $a[] = $category->makeInfoArray();
+            } catch (Exception $e) {
+                break;
+            }
+        }
+        $this->setValue('pathArray', $a);
+
+        // связанные списки товаров
+        $a = $this->_makeListsArray($product);
+        $this->setValue('listsArray', $a);
+
+        // акционные наборы
+        $this->setValue('actionSetArray', Shop::Get()->getShopService()->getActionSetArrayByProduct($product));
+
+        // информация о характеристиках
+        $this->setValue(
+            'characteristics_message',
+            nl2br(Shop::Get()->getSettingsService()->getSettingValue('characteristics-message'))
+        );
+
+        // Популярные товары
+        // $count - кол-во отображаемых товаров(кратно 3)
+        $x = Shop::Get()->getShopService()->getProductsAll();
+        $count = 15;
+        $x->setLimitCount($count);
+        $x->setOrder('viewed', 'DESC');
+        $a = array();
+
+        $index = 0;
+        $b = array();
+        while ($p = $x->getNext()) {
+            $index++;
+            $b[] = $p->makeInfoArray();
+            if ($index == 3) {
+                $a[] = $b;
+                $index = 0;
+                $b = array();
+            }
+
+        }
+        $this->setValue('productsPopularArray', $a);
+    }
+
+    // Получить список связанных товаров
+    private function _makeListsArray(ShopProduct $product) {
+        $lists = Shop::Get()->getShopService()->getProductsListAll();
+        $lists->setHidden(0);
+
+        // пытаемся найти списки по id и коду 1с
+        $queryArray[] = '( `linkkey` LIKE \'product-'.$product->getId().'-%\')';
+        if ($product->getCode1c()) {
+            $queryArray[] = '( `linkkey` LIKE \'product-'.$product->getCode1c().'-%\')';
+        }
+
+        $lists->addWhereQuery('('.implode(' OR ', $queryArray).')');
+
+        $a = array();
+
+        if ($lists->getCount() == 0) { // если нету ищем товары в связанных категориях
+
+            $products = Shop::Get()->getShopService()->getProductsAll();
+
+            // ищем связанные категории товаров
+            $category2list = new XShopReletedCategory();
+
+            $queryArray = array();
+
+            for ($j = 1; $j <= 10; $j++) {
+                if (!$product->getField('category'.$j.'id')) {
+                    break;
+                }
+                $queryArray[] = '(`categoryid` = '.$product->getField('category'.$j.'id').' )';
+            }
+
+            if (!$queryArray) {
+                return;
+            }
+
+            $category2list->addWhereQuery('('.implode(' OR ', $queryArray).')');
+            $category2list->setLimitCount(5);
+
+            $queryArray = array();
+            while ($x = $category2list->getNext()) {
+                if ($cid = $x->getReletedcategoryid()) {
+                    for ($j = 1; $j <= 10; $j++) {
+                        $queryArray[] = '(`category'.$j.'id` = '.$cid.' )';
+                    }
+                }
+            }
+
+            if (!empty($queryArray)) {
+                $products->addWhereQuery('('.implode(' OR ', $queryArray).')');
+            }
+            if ( empty($queryArray) || $products->getCount() < 5) {
+                // делаем связанными товары текущей категории
+                $products->clearWhere();
+                $products->setHidden(0);
+                $products->setDeleted(0);
+                $products->setCategoryid($product->getCategoryid());
+            }
+
+            $products->addWhere('image', '', '<>');
+            $products->setAvail(1);
+            // $products->setOrderBy('RAND()');
+            // RAND() сильно утяжеляет запрос,
+            //поэтому для псевдо случайной подбоки используем сортировку по разным полям
+            $randFieldArray = array('id','price','ordered','code1c');
+            $typeSortArray = array('ASC','DESC');
+            $products->setOrder(
+                '`shopproduct`.`'.$randFieldArray[array_rand($randFieldArray)].'`',
+                $typeSortArray[array_rand($typeSortArray)]
+            );
+            $products->setLimitCount(5);
+
+            $html = $lists->render($products);
+            if ($html) {
+                $a[] = array(
+                    'id' => 0,
+                    'name' => Shop::Get()->getTranslateService()->getTranslateSecure('translate_our_recomendation'),
+                    'html' => $html,
+                );
+            }
+        } else {
+            while ($list = $lists->getNext()) {
+                try {
+                    // @todo: optimization
+                    if ($list->getProducts()->getCount() > 0) {
+                        $a[] = array(
+                            'id' => $list->getId(),
+                            'name' => $list->makeName(),
+                            'html' => $list->render(),
+                        );
+                    }
+                } catch (Exception $e) {
+
+                }
+            }
+        }
+
+        return $a;
+    }
+
+    protected function _processKeywords($s, ShopProduct $product) {
+        if ($product->getPrice()) {
+            $currency = Shop::Get()->getCurrencyService()->getCurrencySystem();
+            $s = str_replace('[price]', $product->makePrice($currency), $s);
+        } else {
+            $s = str_replace('[price]', '', $s);
+        }
+
+        if ($product->getAvail()) {
+            if ($product->getAvailtext()) {
+                $s = str_replace('[avail]', $product->getAvailtext(), $s);
+            } else {
+                $s = str_replace(
+                    '[avail]',
+                    Shop::Get()->getTranslateService()->getTranslateSecure('translate_available'),
+                    $s
+                );
+            }
+        } else {
+            $s = str_replace('[avail]', '', $s);
+        }
+
+        $tmpArray = array();
+        for ($j = 1; $j <= 10; $j++) {
+            try {
+                $tmp = Shop::Get()->getShopService()->getCategoryByID($product->getField('category'.$j.'id'));
+                $tmpArray[] = $tmp->getName();
+            } catch (Exception $ce) {
+
+            }
+        }
+        if ($tmpArray) {
+            $s = str_replace('[categorypath]', implode(', ', $tmpArray).'.', $s);
+        } else {
+            $s = str_replace('[categorypath]', '', $s);
+        }
+
+        $s = str_replace('[name]', $product->getName(), $s);
+        return $s;
+    }
+
+}

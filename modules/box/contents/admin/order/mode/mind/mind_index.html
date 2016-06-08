@@ -1,0 +1,50 @@
+<div class="shop-mind-block">
+    <div class="control">
+        <form action="" style="display: ;" class="js-add-relation-form">
+            <input type="text" name="name" value="" style="width: 300px;" />
+            <input type="hidden" name="projectid" value="{|$control_projectid|}" />
+            <input class="ob-button button-orange" type="submit" value="{|$translate_add|}" /><br />
+        </form>
+        <br />
+        <br />
+        
+        <form action="" style="display: none;" class="js-edit-relation-form">
+            {|$translate_nazvanie_zadachi|}<br />
+            <input type="text" name="name" value="" style="width: 300px;" />
+            <br />
+            <br />
+            
+            {|$translate_kommentariy_k_zadache|}<br />
+            <textarea name="comments" style="width: 300px; height: 100px;" ></textarea>
+            <br />
+            <br />
+            
+            {|$translate_otvetstvenniy_za_vipolnenie|}<br />
+            <select name="managerid" class="chzn-select" style="width: 300px;" id="js-issue-managerid" >
+                <option value="">---</option>
+                {|foreach from=$managerArray item="e"|}
+                    <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+            <br />
+            
+            {|$translate_workflow|}<br />
+            <select name="categoryid" class="chzn-select" style="width: 300px;" id="js-issue-categoryid" >
+                {|foreach from=$categoryArray item="e"|}
+                    <option value="{|$e.id|}" {|if $e.id == $control_categoryid|} selected {|/if|}>{|$e.name|}</option>
+                {|/foreach|}
+            </select>
+            <br />
+
+            {|$translate_etap_zadachi|}<br />
+            <input name="statusid" type="hidden" style="width: 300px;" id="js-issue-statusid" />
+            <br />
+            <br />
+            
+            <input type="hidden" name="id" value="" />
+            <input class="ob-button button-orange" type="submit" value="{|$translate_save|}" />
+            <input class="ob-button button-orange" type="button" value="{|$translate_udalit_zadachu|}" id="js-issue-delete" /><br />
+        </form>
+    </div>
+    <div id="tree-container"></div>
+</div>

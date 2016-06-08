@@ -1,0 +1,97 @@
+<h1>{|$translate_user_registration|}</h1>
+
+<div class="def-block-crumbs">
+    <div class="item def-icon-home">
+        <a href="/">{|$translate_main|}</a>
+    </div>
+    <div class="item def-icon-angle-right">
+        {|$translate_user_registration|}
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="def-message-success">
+        {|$registration_good_message|}
+    </div>
+{|/if|}
+
+{|if $message == 'activate'|}
+    <div class="def-message-success">
+        {|$translate_user_registrate_success|}. {|$translate_account_activate|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="def-message-error">
+        {|$translate_registration_error|}:
+        <br />
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'login'|}
+                {|$translate_order_error_login|}. {|$translate_order_error_login_must_be|}.<br />
+            {|/if|}
+            {|if $e == 'login-exists'|}
+                {|$translate_login_already_exists|}.<br />
+            {|/if|}
+            {|if $e == 'easy-password'|}
+                {|$translate_profile_error_password_must_be|}.<br />
+            {|/if|}
+            {|if $e == 'password'|}
+                {|$translate_profile_error_password|}.<br />
+            {|/if|}
+            {|if $e == 'email'|}
+                {|$translate_profile_error_mail|}.<br />
+            {|/if|}
+            {|if $e == 'email-exists'|}
+                {|$translate_profile_error_mail_exists|}.<br />
+            {|/if|}
+            {|if $e == 'phone-exists'|}
+                {|$translate_already_registered_phone|}.<br />
+            {|/if|}
+            {|if $e == 'parentid'|}
+                {|$translate_registration_error_parent|}.<br />
+            {|/if|}
+            {|if $e == 'bdate'|}
+                {|$translate_profile_error_bdate|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $message != 'ok' AND $message != 'activate'|}
+    <form class="def-block-form centered-form" method="post">
+        <table>
+            
+            <tr>
+                <td class="vtop">{|$translate_password_small|}<span class="important">*</span>:</td>
+                <td>
+                    <input type="password" name="password" value="{|$control_password|}" /><br />
+                    <span class="light">({|$translate_password_must_be|})</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="vtop">E-mail<span class="important">*</span>:</td>
+                <td>
+                    <input type="text" name="email" value="{|$control_email|}" /><br />
+                    <span class="light">({|$translate_at_example|}: example@example.ua)</span>
+                </td>
+            </tr>
+                      
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <label>
+                        <input type="checkbox" checked name="zakon" value="1" />
+                    <span class="light">{|$used_user_info|}</span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input class="def-submit" type="submit" name="ok" value="{|$translate_sing_up_small|}" />
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                </td>
+            </tr>
+        </table>
+    </form>
+{|/if|}

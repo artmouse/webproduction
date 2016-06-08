@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        {|$engine_includes|}
+
+        <style type="text/css">
+            body, table, td {
+                font-family: 'Trebuchet MS', Arial;
+                font-size: 12px;
+                text-decoration: none;
+                margin: 0;
+                padding: 0;
+                color: #000000;
+            }
+            body {
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+            <td width="48%">
+                <div style="background-color: #eaeaea; padding: 10px; border-radius: 5px;">
+                    {|if $logo|}
+                        <img src="{|$logo|}" width="100" style="float: left; margin-right: 10px;" />
+                    {|/if|}
+
+                    "{|$shopName|}"<br />
+                    {|if $companyAddress|}
+                        Адрес:  {|$companyAddress|}<br />
+                    {|/if|}
+                    {|if $shopPhone|}
+                        Телефон:  {|$shopPhone|}<br />
+                    {|/if|}
+                    {|$shopUrl|}
+
+                    <div style="clear: both; line-height: 1px;">&nbsp;</div>
+                </div>
+
+                <h1>Квитанция #{|$documentNumber|}</h1>
+                <strong>{|$name|}</strong><br />
+                Категория: {|$category|}<br />
+                <strong>Задача:</strong>
+                {|$content|}<br />
+
+                Модель: {|$model|}<br />
+                Серийный номер: {|$serial|}<br />
+                Состояние: {|$state|}<br />
+                Оценочная стоимость услуг: {|$estimate|}<br />
+
+                <hr />
+
+                <strong>Клиент:</strong><br />
+                Ф.И.О.: {|$client.name|}<br />
+                Телефон: {|$client.phone|}<br />
+                E-mail: {|$client.email|}<br />
+
+                <hr />
+
+                Задача поступила в сервис: {|$cdate|}<br />
+                Ориентировочная дата готовности: {|$edate|}<br />
+
+                <br />
+                <br />
+
+                <div style="font-size: 12px;">
+                    Поставщик оставляет за собой право снять оборудование с гарантийного обслуживания при обнаружении постороннего вмешательства, наличии механических повреждений или других нарушений эксплуатационных правил. Поставщик не несет ответственности за сохранность информации на носителях (ЖМД). В случае утери данного документа, выдача изделия происходит при наличии паспорта личности, которая сдала изделие, с письменного заявления спустя две недели с момента предъявления заявления. Если владелец не явился за изделием на протяжении четырех месяцев, то приемщик снимает с себя ответствие за хранение изделия.<br />
+                </div>
+                <br />
+                <br />
+
+                Подпись владельца _________________________________
+                <br />
+                <br />
+                <br />
+
+                Подпись приёмщика _________________________________
+                <br />
+                <br />
+                <br />
+            </td>
+
+            <td width="50">&nbsp;</td>
+
+            <td>
+                <div style="background-color: #eaeaea; padding: 10px; border-radius: 5px;">
+                    {|if $logo|}
+                        <img src="{|$logo|}" width="100" style="float: left; margin-right: 10px;" />
+                    {|/if|}
+
+                    "{|$shopName|}"<br />
+                    {|if $companyAddress|}
+                        Адрес:  {|$companyAddress|}<br />
+                    {|/if|}
+                    {|if $shopPhone|}
+                        Телефон:  {|$shopPhone|}<br />
+                    {|/if|}
+                    {|$shopUrl|}
+
+                    <div style="clear: both; line-height: 1px;">&nbsp;</div>
+                </div>
+
+                <h1>Квитанция #{|$id|}</h1>
+                <strong>{|$name|}</strong><br />
+                Категория: {|$category|}<br />
+                <strong>Задача:</strong>
+                {|$content|}<br />
+
+                Модель: {|$model|}<br />
+                Серийный номер: {|$serial|}<br />
+                Состояние: {|$state|}<br />
+                Оценочная стоимость услуг: {|$estimate|}<br />
+
+                <hr />
+
+                <strong>Клиент:</strong><br />
+                Ф.И.О.: {|$client.name|}<br />
+                Телефон: {|$client.phone|}<br />
+                E-mail: {|$client.email|}<br />
+
+                <hr />
+
+                Задача поступила в сервис: {|$cdate|}<br />
+                Ориентировочная дата готовности: {|$edate|}<br />
+
+                <br />
+                <br />
+
+                <div style="font-size: 12px;">
+                    Поставщик оставляет за собой право снять оборудование с гарантийного обслуживания при обнаружении постороннего вмешательства, наличии механических повреждений или других нарушений эксплуатационных правил. Поставщик не несет ответственности за сохранность информации на носителях (ЖМД). В случае утери данного документа, выдача изделия происходит при наличии паспорта личности, которая сдала изделие, с письменного заявления спустя две недели с момента предъявления заявления. Если владелец не явился за изделием на протяжении четырех месяцев, то приемщик снимает с себя ответствие за хранение изделия.<br />
+                </div>
+                <br />
+                <br />
+
+                Подпись владельца _________________________________
+                <br />
+                <br />
+                <br />
+
+                Подпись приёмщика _________________________________
+                <br />
+                <br />
+                <br />
+            </td>
+        </tr>
+    </table>
+    </body>
+</html>

@@ -1,0 +1,59 @@
+{|if $newCategoryArray[0]|}
+    <ul>
+        <li>
+            <div class="item js-droppable" js-data-id="0"><a href=".">{|$translate_category_list|}</a></div>
+        </li>
+        <li>
+            <div class="item js-droppable" js-data-id="0"><a href="./?categoryid=0">{|$translate_no_category|}</a></div>
+        </li>
+        {|foreach from=$newCategoryArray[0] item="e"|}
+            <li>
+                <div class="item js-droppable" js-data-id="{|$e.id|}"><a href="{|$e.url|}" {|if $e.selected|}class="selected"{|/if|}>{|$e.name|}</a></div>
+                {|if $newCategoryArray[$e.id]|}
+                    <span class="expand"></span>
+                    <ul style="display: none;">
+                        {|foreach from=$newCategoryArray[$e.id] item="e2"|}
+                            <li>
+                                <div class="item js-droppable" js-data-id="{|$e2.id|}"><a href="{|$e2.url|}" {|if $e2.selected|}class="selected"{|/if|}>{|$e2.name|}</a>
+                                </div>
+                                {|if $newCategoryArray[$e2.id]|}
+                                    <span class="expand"></span>
+                                    <ul style="display: none;">
+                                        {|foreach from=$newCategoryArray[$e2.id] item="e3"|}
+                                            <li>
+                                                <div class="item js-droppable" js-data-id="{|$e3.id|}"><a href="{|$e3.url|}" {|if $e3.selected|}class="selected"{|/if|}>{|$e3.name|}</a>
+                                                </div>
+                                                {|if $newCategoryArray[$e3.id]|}
+                                                    <span class="expand"></span>
+                                                    <ul style="display: none;">
+                                                        {|foreach from=$newCategoryArray[$e3.id] item="e4"|}
+                                                            <li>
+                                                                <div class="item js-droppable" js-data-id="{|$e4.id|}"><a href="{|$e4.url|}" {|if $e4.selected|}class="selected"{|/if|}>{|$e4.name|}</a>
+                                                                </div>
+                                                                {|if $newCategoryArray[$e4.id]|}
+                                                                    <span class="expand"></span>
+                                                                    <ul style="display: none;">
+                                                                        {|foreach from=$newCategoryArray[$e4.id] item="e5"|}
+                                                                            <li>
+                                                                                <div class="item js-droppable" js-data-id="{|$e5.id|}"><a href="{|$e5.url|}" {|if $e5.selected|}class="selected"{|/if|}>{|$e5.name|}</a>
+                                                                                </div>
+                                                                            </li>
+                                                                        {|/foreach|}
+                                                                    </ul>
+                                                                {|/if|}
+                                                            </li>
+                                                        {|/foreach|}
+                                                    </ul>
+                                                {|/if|}
+                                            </li>
+                                        {|/foreach|}
+                                    </ul>
+                                {|/if|}
+                            </li>
+                        {|/foreach|}
+                    </ul>
+                {|/if|}
+            </li>
+        {|/foreach|}
+    </ul>
+{|/if|}

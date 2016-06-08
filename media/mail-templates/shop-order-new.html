@@ -1,0 +1,105 @@
+Subject: Заказ #{|$orderid|} в магазине {|$shopname|}
+
+Здравствуйте!<br />
+<br />
+
+Вы оформили заказ #{|$orderid|} в нашем магазине. Спасибо за покупку,
+в ближайшее время с вами свяжутся наши менеджеры и уточнят условия
+доставки и оплаты.
+<br />
+<br />
+
+<table cellpadding="5" cellspacing="0" border="1" width="100%">
+    <tr class="tab_tr_head">
+        <td><strong>Товар</strong></td>
+        <td width="120" align="center"><strong>Цена</strong></td>
+        <td width="80" align="center"><strong>Количество</strong></td>
+        <td width="120" align="center"><strong>Сумма</strong></td>
+    </tr>
+    {|foreach from=$basketsArray item="b"|}
+        <tr>
+            <td>
+                {|$b.name|} (код #{|$b.productid|})<br />
+                {|$b.comment|}
+            </td>
+            <td align="right">
+               {|if $b.price=='0.00'|}
+                   Цену уточняйте у наших менеджеров.
+               {|else|}
+                   {|$b.price|} {|$ordercurrency|}
+               {|/if|}
+            </td>
+            <td align="center">
+                {|$b.count|}
+            </td>
+            <td align="right">
+               {|if $b.sum=='0.00'|}
+                   Цену уточняйте у наших менеджеров.
+               {|else|}
+                   {|$b.sum|} {|$ordercurrency|}
+               {|/if|}
+            </td>
+        </tr>
+    {|/foreach|}
+    {|foreach from=$setArray item="set"|}
+        <tr>
+           <td colspan="4">
+               Набор
+           </td>
+        </tr>
+        {|foreach from=$set.productArray item="b"|}
+            <tr>
+                <td>
+                    {|$b.name|} (код #{|$b.productid|})
+                </td>
+                <td align="right">
+                </td>
+                <td align="center">
+                </td>
+                <td align="right">
+                </td>
+            </tr>
+        {|/foreach|}
+        <tr>
+            <td>
+                Цена набора
+            </td>
+            <td>
+                {|$set.sum.one|} {|$ordercurrency|}
+            </td>
+            <td>
+                {|$set.count|}
+            </td>
+            <td>
+                {|$set.sum.total|} {|$ordercurrency|}
+            </td>
+        </tr>
+    {|/foreach|}
+</table>
+<br />
+{|if $discountSum > 0|}
+    Сумма скидки: <strong>-{|$discountSum|} {|$ordercurrency|}</strong><br />
+{|/if|}
+{|if $deliveryPrice > 0|}
+    Доставка: <strong>{|$deliveryPrice|} {|$ordercurrency|}</strong><br />
+{|/if|}
+Общая сумма заказа: <strong>{|$ordersum|} {|$ordercurrency|}</strong>
+<br />
+<br />
+
+Номер заказа: {|$orderid|}<br />
+Ф.И.О.: {|$clientname|}<br />
+Телефон: {|$clientphone|}<br />
+Email: {|$clientemail|}<br />
+Адрес доставки: {|$clientaddress|}<br />
+Прочие контактные данные: {|$clientcontacts|}<br />
+Комментарий: {|$comments|}<br />
+Дата оформления заказа: {|$date|}<br />
+{|if $deliveryNote|}
+Накладная доставки: {|$deliveryNote|} <br />
+{|/if|}
+<br />
+Трек-ссылка заказа: {|$trackurl|}
+<br />
+
+{|$signature|}

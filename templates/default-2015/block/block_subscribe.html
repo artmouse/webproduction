@@ -1,0 +1,60 @@
+{|if $subscribe_status !== 'ok'|}
+    <div class="def-block-foot-subscribe">
+        <div class="def-block-table">
+            <div class="block-cell">
+                <div class="slogan def-icon-mail-alt">
+                    <span class="slogan-head">
+                        SIGN UP FOR OUR NEWSLETTER <br />
+                        <span>Duis at ante non massa consectetur iaculis id non tellus</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="block-cell">
+                <form method="post" class="subscribe-form def-block-table">
+                    {|if !$useremail|}
+                        <div class="block-cell">
+                            <input type="text" name="distribution_email" class="ui-autocomplete-input" value="{|$control_distribution_email|}" placeholder="Email">
+                        </div>
+                    {|/if|}
+                    <div class="block-cell subscribe">
+                        <input class="def-submit" type="submit" name="distribution_ok" value="{|$translate_subscribe|}">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{|/if|}
+
+{|if $subscribe_message|}
+    <div class="def-block-popup js-popup-subscribe">
+        <div class="dark" onclick="popupClose('.js-popup-subscribe');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="#" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-subscribe');">&nbsp;</a>
+                <div class="def-section-caption">
+                    <span><strong>{|$translate_subscription|}</strong></span>
+                </div>
+            </div>
+            
+            {|if $subscribe_message == 'ok'|}
+                <div class="message-success">
+                    {|$translate_you_have_successfully_subscribed|}.
+                </div>
+            {|/if|}
+
+
+            {|if $subscribe_message == 'error'|}
+                <div class="message-error">
+                    {|$translate_you_did_not_enter_email_address|}.
+                </div>
+            {|/if|}
+
+            <script type="text/javascript">
+                setTimeout(function() {
+                     popupClose('.js-popup-subscribe');
+                }, 3000);
+            </script>
+        </div>
+    </div>
+{|/if|}

@@ -1,0 +1,57 @@
+<div class="shop-tabs fixed">
+    <a href="/admin/shop/currency/" class="selected">{|$translate_currency_setting|}</a>
+    <a href="./add/">{|$translate_currency_add|}</a>
+    <div class="clear">&nbsp;</div>
+</div>
+<div class="shop-tabs-place">&nbsp;</div>
+
+{|if $message == 'ok'|}
+<div class="shop-message-success">
+    {|$translate_update_data_success|}.
+</div>
+{|/if|}
+
+{|if $message == 'error'|}
+<div class="shop-message-error">
+    {|$translate_data_error|}.
+</div>
+{|/if|}
+
+<form action="" method="post">
+    <table class="shop-table">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>{|$translate_currency_small|}</td>
+            <td>{|$translate_symbol|}</td>
+            <td>{|$translate_rate|}</td>
+            <td>{|$translate_basic|}</td>
+            <td>{|$translate_hidden_big|}</td>
+            <td>{|$translate_sort_order|}</td>
+            <td>{|$translate_auto_update|}</td>
+            <td>{|$translate_delete|}</td>
+        </tr>
+        </thead>
+        {|foreach from=$currencyArray item="c"|}
+        <tr>
+            <td>{|$c.id|}</td>
+            <td>{|$c.name|}</td>
+            <td>
+                <input type="text" name="symbol[{|$c.id|}]" value="{|$c.symbol|}" />
+            </td>
+            <td>
+                <input type="text" name="currency[{|$c.id|}]" value="{|$c.rate|}" />
+            </td>
+            <td><input type="radio" name="default[]" {|if $c.default|} checked {|/if|} value="{|$c.id|}"> </td>
+            <td><input type="checkbox" name="hidden[{|$c.id|}]"  value="1" {|if $c.hidden == 1|} checked {|/if|} ></td>
+            <td><input type="text" name="sort[{|$c.id|}]"  value="{|$c.sort|}" ></td>
+            <td><input type="checkbox" name="autoupdate[{|$c.id|}]"  value="1" {|if $c.autoupdate == 1|} checked {|/if|} ></td>
+            <td>{|if $c.delete|}<input type="checkbox" name="delete[]"  value="{|$c.id|}">{|/if|}</td>
+        </tr>
+        {|/foreach|}
+    </table>
+    <br /><br />
+    <div class="shop-button-fixed">
+        <input type="submit" name="ok" value="{|$translate_save|}" class="shop-button-green" />
+    </div>
+</form>

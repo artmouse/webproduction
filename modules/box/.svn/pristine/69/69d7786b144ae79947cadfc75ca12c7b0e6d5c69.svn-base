@@ -1,0 +1,306 @@
+<div class="form-part js-block-element" data-index="{|$index|}">
+    <input type="hidden" value="{|$contentID|}" name="{|$index|}_contentid">
+    <input type="hidden" value="{|$index|}" name="index[]">
+
+    <div class="form-element separate">
+        <div class="element-caption js-handele move">
+            {|$blockName|}
+            {|if $description|}
+            <span class="element-caption-description">{|$description|}</span>
+            {|/if|}
+        </div>
+        <br>
+        <table class="shop-table">
+            <tr>
+                <td>День недели</td>
+                <td>Понедельник</td>
+                <td>Вторник</td>
+                <td>Среда</td>
+                <td>Четверг</td>
+                <td>Пятница</td>
+                <td>Суббота</td>
+                <td>Воскресенье</td>
+            </tr>
+            <tr>
+                <td>Отправлять<td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_monday" {|if $monday|}checked{|/if|}>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_tuesday" {|if $tuesday|}checked{|/if|}>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_wednesday" {|if $wednesday|}checked{|/if|}>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_thursday" {|if $thursday|}checked{|/if|}>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_friday" {|if $friday|}checked{|/if|}>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_saturday" {|if $saturday|}checked{|/if|}>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" value="1" name="{|$index|}_sunday" {|if $sunday|}checked{|/if|}>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Время отправки (ч.)</td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_mondayTime" style="width: 60px;">
+                        <option value="01" {|if $mondayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $mondayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $mondayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $mondayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $mondayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $mondayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $mondayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $mondayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $mondayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $mondayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $mondayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $mondayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $mondayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $mondayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $mondayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $mondayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $mondayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $mondayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $mondayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $mondayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $mondayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $mondayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $mondayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $mondayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_tuesdayTime" style="width: 60px;">
+                        <option value="01" {|if $tuesdayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $tuesdayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $tuesdayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $tuesdayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $tuesdayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $tuesdayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $tuesdayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $tuesdayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $tuesdayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $tuesdayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $tuesdayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $tuesdayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $tuesdayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $tuesdayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $tuesdayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $tuesdayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $tuesdayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $tuesdayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $tuesdayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $tuesdayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $tuesdayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $tuesdayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $tuesdayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $tuesdayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_wednesdayTime" style="width: 60px;">
+                        <option value="01" {|if $wednesdayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $wednesdayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $wednesdayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $wednesdayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $wednesdayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $wednesdayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $wednesdayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $wednesdayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $wednesdayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $wednesdayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $wednesdayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $wednesdayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $wednesdayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $wednesdayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $wednesdayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $wednesdayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $wednesdayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $wednesdayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $wednesdayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $wednesdayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $wednesdayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $wednesdayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $wednesdayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $wednesdayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_thursdayTime" style="width: 60px;">
+                        <option value="01" {|if $thursdayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $thursdayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $thursdayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $thursdayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $thursdayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $thursdayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $thursdayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $thursdayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $thursdayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $thursdayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $thursdayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $thursdayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $thursdayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $thursdayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $thursdayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $thursdayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $thursdayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $thursdayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $thursdayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $thursdayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $thursdayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $thursdayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $thursdayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $thursdayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_fridayTime" style="width: 60px;">
+                        <option value="01" {|if $fridayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $fridayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $fridayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $fridayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $fridayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $fridayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $fridayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $fridayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $fridayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $fridayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $fridayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $fridayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $fridayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $fridayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $fridayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $fridayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $fridayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $fridayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $fridayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $fridayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $fridayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $fridayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $fridayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $fridayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_saturdayTime" style="width: 60px;">
+                        <option value="01" {|if $saturdayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $saturdayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $saturdayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $saturdayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $saturdayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $saturdayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $saturdayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $saturdayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $saturdayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $saturdayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $saturdayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $saturdayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $saturdayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $saturdayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $saturdayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $saturdayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $saturdayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $saturdayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $saturdayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $saturdayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $saturdayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $saturdayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $saturdayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $saturdayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="{|$index|}-chzn-select" name="{|$index|}_sundayTime" style="width: 60px;">
+                        <option value="01" {|if $sundayTime == '01'|}selected{|/if|}>01</option>
+                        <option value="02" {|if $sundayTime == '02'|}selected{|/if|}>02</option>
+                        <option value="03" {|if $sundayTime == '03'|}selected{|/if|}>03</option>
+                        <option value="04" {|if $sundayTime == '04'|}selected{|/if|}>04</option>
+                        <option value="05" {|if $sundayTime == '05'|}selected{|/if|}>05</option>
+                        <option value="06" {|if $sundayTime == '06'|}selected{|/if|}>06</option>
+                        <option value="07" {|if $sundayTime == '07'|}selected{|/if|}>07</option>
+                        <option value="08" {|if $sundayTime == '08'|}selected{|/if|}>08</option>
+                        <option value="09" {|if $sundayTime == '09'|}selected{|/if|}>09</option>
+                        <option value="10" {|if $sundayTime == '10'|}selected{|/if|}>10</option>
+                        <option value="11" {|if $sundayTime == '11'|}selected{|/if|}>11</option>
+                        <option value="12" {|if $sundayTime == '12'|}selected{|/if|}>12</option>
+                        <option value="13" {|if $sundayTime == '13'|}selected{|/if|}>13</option>
+                        <option value="14" {|if $sundayTime == '14'|}selected{|/if|}>14</option>
+                        <option value="15" {|if $sundayTime == '15'|}selected{|/if|}>15</option>
+                        <option value="16" {|if $sundayTime == '16'|}selected{|/if|}>16</option>
+                        <option value="17" {|if $sundayTime == '17'|}selected{|/if|}>17</option>
+                        <option value="18" {|if $sundayTime == '18'|}selected{|/if|}>18</option>
+                        <option value="19" {|if $sundayTime == '19'|}selected{|/if|}>19</option>
+                        <option value="20" {|if $sundayTime == '20'|}selected{|/if|}>20</option>
+                        <option value="21" {|if $sundayTime == '21'|}selected{|/if|}>21</option>
+                        <option value="22" {|if $sundayTime == '22'|}selected{|/if|}>22</option>
+                        <option value="23" {|if $sundayTime == '23'|}selected{|/if|}>23</option>
+                        <option value="00" {|if $sundayTime == '00'|}selected{|/if|}>24</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    <label>
+        <input type="checkbox" name="{|$index|}_html" value="1" {|if $html|}checked{|/if|}>
+        Письмо в фирменном стиле
+    </label>
+    <br>
+    <br>
+
+    <label>
+        <input type="checkbox" name="{|$index|}_signature" value="1" {|if $signature|}checked{|/if|}>
+        Автоматически добавлять подпись сотрудника, если это возможно
+    </label>
+    <br>
+    <br>
+    Обратный адрес email
+    <br>
+
+    <input type="text" value="{|$email|}" name="{|$index|}_email">
+    <br>
+    <br>
+
+
+    <div class="form-element separate">
+        Тема письма:
+        <input type="text" name="{|$index|}_subject" value="{|$subject|}" style="width: 100%;">
+    </div>
+
+    <div class="form-element">
+        Переключится в статус:
+        <select name="{|$index|}_status" class="{|$index|}-chzn-select">
+            <option value="0">---</option>
+            {|foreach from=$statusArray item="s"|}
+                <option value="{|$s.id|}" {|if $statusid == $s.id|}selected{|/if|}>{|$s.name|}</option>
+            {|/foreach|}
+        </select>
+    </div>
+</div>
+
+<script>
+    $j(function () {
+        // chzn
+        $j('.{|$index|}-chzn-select').select2();
+    });
+</script>

@@ -1,0 +1,24 @@
+{|if $productsArray|}
+
+    <div class="ob-block-element" style="margin: 0 0 20px 0;">
+        <div class="block-caption">
+            Список просмотренных клиентом продуктов
+        </div>
+
+        <table class="shop-table" width="100%">
+            {|foreach from=$productsArray item="p"|}
+                <tr>
+                    <td width="80%">
+                        <a data-id="{|$p.productid|}" class="js-product-preview" href="{|$p.productUrl|}">
+                            {|if $p.categoryName|}
+                                {|$p.categoryName|} /
+                            {|/if|}
+                            {|$p.name|}
+                        </a>
+                    </td>
+                    <td class="nowrap align_right">{|$p.price|} {|$currency|}</td>
+                </tr>
+            {|/foreach|}
+        </table>
+    </div>
+{|/if|}

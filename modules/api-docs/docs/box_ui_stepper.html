@@ -1,0 +1,85 @@
+<h1>Пагинация</h1>
+
+Пагинатор – это механизм постраничного вывода информации.<br />
+<br />
+<br />
+
+<h2>Стандартный пагинатор</h2>
+Стандартный пагинатор представляет собой набор номеров страниц с активным элементом <div class="ui-class inline">.selected</div><br />
+<br />
+<div class="ui-class">.ob-block-stepper</div>
+<code>
+    <pre>
+&lt;div class="ob-block-stepper"&gt;
+    &lt;a class="selected" href="#"&gt;1&lt;/a&gt;
+    &lt;a href="#"&gt;2&lt;/a&gt;
+    &lt;a href="#"&gt;3&lt;/a&gt;
+    &lt;a href="#"&gt;4&lt;/a&gt;
+    &lt;a href="#"&gt;5&lt;/a&gt;
+    &lt;a href="#"&gt;6&lt;/a&gt;
+    &lt;a href="#"&gt;7&lt;/a&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 60px;">
+    <div class="ob-block-stepper">
+        <a class="selected" href="javascript:void(0);">1</a>
+        <a href="javascript:void(0);">2</a>
+        <a href="javascript:void(0);">3</a>
+        <a href="javascript:void(0);">4</a>
+        <a href="javascript:void(0);">5</a>
+        <a href="javascript:void(0);">6</a>
+        <a href="javascript:void(0);">7</a>
+    </div>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Пагинатор с дополнительной навигацией</h2>
+Данный пагинатор отличается от стандартного дополнительными кнопками "Prev" и "Next", который осуществляют навигацию вперед и назад.<br />
+Для отображения стрелки влево необходимо использовать - <strong>&amp;lsaquo;</strong><br />
+Для отображения стрелки вправо необходимо использовать - <strong>&amp;rsaquo;</strong><br />
+<br>
+<div class="ui-class">.ob-block-stepper</div>
+<code>
+    <pre>
+&lt;div class="ob-block-stepper"&gt;
+    &lt;a href="#"&gt;&amp;lsaquo; Prev&lt;/a&gt;
+    &hellip;
+    &lt;a class="selected" href="#"&gt;1&lt;/a&gt;
+    &lt;a href="#"&gt;2&lt;/a&gt;
+    &lt;a href="#"&gt;3&lt;/a&gt;
+    &lt;a href="#"&gt;4&lt;/a&gt;
+    &lt;a href="#"&gt;5&lt;/a&gt;
+    &lt;a href="#"&gt;6&lt;/a&gt;
+    &lt;a href="#"&gt;7&lt;/a&gt;
+    &hellip;
+    &lt;a href="#"&gt;Next &amp;rsaquo;&lt;/a&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 50px;">
+    <div class="ob-block-stepper">
+        <a href="javascript:void(0);">&lsaquo; Prev</a>
+        &hellip;
+        <a class="selected" href="javascript:void(0);">1</a>
+        <a href="javascript:void(0);">2</a>
+        <a href="javascript:void(0);">3</a>
+        <a href="javascript:void(0);">4</a>
+        <a href="javascript:void(0);">5</a>
+        <a href="javascript:void(0);">6</a>
+        <a href="javascript:void(0);">7</a>
+        &hellip;
+        <a href="javascript:void(0);">Next &rsaquo;</a>
+    </div>
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

@@ -1,0 +1,129 @@
+<br />
+<div class="form-element">
+    {|$translate_uvedomlyat_esli_ne_bilo_s_klientom_bolee|}
+    <input type="text" name="noCommunication" value="{|$control_noCommunication|}"  style=" width: 50px;"/> {|$translate_chasov|}
+</div>
+
+<div class="form-element">
+    {|$translate_uvedomlyat_esli_ne_bilo_s_klientom_cherez_zvonki|}
+    <input type="text" name="noCommunicationCall" value="{|$control_noCommunicationCall|}"  style=" width: 50px;"/> {|$translate_chasov|}
+
+</div>
+
+<div class="form-element">
+    {|$translate_uvedomlyat_esli_ne_bilo_s_klientom_cherez_email|}
+    <input type="text" name="noCommunicationEmail" value="{|$control_noCommunicationEmail|}"  style=" width: 50px;"/> {|$translate_chasov|}
+</div>
+
+<br />
+<div>
+    <label>
+        <input type="checkbox" value="1" name="autorepeat" {|if $control_autorepeat|}checked{|/if|}>
+        {|$translate_avtomaticheski_povtoryat_zakaz_posle_zaversheniya|}
+    </label>
+</div>
+<br />
+
+<div>
+    {|$translate_avtomaticheski_perenosit_zadachu_na_sleduyushchiy_den_esli_ona_ne_gotova|}
+    <br />
+    <label>
+        <input type="radio" name="nextdate" value="" {|if !$control_nextdate|}checked{|/if|}>
+        {|$translate_ne_perenosit|}
+    </label>
+    <br />
+    <label>
+        <input type="radio" name="nextdate" value="start" {|if $control_nextdate == 'start'|}checked{|/if|}>
+        {|$translate_avtomaticheski_perenosit_v_nachalo_dnya|}
+    </label>
+    <br />
+    <label>
+        <input type="radio" name="nextdate" value="end" {|if $control_nextdate == 'end'|}checked{|/if|}>
+        {|$translate_avtomaticheski_perenosit_v_konets_dnya|}
+    </label>
+</div>
+<br />
+
+
+{|$translate_v_etom_etape_avtomaticheski_startovartovat_novie_bizes_protsessi|}:<br />
+{|$translate_podzadachi_s_ukazannim_biznes_protsessom_budut_sozdani_v_etom_zhe_proekte_i_naznacheni_na_ispolnitelya_etapa|}.<br />
+<br />
+
+<table class="shop-table" width="100%">
+    <thead>
+    <tr>
+        <td width="20">&nbsp;</td>
+        <td width="30">#</td>
+        <td width="450">&nbsp;</td>
+        <td>{|$translate_opisanie_zadachi|}</td>
+    </tr>
+    </thead>
+    <tbody class="js-structure-sort">
+        {|foreach from=$subworkflowArray item="x" key="index"|}
+            <tr>
+                <td>
+                    <div class="move"></div>
+                    <input class="js-sort-field" name="subworkflowSort{|$index|}" type="hidden" value="" />
+                </td>
+                <td>
+                    {|$index|}
+                </td>
+                <td>
+                    <div class="ob-data-element">
+                        <div class="data-add">
+                            <div class="el-caption">{|$translate_workflow|}:</div>
+                            <div class="el-value">
+                                <select name="subworkflowId{|$index|}" class="chzn-select">
+                                    <option value="0">---</option>
+                                    {|foreach from=$workflowArray item="name" key="id"|}
+                                        <option value="{|$id|}" {|if $id == $x|} selected {|/if|}>{|$name|}</option>
+                                    {|/foreach|}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ob-data-element">
+                        <div class="data-add">
+                            <div class="el-caption">{|$translate_imya_zadachi|}:</div>
+                            <div class="el-value">
+                                <input type="text" name="subworkflowName{|$index|}" value="{|$subworkflowNameArray[$index]|}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ob-data-element" style="margin: 0;">
+                        <div class="data-add">
+                            <div class="el-caption">{|$translate_smeshchenie_v_dnyah|}:</div>
+                            <div class="el-value">
+                                <input type="text" name="subworkflowDate{|$index|}" value="{|$subworkflowDateArray[$index]|}" />
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <textarea name="subworkflowDescription{|$index|}" class="js-autosize" rows="5" style="width: 100%;">{|$subworkflowDescriptionArray[$index]|}</textarea>
+                </td>
+            </tr>
+        {|/foreach|}
+    </tbody>
+</table>
+<br />
+
+
+<script>
+    $j(function () {
+        if ($j('.js-structure-sort').length) {
+            $j('.js-structure-sort').sortable({
+                handle: ".move",
+                axis: "y",
+                update: function () {
+                    var count = 0;
+                    $j('.js-sort-field').each(function(){
+                        count = count + 1;
+                        $j(this).val(count);
+                        $j(this).closest('td').next().html(count);
+                    });
+                }
+            });
+        }
+    });
+</script>

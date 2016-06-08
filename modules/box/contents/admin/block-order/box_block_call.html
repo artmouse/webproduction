@@ -1,0 +1,8 @@
+{|if $clientPhoneArray|}
+    <div class="ob-block-element ob-block-call">
+        <div class="block-caption">{|$translate_pozvonit|}</div>
+        {|foreach from=$clientPhoneArray item="p"|}
+            <a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="#" data-phone="{|$p|}" title="{|$translate_pozvonit|}">{|$p|}</a><br>
+        {|/foreach|}
+    </div>
+{|/if|}

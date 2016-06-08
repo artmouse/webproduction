@@ -1,0 +1,146 @@
+<br />
+<br />
+{|if $message == "ok"|}
+    <div class="os-message-success">
+        {|$translate_message_success|}.<br />
+        {|$translate_be_published|}.
+    </div>
+{|/if|}
+
+{|if not $guestBookArray|}
+    <div class="os-message-notice">
+        {|$translate_message_notice|}
+    </div>
+{|/if|}
+
+{|if $message == "error"|}
+    {|foreach from=$errorsArray item="e"|}
+        <div class="os-message-error">
+            {|if $e == 'response'|}
+                {|$translate_message_error|}.<br />
+                {|$translate_your_feedback|}<br />
+            {|elseif $e == 'contact'|}
+                {|$translate_message_error|}.<br />
+                {|$translate_enter_name_or_login|}<br />
+            {|elseif $e == 'name'|}
+                {|$translate_message_error|}.<br />
+                {|$translate_enter_name|}<br />
+            {|/if|}
+        </div>
+    {|/foreach|}
+{|/if|}
+
+{|if $guestBookArray|}
+    <div class="ta-center">
+        <a href="javascript: void(0);" class="cl-button grey" onclick="popupOpen('.js-popup-review')">{|$translate_leave_reply|}</a>
+    </div>
+    <br />
+
+    <div class="os-block-faq">
+        {|foreach from=$guestBookArray item="g"|}
+            <div class="element">
+                <div class="identifier"></div>
+                {|$g.response|}
+                {|if $g.answer|}
+                    <div class="adminanswer">
+                        <br />
+                        <strong>{|$translate_answer_administration|}:</strong>
+                        <br />
+                        {|$g.answer|}
+                    </div>
+                {|/if|}
+                <div class="date">
+                    {|$g.cdate|}
+                    {|if $g.name|}
+                        {|$translate_from_small|} {|$g.name|}
+                    {|elseif $g.login|}
+                        {|$translate_from_small|} {|$g.login|}
+                    {|/if|}
+                </div>
+            </div>
+        {|/foreach|}
+    </div>
+{|/if|}
+<br />
+<div class="ta-center">
+    <a href="javascript: void(0);" class="cl-button grey" onclick="popupOpen('.js-popup-review')">{|$translate_leave_reply|}</a>
+</div>
+<br />
+<br />
+<br />
+
+{|if $isUserAuthorized|}
+    <div id="form-order-id" class="cl-block-popup js-popup-review" style="display: none;">
+        <div class="dark" onclick="popupClose('.js-popup-review');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-review');">&nbsp;</a>
+                {|$translate_leave_reply|}
+            </div>
+            <form method="post">
+                <div class="body">
+                    <div class="block-form">
+                        <div class="form-element">
+                            <div class="descript">{|$translate_review_big|}<span class="important">*</span>:</div>
+                            <textarea class="js-required" type="text" name="response">{|$control_response|}</textarea>
+                        </div>
+                        <div class="form-element">
+                            <div class="descript">{|$translate_order_number|}:</div>
+                            <input type="text" name="orderNumber" value="{|$control_orderNumber|}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot ta-center">
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input class="js-form-validation cl-button" type="submit" name="guestbook" value="{|$translate_send_message|}" />
+                </div>
+            </form>
+        </div>
+    </div>
+{|else|}
+    {|if $isUnregisteredUsers|}
+        <div id="form-order-id" class="cl-block-popup js-popup-review" style="display: none;">
+            <div class="dark" onclick="popupClose('.js-popup-review');"></div>
+            <div class="block-popup">
+                <div class="head">
+                    <a href="javascript: void(0);" class="close" onclick="popupClose('.js-popup-review');">&nbsp;</a>
+                    {|$translate_leave_reply|}
+                </div>
+                <form method="post">
+                    <div class="body">
+                        <div class="block-form">
+                            <div class="form-element">
+                                <div class="descript">{|$translate_name_small|}<span class="important">*</span>:</div>
+                                <input type="text" name="name" value="{|$control_name|}" />
+                            </div>
+                            <div class="form-element">
+                                <div class="descript">{|$translate_phone|}<span class="important">*</span>:</div>
+                                <input type="text" name="phone" value="{|$control_phone|}" />
+                            </div>
+                            <div class="form-element">
+                                <div class="descript">Email<span class="important">*</span>:</div>
+                                <input type="text" name="email" value="{|$control_email|}" />
+                            </div>
+                            <div class="form-element">
+                                <div class="descript">{|$translate_review_big|}<span class="important">*</span>:</div>
+                                <textarea type="text" name="response">{|$control_response|}</textarea>
+                            </div>
+                            <div class="form-element">
+                                <div class="descript">{|$translate_order_number|}:</div>
+                                <input type="text" name="orderNumber" value="{|$control_orderNumber|}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="foot ta-center">
+                        <input type="hidden" name="ajs" class="ajs" value="1" />
+                        <input type="submit" name="guestbook" value="{|$translate_send_message|}" class="cl-button green" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    {|else|}
+        <div class="os-message-info">
+            {|$translate_message_info|}.
+        </div>
+    {|/if|}
+{|/if|}

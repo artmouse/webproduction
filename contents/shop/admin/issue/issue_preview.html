@@ -1,0 +1,77 @@
+<div class="name">
+    <a href="{|$urlEdit|}"><strong>{|$name|}</strong></a><br />
+</div>
+
+<table class="list">
+    {|if $parent|}
+        <tr>
+            <td>{|$translate_otnositsya_k|}:</td>
+            <td>
+                <a href="{|$parentUrlEdit|}">{|$parentName|}</a>
+            </td>
+        </tr>
+    {|/if|}
+
+    {|if $managerName|}
+        <tr>
+            <td>{|$translate_responsible|}:</td>
+            <td>
+                <a href="{|$managerUrlEdit|}">{|$managerName|}</a>
+            </td>
+        </tr>
+    {|/if|}
+
+    {|if $cdate|}
+        <tr>
+            <td>{|$translate_set_up|}: </td>
+            <td>{|$cdate|}</td>
+        </tr>
+    {|/if|}
+
+    {|if $dateto|}
+        <tr>
+            <td>{|$translate_na_kogda_sdelat|}: </td>
+            <td>{|$dateto|}</td>
+        </tr>
+    {|/if|}
+
+    {|if $clientName|}
+        <tr>
+            <td>{|$translate_client_small|}:</td>
+            <td><a href="{|$clientUrl|}">{|$clientName|}</a></td>
+        </tr>
+        {|if $phoneArray|}
+            <tr>
+                <td>{|$translate_pozvonit|}:</td>
+                <td>
+                    {|foreach from=$phoneArray item="e"|}
+                    <a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="#" data-phone="{|$e|}" title="{|$translate_pozvonit|} {|$e|}">{|$e|}</a>
+                    {|if $canSMS|}
+                    &nbsp;
+                    <a class="ob-link-email ob-link-dashed js-tooltip" href="#" onclick='sms_popup_open("{|$e|}");' title="{|$translate_napisat|} {|$e|}">{|$translate_napisat_sms|}</a>
+                    {|/if|}
+                    <br />
+                    {|/foreach|}
+                </td>
+            <tr/>
+        {|/if|}
+
+        {|if $emailArray|}
+            <tr>
+                <td>Email:</td>
+                <td>
+                    {|foreach from=$emailArray item="e"|}
+                    <a class="ob-link-email ob-link-dashed js-email-write js-tooltip" href="#" data-email="{|$e|}" title="{|$translate_napisat|} {|$e|}">{|$e|}</a><br />
+                    {|/foreach|}
+                </td>
+            <tr/>
+        {|/if|}
+    {|/if|}
+
+    {|if $urlBarcode|}
+        <tr>
+            <td></td>
+            <td><a href="{|$urlBarcode|}" onclick="window.open('{|$urlBarcode|}'); return false;">{|$translate_item_barcodes|}</a></td>
+        </tr>
+    {|/if|}
+</table>

@@ -1,0 +1,50 @@
+{|$menu|}
+
+<h1>{|$translate_storage_balance|}</h1>
+
+{|if $storageArray|}
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable">
+        <thead>
+            <tr>
+                <th width="50">&nbsp;</th>
+                <th>{|$translate_storage|}</th>
+                <th width="100" align="right">{|$translate_number|}</th>
+                <th width="100" align="right">{|$translate_reserved|}</th>
+                <th width="100" align="right">{|$translate_cost|}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {|foreach from=$storageArray item="storage"|}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>{|$storage.storagename|}</td>
+                    <td align="right"><a href="{|$storage.historyURL|}">{|$storage.amount|number_format:3|}</a></td>
+                    <td align="right">{|if $storage.amountlinked > 0|}<a href="{|$storage.reserveURL|}">{|/if|}{|$storage.amountlinked|number_format:3|}{|if $storage.amountlinked > 0|}</a>{|/if|}</td>
+                    <td align="right">{|$storage.cost|number_format:2|} {|$currency|}</td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td width="50">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td width="100" align="right"><strong>{|$totalArray.amount|number_format:3|}</strong></td>
+                <td width="100" align="right"><strong>{|$totalArray.amountlinked|number_format:3|}</strong></td>
+                <td width="100" align="right"><strong>{|$totalArray.cost|number_format:2|} {|$currency|}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+
+    <script type="text/javascript">
+    $j(function () {
+        $j('.js-sortable').tablesorter();
+    });
+    </script>
+{|else|}
+    <div class="shop-message-info">{|$translate_balance_no_data|}.</div>
+{|/if|}
+
+<h1>{|$translate_motion_log|}</h1>
+
+{|$block_storage_motionlog|}

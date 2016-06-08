@@ -1,0 +1,104 @@
+<div class="nb-block-tabs">
+    <div class="tab-element"><a href="{|$productActionUrl|}">&lsaquo; {|$translate_vse_nabori_tovara|}</a></div>
+    <div class="clear"></div>
+</div>
+
+{|if $errorArray|}
+    <div class="forms-message-error">
+        {|foreach from=$errorArray item =e|}
+            {|$e|}<br />
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form method="post">
+    <br>
+    <label>
+        <input type="text" name="name" value="{|$control_name|}" />
+        {|$translate_nazvanie_nabora|}
+    </label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <label>
+        <input type="checkbox" name="hidden" value="1" {|if $control_hidden|} checked {|/if|} />
+        {|$translate_skrit_nabor|}
+    </label>
+    <br>
+
+    <div class="shop-overflow-table">
+        <table class="shop-table js-order-table" width="100%">
+            <thead>
+                <tr>
+                    <td>id</td>
+                    <td>{|$translate_nazvanie|}</td>
+                    <td>{|$translate_foto|}</td>
+                    <td>{|$translate_tsena_bez_skidki_|} {|$currencyDefault|}</td>
+                    <td>{|$translate_skidka_na_sayte|},%</td>
+                    <td>{|$translate_tsena_so_skidkoy_na_sayte_|} {|$currencyDefault|}</td>
+                    <td>{|$translate_skidka_dlya_nabora|},%</td>
+                    <td>{|$translate_tsena_v_nabore_|} {|$currencyDefault|}</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {|foreach from=$productsArray item="e" key=k|}
+                <tr class="va_top" data-productid="{|$e.productid|}">
+                    <td>{|$e.productid|}</td>
+                    <td><a href="{|$e.url|}" target="_blank">{|$e.name|}</a></td>
+                    <td>
+                        <a href="{|$e.url|}" target="_blank">
+                            <img src="{|$e.image|}" width="80" alt="" />
+                        </a>
+                    </td>
+                    <td>
+                        {|$e.priceNoDiscount|}
+                    </td>
+                    <td>
+                        {|$e.discount|}
+                    </td>
+                    <td>
+                        {|$e.priceWithDiscount|}
+                    </td>
+                    <td>
+                        <input type="text" name="discount[{|$e.productid|}]" style="width: 40px;" value="{|$e.discountAction|}" />
+                    </td>
+                    <td>
+                        {|$e.actionPrice|}
+                    </td>
+                    <td>
+                        {|if $k>0|}
+                        <label>
+                            <input type="checkbox" name="remove[]" value="{|$e.productid|}" />
+                            {|$translate_udalit_iz_nabora|}
+                        </label>
+                        {|/if|}
+                    </td>
+                </tr>
+            {|/foreach|}
+            </tbody>
+
+            <tfoot class="order-foot">
+                <tr>
+                    <td class="align_right" colspan="7">{|$translate_tsena_nabora|}:</td>
+                    <td class="align_right"><strong class="nowrap">{|$setSum|}&nbsp;{|$currencyDefault|}</strong></td>
+                    <td colspan=""></td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <input type="hidden" id="js-add-query" value="">
+                        <ul class="ob-block-tag" id="js-product-tag" data-input="#js-product-input" style="width: 400px;"></ul>
+                        <input id="js-product-input" type="text" name="productlist" value="" style="display: none;"/>
+                        <a href="#" id="id-product" class="ob-button">{|$translate_select_find_create_product|}...</a>
+                        <a href="#" id="id-product-clear" class="ob-button">{|$translate_clear|}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <input type="submit" name="update" value="{|$translate_save|}">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <br />
+</form>

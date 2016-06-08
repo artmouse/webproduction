@@ -1,0 +1,1 @@
+<textarea name="{|$key|}" style="width: 100%; height: {|if not $height|}100px;{|else|}{|$height|};{|/if|}" {|if $disabled|} disabled {|/if|}>{|$value|}</textarea>

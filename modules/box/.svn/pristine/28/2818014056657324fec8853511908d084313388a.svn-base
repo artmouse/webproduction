@@ -1,0 +1,21 @@
+<input id="js-order-id" type="hidden" value="{|$orderid|}">
+<div id="js-table-add-div">
+
+</div>
+<a class="ob-link-dashed ob-link-add" id="js-table-add-button" href="javascript:void(0);">{|$translate_dobavit_eshche|}</a>
+
+<script>
+    $j(function () {
+        var id = $j('#js-order-id').val();
+
+        $j.get('/admin/block/issue/add/ajax/?id='+id, function (data) {
+            $j('#js-table-add-div').append(data);
+        });
+
+        $j('#js-table-add-button').click(function () {
+            $j.get('/admin/block/issue/add/ajax/?id='+id, function (data) {
+                $j('#js-table-add-div').append(data);
+            });
+        });
+    });
+</script>

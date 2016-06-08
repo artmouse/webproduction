@@ -1,0 +1,21 @@
+{|foreach from=$productArray item=e name="foo"|}
+    <tr class="js-product-id" id="id-product-table-tr-{|$smarty.foreach.foo.index|}">
+        <td width="50">
+            <img src="{|$e.image|}" alt="{|$e.name|}" width="50" />
+        </td>
+        <td>
+            <a href="#">
+                #{|$e.id|} - {|$e.name|}{|if $e.serial|} - {|$e.serial|}{|/if|} ({|$e.amount|} {|$e.unit|})
+            </a>
+            <input type="hidden" name="id" value="{|$e.id|}" />
+            <input type="hidden" name="name" value="{|$e.name|}" />
+            <input type="hidden" name="price" value="{|$e.price|}" />
+            <input type="hidden" name="currencyid" value="{|$e.currencyid|}" />
+            <input type="hidden" name="unit" value="{|$e.unit|}" />
+            <input type="hidden" name="balanceid" value="{|$e.balanceid|}" />
+        </td>
+        <td align="right">
+            {|$e.price|} {|$e.currency|}
+        </td>
+    </tr>
+{|/foreach|}

@@ -1,0 +1,123 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/document/templates/">&lsaquo; {|$translate_document_templates|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_document_templates_edit|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_update_successful|}.
+    </div>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_update_error|}.<br>
+        {|foreach from=$errorArray item="e"|}
+            {|if $e == 'name'|}
+                Имя не может быть пустым.
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+<form method="post" enctype="multipart/form-data">
+    <strong>{|$translate_title_of_document|}</strong>
+    <br>
+    <input type="text" name="name" value="{|$control_name|}" style="width:500px;">
+    <br>
+    <br>
+
+    <strong>К чему относится?</strong>
+    <br>
+    <select name="type">
+        <option value="ShopOrder" {|if $control_type == "ShopOrder"|}selected{|/if|}>К проектам и заказам</option>
+        <option value="User" {|if $control_type == "User"|}selected{|/if|}>К контактам</option>
+        {|if $storage|}
+            <option value="ShopStorageTransaction" {|if $control_type == "ShopStorageTransaction"|}selected{|/if|}>К складской операции</option>
+        {|/if|}
+    </select>
+    <br>
+    <br>
+
+    <strong>{|$translate_hidden1|}</strong>
+    <br>
+    <input type="checkbox" value="1" name="hidden" {|if $control_hidden|}checked{|/if|}>
+    <br>
+    <br>
+
+    <strong>Обязательный документ</strong>
+    <br>
+    <input type="checkbox" value="1" name="required" {|if $control_required|}checked{|/if|}>
+    <br>
+    <br>
+
+    <strong>Срок действия документа в днях</strong>
+    <br>
+    <input type="text" value="{|$control_period|}" name="period" style="width: 150px;">
+    <br>
+    <br>
+
+    <strong>Порядок сортировки</strong>
+    <br>
+    <input type="text" value="{|$control_sort|}" name="sort" style="width: 150px;" >
+    <br>
+    <br>
+
+    <strong>Программный обработчик нумерации</strong>
+    <br>
+    <input type="text" value="{|$control_numberprocessor|}" name="numberprocessor" style="width: 500px;" >
+    <br>
+    <br>
+
+    <div>
+        <div style="width: 50%; float: left;">
+            <strong>Шаблон документа</strong>
+            <br>
+            <textarea name="content" id="js-textarea" style="width: 98%; height: 500px;">{|$control_content|}</textarea>
+        </div>
+        <div style="width: 50%; float: left;">
+            <strong>Отображение шаблона</strong>
+            <br>
+            <iframe id="js-frame" style="width: 98%;" src=""></iframe>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <br />
+    <br />
+    <br />
+
+    <div class="ob-button-fixed">
+        <input type="submit" value="Добавить запись" name="ok" class="ob-button button-green">
+    </div>
+    <div class="ob-button-fixed-place"></div>
+</form>
+
+<script>
+    $j(function () {
+        textChange();
+
+        $j('#js-textarea').change(function () {
+           textChange();
+        });
+
+        $j('#js-textarea').keyup(function () {
+            textChange();
+        });
+
+        $j('#js-textarea').mouseup(function () {
+            textChange();
+        });
+
+    });
+
+    function textChange () {
+        $j('#js-frame').css('height', $j('#js-textarea').css('height'));
+        $j('#js-frame').contents().find('body').html($j('#js-textarea').val());
+    }
+
+</script>

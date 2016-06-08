@@ -1,0 +1,155 @@
+<h1>Как правильно выгрузить OneBox со всеми модулями?</h1>
+Весь движок находиться в репозитории под системой контроля версий SVN. <br />
+<br />
+<h2>Что такое SVN?</h2>
+Subversion(SVN) — свободная централизованная система управления версиями.
+<br />
+<br />
+<h2>Зачем нужен SVN?</h2>
+SVN избавлят вас от проблем и головный боли при розработке проекта. По факту SVN делает такие вещи: <br /> <br />
+<ol>
+    <li>Позволяют создавать разные варианты одного документа, т. н. ветки, с общей историей изменений до точки ветвления и с разными — после неё.</li>
+    <li>Даёт возможность узнать, кто и когда добавил или изменил конкретный набор строк в файле.</li>
+    <li>Ведут журнал изменений, в который пользователи могут записывать пояснения о том, что и почему они изменили в данной версии файла.</li>
+    <li>Контролируют права доступа пользователей, разрешая или запрещая чтение или изменение данных, в зависимости от того, кто запрашивает это действие.</li>
+    <li>Даёт возможность управлять версиями файла (откатить, обновить и тд)</li>
+</ol>
+
+<h2>Как же выгрузить OneBox со всеми модулями?</h2>
+Ход действий должен быть таковым:
+<ol>
+    <li>Создаём директорию в которую мы хотим выгрузить OneBox</li>
+    <li>Выгружаем в эту директорию OneBox из репозитория</li>
+    <li>Выгружаем модуля из репозитория</li>
+    <li>Создаём файл engine.mode.php на основе example.engine.mode.php</li>
+    <li>Настраиваем соиденнение с базой данных в engine.mode.php</li>
+    <li>Подключаем модуля в engine.mode.php</li>
+    <li>Запускаем файл updater.sh </li>
+</ol>
+<br />
+<b>Например:</b> <br />
+<ol>
+    <li>
+        Создаём директорию box.localhsot. Для этого в терминале linux пишем команду: <br /> <br />
+<code><pre>
+mkdir box.localhost
+</pre></code>
+        <br />
+    </li>
+    <li>
+        Выгружаем в эту директорию OneBox из репозитория. Для этого перейдём в директорию box.localhost и выполним команду: <br /> <br />
+<code><pre>
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/trunk/ . 
+<br />
+Точка укажет на то что вы выгружаете в корень директории в которой вы находитесь.
+</pre></code><br />
+    </li>
+    <li>
+        Выгружаем модуля из репозитория . Для этого поочерёдно выполним команды: <br /> <br />
+<code><pre>
+<span style="color:red;">// Важный момент, как видите после URL репозитория указан путь куда выгружать и в конце точка. 
+// В папке modules изначально нет папок box, contacts, order и тд. 
+Выполнив в терминале команды ниже они создадуться сами и файлы в них выгрузяться.</span>
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/box/trunk/  modules/box/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/contact/trunk/  modules/contact/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/document/trunk/  modules/document/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/finance/trunk/  modules/finance/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/order/trunk/  modules/order/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/product-margin/trunk/  modules/product-margin/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/product-supplierprice/trunk/  modules/product-supplierprice/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/search-sphinx/trunk/  modules/search-sphinx/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/seo/trunk/  modules/seo/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/seotags/trunk/  modules/seotags/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/storage/trunk/  modules/storage/.
+
+svn checkout https://svn.webproduction.ua/wpshop/wpshop/modules/utm-label/trunk/  modules/utm-label/.
+
+</pre></code><br />
+    </li>
+    <li>  
+Создаём файл engine.mode.php на основе файла example.engine.mode.php . Для этого выполним команду:<br /> <br />
+<code><pre>
+cp example.engine.mode.php engine.mode.php
+</pre></code><br />
+Далее  Настраиваем соиденнение с базой данных в engine.mode.php. Для этого открываем файл <b>engine.mode.php</b> находим там строки: <br />
+<code><pre>
+/*
+
+// connection to database
+ConnectionManager::Get()->addConnectionDatabase(
+new ConnectionManager_MySQLi(
+'localhost',
+'user',
+'password',
+'db'
+));
+*/
+</pre></code><br />
+    Далее нам нужно их раскоментировать и написать подключение к базе данных. Например: <br />
+<code><pre>
+// connection to database
+ConnectionManager::Get()->addConnectionDatabase(
+new ConnectionManager_MySQLi(
+'localhost',
+'root',
+'rootpassword',
+'boxtestdb'
+));
+</pre></code><br />
+    </li>
+    <li>
+        Подключаем модуля в engine.mode.php . Для этого открываем файл engine.mode.php находим там строку: <br /> <br />
+<code><pre>
+// подключение модулей
+Engine::Get()->setConfigField('shop-module', array('quiz'));
+</pre></code><br />
+И дописываем в неё наши модуля. <br /> <br />
+<code><pre>
+// подключение модулей
+Engine::Get()->setConfigField('shop-module', array(
+    'quiz',
+    'contact', 
+    'document', 
+    'finance', 
+    'order', 
+    'product-margin', 
+    'product-supplierprice', 
+    'search-sphinx', 
+    'seo', 
+    'seotags', 
+    'box', 
+    'storage', 
+    'utm-label'
+));
+</pre></code><br />
+
+    </li>
+    <li>Запускаем файл updater.sh . Для этого перейдём в директорию box.localhost и выполним в терминале команду:<br/><br/>
+<code><pre>
+./updater.sh
+</pre></code>
+<br /> После выполнения можете перейти по URL box.localhost и посмотрите что увидите)
+</li>
+</ol>
+<br />
+<h2>Что произойдёт?</h2>
+После того как вы запустите updater.sh движок сам создаст таблицы в базе (если их нет) 
+создаст XClass'ы для работы с этими таблицами, скомпилирует api, скомпилирует ACL, 
+скомпилирует HTML файлы и занесёт их в Memcache.  
+<br />
+<br />
+<span style="color:red">ВАЖНО: обезательно прочтите эту инструкцию: <a href="/doc/onebox-mode">Режимы работы движка</a> </span>
+<br />
+<br />

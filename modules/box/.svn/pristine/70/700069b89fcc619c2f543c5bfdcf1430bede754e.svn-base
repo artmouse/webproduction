@@ -1,0 +1,61 @@
+{|if $issueArray|}
+    <table class="shop-table">
+        <thead>
+            <tr>
+                <td>id</td>
+                <td>{|$translate_box_name_small|}</td>
+                <td>{|$translate_balance|}</td>
+                <td>{|$translate_responsible|}</td>
+                <td>{|$translate_ispolniteli|}</td>
+                <td>{|$translate_order_status_ind|}</td>
+            </tr>
+        </thead>
+        {|foreach from=$issueArray item="e"|}
+            <tr>
+                <td><a class="js-issue-preview" data-id="{|$e.id|}" href="{|$e.url|}">{|$e.id|}</a></td>
+                <td><a class="js-issue-preview" data-id="{|$e.id|}" href="{|$e.url|}">{|$e.name|}</a></td>
+                <td class="nowrap">
+                    {|if $e.financeUrl|}<a href="{|$e.financeUrl|}">{|/if|}
+                    {|$e.balance|} {|$e.currency|}
+                    {|if $e.financeUrl|}</a>{|/if|}    
+                </td>
+                <td>
+                    <a class="js-contact-preview" data-id="{|$e.managerId|}" href="#" onclick="javascript:void(0)">
+                        {|$e.managerName|}
+                    </a>
+                </td>
+                <td>
+                    {|foreach from=$e.employerArray item="employer"|}
+                        <a class="js-contact-preview" data-id="{|$employer.managerId|}" href="{|$e.employerUrl|}">
+                            {|$employer.managerName|}
+                        </a>
+                    {|/foreach|}
+                </td>
+                <td>
+                    <a class="ob-link-dashed js-add-comment" data-id="{|$e.id|}" href="#" >
+                        {|$e.status|}
+                    </a>
+                </td>
+            </tr>
+        {|/foreach|}
+    </table>
+
+    <div class="shop-block-popup js-add-comment-popup"  style="display: none;">
+        <div class="dark"></div>
+        <div class="popupblock">
+            <a href="#" class="close js-add-comment-cancel">
+                <svg viewBox="0 0 16 16">
+                    <use xlink:href="#icon-close"></use>
+                </svg>
+            </a>
+            <div class="head">{|$translate_add_comment|}</div>
+            <div class="window-content window-form">
+                <div class="element">
+                    <textarea class="js-autosize js-textarea-content"></textarea>
+                </div>
+                <input type="button" value="{|$translate_save|}" class="ob-button button-green js-add-comment-button" />
+                <input class="ob-button button-cancel js-add-comment-cancel" type="button" value="{|$translate_cancel|}" />
+            </div>
+        </div>
+    </div>
+{|/if|}

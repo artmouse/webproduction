@@ -1,0 +1,136 @@
+{|if $addDocumentUrl || $redirectUrl|}
+    <script>
+        $j(function () {
+            {|if $addDocumentUrl|}
+                window.open('{|$addDocumentUrl|}', '_blank');
+            {|/if|}
+
+            {|if $redirectUrl|}
+                window.location = "{|$redirectUrl|}";
+            {|/if|}
+        });
+    </script>
+{|/if|}
+
+<a class="ob-link-add ob-link-dashed ob-link-floated" onclick="popupOpen('.js-popup-documentadd');" href="javascript:void(0);" style="margin-bottom: 7px;">Добавить документ</a>
+<div class="clear"></div>
+
+
+{|if $isDocument|}
+    {|$table_block|}
+    <br />
+{|else|}
+    <div class="shop-message-light">
+        Документов пока нет.
+        Нажмите <a class=" ob-link-dashed" onclick="popupOpen('.js-popup-documentadd');" href="#">добавить документ</a>.
+    </div>
+{|/if|}
+
+<div class="shop-block-popup js-popup-documentadd" style="display: none;">
+    <div class="dark"></div>
+    <div class="popupblock">
+        <a href="#" class="close" onclick="popupClose('.js-popup-documentadd');">
+            <svg viewBox="0 0 16 16">
+                <use xlink:href="#icon-close"></use>
+            </svg>
+        </a>
+        <div class="head">Добавить документ</div>
+        <div class="window-content window-form">
+            <form action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="linkkey" value="{|$linkkey|}" />
+                <input type="hidden" name="add" value="1" />
+
+                <div class="element">
+                    <div class="el-caption">Название документа</div>
+                    <div class="el-value">
+                        <input type="text" name="documentname" value="{|$control_documentname|}" />
+                    </div>
+                </div>
+
+                <div class="element">
+                    <div class="el-caption">Шаблон документа</div>
+                    <div class="el-value">
+                        <select class="chzn-select" name="templateid">
+                            <option value="">---</option>
+                            {|foreach from=$templateArray item="e"|}
+                                <option value="{|$e.id|}" {|if $control_templateid == $e.id|} selected{|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="element">
+                    <div class="el-caption">Юридическое лицо</div>
+                    <div class="el-value">
+                        <select class="chzn-select" name="contractorid">
+                            {|foreach from=$contractorArray item="e"|}
+                                <option value="{|$e.id|}" {|if $control_contractorid == $e.id|} selected{|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+                </div>
+
+                {|if $legalArray|}
+                    <div class="element">
+                        <div class="el-caption">Реквизиты контакта</div>
+                        <div class="el-value">
+                            <select class="chzn-select" name="legalid">
+                                {|foreach from=$legalArray item="e" key="index"|}
+                                    <option value="{|$index|}">{|$e|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+                    </div>
+                {|/if|}
+
+                <div class="element">
+                    <div class="el-caption">Отправлен</div>
+                    <div class="el-value">
+                        <label>
+                            <input type="checkbox" name="sent" value="1" {|if $control_sent|} checked{|/if|} class="js-document-checkbox-date" />
+                        </label>
+                        <input type="text" name="sdate" value="{|$control_sdate|}" class="js-date" style="width: 200px;" />
+                    </div>
+                </div>
+
+                <div class="element">
+                    <div class="el-caption">Получен</div>
+                    <div class="el-value">
+                        <label>
+                            <input type="checkbox" name="recieved" value="1" {|if $control_recieved|} checked{|/if|} class="js-document-checkbox-date">
+                        </label>
+                        <input type="text" name="bdate" value="{|$control_bdate|}" class="js-date" style="width: 200px;" />
+                    </div>
+                </div>
+
+                <div class="element">
+                    <div class="el-caption">Архив</div>
+                    <div class="el-value">
+                        <label>
+                            <input type="checkbox" name="archive" value="1" {|if $control_archive|} checked{|/if|} class="js-document-checkbox-date">
+                        </label>
+                        <input type="text" name="adate" value="{|$control_adate|}" class="js-date" style="width: 200px;" />
+                    </div>
+                </div>
+
+                <div class="element">
+                    <div class="el-caption">Файл с оригиналом</div>
+                    <div class="el-value">
+                        <input type="file" name="fileoriginal" /> <br />
+                        (на замену автоматически генерируемому файлу)
+                    </div>
+                </div>
+
+                <input class="ob-button button-green" type="submit" value="Добавить" />
+                <input class="ob-button button-cancel" type="button" name="" value="{|$translate_cancel|}" onclick="popupClose('.js-popup-documentadd');" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{|if $message == "error"|}
+    <div class="shop-message-error">
+        Ошибка добавления документа.
+        Необходимо заполнить хотя бы одно из двух полей: Название документа и/или Шаблон документа.
+    </div>
+{|/if|}

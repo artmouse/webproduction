@@ -1,0 +1,106 @@
+<h1>{|if $seoh1|} {|$seoh1|} {|else|} {|$name|} {|/if|}</h1>
+{|$date|}<br />
+<br />
+
+{|* товар, привязанный к новости *|}
+{|if $id|}
+    <form method="post" id="id-order" class="os-news-product">
+        <div class="os-productthumb-element">
+            <div class="wrapper">
+                <div class="image">
+                    <a href="{|$url|}"><img src="{|$image|}" alt="{|$name|escape|}" title="{|$name|escape|}" /></a>
+                </div>
+                <div class="name">
+                    <a href="{|$url|}" title="{|$name|}">{|$name|}</a>
+                </div>
+                <div class="option">{|if $code|}{|$translate_code_small|}: {|$code|}{|/if|}</div>
+                <div class="option js-shop-compare" data-productid="{|$id|}">
+                    <a href="javascript:void(0);" class="os-link-dashed js-shop-compare-action">{|$translate_shop_compare_action|}</a>
+                    <a href="/compare/" class="os-link-dashed js-shop-compared" style="display: none;">{|$translate_compared|}</a>
+                    <br /><a href="javascript:void(0);" data-productid="{|$id|}" class="os-link-dashed js-shop-favorite" ></a>
+                </div>
+                <div class="clear"></div>
+                <div class="block-price">
+                    {|if $price == 0|}
+                        <div class="os-price-specify">{|$translate_specify_a_price|}</div>
+                    {|else|}
+                        {|if !$avail|}
+                            <div class="os-price-unavailable">{|$price|} {|$currency|}</div>
+                        {|else|}
+                            <div class="os-price-available">{|$price|} {|$currency|}</div>
+                        {|/if|}
+                        {|if $priceold AND $priceold > $price|}
+                            <div class="os-price-old">
+                                {|$priceold|} {|$currency|}
+                            </div>
+                        {|/if|}
+
+                        <div class="js_personal_discount_check" data-productid="{|$id|}"></div>
+                    {|/if|}
+                </div>
+
+                {|if $rating > 0|}
+                    <div class="os-block-rating">
+                        <div class="inner" style="width: {|$rating*20|}%;"></div>
+                    </div>
+                {|/if|}
+                <div class="clear"></div>
+
+                <div class="avail js-avail">
+                    {|if $avail|}
+                        {|if $availtext|}
+                            <div class="os-available">{|$availtext|}</div>
+                        {|else|}
+                            <div class="os-available">{|$translate_in_stock|}</div>
+                        {|/if|}
+                    {|else|}
+                        {|if $availtext|}
+                            <div class="os-unavailable">{|$availtext|}</div>
+                        {|else|}
+                            <div class="os-unavailable">{|$translate_out_of_stock|}</div>
+                        {|/if|}
+                    {|/if|}
+                </div>
+
+                <div class="block-buttons">
+                    <div class="row">
+                        {|if $canbuy or $canMakePreorder|}
+                            <div class="button js-shop-buy" data-productid="{|$id|}">
+                                <a href="#" class="js-shop-buy-action os-submit green">{|$translate_buy|}</a>
+                            </div>
+                        {|/if|}
+
+                        {|if $isAdmin|}
+                            {|if not($canbuy or $canMakePreorder)|}
+                                <div class="button-expand">&nbsp;</div>
+                            {|/if|}
+                            <div class="button edit">
+                                <a href="{|$urlEdit|}" class="os-submit red"></a>
+                            </div>
+                        {|else|}
+                            {|if $canbuy or $canMakePreorder|}
+                                <div class="button">
+                                    <a href="javascript: void(0);" onclick="basket_order_quick('{|$id|}', '{|$name|}');" class="os-submit quick">{|$translate_buy_quick|}</a>
+                                </div>
+                            {|/if|}
+                        {|/if|}
+                    </div>
+                </div>
+
+                {|if ($discount && $avail && !$canMakePreorder) || ($discount && $canMakePreorder && !$avail) |}<div class="discount">-{|$discount|}%</div>{|/if|}
+
+                <div class="expanded js-expanded">
+                    {|if $descriptionshort|}
+                        <div class="description">
+                            <span>{|$descriptionshort|}</span>
+                        </div>
+                    {|/if|}
+                </div>
+            </div>
+        </div>
+    </form>
+{|/if|}
+
+{|$content|}
+
+{|$integration_disqus_news|}

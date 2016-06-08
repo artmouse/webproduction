@@ -1,0 +1,21 @@
+{|if $notifyArray|}
+    <div class="shop-block-popup js-notify-message" style="display: none;">
+        <div class="dark"></div>
+        <div class="popupblock">
+            <a href="#" class="close" onclick="popupClose('.js-notify-message');">
+                <svg viewBox="0 0 16 16">
+                    <use xlink:href="#icon-close"></use>
+                </svg>
+            </a>
+            <div class="head">{|$translate_uvedomleniya|}</div>
+            <div class="window-content">
+                {|foreach from=$notifyArray item="e"|}
+                    <div class="shop-message-error visible">
+                        <a href="{|$e.url|}">{|$e.id|}</a> - {|$e.name|}
+                        {|$e.date|}
+                    </div>
+                {|/foreach|}
+            </div>
+        </div>
+    </div>
+{|/if|}

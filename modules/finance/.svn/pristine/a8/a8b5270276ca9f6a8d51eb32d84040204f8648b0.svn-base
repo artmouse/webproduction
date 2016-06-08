@@ -1,0 +1,46 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/finance/">&lsaquo; {|$translate_simple_back|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/invoice/list/">{|$translate_invoice|}</a></div>
+        <div class="tab-element"><a href="{|$urlView|}">{|$translate_invoice_small|} #{|$id|}</a></div>
+        <div class="tab-element"><a href="{|$urlPayment|}">{|$translate_payment_add|}</a></div>
+        <div class="tab-element"><a href="{|$urlEdit|}">{|$translate_invoice_edit|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_invoice_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_records_deleted|}.
+    </div>
+
+    <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_box_message_error|}.<br />
+
+        {|foreach from=$errorsArray item="e"|}
+            {|if $e == 'user'|}
+                {|$translate_permission_denied|}.<br />
+            {|/if|}
+        {|/foreach|}
+    </div>
+{|/if|}
+
+{|if $message != 'ok'|}
+    <div class="ob-block-element shop-storage-info">
+        <form action="" method="post">
+            {|$translate_vi_uvereni_chto_hotite_udalit_schet|}?
+            <br />
+            <br />
+            <input type="submit" name="ok" value="{|$translate_yes|}" class="ob-button button-red" />
+            <input class="ob-button" type="button" value="{|$translate_no|}" onclick="document.location='/admin/shop/finance/invoice/list/';" />
+        </form>
+    </div>
+{|/if|}

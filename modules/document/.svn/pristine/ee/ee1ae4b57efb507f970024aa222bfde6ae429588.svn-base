@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        {|$engine_includes|}
+        <style>
+            body {
+                padding: 60px 10px 55px 107px;
+            }
+            .print-table {
+                border-collapse: collapse;
+                border-spacing: 0;
+                color: #000;
+                border: 0px;
+                font-size: 13px;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .print-tab thead h1{
+                text-align: center;
+            }
+
+            .table {
+                border-collapse: collapse;
+                width: 100%;
+                padding: 2px 4px;
+                border: 1px solid #000;
+            }
+            .table thead td{
+                font-weight: bold;
+                background-color: #CCC;
+                text-align: center;
+            }
+            .table td {
+                border: 1px solid #000;
+            }
+            .image {
+                position: absolute;
+                right: 10px;
+                z-index: -50;
+                margin-top: -65px;
+            }
+        </style>
+    </head>
+    <body>
+        {|if $image|}
+            <div class="image">
+                <img style="max-height: 120px; max-width: 120px" src="{|$image|}" alt=""/>
+            </div>
+        {|/if|}
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <td>
+                        УТВЕРЖДАЮ<br /><br />
+                        _____________________<br /><br />
+                        {|$contractorname|}
+                    </td>
+                    <td align="left" width="200">
+                        УТВЕРЖДАЮ<br /><br />
+                        _____________________ <small>(подпись)</small><br /><br />
+                        _____________________
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h1 style="text-align:center">АКТ №{|$documentNumber|}<br /> сдачи-принятия работ (предоставления услуг)</h1>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <p>
+                            Мы, представители Заказчика _________________________________________, с одной стороны, и
+                            представитель Исполнителя {|$contractorname|}, с другой стороны, составили настоящий акт
+                            о том, что Исполнителем были проведены такие работы (предоставлены следующие услуги) по счету
+                            <span>№{|$number|}</span> від {|$orderCdate|}:
+                        </p>
+                        <p>
+                            {|foreach from=$productsArray item="b" key="i"|}
+                                {|$b.categoryname|}{|$b.name|}<br />
+                            {|/foreach|}
+                        </p>
+                        <p>
+                            Общая стоимость работ (услуг) без НДС {|$ordersumwithouttax|} {|$ordercurrency|}.<br />
+
+                            {|if $taxsum != '0.00'|}
+                                НДС {|$taxsum|} {|$ordercurrency|}
+                            {|else|}
+                                Без НДС.<br />
+                            {|/if|}
+
+                            Общая стоимость работ (услуг) с НДС {|$ordersumwithtax|} {|$ordercurrency|} ({|$ordersumtext|})<br />
+                            Стороны претензий друг к другу не имеют.
+                        </p>
+
+                        <p>Место составления: г. Чернигов</p>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td valign="top" width="50%">
+                        <p>
+                            От исполнителя*:<br /><br />
+                            _______________________________<br />
+                            {|$contractorname|}<br />
+                            * Ответственный за осуществление<br />
+                            хозяйственной операции и правильность <br />
+                            ее оформления<br />
+                        </p>
+                    </td>
+                    <td valign="top">
+                        <p>
+                            От заказчика:<br /><br />
+                            _______________________________<small>(подпись)</small><br />
+                            _______________________________<br />
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            {|$contractordetails|}
+                        </p>
+                    </td>
+                    <td>
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                        _______________________________<br />
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>

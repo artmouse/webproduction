@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        {|$engine_includes|}
+        <style>
+            .print-table {
+                border-collapse: collapse;
+                border-spacing: 0;
+                color: #000;
+                border: 0px;
+                font-size: 13px;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .print-tab thead h1{
+                text-align: center;
+            }
+
+            .table {
+                border-collapse: collapse;
+                width: 100%;
+                padding: 2px 4px;
+                border: 1px solid #000;
+            }
+            .table thead td{
+                font-weight: bold;
+                background-color: #CCC;
+                text-align: center;
+            }
+            .table td {
+                border: 1px solid #000;
+            }
+        </style>
+    </head>
+    <body>
+        {|if $printwarranty|}
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <td>
+                            <h1>Гарантійне зобов'язання №{|$number|}<br /> від {|$date|}</h1>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Код</strong></td>
+                                        <td><strong>Товар</strong></td>
+                                        <td><strong>Серійний номер</strong></td>
+                                        <td><strong>Гарантія</strong></td>
+                                    </tr>
+                                </thead>
+                                {|foreach from=$productsArray item="b"|}
+                                    <tr>
+                                        <td>
+                                            {|$b.productid|}
+                                        </td>
+                                        <td>
+                                            {|$b.name|}
+                                        </td>
+                                        <td>
+                                            {|if $b.serial|}
+                                                {|foreach from=$b.serial item="s" key="i"|}
+                                                    {|if $i != 0|}, {|/if|}
+                                                    {|$s|}
+                                                {|/foreach|}
+                                            {|else|}
+                                                б/н
+                                            {|/if|}
+                                        </td>
+                                        <td>
+                                           {|foreach from=$b.warranty item="s" key="i"|}
+                                                {|if $i != 0|}, {|/if|}
+                                                {|$s|}
+                                            {|/foreach|}
+                                        </td>
+                                    </tr>
+                                {|/foreach|}
+                            </table>
+                            <br />
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <strong>Клієнт:</strong>
+                            <br />
+
+                            П.І.Б.: {|$clientname|}<br />
+                            Телефон: {|$clientphone|}<br />
+                            Email: {|$clientemail|}<br />
+                            Адреса: {|$clientaddress|}<br />
+                            {|*|}Інші контактні дані: {|$clientcontacts|}<br />{|*|}
+                            {|*|}Коментар: {|$comments|}<br />{|*|}
+                            <br />
+
+                            Заказ: №{|$orderid|}<br />
+                            Дата оформлення заказу: {|$orderdate|}<br />
+                            <br />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        {|/if|}
+    </body>
+</html>

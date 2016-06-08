@@ -1,0 +1,356 @@
+<h1>Что такое ACL (Access Control List) в OneBox?</h1>
+<br />
+ACL (он же Access Control List) - это список прав доступа для конкретного пользователя.
+Он регламентирует куда заданному пользователю можно иметь доступ и что с ним делать.
+Как и в любой системе, в OneBox список ACL состоит из:
+<ol>
+    <li>Списка ключей. <br>
+        Ключ - это две строки - key и name.<br /><br />
+        <ul>
+            <li>key - это название ключа латиницей</li>
+            <li>name - название ключа для пользователя.</li>
+        </ul>
+        <br />
+        Например, есть ключ users, а для пользователя он называется "Общий доступ к контактам и пользователям". 
+        Есть более сложные ключи, например, projects-workflow10-view, означает 
+        "Можно просматривать проекты с бизнес-процессом Новый заказ (ID=10)". 
+        Ключей может быть очень много (по умолчанию их уже тысячи) и вы можете добавлять свои.<br /> <br />
+    </li>
+    <li>Списка "К какому ключу имеет доступ конкретный пользователь".<br>
+        Это таблица, в которой сказано что пользователь id=100 имеет доступ к таким-то ключам (acl keys).
+        <br /><br />
+        <span style="color:red;">Внимание! ACL в OneBox сделан сразу для пользователей, без групп.</span>
+        <br /><br />
+        Например, есть ключ users, а для пользователя он называется "Общий доступ к контактам и пользователям". 
+        Есть более сложные ключи, например, projects-workflow10-view, означает 
+        "Можно просматривать проекты с бизнес-процессом Новый заказ (ID=10)". 
+        Ключей может быть очень много (по умолчанию их уже тысячи) и вы можете добавлять свои.<br /> <br />
+    </li>
+</ol>
+<br />
+<h2>Где настраиваются ACL с точки зрения пользователя?</h2>
+<br />
+ACL настраиваются в карточке контакта, в tab'e "Права доступа".
+<br />
+<br />
+<img src="/modules/api-docs/docs/_images/acl_permission_users.png" alt="" />
+<br />
+<br />
+Вы просто указываете галочками на какие действия вы разрешаете доступ данному пользователю (См. скриншот выше).
+<br />
+<br />
+<b>Что произойдёт?</b>
+После нажатия на кнопку "Сохранить" в базу данных добавяться записи с разрешённым доступом (key acl  +  id пользователя).
+<br />
+<br />
+<h2>Как хранятся ACL в OneBox?</h2>
+<ol>
+    <li>Таблица useraclkey.
+        <br />В этой таблице хранится список ключей доступа (ACL keys). <br />
+        Таблица состоит из таких полей:<br /><br />
+        <ul>
+            <li>key - ключ</li>
+            <li>name - имя этого ключа (то что будет отображатся в карточке контакта в правах доступа. <br /><br /></li>
+        </ul>
+    </li>
+    <li>Таблица useracl.
+        <br />В этой таблице хранятся права доступа конкретного юзера. <br />
+        Таблица состоит из таких полей:<br /><br />
+        <ul>
+            <li>userid - id пользователя</li>
+            <li>acl - ключ к которому есть доступ у пользователя.</li>
+        </ul>
+        <br />
+        <b>Пример</b><br />
+        К примеру в таблице useracl есть такая запись: <br /><br />
+        userid = 7549 <br />
+        acl = order-delete <br /><br />
+        <b>Что это значит?</b><br />
+        Это значит то что пользователя с id 7549 может удалять заказы. Думаю вам теперь понятно.<br />
+    </li>
+</ol>
+<br />
+<br />
+
+<h2>Как получить все ключи ACL?</h2>
+Для того чтобы получить все ключи ACL, нужно воспользоватся методом getACLPermissions<br /><br />
+<code><pre>
+Shop::Get()->getAclService()->getACLPermissions();
+</pre></code>
+<br />
+Данный метод вернет вам 2D-массив, по умолчанию он будет доставать их из кеша. 
+Если вам нужно перестроить кеш то передайте методу getACLPermissions параметр false.
+<br /><br />
+<code><pre>
+Shop::Get()->getAclService()->getACLPermissions(false);
+</pre></code>
+<br />
+<h2>Как проверить есть ли и пользователя доступ к заданному ключу?</h2>
+Для того чтобы проверить есть ли у пользователя доступ к заданому ключу нужно воспользоватся методом isAllowed. Например: <br /><br />
+<code><pre>
+$user = $this->getUser(); // получить текущего пользователя 
+
+if ($user->isAllowed('products-edit')) {
+    
+    // input code here
+
+}
+</pre></code>
+<br />
+<b>Что произойдёт?</b>
+<br />
+В данном примере, если у текущего (авторизированого) пользователя есть права на редактирование продукта мы попадём в if. 
+Грубо говоря если в таблице useracl будет запись с id-шником текущего пользователя и ключем products-edit мы попадём в if.
+<br /><br />
+<h2>Как проверить запрещен ли пользователю доступ к заданному ключу?</h2>
+Для того чтобы проверить запрещен ли пользователю доступ к заданому ключу нужно воспользоватся методом isDenied. Например: <br /><br />
+<code><pre>
+$user = $this->getUser(); // получить текущего пользователя 
+
+if ($user->isDenied('products-edit')) {
+
+    throw new Exception("Access denied");
+
+}
+</pre></code>
+<br />
+<b>Что произойдёт?</b>
+<br />
+В данном примере, если у текущего (авторизированого) пользователя нету прав на редактирование продукта мы получил Exception. 
+Грубо говоря если в таблице useracl не будет записи с id-шником текущего пользователя и ключем products-edit мы получил Exception.
+<br /><br />
+
+<br />
+<br />
+<h2>Как добавить (зарегистрировать) новый ACL?</h2>
+Для того чтобы добавить новый ACL, нужно воспользоваться методом addACLPermission. Например: <br /><br />
+<code><pre>
+Shop::Get()->getUserService()->addACLPermission(
+    'users-mass-mailing',
+    Shop::Get()->getTranslateService()->getTranslateSecure('acl_users_mass_mailing') // вернёт слово Массовая Рассылка
+);
+</pre></code>
+<br />
+Данная запись добавит в таблицу usersaclkey ключ(key) users-mass-mailing  и даст ему имя(name) массовая рассылка.
+<br />
+Этот метод используется модулями для регистрации своих ACL. Если повторно вызвать метод с теми же параметрами, то он заменит ACL, а не допишет дубликат.
+<br />
+<br />
+<b style="color:red">ВАЖНО!!!</b><span style="color:red">Добавлять новые ACL нужно только в режиме build-acl. Ознакомтесь во всеми режимами <a href="/doc/onebox-mode">тут</a></span>
+<br />
+<br />
+<code><pre>
+// добавляем его только в режиме build-acl
+if (PackageLoader::Get()->getMode('build-acl')) {
+    
+    Shop::Get()->getUserService()->addACLPermission(
+        'documents',
+        Shop::Get()->getTranslateService()->getTranslateSecure('acl_documents')
+    );
+}
+</pre></code>
+<br />
+<h2>Как ACL накладывать на объекты?</h2>
+Вот несколько примеров из метода getOrdersAll():
+<br />
+<br />
+<code>
+    <pre>
+public function getOrdersAll($user = false, $includeIssues = false, $aclType = 'orders') {
+    $orders = new ShopOrder();
+
+    if (!$includeIssues) {
+        $orders->setIssue(0);
+    }
+
+    $orders->setDeleted(0);
+    $orders->setOrder('id', 'DESC');
+
+    if ($user) {
+        // накладываем ACL
+        if ($user->getLevel() >= 3) {
+            return $orders;
+        }
+
+        if ($user->isAllowed($aclType.'-all-view')) {
+            return $orders;
+        }
+
+        // умный ACL
+        $smartACL = !Engine::Get()->getConfigFieldSecure('acl-smart-disabled');
+
+        $userID = $user->getId();
+
+        $whereArray = array();
+
+        if ($aclType == 'orders') {
+            $direction = array(-1);
+            if ($user->isAllowed('orders-direction-in')) {
+                $direction[] = 0;
+            }
+            if ($user->isAllowed('orders-direction-out')) {
+                $direction[] = 1;
+            }
+            $whereArray[] ='(shoporder.outcoming IN ('.implode(',', $direction).'))';
+        }
+
+        // фильтр по менеджеру заказа
+        if ($user->isDenied($aclType.'-manager-all-view')) {
+            $managers = Shop::Get()->getUserService()->getUsersManagers();
+            $managerIDArray = array($userID); // свои заказы видно всегда
+            while ($m = $managers->getNext()) {
+                if ($user->isAllowed($aclType.'-manager-'.$m->getId().'-view')) {
+                    $managerIDArray[] = $m->getId();
+                }
+            }
+
+            if ($smartACL) {
+                $whereArray[] = "(
+                    shoporder.managerid IN (".implode(',', $managerIDArray).")
+                    OR shoporder.authorid IN (".implode(',', $managerIDArray).")
+                    OR EXISTS (
+                        SELECT *
+                        FROM shoporderemployer
+                        WHERE
+                        shoporderemployer.orderid=shoporder.id
+                        AND shoporderemployer.managerid IN (".implode(',', $managerIDArray).")
+                        )
+                    )";
+            }
+        }
+
+        // фильтр по статусу
+        if ($user->isDenied($aclType.'-status-all-view')) {
+            $status = WorkflowService::Get()->getStatusAll();
+            $statusIDs = array(-1);
+            while ($s = $status->getNext()) {
+                if ($user->isAllowed($aclType.'-status-'.$s->getId().'-view')) {
+                    $statusIDs[] = $s->getId();
+                }
+            }
+            $whereArray[] = '(shoporder.statusid IN ('.implode(', ', $statusIDs).'))';
+        }
+
+        // фильтр по категории (бизнес-процессу)
+        if ($user->isDenied($aclType.'-category-all-view')) {
+            $categoryIDArray = array(-1);
+            if ($user->isAllowed($aclType.'-category-0-view')) {
+                $categoryIDArray[] = 0;
+            }
+            $categories = Shop::Get()->getShopService()->getOrderCategoryAll();
+            while ($c = $categories->getNext()) {
+                if ($user->isAllowed($aclType.'-category-'.$c->getId().'-view')) {
+                    $categoryIDArray[] = $c->getId();
+                }
+            }
+            $whereArray[] = '(shoporder.categoryid IN ('.implode(', ', $categoryIDArray).'))';
+        }
+
+        if ($whereArray) {
+            $tmpArray = array();
+            $tmpArray[] = "(".implode(' AND ', $whereArray).")";
+
+            if ($smartACL) {
+                $tmpArray[] = "shoporder.authorid={$user->getId()}";
+                $tmpArray[] = "shoporder.managerid={$user->getId()}";
+            }
+
+            $orders->addWhereQuery("(".implode(' OR ', $tmpArray).")");
+        }
+    }
+
+    return $orders;
+}
+    </pre>
+</code>
+<br />
+<br />
+Пример метода getUsersAll()
+<br />
+<br />
+<code>
+    <pre>
+/**
+* Получить всех пользователей
+*
+* @return User
+*/
+public function getUsersAll($user = false) {
+   $x = parent::getUsersAll();
+   $x->setDeleted(0); // не удаленные
+   $x->setOrder(array('namelast', 'name'), 'ASC');
+
+   if ($user) {
+       // накладываем ACL
+       if ($user->getLevel() >= 3) {
+           return $x;
+       }
+
+       // фильтр по уровню
+       $levelArray = array(-1);
+       for ($j = 0; $j <= 3; $j++) {
+           if ($user->isAllowed('users-level-'.$j.'-view')) {
+               $levelArray[] = $j;
+           }
+       }
+       if (count($levelArray) < 5) {
+           $x->addWhereArray($levelArray, 'level');
+       }
+
+       if ($user->isAllowed('users-all-view')) {
+           return $x;
+       }
+
+       $userID = $user->getId();
+
+       $whereArray = array();
+
+       // фильтр по менеджеру
+       $managers = $this->getUsersManagers();
+       $managerIDArray = array($userID); // свои видно всегда
+       while ($m = $managers->getNext()) {
+           if ($user->isAllowed('users-manager-'.$m->getId().'-view')) {
+               $managerIDArray[] = $m->getId();
+           }
+       }
+       if ($user->isAllowed('users-manager-0-view')) {
+           $managerIDArray[] = 0;
+       }
+       $whereArray[] = 'managerid IN ('.implode(',', $managerIDArray).')';
+
+       $x->addWhereQuery("((employer=1) OR (".implode(' AND ', $whereArray)."))");
+   }
+
+   return $x;
+}
+</pre>
+</code>
+<br /><br />
+
+<h2>Как это технически работает?</h2>
+<br />
+Когда вы добавляете новый ACL через метод addACLPermission, в таблице usersaclkey добавляется ключ, далее для нужного контента вы налаживаете права ACL
+Для этого вы можете дописать в файле где зарегистрирован ваш контент, параметр 'role'  и ваш ключ. Например:
+<br />
+<code><pre>
+Engine::GetContentDataSource()->registerContent(
+    'shop-admin-document-index',
+    array(
+        'title' => 'Documents',
+        'url' => '/admin/document/',
+        'filehtml' => dirname(__FILE__).'/admin/document/document_index.html',
+        'filephp' => dirname(__FILE__).'/admin/document/document_index.php',
+        'moveto' => 'shop-admin-tpl',
+        'moveas' => 'content',
+        'level' => '2',
+        'role' => array('documents')
+    ),
+    'override'
+);
+</pre></code>
+<br />
+По факту вы наложили тем самым права ACL на контент . Чтобы дать пользователю доступ на данный acl вам нужно поставить галочку в правах доступа. 
+Технически когда вы поставите галочку и нажмёте сохранить в таблице usersacl добавиться запись с id пользователя и ключем. 
+Когда пользователь попытаеться и зайти на данный контент, движок проверит есть ли у него доступ к данному контенту (есть ли запись в таблице usersacl).
+Вы так же можете прям в вашем контенте написать if и проверку acl при помощи методов isAllowed, isDenied.
+<br /><br />

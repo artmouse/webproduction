@@ -1,0 +1,39 @@
+<div class="ob-block-element">
+    {|if $issueOpenCount || $issueClosedCount|}
+        <div class="fl-r">{|$percentDone|}%</div>
+    {|/if|}
+
+    <span class="important">{|$translate_zadach_otkrito|}: {|$issueOpenCount|}</span><br />
+    <span class="good">{|$translate_zadach_zakrito|}: {|$issueClosedCount|}</span><br />
+
+    {|if $issueOpenCount || $issueClosedCount|}
+        <br />
+        <div id="js-chart-div" style="width: 100%; height: 250px;"></div>
+
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            if(google) {
+                google.load('visualization', '1.0', { packages: ['corechart'], callback: function() {
+                    drawChart();
+                } });
+            }
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['{|$translate_date|}', '{|$translate_otkrito|}', '{|$translate_zakrito|}'],
+                    {|foreach from=$periodArray item="dateArray" key="date" |}
+                        ['{|$date|}', {|$dateArray.open|}, {|$dateArray.closed|}],
+                    {|/foreach|}
+                ]);
+
+                var options = {
+                    legend: {position: 'none'},
+                    chartArea: {width: '90%', height: '70%'},
+                    colors: ['#da3020', '#0cb061']
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('js-chart-div'));
+                chart.draw(data, options);
+            }
+        </script>
+    {|/if|}
+</div>

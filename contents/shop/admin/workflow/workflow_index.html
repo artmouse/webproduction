@@ -1,0 +1,73 @@
+{|if $message == 'ok'|}
+    <div class="shop-message-success">
+        {|$translate_noviy_protsess_uspeshno_sozdan|}.
+        {|$translate_vipolnyaetsya_perenapravlenie|}...
+    </div>
+
+    <script type="text/javascript">
+        document.location = '{|$urlredirect|}';
+    </script>
+{|/if|}
+
+{|if $message == 'error'|}
+    <div class="shop-message-error">
+        {|$translate_oshibka_sozdaniya_biznes_protsessa_skoree_vsego_imya_pustoe_ili|}
+        {|$translate_takoy_protsess_uzhe_est|}.
+    </div>
+{|/if|}
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            <div class="element">
+                <input type="text" name="title" value="{|$control_title|}" placeholder="{|$translate_title|}" />
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_type_shot|}</div>         
+                <select name="filterworkflowtype" class="chzn-select">
+                    <option value="">---</option>
+                    {|foreach from=$workflowTypeArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_filterworkflowtype == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <div class="caption-field">{|$translate_responsible|}</div>            
+                <select name="filterresponsible" class="chzn-select">
+                    <option value="">---</option>
+                    {|foreach from=$responsibleArray item="e"|}
+                        <option value="{|$e.id|}" {|if $control_filterresponsible == $e.id|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            <div class="element">
+                <input type="text" name="words" value="{|$control_keywords|}" placeholder="{|$translate_klyuchevie_slova|}" />
+            </div>
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" name="ok" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|$table|}
+        <div class="js-table-footer"></div>
+        <br />
+        <br />
+        <form action="" method="post">
+            <h2>{|$translate_sozdat_noviy_biznes_protsess|}</h2>
+            <input type="text" name="name" value="{|$control_name|}" placeholder="{|$translate_nazvanie_biznes_protsessa|}" style="width: 300px;" />
+            {|if $box|}
+                <select class="chzn-select inline" name="type">
+                    {|foreach from=$workflowTypeArray item="t"|}
+                        <option value="{|$t.type|}">{|$t.name|}</option>
+                    {|/foreach|}
+                </select>
+            {|/if|}
+            <input class="ob-button" type="submit" name="add" value="{|$translate_create|}..." />
+
+        </form>
+    </div>
+</div>
+<div class="clear"></div>

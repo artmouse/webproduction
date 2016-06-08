@@ -1,0 +1,77 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/finance/">&lsaquo; {|$translate_simple_back|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/finance/invoice/list/">{|$translate_invoice|}</a></div>
+        <div class="tab-element"><a href="" class="selected">{|$translate_invoice_small|} #{|$id|}</a></div>
+        <div class="tab-element"><a href="{|$urlPayment|}">{|$translate_payment_add|}</a></div>
+        {|if $canEdit|}
+            <div class="tab-element"><a href="{|$urlEdit|}">{|$translate_invoice_edit|}</a></div>
+        {|/if|}
+        <div class="tab-element"><a href="{|$urlDelete|}">{|$translate_invoice_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="ob-block-element shop-storage-info">
+    <strong>
+        {|if $type == 'in'|}{|$translate_vhodyashchiy|}{|elseif $type == 'out'|}{|$translate_ishodyashchiy|}{|/if|}
+        {|$translate_schet|} #{|$id|} {|$translate_from_small|} {|$cdate|}
+    </strong>
+    <br />
+
+    <span class="caption">{|$translate_vistavlen|}:</span> {|$date|}<br />
+    {|if $contractor|}
+        <span class="caption">{|$translate_contractor|}:</span> {|$contractor|}<br />
+    {|/if|}
+    {|if $username|}
+        <span class="caption">{|$translate_operator|}:</span> {|$username|}<br />
+    {|/if|}
+    {|if $name|}
+        <span class="caption">{|$translate_naznachenie|}:</span> {|$name|}<br />
+    {|/if|}
+    {|if $orderid|}
+        <span class="caption">{|$translate_ord|}:</span> <a href="{|$orderURL|}">#{|$orderid|}</a><br />
+    {|/if|}
+    {|if $client|}
+        <span class="caption">{|$translate_client_small|}:</span> {|$client|}<br />
+    {|/if|}
+    <span class="caption">{|$translate_sum|}:</span> {|$sum|number_format:2|} {|$currency|}<br />
+</div>
+
+<h1>{|$translate_raspechatat_dokument|}</h1>
+{|$block_documents|}
+<br />
+
+{|if $productArray|}
+    <h1>{|$translate_tovari|}</h1>
+
+    <table border="0" cellpadding="0" cellspacing="0" class="shop-table">
+        <thead>
+            <tr>
+                <th>{|$translate_item_code|}</th>
+                <th>{|$translate_product|}</th>
+                <th align="right">{|$translate_number|}</th>
+                <th align="right">{|$translate_price|}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {|foreach from=$productArray item="e"|}
+                <tr>
+                    <td>{|$e.productid|}</td>
+                    <td>{|$e.name|}</td>
+                    <td align="right">{|$e.count|}</td>
+                    <td align="right">{|$e.price|} {|$e.currency|}</td>
+                </tr>
+            {|/foreach|}
+        </tbody>
+    </table>
+
+    <br />
+{|/if|}
+
+{|if $table|}
+    <h1>{|$translate_payments|}</h1>
+
+    {|$table|}
+{|/if|}

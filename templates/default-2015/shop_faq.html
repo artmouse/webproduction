@@ -1,0 +1,70 @@
+{|if $message == "ok"|}
+    <div class="def-message-success">
+        {|$translate_message_success|}.<br />
+        {|$translate_be_notified|}.
+    </div>
+{|/if|}
+
+{|if not $faqArray|}
+    <div class="def-message-notice">
+        {|$translate_message_notice|}
+    </div>
+{|/if|}
+
+{|if $message == "error"|}
+    <div class="def-message-error">
+        {|$translate_message_error|}.<br />
+        {|$translate_fill_a_field|}<br />
+    </div>
+{|/if|}
+
+<div class="def-block-faq">
+    {|foreach from=$faqArray item="f"|}
+        <div class="element">
+            <div class="identifier" style="background-color: {|$f.color|};"></div>
+            <div class="question" id="question{|$f.id|}">
+                {|$f.question|}
+                <div class="name">от {|$f.name|}</div>
+                <a href="/faq/{|$f.id|}/?prev_page={|$f.prevPage|}" class="more">{|$translate_read_answer|} &rarr;</a>
+            </div>
+        </div>
+    {|/foreach|}
+</div>
+
+{|if $isUserAuthorized|}
+    <div class="ta-center">
+        <a href="javascript: void(0);" class="def-submit" onclick="popupOpen('.js-popup-faq-block');">{|$translate_ask_the_administration|}</a>
+    </div>
+    <br />
+
+    <div id="form-order-id" class="def-block-popup js-popup-faq-block" style="display: none;">
+        <div class="dark" onclick="popupClose('.js-popup-faq-block');"></div>
+        <div class="block-popup">
+            <div class="head">
+                <a href="javascript: void(0);" class="close def-icon-cancel-circled" onclick="popupClose('.js-popup-faq-block');">&nbsp;</a>
+                <div class="def-section-caption">
+                    <span><strong>{|$translate_ask_the_administration|}</strong></span>
+                </div>
+            </div>
+            <form method="post">
+                <div class="body">
+                    <table>
+                        <tr>
+                            <td class="vtop">{|$translate_question|}<span class="important">*</span>:</td>
+                            <td><textarea class="js-required" type="text" name="question"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="foot">
+                    <input type="hidden" name="ajs" class="ajs" value="1" />
+                    <input class="js-form-validation def-submit" type="submit" name="faq" value="{|$translate_send_message|}" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+{|else|}
+     <div class="def-message-info">
+        {|$translate_must_register|}.
+    </div>
+{|/if|}

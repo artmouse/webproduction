@@ -1,0 +1,228 @@
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+            {|if $moduleViewModeArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_viewing_mode|}</div>
+                    <select name="mode" class="chzn-select">
+                        <option value="" {|if $control_mode == ''|} selected {|/if|}>{|$translate_spiskom|}</option>
+                        {|foreach from=$moduleViewModeArray item="e"|}
+                            <option value="{|$e.modeName|}" {|if $control_mode == $e.modeName|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <div class="caption-field">{|$translate_responsible|}</div>
+                <select name="filtermanagerid" class="chzn-select">
+                    <option value="">{|$translate_all_managers|}</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}" {|if $e.id == $control_filtermanagerid|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+
+            <div class="element">
+                <div class="caption-field">{|$translate_client_small|}</div>
+                <input type="hidden" name="filterclientid" value="{|$control_filterclientid|}" class="js-select2 js-select2-clientid" data-type="user" />
+                <script type="text/javascript">
+                    $j(function () {
+                        var tags = [
+                            {|foreach from=$filterClientArray item="p" name="foreach1"|}
+                                {'id':{|$p.id|}, 'text':'{|$p.text|}'}
+                                {|if !$smarty.foreach.foreach1.last|},{|/if|}
+                            {|/foreach|}
+                        ];
+
+                        $j(".js-select2-clientid").select2('data', tags);
+                    });
+                </script>
+            </div>
+
+            {|if $customOrderNumber|}
+                <div class="element">
+                    <input type="text" name="filternumber" value="{|$control_filternumber|}" placeholder="{|$translate_order_number|}" />
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <input type="text" name="filtername" value="{|$control_filtername|}" placeholder="{|$translate_box_name_small|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterid" value="{|$control_filterid|}" placeholder="{|$translate_code|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdatefrom" value="{|$control_filtercdatefrom|}" placeholder="{|$translate_data_sozdaniya_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filtercdateto" value="{|$control_filtercdateto|}" placeholder="{|$translate_data_sozdaniya_do|}" />
+            </div>
+
+            {|if $mode != 'funnel'|}
+                <div class="element ulist">
+                    <label>
+                        <input type="checkbox" name="filtershowclosed" value="1" {|if $control_filtershowclosed|}checked{|/if|} class="js-filtershowclosed">
+                        {|$translate_pokazivat_zakritie|}
+                    </label>
+
+                    <input type="hidden" name="filtershowclosed" value="0" class="js-filtershowclosed-hidden" {|if $control_filtershowclosed|}disabled{|/if|} />
+                    <script type="text/javascript">
+                        $j(function () {
+                            $j('.js-filtershowclosed').change(function(event) {
+                                $j('.js-filtershowclosed-hidden').prop('disabled', $j(this).is(':checked'));
+                            });
+                        });
+                    </script>
+                </div>
+            {|/if|}
+
+            <div class="element ulist">
+                <label>
+                    <input type="checkbox" name="filtershownotissue" value="1" {|if $control_filtershownotissue|}checked{|/if|} class="js-filtershowclosed">
+                    {|$translate_pokazivat_tolko_bez_zadach|}
+                </label>
+            </div>
+
+            {|$block_workflow_filter|}
+
+            {|if $managerArray|}
+                <div class="element">
+                    <div class="caption-field">{|$translate_avtor_zadachi|}</div>
+                    <select name="filterauthorid" class="chzn-select">
+                        <option value="">{|$translate_all_managers|}</option>
+                        {|foreach from=$managerArray item="e"|}
+                            <option value="{|$e.id|}" {|if $e.id == $control_filterauthorid|} selected {|/if|}>{|$e.name|}</option>
+                        {|/foreach|}
+                    </select>
+                </div>
+            {|/if|}
+
+            <div class="element">
+                <input type="text" name="filterproductname" value="{|$control_filterproductname|}" class="help-hint-filter-login" placeholder="{|$translate_item_title|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterproductid" value="{|$control_filterproductid|}" class="help-hint-filter-login" placeholder="{|$translate_item_code|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" name="filterproductserial" value="{|$control_filterproductserial|}" class="help-hint-filter-login" placeholder="{|$translate_product_serial_number|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filterdatetofrom" value="{|$control_filterdatetofrom|}" placeholder="{|$translate_data_vipolneniya_ot|}" />
+            </div>
+
+            <div class="element">
+                <input type="text" class="js-date" name="filterdatetoto" value="{|$control_filterdatetoto|}" placeholder="{|$translate_data_vipolneniya_do|}" />
+            </div>
+
+            <input class="ob-button button-orange" type="submit" value="{|$translate_filter|}" />
+
+            <div class="clear"></div>
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $block_show_custom |}
+            {|$block_show_custom|}
+        {|else|}
+            <div class="js-table-footer"></div>
+        
+            {|$table|}
+
+            {|if $dataCount|}
+                <div class="ob-block-details">
+                    <div class="ob-data-element">
+                        <div class="data-view">
+                            <div class="el-caption static">{|$translate_kolichestvo_zadach|}:</div>
+                            <div class="el-value">{|$dataCount|}</div>
+                        </div>
+                    </div>
+
+                    <form id="massSend" action="/admin/shop/users/mailing/" method="post">
+                        <input type="hidden" name="arrUserId" value="{|$arrUserId|}">
+                        <input class="ob-button" id="sendAll" type="submit" name="sendAll" value="{|$translate_users_mailing|}" />
+                        {|if $canSMS|}
+                            <input class="ob-button" type="submit" name="sendAllSms" value="{|$translate_users_mailing|} SMS" onclick="$j('#massSend').attr('action', '/admin/shop/users/smsmailing/');" />
+                        {|/if|}
+                    </form>
+                </div>
+            {|/if|}
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="nb-right-sidebar disable" >
+    <div class="toggle"></div>
+
+    <form class="inner" action="" method="post" >
+        <input type="hidden" id="id-issue" name="moveids" />
+
+        {|if $managerArray|}
+            <div class="element double">
+                {|$translate_naznachit_na|}:
+                <select class="chzn-select" name="manager">
+                    <option value="">---</option>
+                    {|foreach from=$managerArray item="e"|}
+                        <option value="{|$e.id|}">{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+        {|/if|}
+
+        {|if $statusArray || $statusCategoryArray|}
+            <div class="element">
+                {|$translate_cgange_status|}:
+                <select class="chzn-select" name="status">
+                    <option value="">---</option>
+                    {|foreach from=$statusArray item="e"|}
+                        <option value="{|$e.id|}" >{|$e.name|}</option>
+                    {|/foreach|}
+                    {|foreach from=$statusCategoryArray key="key" item="s"|}
+                        <optgroup label="{|$key|}">
+                            {|foreach from=$s item="s2"|}
+                                <option value="{|$s2.id|}" >{|$s2.name|}</option>
+                            {|/foreach|}
+                        </optgroup>
+                    {|/foreach|}
+                </select>
+            </div>
+        {|/if|}
+
+        <div class="element">
+            {|$translate_date_of_completion|}:
+            <input type="text" name="dueDate" class="js-datetime">
+        </div>
+
+        <div class="element">
+            <label>
+                <input type="radio" name="action" value="open" />
+                {|$translate_otkrit_zadachi|}
+            </label>
+            <br />
+            <label>
+                <input type="radio" name="action" value="closed" />
+                {|$translate_zakrit_zadachi|}
+            </label>
+        </div>
+        <div class="clear"></div>
+
+        <div class="element">
+            <input class="ob-button" type="submit" name="change" value="{|$translate_user_change|}" onclick="return confirm('{|$translate_button_comfirm_change_data|}');" />
+        </div>
+
+        <div class="element">
+            <input class="ob-button" type="submit" name="delete" value="{|$translate_delete|}"  onclick="return confirm('{|$translate_button_comfirm_order_delete|}');" />
+        </div>
+        <div class="element"></div>
+    </form>
+</div>

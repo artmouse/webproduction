@@ -1,0 +1,9 @@
+[2015-11-26 13:12:09]
+host: shop.local
+url: /dvd-pleer-dex-dvp-274-p37/
+contentID: shop-product
+point: /shop.starter.php
+data: 0=500
+1=Executing error: Duplicate entry '37-5-0-2' for key 'index_productfiltervalue' in query: INSERT INTO `shopproductfiltervalue` SET `id`='', `productid`='37', `filterid`='5', `filtervalue`='2', `filteractual`='', `filteruse`='', `filteroption`='', `filtermarkup`='504'
+
+

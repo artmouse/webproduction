@@ -1,0 +1,39 @@
+{|$queryCount|} запросов за {|$queryTime|} сек.
+<br />
+<br />
+<table border="0" cellpadding="0" cellspacing="0" class="wpp-table">
+    {|foreach from=$queryArray item="q" key="i"|}
+        <tr valign="top">
+            <td>{|$i|}</td>
+            <td>
+                {|$q.query|}<br />
+
+                <a href="#" id="EngineDebug-querytrace-{|$i|}-link">Trace</a>
+                <pre class="wpp-content-gray wpp-rounded EngineDebug-autohide" id="EngineDebug-querytrace-{|$i|}">{|$q.trace|}</pre>
+
+                {|if $q.explain|}
+                    <a href="#" id="EngineDebug-queryexplain-{|$i|}-link">Explain</a>
+                    <div class="wpp-content-gray wpp-rounded EngineDebug-autohide" id="EngineDebug-queryexplain-{|$i|}">
+                        <table border="0" cellspacing="0" cellpadding="5">
+                            <tr>
+                                {|foreach from=$q.explain.0 item="e" key="k"|}
+                                    <td><strong>{|$k|}</strong></td>
+                                {|/foreach|}
+                            </tr>
+                            {|foreach from=$q.explain item="r"|}
+                                <tr>
+                                    {|foreach from=$r item="v"|}
+                                        <td>{|$v|}</td>
+                                    {|/foreach|}
+                                </tr>
+                            {|/foreach|}
+                        </table>
+                    </div>
+                {|/if|}
+            </td>
+            <td align="right">
+                {|$q.time|}&nbsp;sec.
+            </td>
+        </tr>
+    {|/foreach|}
+</table>

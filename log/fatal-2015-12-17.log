@@ -1,0 +1,11 @@
+[2015-12-17 00:06:43]
+host: 
+url: 
+contentID: 
+point: updater.sh
+data: type=2
+message=mysqli::mysqli(): (42000/1049): Unknown database 'pets'
+file=/var/www/shop.local/packages/ConnectionManager/ConnectionManager_MySQLi.class.php
+line=43
+
+

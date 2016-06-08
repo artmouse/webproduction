@@ -1,0 +1,29 @@
+{|if $productsArray|}
+    <div class="shop-overflow-table" style="margin: 0 0 20px 0;">
+        <table class="shop-table" width="100%">
+            {|foreach from=$productsArray item="p"|}
+                <tr>
+                    <td width="80%"><a data-id="{|$p.productid|}" class="js-product-preview"
+                                       href="{|$p.productUrl|}">{|$p.name|}</a></td>
+                    <td class="nowrap align_right">{|$p.count|} {|$p.unit|}</td>
+                    <td class="nowrap align_right">{|$p.price|} {|$p.currencySym|}</td>
+                </tr>
+            {|/foreach|}
+            <tfoot>
+            {|if $discountSum|}
+                <tr>
+                    <td class="align_right" colspan="2">{|$translate_discount|}:</td>
+                    <td class="nowrap align_right">
+                        <strong>{|$discountSum|string_format:"%.2f"|} {|$currency|}</strong></td>
+                </tr>
+            {|/if|}
+            <tr>
+                <td class="align_right" colspan="2">{|$translate_in_total|}
+                    <strong>{|$countProductAll|}</strong> {|$translate_tovar_ov_|}:
+                </td>
+                <td class="nowrap align_right"><strong>{|$allSum|string_format:"%.2f"|} {|$currency|}</strong></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+{|/if|}

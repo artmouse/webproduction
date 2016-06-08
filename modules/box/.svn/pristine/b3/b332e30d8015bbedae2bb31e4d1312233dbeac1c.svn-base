@@ -1,0 +1,22 @@
+<div class="ob-data-element js-data-element js-noquickedit" style="margin-top: 12px; margin-right: 130px;">
+    <div class="data-view">
+        <div class="el-value">
+            <span style="font-size: 18px;">
+                {|if $control_name|}
+                    {|$control_name|}
+                {|else|}
+                    {|$translate_no_name|}.
+                {|/if|}
+            </span>
+            {|if $canEdit|}
+                <a class="ob-link-edit" href="#"></a>
+            {|/if|}
+        </div>
+    </div>
+    <div class="data-edit">
+        <a class="ob-link-delete" href="#"></a>
+        <a class="ob-link-accept" href="#"></a>
+        <input class="js-disabled" type="text" name="name" value="{|$control_name|}" />
+    </div>
+</div>
+<div class="clear"></div>

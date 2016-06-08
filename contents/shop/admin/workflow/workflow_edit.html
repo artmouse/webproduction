@@ -1,0 +1,268 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/workflow/">&lsaquo; {|$translate_biznes_protsessi|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/workflow/{|$categoryid|}/" class="selected">{|$translate_workflow|} {|$name|}</a></div>
+        <div class="tab-element"><a href="./delete/" >{|$translate_delete|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{|if $edit_ok|}
+    <div class="shop-message-success">
+        {|$translate_protsess_uspeshno_sohranen|}.
+    </div>
+{|/if|}
+
+<h1>{|$translate_redaktirovanie_biznes_protsessa|}</h1>
+<br />
+
+<form action="" method="post">
+    {|if $elementArray && ($box || $workflowVisualEnable)|}
+        {|foreach from=$elementArray item='e'|}
+            {|foreach from=$elementArray item='e1'|}
+                <input type="hidden" class="js-state js-connection-{|$e.id|}-{|$e1.id|}" name="change{|$e.id|}_{|$e1.id|}"
+                data-from={|$e.id|}
+                data-to={|$e1.id|}
+                {|if $changesArray[$e.id][$e1.id] || $e.id == $e1.id|}
+                    value="1"
+                {|else|}
+                    value="0"
+                {|/if|}
+                />
+            {|/foreach|}
+        {|/foreach|}
+
+        {|* "canvas" для расстановки элементов *|}
+        <div class="onebox-workflow-layout" style="height: 350px;">
+            {|foreach from=$elementArray item="e"|}
+                <div id="js-wfe-{|$e.id|}" class="onebox-workflow-element" data-id={|$e.id|}
+                style="left: {|$e.positionx|}px; top: {|$e.positiony|}px; width: {|$e.width|}px; height: {|$e.height|}px; {|if $e.colour|} background-color: {|$e.colour|}; {|/if|}">
+                    <span class="inner">{|$e.name|}</span>
+                </div>
+            {|/foreach|}
+        </div>
+
+        {|* для каждого элемента сделаем input для записи координат *|}
+        {|foreach from=$elementArray item="e"|}
+            <input type="hidden" name="position_{|$e.id|}_x" value="{|$e.positionx|}" id="js-position-{|$e.id|}-x" />
+            <input type="hidden" name="position_{|$e.id|}_y" value="{|$e.positiony|}" id="js-position-{|$e.id|}-y" />
+            <input type="hidden" name="position_{|$e.id|}_width" value="{|$e.width|}" id="js-position-{|$e.id|}-width" />
+            <input type="hidden" name="position_{|$e.id|}_height" value="{|$e.height|}" id="js-position-{|$e.id|}-height" />
+        {|/foreach|}
+        <br />
+        <br />
+    {|/if|}
+
+    <div class="ob-block-doubleform">
+        <div class="wrap">
+            <div class="left-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_nazvanie_protsessa|}</div>
+                    <input type="text" name="name" value="{|$name|}" />
+                </div>
+
+                {|if $box|}
+                    <div class="double">
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_prednaznachen_dlya|}</div>
+                            <select class="chzn-select" name="type">
+                                {|foreach from=$workflowTypeArray item="t"|}
+                                    <option value="{|$t.type|}" {|if $t.selected|}selected{|/if|}>{|$t.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+
+                        <div class="form-element">
+                            <div class="element-caption">{|$translate_currency_default|}</div>
+                            <select class="chzn-select" name="currency">
+                                <option value="0">---</option>
+                                {|foreach from=$currencyArray item="currency"|}
+                                    <option value="{|$currency.id|}"
+                                            {|if $currency.selected|}selected{|/if|}>{|$currency.name|}</option>
+                                {|/foreach|}
+                            </select>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_product_list|}</div>
+                        <ul id="js-product-tag" data-input="#js-product-input" style="height: 50px;"></ul>
+                        <input id="js-product-input" type="text" name="productlist" value="{|$control_productlist|}" style="display: none;"/>
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_rekomenduemiy_srok_zhizni_biznes_protsessa|}</div>
+                        <input type="text" name="term" value="{|$control_term|}" style="width: 50px;" /> {|$translate_dney|}
+                    </div>
+                    <div class="form-element">
+                        <div class="element-caption">Цвет меню</div>
+                        <input type="text" class="js-color" name="color_menu" value="{|$control_color_menu|}" style="width: 80px;" />
+                    </div>
+
+                    <div class="form-element">
+                        <label>
+                            <input type="checkbox" value="1" name="noautodateto" {|if $control_noautodateto|} checked {|/if|} />
+                            {|$translate_ne_ustanavlivat_srok_zhizni_biznes_protsessa_avtomaticheski|}
+                        </label>
+                    </div>
+                {|/if|}
+
+                <div class="form-element">
+                    <label>
+                        <input type="checkbox" value="1" name="workflowdefault" {|if $control_workflowdefault|} checked {|/if|} />
+                        {|$translate_eto_biznes_protsess_po_umolchaniyu_dlya_novih_zakazov_ili_zadach|}
+                    </label>
+                </div>
+
+                {|if $box|}
+                    <div class="form-element">
+                        <strong>{|$translate_klyuchevie_slova|}</strong> {|$translate_v_nazvanii_zadachi_po_kotorim_sistema_avtomaticheski_viberet_etot_protsess|}:<br />
+                        <textarea name="keywords" class="js-autosize">{|$control_keywords|}</textarea>
+                        <br />
+                        <br />
+                    </div>
+
+
+                {|/if|}
+            </div>
+            <div class="right-column">
+                <div class="form-element">
+                    <div class="element-caption">{|$translate_napravlenie_zakaza_proekta_zadachi|}</div>
+                    <select class="chzn-select" name="outcoming">
+                        <option value="0">{|$translate_vhodyashchiy|}</option>
+                        <option value="1" {|if $control_outcoming|} selected {|/if|}>{|$translate_ishodyashchiy|}</option>
+                    </select>
+                </div>
+
+                {|if $box|}
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_shablon_imeni_dlya_novoy_zadachi|}</div>
+                        <input type="text" name="issuename" value="{|$control_issuename|}" />
+                    </div>
+
+                    <div class="form-element">
+                        <div class="element-caption">{|$translate_otvetstvenniy_dlya_starta_novih_zadach|}</div>
+                        <select name="managerid" class="chzn-select">
+                            <option value="0">---</option>
+                            {|foreach from=$managerArray item="e"|}
+                                <option value="{|$e.id|}" {|if $e.id == $control_managerid|} selected {|/if|}>{|$e.name|}</option>
+                            {|/foreach|}
+                        </select>
+                    </div>
+
+                    <div class="form-element">
+                        <label>
+                            <input type="checkbox" value="1" name="hidden" {|if $control_hidden|} checked {|/if|} />
+                            {|$translate_ustarevshiy_protsess_skritiy_|}
+                        </label>
+                    </div>
+                {|/if|}
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-overflow-table">
+        <table class="shop-table">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td align="center" width="30">ID</td>
+                    <td>{|$translate_etap|}</td>
+
+                    {|if $box|}
+                        <td>{|$translate_rol|}</td>
+                        <td>{|$translate_opisanie_etapa|}</td>
+                    {|/if|}
+
+                    <td>{|$translate_startoviy|}</td>
+                    <td>{|$translate_tsvet|}</td>
+                    <td>{|$translate_settings|}</td>
+                    <td>{|$translate_delete|}?</td>
+                </tr>
+            </thead>
+            <tbody class="js-wfstage-sort">
+                {|foreach from=$elementArray item='e'|}
+                    <tr>
+                        <td><div class="move"></div></td>
+                        <td align="center">#{|$e.id|}</td>
+                        <td>
+                            <input type="text" name="name_{|$e.id|}" value="{|$e.name|}" style="width: 300px;" />
+                        </td>
+
+                        {|if $box|}
+                            <td>
+                                <select class="chzn-select-tree" name="role_{|$e.id|}" style="width: 200px;">
+                                    <option>---</option>
+                                    {|foreach from=$roleArray item="role"|}
+                                        <option value="{|$role.id|}" {|if $role.id==$e.roleid|} selected {|/if|} data-level="{|$role.level|}">
+                                            {|$role.name|}
+                                        </option>
+                                    {|/foreach|}
+                                </select>
+                            </td>
+                            <td>
+                                <textarea name="description_{|$e.id|}" style="width: 300px;" class="js-autosize" rows="1">{|$e.description|}</textarea>
+                            </td>
+                        {|/if|}
+
+                        <td align="center">
+                            <input type="radio" name="default" value="{|$e.id|}" {|if $e.default|} checked {|/if|} />
+                        </td>
+                        <td>
+                            <input type="text" class="js-color" name="colour_{|$e.id|}" value="{|$e.colour|}" style="width: 80px;" />
+                        </td>
+                        <td>
+                            <a href="{|$e.urlEdit|}" >{|$translate_settings|}</a>
+                            {|if $box|}
+                                <a href="{|$e.urlInterface|}" >{|$translate_interfeys|}</a>
+                            {|/if|}
+                            <a href="{|$e.urlAction|}" >{|$translate_motion|}</a>
+                        </td>
+                        <td align="center">
+                            <input type="checkbox" name="delete_{|$e.id|}" value="1" />
+                            <input type="hidden" class="js-sort-value" name="sort_{|$e.id|}" value="{|$e.sort|}" />
+                        </td>
+                    </tr>
+                {|/foreach|}
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="2" align="center">{|$translate_dobavit_etap|}</td>
+                    <td>
+                        <textarea class="js-autosize" name="element_name" placeholder="{|$translate_nazvanie_etapov|}" style="width: 300px;">{|$element_name|}</textarea>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="ob-button-fixed">
+        <input type="submit" name="send_edit" value="{|$translate_save|}" {|if $confirmDefault && $confirmDefault != $categoryid|}onclick="return confirmDefault();"{|/if|} class="ob-button button-green" />
+    </div>
+    <div class="ob-button-fixed-place"></div>
+
+    <script type="text/javascript">
+        $j(function(){
+            {|foreach from=$productsDefaultArray item="prod"|}
+                $j("#js-product-tag").tagit("createTag", "{|$prod|}");
+            {|/foreach|}
+        });
+
+        function confirmDefault () {
+            if ($j('input[name="workflowdefault"]').prop('checked')) {
+                return confirm("{|$translate_bizness_protsess_po_umolchaniyu_uzhe_est|}.\n{|$translate_nazhmite_da_chtobi_vibrat_etot_i_sbrosit_ostalnie|}");
+            }
+        }
+    </script>
+</form>
+
+{|$smartyContentBlock|}

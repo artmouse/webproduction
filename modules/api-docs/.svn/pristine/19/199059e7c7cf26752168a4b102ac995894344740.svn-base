@@ -1,0 +1,158 @@
+<h1>Логические блоки</h1>
+Логические блоки необходимы для группировки контента в блочном виде. <br />
+<br />
+
+<h2>Стандартный блок</h2>
+<div class="ui-class">.ob-block-element</div>
+<code>
+    <pre>
+&lt;div class="ob-block-element"&gt;
+    Example text
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="1" style="width: 100%; height: 80px;">
+    <div class="ob-block-element">
+        Example text
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Блок с шапкой и подвалом</h2>
+Для вывода блока с шапкой или подвалом необходимо использовать дополнительные блоки <div class="ui-class line">.block-caption</div> и <div class="ui-class line">.block-foot</div> соответственно.<br>
+<br>
+<div class="ui-class">.ob-block-element</div>
+<code>
+    <pre>
+&lt;div class="ob-block-element"&gt;
+    &lt;div class="block-caption"&gt;Example head&lt;/div&gt;
+    Example text
+    &lt;div class="block-foot"&gt;Example foot&lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="2" style="width: 100%; height: 150px;">
+    <div class="ob-block-element">
+        <div class="block-caption">Example head</div>
+        Example text
+        <div class="block-foot">Example foot</div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Блок обвертка</h2>
+Для вывода дополнительного блока(например таблицы) внутри логического блока необходимо использовать блок обвертку.<br>
+Для этого используется модификатор <div class="ui-class line">.wrapped</div><br>
+<br>
+<div class="ui-class">.ob-block-element</div>
+<code>
+    <pre>
+&lt;div class="ob-block-element wrapped"&gt;
+    &lt;div class="block-caption"&gt;Example head&lt;/div&gt;
+    &lt;div class="shop-overflow-table"&gt;
+        &lt;table class="shop-table" width="150%"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Column content&lt;/td&gt;
+                    &lt;td&gt;Column content&lt;/td&gt;
+                    &lt;td&gt;Column content&lt;/td&gt;
+                    &lt;td&gt;Column content&lt;/td&gt;
+                    &lt;td&gt;Column content&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+                &lt;td&gt;Column content&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="3" style="width: 100%; height: 180px;">
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">Example head</div>
+        <div class="shop-overflow-table">
+            <table class="shop-table" width="150%">
+                <thead>
+                    <tr>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                </tr>
+                <tr>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>
+<br>
+<br>
+
+<h2>Блок деталей</h2>
+Данный тип блока также может содержать шапку и подвал, как и стандартынй блок.<br>
+<br>
+<div class="ui-class">.ob-block-element</div>
+<code>
+    <pre>
+&lt;div class="ob-block-details"&gt;
+    Example text
+&lt;/div&gt;</pre>
+</code>
+<br>
+
+<div class="ui-name">Пример</div>
+<boxui data-id="4" style="width: 100%; height: 80px;">
+    <div class="ob-block-details">
+        Example text
+    </div>
+
+    <style>
+        body {padding: 10px; box-sizing: border-box;}
+    </style>
+</boxui>

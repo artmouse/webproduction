@@ -1,0 +1,121 @@
+{|if $logo|}
+    <div class="avatar">
+        {|if $url|}
+            <a class="nb-block-avatar" href="{|$url|}" style="background-image: url('{|$logo|}');"></a>
+        {|else|}
+            <span class="nb-block-avatar" style="background-image: url('{|$logo|}');"></span>
+        {|/if|}
+    </div>
+    <div class="avatar-place"></div>
+{|/if|}
+<div class="name">
+    {|if $url|}
+        <a href="{|$url|}"><strong>{|$name|}</strong></a><br />
+    {|else|}
+        <strong>{|$name|}</strong><br />
+    {|/if|}
+    {|if $companyURL|}
+        <a href="{|$companyURL|}">{|$company|}</a>
+    {|else|}
+        {|$company|}
+    {|/if|}
+    {|$title|}
+</div>
+
+<table class="list">
+    {|if $phoneArray|}
+        <tr>
+            <td>{|$translate_pozvonit|}:</td>
+            <td>
+                {|foreach from=$phoneArray item="e"|}
+                    <a class="ob-link-phone ob-link-dashed js-call-originate js-tooltip" href="#" data-phone="{|$e|}" title="{|$translate_pozvonit|} {|$e|}">{|$e|}</a>
+                    {|if $canSMS|}
+                        &nbsp;
+                        <a class="ob-link-email ob-link-dashed js-tooltip" href="#" onclick='sms_popup_open("{|$e|}");' title="{|$translate_napisat|} {|$e|}">{|$translate_napisat_sms|}</a>
+                    {|/if|}
+                    <br />
+                {|/foreach|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $emailArray|}
+        <tr>
+            <td>Email:</td>
+            <td>
+                {|foreach from=$emailArray item="e"|}
+                    <a class="ob-link-email ob-link-dashed js-email-write js-tooltip" href="#" data-email="{|$e|}" title="{|$translate_napisat|} {|$e|}">{|$e|}</a><br />
+                {|/foreach|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $address|}
+        <tr>
+            <td>{|$translate_address_small|}:</td>
+            <td>
+                {|$address|}
+            </td>
+        </tr>
+    {|/if|}
+    {|if $clientactivitydate|}
+        <tr>
+            <td>{|$translate_poslednyaya_kommunikatsiya|}:</td>
+            <td>
+                {|$clientactivitydate|}
+            </td>
+        </tr>
+    {|/if|}
+    {|foreach from=$userFieldArray item="field"|}
+        <tr>
+            <td>{|$field.name|}:</td>
+            <td>
+                {|$field.value|}
+            </td>
+        </tr>
+    {|/foreach|}
+    {|if $workflowArray|}
+        <tr>
+            <td style="padding-top: 16px;">
+                {|$translate_biznes_protsess|}:
+            </td>
+            <td>
+                <select id="startWorkflow" class="chzn-select" onchange="startWorkflow()" style="width: 170px">
+                    <option value="0">---</option>
+                    {|foreach from=$workflowArray item="workFlow"|}
+                        <option value="{|$workFlow.url|}">{|$workFlow.name|}</option>
+                    {|/foreach|}
+                </select>
+            </td>
+        </tr>
+    {|/if|}
+    {|*|}
+    {|if $balance|}
+        <tr>
+            <td style="padding-top: 23px;">
+                {|$translate_balance|}:
+            </td>
+            <td>
+                {|$balance|} {|$currency|}
+            </td>
+        </tr>
+    {|/if|}
+    {|*|}
+
+
+
+</table>
+
+<script>
+    function startWorkflow() {
+        var url = $j("#startWorkflow").val();
+        if (url) {
+            location.href = url;
+        }
+    }
+
+    $j('.js-tooltip').tooltipster({
+        theme: 'ob-link-tooltip'
+    });
+
+    // select
+    $j('select.chzn-select').select2();
+</script>

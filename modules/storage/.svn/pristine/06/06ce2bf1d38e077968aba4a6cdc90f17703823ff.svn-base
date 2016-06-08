@@ -1,0 +1,133 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/balance/warehouses/">{|$translate_storage_balance|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/balance/employees/">{|$translate_balance_employees|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/report/motion/" class="selected">{|$translate_storage_report_balance|}</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="filter-toggle {|if $filterpanelCookie|}open{|/if|}"></div>
+<div class="shop-filter-panel {|if $filterpanelCookie|}open{|/if|}">
+    <div class="inner-pannel">
+        <form action="" method="get">
+        
+            <div class="element">
+                <div class="caption-field">{|$translate_date|} {|$translate_with|}</div>
+                <input type="text" name="datefrom" value="{|$control_datefrom|}" class="js-datepicker" />
+            </div>
+            
+            <div class="element">
+                <div class="caption-field">{|$translate_date|} {|$translate_for|}</div>
+                <input type="text" name="dateto" value="{|$control_dateto|}" class="js-datepicker" />
+            </div>
+            
+            <script type="text/javascript">
+                $j(function () {
+                    $j('.js-datepicker').datepicker({
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+            </script>
+        
+            <div class="element">
+                <div class="caption-field">{|$translate_storage|}</div>
+                <select name="storagenameid[]" multiple class="chzn-select">
+                    {|foreach from=$storageNamesArray item="e"|}
+                        <option value="{|$e.id|}" {|if in_array($e.id, $storagenameSelectedArray)|} selected {|/if|}>{|$e.name|}</option>
+                    {|/foreach|}
+                </select>
+            </div>
+            
+            <input class="ob-button button-orange" type="submit" name="ok" value="{|$translate_filter|}" />
+        </form>
+    </div>
+</div>
+
+<div class="shop-result-list">
+    <div class="inner-list {|if $filterpanelCookie|}filter-reserve{|/if|}">
+        {|if $motionsArray|}
+            <table border="0" cellpadding="0" cellspacing="0" class="shop-table js-sortable" width="100%" >
+                <thead>
+                    <tr>
+                        <th width="100">{|$translate_code|}</th>
+                        <th>{|$translate_product|}</th>
+                        <th align="right" width="100">{|$translate_initial_quantity|}</th>
+                        <th align="right" width="100">{|$translate_initial_amount|}</th>
+                        <th align="right" width="100">{|$translate_came_number|}</th>
+                        <th align="right" width="100">{|$translate_came_sum|}</th>
+                        <th align="right" width="100">{|$translate_out_number|}</th>
+                        <th align="right" width="100">{|$translate_out_sum|}</th>
+                        <th align="right" width="100">{|$translate_balance_number|}</th>
+                        <th align="right" width="100">{|$translate_balance_sum|}</th>
+                    </tr>
+                </thead>
+        
+                {|foreach from=$motionsArray item="e"|}
+                    {|if not $e.productid|}
+                        <tfoot>
+                    {|/if|}
+                    <tr
+                    {|if $e.hidden|}
+                        bgcolor="#DADADA"
+                    {|else|}
+                        {|if $e.green|}
+                            bgcolor="#ACD88D"
+                        {|/if|}
+                        {|if $e.red|}
+                            bgcolor="#FFCACE"
+                        {|/if|}
+                    {|/if|}
+                    >
+                        <td><a href="{|$e.productURL|}" class="js-product-preview" data-id="{|$e.productid|}">{|$e.productid|}</a></td>
+                        <td>{|$e.productname|}</td>
+                        <td align="right">{|$e.was|}</td>
+                        <td align="right">{|$e.was_sum|}&nbsp;{|$e.currency|}</td>
+                        <td align="right">{|$e.plus|}</td>
+                        <td align="right">{|$e.plus_sum|}&nbsp;{|$e.currency|}</td>
+                        <td align="right">{|$e.minus|}</td>
+                        <td align="right">{|$e.minus_sum|}&nbsp;{|$e.currency|}</td>
+                        <td align="right" style="font-weight: bold;">{|$e.became|}</td>
+                        <td align="right" style="font-weight: bold;">{|$e.became_sum|}&nbsp;{|$e.currency|}</td>
+                    </tr>
+                    {|if not $e.productid|}
+                        </tfoot>
+                    {|/if|}
+                {|/foreach|}
+            </table>
+            
+            <br />
+            {|$stepper|}
+            <br />
+            <br />
+            <br />
+            <br />
+        
+            <script type="text/javascript">
+            $j(function () {
+                $j('.js-sortable').tablesorter();
+            });
+            </script>
+        {|elseif $arg_ok|}
+            {|if $message == 'error'|}
+                <div class="shop-message-info">
+                    {|$translate_box_message_error|}.<br />
+        
+                    {|foreach from=$errorsArray item="e"|}
+                        {|if $e == 'nostorage'|}
+                            {|$translate_storage_not_selected|}.<br />
+                        {|/if|}
+                    {|/foreach|}
+                </div>
+            {|else|}
+                <div class="shop-message-info">{|$translate_storage_message_no_motion|}.</div>
+            {|/if|}
+        {|/if|}
+    </div>
+</div>
+<div class="clear"></div>
+
+<script>
+    filterOpen();
+</script>

@@ -1,0 +1,14 @@
+{|if $activeOrderArray|}
+    <div class="ob-block-element wrapped">
+        <div class="block-caption">{|$translate_my_orders|}</div>
+        {|foreach from=$activeOrderArray item="p"|}
+            <a class="shop-activity-preview" href="{|$p.url|}" style="background-color: {|$p.color|}">
+                <span class="activity-head">
+                    <span class="ob-icon-order type-icon"></span>
+                     <span class="name">#{|$p.id|}</span>
+                    <span class="subject">{|$p.clientName|}</span>
+                </span>
+            </a>
+        {|/foreach|}
+    </div>
+{|/if|}

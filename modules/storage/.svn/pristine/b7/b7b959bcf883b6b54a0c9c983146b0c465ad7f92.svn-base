@@ -1,0 +1,47 @@
+<div class="nb-top-nav-place js-top-nav-buffer"></div>
+<div class="nb-top-nav js-top-nav">
+    <div class="nb-block-tabs">
+        <div class="tab-element"><a href="/admin/shop/storage/balance/warehouses/">{|$translate_storage_balance|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/balance/employees/">{|$translate_balance_employees|}</a></div>
+        <div class="tab-element"><a href="/admin/shop/storage/report/motion/">{|$translate_storage_report_balance|}</a></div>
+        <div class="tab-element"><a href="" class="selected">Резерв</a></div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<h1>Товар &quot;{|$productName|}&quot; на складе &quot;{|$storageName|}&quot;</h1>
+
+<table cellpadding="0" cellspacing="0" border="0" class="shop-table">
+    <thead>
+        <tr>
+            <td width="120">Дата оприходования товара</td>
+            <td width="50">Код партии</td>
+            <td width="100" align="right">Цена товара</td>
+            <td width="100">Серийный номер</td>
+            <td width="100" align="right">Остаток на складе</td>
+            <td width="100" align="right">Зарезервировано</td>
+            <td>&nbsp;</td>
+        </tr>
+    </thead>
+
+    <tbody>
+        {|foreach from=$storageArray item="e"|}
+            <tr>
+                <td>{|$e.cdate|}</td>
+                <td>{|$e.shipment|}</td>
+                <td align="right">{|$e.price|} {|$currency|}</td>
+                <td>{|$e.serial|}</td>
+                <td align="right">{|$e.amount|}</td>
+                <td align="right">{|$e.amountlinked|}</td>
+                <td>
+                    {|foreach from=$e.linkArray item="l"|}
+                        {|if $l.orderid|}<a href="{|$l.orderURL|}">Заказ #{|$l.orderid|}</a> - {|$l.amount|} {|/if|}
+                        {|if $l.basketType|} {|$l.basketType|} - {|$l.amount|} {|/if|}
+                        <a href="{|$l.deleteURL|}" onclick="if (!confirm('Удалить привязку?')) return false; ">Удалить привязку</a>
+                        <br />
+                    {|/foreach|}
+                </td>
+            </tr>
+        {|/foreach|}
+    </tbody>
+</table>

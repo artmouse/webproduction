@@ -1,0 +1,36 @@
+<div class="form-element">
+    <div class="element-caption">Файл превью</div>
+    <div class="shop-overflow-table">
+        <table class="shop-table">
+            {|foreach from=$dataArray item="row" name="row"|}
+                <tr>
+                    {|foreach from=$row item="e"|}
+                        <td>{|$e|}</td>
+                    {|/foreach|}
+                </tr>
+                {|if $smarty.foreach.row.last|}
+                    <tr>
+                        {|assign var=line value=1|}
+                        {|foreach from=$row item="e" key="key"|}
+                            <td>
+                                <select class="js-select-column" name="" data-row="{|$line|}">
+                                    <option data-type="">---</option>
+                                    <option class="js-glue" data-type="columncode">{|$translate_price_code|}</option>
+                                    <option class="js-glue" data-type="columnname">{|$translate_item_name|}</option>
+                                    <option data-type="columnprice">{|$translate_price|}</option>
+                                    <option class="js-glue" data-type="columnavail">{|$translate_availability|}</option>
+                                    <option class="js-glue" data-type="columncomment">{|$translate_napishite_kommentariy|}</option>
+                                    <option class="js-glue" data-type="columnarticul">{|$translate_articul|}</option>
+                                    <option data-type="columnminretail">{|$translate_min_retail|}</option>
+                                    <option data-type="columnrecommretail">{|$translate_recommended_retail|}</option>
+                                    <option data-type="columndiscount">{|$translate_comment|}</option>
+                                </select>
+                            </td>
+                            {|assign var=line value=$line+1|}
+                        {|/foreach|}
+                    </tr>
+                {|/if|}
+            {|/foreach|}
+        </table>
+    </div>
+</div>

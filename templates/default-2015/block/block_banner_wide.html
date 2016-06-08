@@ -1,0 +1,18 @@
+{|if $bannerArray|}
+    <div class="def-block-slick-wrap js-slider-wrap">
+        <div class="def-block-slick-slider js-fullwidth-slider">
+            {|foreach from=$bannerArray item="b"|}
+                <div>
+                    <a href="{|$b.url|}" {|if $b.external|}rel="nofollow" target="_blank"{|/if|}>
+                        <img src="{|$b.image|}" alt="">
+                    </a>
+                </div>
+            {|/foreach|}
+        </div>
+
+        {|if $bannerArray|@count > 1|}
+            <div class="slider-prev def-icon-angle-left"></div>
+            <div class="slider-next def-icon-angle-right"></div>
+        {|/if|}
+    </div>
+{|/if|}
